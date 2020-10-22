@@ -3,6 +3,6 @@ package model;
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
-public class Gutachter extends Observable {
+public class AbstractModel extends Observable{
 
 }
