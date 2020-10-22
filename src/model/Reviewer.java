@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("deprecation")
 public class Reviewer extends AbstractModel {
 	private String name;
 	private ArrayList<BachelorThesis> supervised;
@@ -29,6 +30,8 @@ public class Reviewer extends AbstractModel {
 	
 	public void addBachelorThesis(BachelorThesis bachelorThesis) {
 		this.supervised.add(bachelorThesis);
+		this.notifyObservers();
+		this.setChanged();
 	}
 	
 	public ArrayList<BachelorThesis> getSupervisedThesis() {

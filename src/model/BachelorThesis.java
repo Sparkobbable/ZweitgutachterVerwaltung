@@ -1,5 +1,6 @@
 package model;
 
+@SuppressWarnings("deprecation")
 public class BachelorThesis extends AbstractModel {
 	private String topic;
 	private Author author;
@@ -26,7 +27,6 @@ public class BachelorThesis extends AbstractModel {
 	 * @param secondReview Second Review made by a Reviewer
 	 */
 	public BachelorThesis(String topic, Author author, Review firstReview, Review secondReview) {
-		super();
 		this.topic = topic;
 		this.author = author;
 		this.firstReview = firstReview;
@@ -39,6 +39,8 @@ public class BachelorThesis extends AbstractModel {
 
 	public void setSecondReview(Review secondReview) {
 		this.secondReview = secondReview;
+		this.notifyObservers();
+		this.setChanged();
 	}
 
 	public String getTopic() {

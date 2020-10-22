@@ -2,6 +2,7 @@ package model;
 
 import util.ReviewStatus;
 
+@SuppressWarnings("deprecation")
 public class Review extends AbstractModel {
 	private Reviewer reviewer;
 	private boolean isFirstReview;
@@ -16,7 +17,6 @@ public class Review extends AbstractModel {
 	 * @param bachelorThesis The BachelorThesis to be reviewed
 	 */
 	public Review(Reviewer reviewer, boolean isFirstReview, ReviewStatus status, BachelorThesis bachelorThesis) {
-		super();
 		this.reviewer = reviewer;
 		this.isFirstReview = isFirstReview;
 		this.status = status;
@@ -33,6 +33,12 @@ public class Review extends AbstractModel {
 
 	public ReviewStatus getStatus() {
 		return status;
+	}
+	
+	public void setStatus(ReviewStatus status) {
+		this.status = status;
+		this.notifyObservers();
+		this.setChanged();
 	}
 
 	public BachelorThesis getBachelorThesis() {

@@ -10,7 +10,6 @@ public class Author extends AbstractModel {
 	 * @param studyGroup StudyGroup of the Author
 	 */
 	public Author(String name, String studyGroup) {
-		super();
 		this.name = name;
 		this.studyGroup = studyGroup;
 	}
