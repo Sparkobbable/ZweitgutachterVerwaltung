@@ -12,7 +12,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 
 import model.CurrentData;
@@ -23,14 +24,14 @@ public class MainWindow extends JFrame {
 	private JPanel homePanel;
 	private JScrollPane reviewerOverview;
 	private CurrentData data;
-	
 	/**
 	 * Initializes the Window
 	 * @param data Needs the DataAccess of the Application
 	 */
 	public void init(CurrentData data) {
 		this.data = data;
-		
+		updateLookAndFeel();
+
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Anwendungsname");
@@ -60,6 +61,15 @@ public class MainWindow extends JFrame {
 		
 //		this.menu = new JMenu();
 //		this.menu.add(new JMenuItem());
+	}
+
+	private void updateLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+			// use default look & feel
+		}
 	}
 	
 	/**
