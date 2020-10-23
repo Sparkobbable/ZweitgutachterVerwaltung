@@ -6,10 +6,11 @@ import view.MainWindow;
 
 public class Controller {
 	private CurrentData data;
+	private MainWindow home;
 	
 	public Controller() {
 		this.data = new CurrentData();
-		
+		home = new MainWindow();
 		//Mock:
 		Reviewer reviewer1 = new Reviewer("KlauPe Wennemann7Stellig");
 		this.data.getReviewer().add(reviewer1);
@@ -17,7 +18,11 @@ public class Controller {
 	
 	public static void main(String[] args) {
 		Controller controller = new Controller();
-		MainWindow home = new MainWindow();
-		home.init(controller.data);
+		controller.initWindow();
+		
+	}
+
+	private void initWindow() {
+		home.init(data);		
 	}
 }

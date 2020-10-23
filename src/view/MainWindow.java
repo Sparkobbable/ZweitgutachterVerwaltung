@@ -1,5 +1,7 @@
 package view;
 
+import java.util.logging.Logger;
+
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -15,43 +17,51 @@ public class MainWindow extends JFrame {
 	private HomePanel homePanel;
 	private JScrollPane reviewerOverview;
 	private CurrentData data;
-	
-	
+
+	static {
+		updateLookAndFeel();
+	}
+
 	public MainWindow() {
 		this.homePanel = new HomePanel(this);
 		this.menuBar = new JMenuBar();
+
 	}
-	
+
 	/**
 	 * Initializes the Window
+	 * 
 	 * @param data Needs the DataAccess of the Application
 	 */
 	public void init(CurrentData data) {
 		this.data = data;
-		updateLookAndFeel();
 
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
-		
+
 		this.homePanel.init();
 		this.add(this.homePanel);
-		
+
 		this.setVisible(true);
-		
+
 //		this.menu = new JMenu();
 //		this.menu.add(new JMenuItem());
 	}
 
-	private void updateLookAndFeel() {
+	private static void updateLookAndFeel() {
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+			UIManager.setLookAndFeel(systemLookAndFeelClassName);
+			Logger.getLogger(MainWindow.class.getName()).info(String
+					.format("Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName));
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 			// use default look & feel
 		}
 	}
-	
+
 	public CurrentData getData() {
 		return data;
 	}
@@ -76,5 +86,5 @@ public class MainWindow extends JFrame {
 		this.reviewerOverview = reviewerOverview;
 		this.add(reviewerOverview);
 	}
-	
+
 }
