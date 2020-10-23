@@ -38,7 +38,7 @@ public class OverviewTable {
 		window.getMenubar().add(back);
 		window.add(window.getMenubar());
 		
-		JTable overviewTable = new JTable(new ReviewerOverviewTableModel(window.getData()));
+		JTable overviewTable = new JTable(new ReviewerOverviewTableModel(window.getReviewers()));
 		JScrollPane reviewerOverview = new JScrollPane(overviewTable);
 		reviewerOverview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dozentenübersicht", TitledBorder.LEFT, TitledBorder.TOP));
 		window.setReviewerOverview(reviewerOverview);

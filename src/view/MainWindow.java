@@ -9,14 +9,22 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import model.CurrentData;
+import model.ReviewerList;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JMenuBar menuBar;
 	private HomePanel homePanel;
 	private JScrollPane reviewerOverview;
-	private CurrentData data;
+	@Deprecated
+	/**
+	 * TODO Remove this ASAP.
+	 * 
+	 * @deprecated the main window should not know the list of all reviewers (or,
+	 *             any data at all).
+	 * 
+	 */
+	private ReviewerList data;
 
 	static {
 		updateLookAndFeel();
@@ -25,7 +33,6 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		this.homePanel = new HomePanel(this);
 		this.menuBar = new JMenuBar();
-
 	}
 
 	/**
@@ -33,7 +40,7 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param data Needs the DataAccess of the Application
 	 */
-	public void init(CurrentData data) {
+	public void init(ReviewerList data) {
 		this.data = data;
 
 		this.setSize(800, 800);
@@ -53,8 +60,8 @@ public class MainWindow extends JFrame {
 		try {
 			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			UIManager.setLookAndFeel(systemLookAndFeelClassName);
-			Logger.getLogger(MainWindow.class.getName()).info(String
-					.format("Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName));
+			Logger.getLogger(MainWindow.class.getName())
+					.info(String.format("Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName));
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -62,7 +69,7 @@ public class MainWindow extends JFrame {
 		}
 	}
 
-	public CurrentData getData() {
+	public ReviewerList getData() {
 		return data;
 	}
 
@@ -85,6 +92,10 @@ public class MainWindow extends JFrame {
 	public void setReviewerOverview(JScrollPane reviewerOverview) {
 		this.reviewerOverview = reviewerOverview;
 		this.add(reviewerOverview);
+	}
+
+	public ReviewerList getReviewers() {
+		return data;
 	}
 
 }

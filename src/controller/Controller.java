@@ -1,15 +1,15 @@
 package controller;
 
-import model.CurrentData;
 import model.Reviewer;
+import model.ReviewerList;
 import view.MainWindow;
 
 public class Controller {
-	private CurrentData data;
+	private ReviewerList data;
 	private MainWindow home;
 	
 	public Controller() {
-		this.data = new CurrentData();
+		this.data = new ReviewerList();
 		home = new MainWindow();
 		//Mock:
 		Reviewer reviewer1 = new Reviewer("KlauPe Wennemann7Stellig");

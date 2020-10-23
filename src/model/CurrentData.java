@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Data-Access for the model
+ * <p>
+ * TODO decide if we need really this all-knowing data store
+ * 
  */
 @SuppressWarnings("deprecation")
 public class CurrentData extends AbstractModel {
