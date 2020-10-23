@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +19,7 @@ import model.CurrentData;
 import view.table.OverviewTable;
 
 public class MainWindow extends JFrame {
-	private JMenu menu;
+	private JMenuBar menuBar;
 	private JPanel homePanel;
 	private JScrollPane reviewerOverview;
 	private CurrentData data;
@@ -35,6 +37,8 @@ public class MainWindow extends JFrame {
 		
 		this.homePanel = new JPanel();
 		this.homePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Home", TitledBorder.LEFT, TitledBorder.TOP));
+		
+		this.menuBar = new JMenuBar();
 		
 		JButton bGutachter = new JButton("Gutachter anzeigen");
 		JButton bImport = new JButton("Importiere Erstgutachter");
@@ -69,12 +73,12 @@ public class MainWindow extends JFrame {
 		return data;
 	}
 
-	public JMenu getMenu() {
-		return menu;
+	public JMenuBar getMenubar() {
+		return menuBar;
 	}
 
-	public void setMenu(JMenu menu) {
-		this.menu = menu;
+	public void setMenubar(JMenuBar menuBar) {
+		this.menuBar = menuBar;
 	}
 
 	public JPanel getHomePanel() {
