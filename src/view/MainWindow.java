@@ -1,29 +1,27 @@
 package view;
 
-import java.awt.MenuBar;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.TitledBorder;
 
 import model.CurrentData;
-import view.table.OverviewTable;
 
 public class MainWindow extends JFrame {
+	private static final long serialVersionUID = 1L;
 	private JMenuBar menuBar;
-	private JPanel homePanel;
+	private HomePanel homePanel;
 	private JScrollPane reviewerOverview;
 	private CurrentData data;
+	
+	
+	public MainWindow() {
+		this.homePanel = new HomePanel(this);
+		this.menuBar = new JMenuBar();
+	}
+	
 	/**
 	 * Initializes the Window
 	 * @param data Needs the DataAccess of the Application
@@ -34,28 +32,10 @@ public class MainWindow extends JFrame {
 
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setTitle("Anwendungsname");
+		this.setTitle("thesisSPACE");
 		
-		this.homePanel = new JPanel();
-		this.homePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Home", TitledBorder.LEFT, TitledBorder.TOP));
-		
-		this.menuBar = new JMenuBar();
-		
-		JButton bGutachter = new JButton("Gutachter anzeigen");
-		JButton bImport = new JButton("Importiere Erstgutachter");
-		JButton bAnalyse = new JButton("Analyse");
-		this.homePanel.add(bGutachter);
-		this.homePanel.add(bImport);
-		this.homePanel.add(bAnalyse);
+		this.homePanel.init();
 		this.add(this.homePanel);
-		
-		bGutachter.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openReviewerOverview();
-			}
-		});
 		
 		this.setVisible(true);
 		
@@ -72,13 +52,6 @@ public class MainWindow extends JFrame {
 		}
 	}
 	
-	/**
-	 * Opens a Overview View to visualize the BachelorThesis per Reviewer
-	 */
-	public void openReviewerOverview() {
-		new OverviewTable().openOverview(this);
-	}
-
 	public CurrentData getData() {
 		return data;
 	}
@@ -93,10 +66,6 @@ public class MainWindow extends JFrame {
 
 	public JPanel getHomePanel() {
 		return homePanel;
-	}
-
-	public void setHomePanel(JPanel homePanel) {
-		this.homePanel = homePanel;
 	}
 
 	public JScrollPane getReviewerOverview() {
