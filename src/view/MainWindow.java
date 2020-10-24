@@ -17,6 +17,7 @@ public class MainWindow extends JFrame {
 	private JPanel mainContainer;
 	private Map<String, AbstractView<?>> availableViews; // TODO can/shall we remove this?
 	private CardLayout cardLayout;
+	private MenuHandler menuHandler; // TODO move to controller?!
 
 	static {
 		updateLookAndFeel();
@@ -27,6 +28,7 @@ public class MainWindow extends JFrame {
 		this.cardLayout = new CardLayout();
 		this.availableViews = new HashMap<>();
 		this.mainContainer.setLayout(cardLayout);
+		this.menuHandler = new MenuHandler();
 	}
 
 	/**
@@ -40,10 +42,17 @@ public class MainWindow extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
 		this.setBackground(Color.PINK);
-		mainContainer.setBackground(Color.BLACK);
+		// center
+		this.setLocationRelativeTo(null);
 
+		menuHandler.init();
+
+		mainContainer.setBackground(Color.BLACK);
 		this.add(mainContainer);
-		this.setVisible(true); // TODO maybe extract to controller to allow initialization before children's initialization?
+		menuHandler.useAsMenuBarFor(this);
+
+		this.setVisible(true); // TODO maybe extract to controller to allow initialization before children's
+								// initialization?
 
 	}
 
@@ -94,4 +103,8 @@ public class MainWindow extends JFrame {
 		this.mainContainer.add(view, view.getId());
 	}
 
+	// TODO remove this
+	public MenuHandler getMenuHandler() {
+		return menuHandler;
+	}
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import static model.constants.ButtonId.SHOW_REVIEWERS;
+import static model.constants.ButtonId.BACK;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class Controller {
 		this.window.registerView(this.overviewTablePanel); // TODO move to constant class
 
 		this.homePanel.onButtonClick(SHOW_REVIEWERS, () -> switchToView(overviewTablePanel));
+		//TODO implement navigation stack (?) , this is for demonstration only
+		this.window.getMenuHandler().onMenuClick(BACK, () -> switchToView(homePanel)); 
 
 	}
 
