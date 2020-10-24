@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Data-Access for the model
+ * <p>
+ * TODO revisit when saving state gets relevant
+ * 
  */
 @SuppressWarnings("deprecation")
 public class CurrentData extends AbstractModel {
