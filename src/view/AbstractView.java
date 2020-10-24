@@ -2,6 +2,7 @@ package view;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,10 +17,15 @@ import model.constants.ButtonId;
  *
  * @param <T> - Specific object type
  */
-public class AbstractPanel<T extends AbstractPanel<T>> extends JPanel {
-	
+public class AbstractView<T extends AbstractView<T>> extends JPanel {
+
 	// TODO discuss if this class should inherit from JPanel (it probably shouldn't)
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Indicates whether this Panel has already been initialized.
+	 */
+	private boolean initialized = false;
 
 	/**
 	 * This map stores all buttons in this panel. Since it does not handle button
@@ -29,7 +35,13 @@ public class AbstractPanel<T extends AbstractPanel<T>> extends JPanel {
 	protected Map<ButtonId, JButton> buttons;
 	private String title;
 
-	public AbstractPanel(String title) {
+	/**
+	 * Unique identifier for this view
+	 */
+	private String id;
+
+	public AbstractView(String id, String title) {
+		this.id = id;
 		this.title = title;
 		createButtons();
 	}
@@ -40,6 +52,11 @@ public class AbstractPanel<T extends AbstractPanel<T>> extends JPanel {
 	 * For object creation, consider using the constructor instead.
 	 */
 	public void init() {
+		Logger.getLogger(AbstractView.class.getName()).info(String.format("Initializing view %s", this.title));
+		if (this.initialized) {
+			throw new IllegalStateException("This panel has already been initialized. It cannot be initialized again.");
+		}
+		this.initialized = true;
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title, TitledBorder.LEFT,
 				TitledBorder.TOP));
 	}
@@ -84,5 +101,22 @@ public class AbstractPanel<T extends AbstractPanel<T>> extends JPanel {
 	 */
 	protected void addButton(ButtonId buttonId) {
 		this.add(buttons.get(buttonId));
+	}
+
+	/**
+	 * @return true, if and only if this object has already been initialized by callinh the
+	 *         {@link #init()} method
+	 */
+	public boolean isInitialized() {
+		return initialized;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("View(%s)", title);
+	}
+
+	public String getId() {
+		return id;
 	}
 }

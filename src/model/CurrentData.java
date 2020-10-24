@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Data-Access for the model
  * <p>
- * TODO decide if we need really this all-knowing data store
+ * TODO revisit when saving state gets relevant
  * 
  */
 @SuppressWarnings("deprecation")

@@ -1,38 +1,32 @@
 package view;
 
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import model.ReviewerList;
-
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JMenuBar menuBar;
-	private HomePanel homePanel;
-	private JScrollPane reviewerOverview;
-	@Deprecated
-	/**
-	 * TODO Remove this ASAP.
-	 * 
-	 * @deprecated the main window should not know the list of all reviewers (or,
-	 *             any data at all).
-	 * 
-	 */
-	private ReviewerList data;
+
+	private JPanel mainContainer;
+	private Map<String, AbstractView<?>> availableViews; // TODO can/shall we remove this?
+	private CardLayout cardLayout;
 
 	static {
 		updateLookAndFeel();
 	}
 
 	public MainWindow() {
-		this.homePanel = new HomePanel(this);
-		this.menuBar = new JMenuBar();
+		this.mainContainer = new JPanel();
+		this.cardLayout = new CardLayout();
+		this.availableViews = new HashMap<>();
+		this.mainContainer.setLayout(cardLayout);
 	}
 
 	/**
@@ -40,22 +34,24 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param data Needs the DataAccess of the Application
 	 */
-	public void init(ReviewerList data) {
-		this.data = data;
+	public void init() {
 
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
+		this.setBackground(Color.PINK);
+		mainContainer.setBackground(Color.BLACK);
 
-		this.homePanel.init();
-		this.add(this.homePanel);
+		this.add(mainContainer);
+		this.setVisible(true); // TODO maybe extract to controller to allow initialization before children's initialization?
 
-		this.setVisible(true);
-
-//		this.menu = new JMenu();
-//		this.menu.add(new JMenuItem());
 	}
 
+	/**
+	 * Updates the Look&Feel to match the native Look&Feel.
+	 * <p>
+	 * TODO decide if we can use this without testing on a Mac (no)
+	 */
 	private static void updateLookAndFeel() {
 		try {
 			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
@@ -69,33 +65,33 @@ public class MainWindow extends JFrame {
 		}
 	}
 
-	public ReviewerList getData() {
-		return data;
+	/**
+	 * Switch to a view that has already been registered.
+	 * 
+	 * @param viewId Id of the view that shall be shown.
+	 */
+	public void switchToView(String viewId) {
+		if (!this.availableViews.containsKey(viewId)) {
+			throw new IllegalArgumentException(String.format("View %s not registered for this window.", viewId));
+		}
+		cardLayout.show(mainContainer, viewId);
 	}
 
-	public JMenuBar getMenubar() {
-		return menuBar;
-	}
-
-	public void setMenubar(JMenuBar menuBar) {
-		this.menuBar = menuBar;
-	}
-
-	public JPanel getHomePanel() {
-		return homePanel;
-	}
-
-	public JScrollPane getReviewerOverview() {
-		return reviewerOverview;
-	}
-
-	public void setReviewerOverview(JScrollPane reviewerOverview) {
-		this.reviewerOverview = reviewerOverview;
-		this.add(reviewerOverview);
-	}
-
-	public ReviewerList getReviewers() {
-		return data;
+	/**
+	 * Registers a view that can be shown later. The first view that is registered
+	 * will be the home screen shown on startup, unless
+	 * {@link #switchToView(String)} is called beforehand.
+	 * 
+	 * @param view View to be registered.
+	 */
+	public void registerView(AbstractView<?> view) {
+		if (this.availableViews.containsKey(view.getId())) {
+			throw new IllegalArgumentException(
+					String.format("A View with id %s is already registered for this window.", view.getId()));
+		}
+		Logger.getLogger(MainWindow.class.getName()).info(String.format("Registering view %s", view.getId()));
+		this.availableViews.put(view.getId(), view);
+		this.mainContainer.add(view, view.getId());
 	}
 
 }

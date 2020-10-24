@@ -18,6 +18,10 @@ public class ReviewerList extends Observable{
 		this.reviewers = new ArrayList<>();
 	}
 	
+	public ReviewerList(List<Reviewer> reviewers) {
+		this.reviewers = reviewers;
+	}
+	
 	public List<Reviewer> getReviewers() {
 		return reviewers;
 	}
