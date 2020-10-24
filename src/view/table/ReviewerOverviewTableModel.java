@@ -8,6 +8,8 @@ import model.ReviewerList;
 public class ReviewerOverviewTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private ReviewerList data;
+	
+	public static final int REVIEWER_COLUMN = 0;
 
 	/**
 	 * Creates a TableModel of the Reviewerlist
@@ -21,7 +23,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 	@Override
 	public String getColumnName(int column) {
 		switch (column) {
-		case 0:
+		case REVIEWER_COLUMN:
 			return "Name";
 		case 1:
 			return "Anzahl betreute Bachelorarbeiten";
@@ -44,7 +46,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Reviewer reviewer = data.getReviewer().get(rowIndex);
 		switch (columnIndex) {
-		case 0:
+		case REVIEWER_COLUMN:
 			return reviewer.getName();
 		case 1:
 			return reviewer.getSupervisedThesis().size();

@@ -34,7 +34,6 @@ public class MainWindow extends JFrame {
 	/**
 	 * Initializes the Window
 	 * 
-	 * @param data Needs the DataAccess of the Application
 	 */
 	public void init() {
 

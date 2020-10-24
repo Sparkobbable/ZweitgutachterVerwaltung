@@ -1,6 +1,7 @@
 package controller;
 
 import static model.constants.ButtonId.SHOW_REVIEWERS;
+import static model.constants.ButtonId.EDIT;
 import static model.constants.ButtonId.BACK;
 
 import java.util.ArrayList;
@@ -10,10 +11,12 @@ import java.util.logging.Logger;
 import model.BachelorThesis;
 import model.Reviewer;
 import model.ReviewerList;
+import model.constants.ViewID;
 import view.AbstractView;
 import view.HomePanel;
 import view.MainWindow;
 import view.table.OverviewTable;
+import view.table.ReviewerOverviewTableModel;
 
 public class Controller {
 	private ReviewerList data;
@@ -26,14 +29,15 @@ public class Controller {
 
 	public Controller() {
 		this.data = mockReviewerList();
-		this.homePanel = new HomePanel("Homepanel#1");
-		this.overviewTablePanel = new OverviewTable("OverviewTablePanel#1", data);
+		this.homePanel = new HomePanel(ViewID.HOME.getViewID());
+		this.overviewTablePanel = new OverviewTable(ViewID.OVERVIEW_TABLE.getViewID(), data);
 
 		this.window = new MainWindow();
 		this.window.registerView(this.homePanel); // TODO move to constant class
 		this.window.registerView(this.overviewTablePanel); // TODO move to constant class
 
 		this.homePanel.onButtonClick(SHOW_REVIEWERS, () -> switchToView(overviewTablePanel));
+		this.overviewTablePanel.getActions().onButtonClick(EDIT, () -> switchToEdit()); 
 		//TODO implement navigation stack (?) , this is for demonstration only
 		this.window.getMenuHandler().onMenuClick(BACK, () -> switchToView(homePanel)); 
 
@@ -63,6 +67,15 @@ public class Controller {
 			view.init(); //TODO initialize everything at the beginning or init lazily?
 		}
 		window.switchToView(view.getId());
+	}
+	
+	private void switchToEdit() {
+		int selectedIdx = this.overviewTablePanel.getReviewerOverviewTable().getSelectedRow();
+		String reviewerName = (String) this.overviewTablePanel.getReviewerOverviewTable().getValueAt(selectedIdx, ReviewerOverviewTableModel.REVIEWER_COLUMN);
+		Reviewer reviewer = this.data.findReviewerByName(reviewerName);
+		Logger.getLogger(Controller.class.getName()).info(String.format("Starting editmode on reviewer %s", reviewer.getName()));
+		
+		switchToView(this.homePanel); //TODO Implement new edit-view and pass the reviewer
 	}
 
 	/**

@@ -46,4 +46,13 @@ public class ReviewerList extends Observable{
 		this.notifyObservers();
 	}
 	
+	public Reviewer findReviewerByName(String name) {
+		for (Reviewer reviewer : this.reviewers) {
+			if (reviewer.getName().equals(name)) {
+				return reviewer;
+			}
+		}
+		return null;
+	}
+	
 }
