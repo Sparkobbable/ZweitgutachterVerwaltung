@@ -1,20 +1,21 @@
 package view.table;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import model.ReviewerList;
-import model.constants.ViewID;
+import model.EventSource;
+import model.Model;
+import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
 
-@SuppressWarnings("deprecation")
-public class OverviewTable extends AbstractView<OverviewTable> {
+public class OverviewTable extends AbstractView {
 
 	private static final long serialVersionUID = 1L; // TODO remove ?!
 
@@ -22,7 +23,7 @@ public class OverviewTable extends AbstractView<OverviewTable> {
 	private JTable reviewerOverviewTable;
 	private JScrollPane reviewerOverviewScrollPane;
 	private OverviewTableActions actions;
-	private ReviewerList reviewers;
+	private Model reviewers;
 
 	/**
 	 * Creates a view containing a table presenting the reviewers and buttons for interacting with the data
@@ -42,6 +43,11 @@ public class OverviewTable extends AbstractView<OverviewTable> {
 			}
 		});
 		this.actions = new OverviewTableActions(ViewID.ACTIONS.getViewID());
+
+	public OverviewTable(ViewId viewId, Model reviewers) {
+		super(viewId, "Dozentenübersicht");
+		this.reviewers = reviewers;
+
 	}
 
 	/**
@@ -51,16 +57,17 @@ public class OverviewTable extends AbstractView<OverviewTable> {
 	public void init() {
 		super.init();
 		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
+		this.actions.init();
 		
 		initTable();
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
 		
 		this.reviewerOverviewScrollPane.setBackground(Color.PINK);
-		this.setLayout(new GridLayout(2, 1)); // TODO replace with more elegant solution? @see
-												// https://stackoverflow.com/questions/14259543/how-to-make-a-jpanel-expand-to-max-width-in-another-jpanel
-		this.add(reviewerOverviewScrollPane);
+
+		this.setLayout(new BorderLayout()); 
+		this.add(reviewerOverviewScrollPane, BorderLayout.CENTER);
+		this.add(this.actions, BorderLayout.PAGE_END);
 		
-		this.add(this.actions);
 	}
 	
 	private void initTable() {
@@ -78,5 +85,15 @@ public class OverviewTable extends AbstractView<OverviewTable> {
 	
 	public JTable getReviewerOverviewTable() {
 		return reviewerOverviewTable;
+	}
+
+	@Override
+	protected List<EventSource> getEventSources() {
+		return List.of(actions);
+	}
+
+	@Override
+	protected void createUIElements() {
+		this.actions = new OverviewTableActions(ViewId.ACTIONS);		
 	}
 }

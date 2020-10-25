@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import model.data.Reviewer;
+
 /**
  * Data-Access for the model
  * <p>

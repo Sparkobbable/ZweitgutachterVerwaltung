@@ -1,11 +1,17 @@
-package model;
+package model.data;
 
+import model.AbstractModel;
+
+/**
+ * Author of a BachelorThesis
+ *
+ */
 public class Author extends AbstractModel {
 	private String name;
 	private String studyGroup;
 	
 	/**
-	 * Creates a Author of a BachelorThesis
+	 * Creates an Author of a BachelorThesis
 	 * @param name Name of the Author
 	 * @param studyGroup StudyGroup of the Author
 	 */
