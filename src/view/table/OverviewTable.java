@@ -1,18 +1,19 @@
 package view.table;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.util.List;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import model.ReviewerList;
-import model.constants.ViewID;
+import model.EventSource;
+import model.Model;
+import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
 
-public class OverviewTable extends AbstractView<OverviewTable> {
+public class OverviewTable extends AbstractView {
 
 	private static final long serialVersionUID = 1L; // TODO remove ?!
 
@@ -20,28 +21,28 @@ public class OverviewTable extends AbstractView<OverviewTable> {
 	private JTable reviewerOverviewTable;
 	private JScrollPane reviewerOverviewScrollPane;
 	private OverviewTableActions actions;
-	private ReviewerList reviewers;
+	private Model reviewers;
 
-	public OverviewTable(String id, ReviewerList reviewers) {
-		super(id, "Dozentenübersicht");
+	public OverviewTable(ViewId viewId, Model reviewers) {
+		super(viewId, "Dozentenübersicht");
 		this.reviewers = reviewers;
-		this.actions = new OverviewTableActions(ViewID.ACTIONS.getViewID());
+		
 	}
 
 	@Override
 	public void init() {
 		super.init();
 		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
+		this.actions.init();
 		
 		this.reviewerOverviewTable = new JTable(new ReviewerOverviewTableModel(reviewers));
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
 		this.reviewerOverviewTable.setFillsViewportHeight(true);
 		this.reviewerOverviewScrollPane.setBackground(Color.PINK);
-		this.setLayout(new GridLayout(1, 1)); // TODO replace with more elegant solution? @see
-												// https://stackoverflow.com/questions/14259543/how-to-make-a-jpanel-expand-to-max-width-in-another-jpanel
-		this.add(reviewerOverviewScrollPane);
+		this.setLayout(new BorderLayout()); 
+		this.add(reviewerOverviewScrollPane, BorderLayout.CENTER);
+		this.add(this.actions, BorderLayout.PAGE_END);
 		
-		this.add(this.actions);
 	}
 
 	/**
@@ -54,5 +55,15 @@ public class OverviewTable extends AbstractView<OverviewTable> {
 	
 	public JTable getReviewerOverviewTable() {
 		return reviewerOverviewTable;
+	}
+
+	@Override
+	protected List<EventSource> getEventSources() {
+		return List.of(actions);
+	}
+
+	@Override
+	protected void createUIElements() {
+		this.actions = new OverviewTableActions(ViewId.ACTIONS);		
 	}
 }

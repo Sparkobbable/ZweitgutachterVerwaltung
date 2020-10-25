@@ -1,6 +1,12 @@
-package model;
+package model.data;
+
+import model.AbstractModel;
 
 @SuppressWarnings("deprecation")
+/**
+ * stores information about a BachelorThesis
+ * 
+ */
 public class BachelorThesis extends AbstractModel {
 	private String topic;
 	private Author author;
@@ -8,7 +14,7 @@ public class BachelorThesis extends AbstractModel {
 	private Review secondReview;
 	
 	/**
-	 * Creates a BachelorThesis
+	 * Creates a BachelorThesis with an unspecified second reviewer
 	 * @param topic Topic of the BachelorThesis
 	 * @param author Author of the BachelorThesis (Student)
 	 * @param firstReview First Review made by a Reviewer

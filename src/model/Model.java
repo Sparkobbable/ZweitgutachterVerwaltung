@@ -4,21 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import model.data.Reviewer;
+
 /**
  *	Data store for all reviewers 
  * <p>
  * TODO extend AbstractModel??
  */
 @SuppressWarnings("deprecation") // using the Observable pattern and therefore Observable is encouraged in this project
-public class ReviewerList extends Observable{
+public class Model extends Observable{
 
 	private List<Reviewer> reviewers;
 
-	public ReviewerList() {
+	public Model() {
 		this.reviewers = new ArrayList<>();
 	}
 	
-	public ReviewerList(List<Reviewer> reviewers) {
+	public Model(List<Reviewer> reviewers) {
 		this.reviewers = reviewers;
 	}
 	

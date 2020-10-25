@@ -1,6 +1,8 @@
-package model;
+package model.data;
 
 import java.util.ArrayList;
+
+import model.AbstractModel;
 
 @SuppressWarnings("deprecation")
 public class Reviewer extends AbstractModel {

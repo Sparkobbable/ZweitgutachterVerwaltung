@@ -2,12 +2,12 @@ package view.table;
 
 import javax.swing.table.AbstractTableModel;
 
-import model.Reviewer;
-import model.ReviewerList;
+import model.Model;
+import model.data.Reviewer;
 
 public class ReviewerOverviewTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
-	private ReviewerList data;
+	private Model data;
 	
 	public static final int REVIEWER_COLUMN = 0;
 
@@ -16,7 +16,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 	 * 
 	 * @param data Needs the DataAccess of the Application
 	 */
-	public ReviewerOverviewTableModel(ReviewerList data) {
+	public ReviewerOverviewTableModel(Model data) {
 		this.data = data;
 	}
 

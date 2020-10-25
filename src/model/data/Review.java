@@ -1,5 +1,6 @@
-package model;
+package model.data;
 
+import model.AbstractModel;
 import util.ReviewStatus;
 
 @SuppressWarnings("deprecation")

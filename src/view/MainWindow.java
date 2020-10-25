@@ -11,11 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import model.enums.ViewId;
+
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel mainContainer;
-	private Map<String, AbstractView<?>> availableViews; // TODO can/shall we remove this?
+	private Map<ViewId, AbstractView> availableViews; // TODO can/shall we remove this?
 	private CardLayout cardLayout;
 	private MenuHandler menuHandler; // TODO move to controller?!
 
@@ -78,11 +80,11 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param viewId Id of the view that shall be shown.
 	 */
-	public void switchToView(String viewId) {
+	public void switchToView(ViewId viewId) {
 		if (!this.availableViews.containsKey(viewId)) {
 			throw new IllegalArgumentException(String.format("View %s not registered for this window.", viewId));
 		}
-		cardLayout.show(mainContainer, viewId);
+		cardLayout.show(mainContainer, viewId.name());
 	}
 
 	/**
@@ -92,14 +94,14 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param view View to be registered.
 	 */
-	public void registerView(AbstractView<?> view) {
-		if (this.availableViews.containsKey(view.getId())) {
+	public void registerView(AbstractView view) {
+		if (this.availableViews.containsKey(view.getViewId())) {
 			throw new IllegalArgumentException(
-					String.format("A View with id %s is already registered for this window.", view.getId()));
+					String.format("A View with id %s is already registered for this window.", view.getViewId()));
 		}
-		Logger.getLogger(MainWindow.class.getName()).info(String.format("Registering view %s", view.getId()));
-		this.availableViews.put(view.getId(), view);
-		this.mainContainer.add(view, view.getId());
+		Logger.getLogger(MainWindow.class.getName()).info(String.format("Registering view %s", view.getViewId()));
+		this.availableViews.put(view.getViewId(), view);
+		this.mainContainer.add(view, view.getViewId().name());
 	}
 
 	// TODO remove this

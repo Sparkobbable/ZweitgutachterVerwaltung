@@ -9,17 +9,17 @@ import javax.swing.JMenuBar;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import model.constants.ButtonId;
+import model.enums.EventId;
 
 public class MenuHandler {
 
 	private JMenuBar menuBar; //TODO remove (and instead use inheritance) or do it like that everywhere
-	private Map<ButtonId, JMenu> menus; //TODO rename ButtonId to ComponentId or create new enum?
+	private Map<EventId, JMenu> menus; //TODO rename ButtonId to ComponentId or create new enum?
 	
 	public MenuHandler() {
 		this.menuBar = new JMenuBar();
 		this.menus = new HashMap<>();
-		menus.put(ButtonId.BACK, new JMenu("Zurück"));
+		menus.put(EventId.BACK, new JMenu("Zurück"));
 	}
 
 	public void init() {
@@ -31,7 +31,7 @@ public class MenuHandler {
 		frame.setJMenuBar(menuBar);
 	}
 	
-	public void onMenuClick(ButtonId componentId, Runnable action) {
+	public void onMenuClick(EventId componentId, Runnable action) {
 		if (!menus.containsKey(componentId)) {
 			throw new IllegalArgumentException(String.format(
 					"Menu with ButtonId %s does not exist in MenuHandler \"%s\". Could not add ActionListener.", componentId));
