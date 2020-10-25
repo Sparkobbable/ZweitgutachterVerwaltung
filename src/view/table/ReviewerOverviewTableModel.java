@@ -34,7 +34,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return data.getReviewer().size();
+		return data.getReviewers().size();
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Reviewer reviewer = data.getReviewer().get(rowIndex);
+		Reviewer reviewer = data.getReviewers().get(rowIndex);
 		switch (columnIndex) {
 		case REVIEWER_COLUMN:
 			return reviewer.getName();

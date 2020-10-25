@@ -1,8 +1,6 @@
 package controller;
 
-import static model.constants.ButtonId.SHOW_REVIEWERS;
-import static model.constants.ButtonId.EDIT;
-import static model.constants.ButtonId.BACK;
+import static controller.ActionHandling.getActionHandling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +14,16 @@ import view.AbstractView;
 import view.HomePanel;
 import view.MainWindow;
 import view.table.OverviewTable;
-import view.table.ReviewerOverviewTableModel;
 
 public class Controller {
 	private ReviewerList data;
-	private MainWindow window;
+	OverviewReviewerController overviewReviewerController;
+	MainWindow window;
 
 	// TODO decide if all Views should be stored in a map and accessed by their IDs
 	// (probably yes)
-	private HomePanel homePanel;
-	private OverviewTable overviewTablePanel;
+	HomePanel homePanel;
+	OverviewTable overviewTablePanel;
 
 	public Controller() {
 		this.data = mockReviewerList();
@@ -35,11 +33,10 @@ public class Controller {
 		this.window = new MainWindow();
 		this.window.registerView(this.homePanel); // TODO move to constant class
 		this.window.registerView(this.overviewTablePanel); // TODO move to constant class
+		
+		this.overviewReviewerController = new OverviewReviewerController(overviewTablePanel, data, this);
 
-		this.homePanel.onButtonClick(SHOW_REVIEWERS, () -> switchToView(overviewTablePanel));
-		this.overviewTablePanel.getActions().onButtonClick(EDIT, () -> switchToEdit()); 
-		//TODO implement navigation stack (?) , this is for demonstration only
-		this.window.getMenuHandler().onMenuClick(BACK, () -> switchToView(homePanel)); 
+		getActionHandling(this).setButtonHandlers();
 
 	}
 
@@ -67,15 +64,6 @@ public class Controller {
 			view.init(); //TODO initialize everything at the beginning or init lazily?
 		}
 		window.switchToView(view.getId());
-	}
-	
-	private void switchToEdit() {
-		int selectedIdx = this.overviewTablePanel.getReviewerOverviewTable().getSelectedRow();
-		String reviewerName = (String) this.overviewTablePanel.getReviewerOverviewTable().getValueAt(selectedIdx, ReviewerOverviewTableModel.REVIEWER_COLUMN);
-		Reviewer reviewer = this.data.findReviewerByName(reviewerName);
-		Logger.getLogger(Controller.class.getName()).info(String.format("Starting editmode on reviewer %s", reviewer.getName()));
-		
-		switchToView(this.homePanel); //TODO Implement new edit-view and pass the reviewer
 	}
 
 	/**

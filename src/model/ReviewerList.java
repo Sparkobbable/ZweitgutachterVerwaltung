@@ -36,10 +36,6 @@ public class ReviewerList extends Observable{
 		this.notifyObservers();
 	}
 
-	public List<Reviewer> getReviewer() {
-		return reviewers;
-	}
-
 	public void setReviewer(List<Reviewer> reviewer) {
 		this.reviewers = reviewer;
 		this.setChanged();
@@ -47,12 +43,13 @@ public class ReviewerList extends Observable{
 	}
 	
 	public Reviewer findReviewerByName(String name) {
-		for (Reviewer reviewer : this.reviewers) {
-			if (reviewer.getName().equals(name)) {
-				return reviewer;
-			}
-		}
-		return null;
+		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
+	}
+
+	public void removeIdx(int rowIdx) {
+		this.reviewers.remove(rowIdx);
+		this.notifyObservers();
+		this.setChanged();
 	}
 	
 }
