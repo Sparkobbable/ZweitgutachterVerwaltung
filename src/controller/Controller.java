@@ -13,17 +13,20 @@ import model.constants.ViewID;
 import view.AbstractView;
 import view.HomePanel;
 import view.MainWindow;
+import view.editor.ReviewerEditor;
 import view.table.OverviewTable;
 
 public class Controller {
 	private ReviewerList data;
 	OverviewReviewerController overviewReviewerController;
+	ReviewerEditorController reviewerEditorController;
 	MainWindow window;
 
 	// TODO decide if all Views should be stored in a map and accessed by their IDs
 	// (probably yes)
 	HomePanel homePanel;
 	OverviewTable overviewTablePanel;
+	ReviewerEditor reviewerEditorPanel;
 
 	public Controller() {
 		this.data = mockReviewerList();

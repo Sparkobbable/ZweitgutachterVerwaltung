@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import model.Reviewer;
 import model.ReviewerList;
+import model.constants.ViewID;
+import view.editor.ReviewerEditor;
 import view.table.OverviewTable;
 import view.table.ReviewerOverviewTableModel;
 
@@ -31,6 +33,11 @@ public class OverviewReviewerController extends AbstractSubController {
 		Reviewer reviewer = this.data.findReviewerByName(reviewerName);
 		Logger.getLogger(Controller.class.getName()).info(String.format("Starting editmode on reviewer %s", reviewer.getName()));
 		
-		mainController.switchToView(this.overviewTablePanel); //TODO Implement new edit-view and pass the reviewer
+		ReviewerEditor editor = new ReviewerEditor(ViewID.EDITOR.getViewID(), "Editor", reviewer);
+		mainController.window.registerView(editor);
+		
+		mainController.reviewerEditorController = new ReviewerEditorController(mainController);
+		
+		mainController.switchToView(editor);
 	}
 }

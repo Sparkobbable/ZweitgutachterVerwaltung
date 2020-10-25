@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -38,7 +37,7 @@ public class OverviewTable extends AbstractView<OverviewTable> {
 			
 			@Override
 			public void update(Observable o, Object arg) {
-				OverviewTable.this.reviewers = (ReviewerList) o;
+				OverviewTable.this.reviewers = (ReviewerList) arg;
 				OverviewTable.this.initTable();
 			}
 		});

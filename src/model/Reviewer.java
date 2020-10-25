@@ -8,6 +8,13 @@ public class Reviewer extends AbstractModel {
 	private ArrayList<BachelorThesis> supervised;
 	
 	/**
+	 * Creates a empty Reviewer
+	 */
+	public Reviewer() {
+		
+	}
+	
+	/**
 	 * Creates a Reviewer for BachelorThesis
 	 * @param name Name of the Reviewer
 	 */
