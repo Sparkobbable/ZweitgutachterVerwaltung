@@ -15,6 +15,7 @@ import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
 
+@SuppressWarnings("deprecation")
 public class OverviewTable extends AbstractView {
 
 	private static final long serialVersionUID = 1L; // TODO remove ?!
@@ -27,27 +28,21 @@ public class OverviewTable extends AbstractView {
 
 	/**
 	 * Creates a view containing a table presenting the reviewers and buttons for interacting with the data
-	 * @param id Unique viewID from {@link ViewID} 
+	 * @param viewId Unique viewId from {@link ViewId} 
 	 * @param reviewers Needs the reviewers as the data access
 	 */
-	public OverviewTable(String id, ReviewerList reviewers) {
-		super(id, "Dozentenübersicht");
+	public OverviewTable(ViewId viewId, Model reviewers) {
+		super(viewId, "Dozentenübersicht");
 		this.reviewers = reviewers;
 		//TODO doesnt work, why??
 		this.reviewers.addObserver(new Observer() {
 			
 			@Override
 			public void update(Observable o, Object arg) {
-				OverviewTable.this.reviewers = (ReviewerList) arg;
+				OverviewTable.this.reviewers = (Model) arg;
 				OverviewTable.this.initTable();
 			}
 		});
-		this.actions = new OverviewTableActions(ViewID.ACTIONS.getViewID());
-
-	public OverviewTable(ViewId viewId, Model reviewers) {
-		super(viewId, "Dozentenübersicht");
-		this.reviewers = reviewers;
-
 	}
 
 	/**

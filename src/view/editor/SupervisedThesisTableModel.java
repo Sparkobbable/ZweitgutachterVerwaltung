@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import model.BachelorThesis;
+import model.data.BachelorThesis;
 
 public class SupervisedThesisTableModel extends AbstractTableModel {
 	private ArrayList<BachelorThesis> supervisedThesis;
