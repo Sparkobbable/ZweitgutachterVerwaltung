@@ -2,12 +2,15 @@ package view.table;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 
 import model.EventSource;
 import model.Model;
@@ -27,16 +30,20 @@ public class OverviewTable extends AbstractView {
 	private Model reviewers;
 
 	/**
-	 * Creates a view containing a table presenting the reviewers and buttons for interacting with the data
-	 * @param viewId Unique viewId from {@link ViewId} 
+	 * Creates a view containing a table presenting the reviewers and buttons for
+	 * interacting with the data
+	 * 
+	 * @param viewId    Unique viewId from {@link ViewId}
 	 * @param reviewers Needs the reviewers as the data access
 	 */
 	public OverviewTable(ViewId viewId, Model reviewers) {
 		super(viewId, "Dozentenübersicht");
 		this.reviewers = reviewers;
-		//TODO doesnt work, why??
+		this.createUIElements();
+		this.registerEventSources();
+		// TODO doesnt work, why??
 		this.reviewers.addObserver(new Observer() {
-			
+
 			@Override
 			public void update(Observable o, Object arg) {
 				OverviewTable.this.reviewers = (Model) arg;
@@ -53,18 +60,18 @@ public class OverviewTable extends AbstractView {
 		super.init();
 		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
 		this.actions.init();
-		
+
 		initTable();
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
-		
+
 		this.reviewerOverviewScrollPane.setBackground(Color.PINK);
 
-		this.setLayout(new BorderLayout()); 
+		this.setLayout(new BorderLayout());
 		this.add(reviewerOverviewScrollPane, BorderLayout.CENTER);
 		this.add(this.actions, BorderLayout.PAGE_END);
-		
+
 	}
-	
+
 	private void initTable() {
 		this.reviewerOverviewTable = new JTable(new ReviewerOverviewTableModel(reviewers));
 		this.reviewerOverviewTable.setFillsViewportHeight(true);
@@ -72,12 +79,13 @@ public class OverviewTable extends AbstractView {
 
 	/**
 	 * Accesses actions as buttons which are embedded in this view.
+	 * 
 	 * @return Returns a JPanel containing the actions
 	 */
 	public OverviewTableActions getActions() {
 		return this.actions;
 	}
-	
+
 	public JTable getReviewerOverviewTable() {
 		return reviewerOverviewTable;
 	}
@@ -89,6 +97,14 @@ public class OverviewTable extends AbstractView {
 
 	@Override
 	protected void createUIElements() {
-		this.actions = new OverviewTableActions(ViewId.ACTIONS);		
+		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerNames());
 	}
+
+	protected List<Object> getSelectedReviewerNames() {
+		int nameColumn = ((AbstractTableModel) this.getReviewerOverviewTable().getModel()).findColumn("Name");
+		return IntStream.of(reviewerOverviewTable.getSelectedRows())
+				.mapToObj(selectedRow -> this.getReviewerOverviewTable().getValueAt(selectedRow, nameColumn))
+				.collect(Collectors.toList());
+	}
+
 }

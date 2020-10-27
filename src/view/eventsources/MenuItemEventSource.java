@@ -4,6 +4,7 @@ import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import model.Action;
 import model.enums.EventId;
 
 public class MenuItemEventSource extends SingleEventSource {
@@ -15,7 +16,7 @@ public class MenuItemEventSource extends SingleEventSource {
 	}
 
 	@Override
-	public void addEventHandler(EventId eventId, Runnable action) {
+	public void addEventHandler(EventId eventId, Action action) {
 		if (!this.canOmit(eventId)) {
 			throw new IllegalArgumentException(
 					String.format("JMenuItem %s will never omit event %s. EventHandler could not be added",
@@ -28,7 +29,7 @@ public class MenuItemEventSource extends SingleEventSource {
 
 			@Override
 			public void menuSelected(MenuEvent e) {
-				action.run();
+				action.perform();
 				menuItem.setSelected(false); // uaagh
 			}
 

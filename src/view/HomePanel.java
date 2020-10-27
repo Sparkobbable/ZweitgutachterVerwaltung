@@ -22,7 +22,8 @@ public class HomePanel extends AbstractView {
 
 	public HomePanel(ViewId id) { // Maybe add a contructor with standard id?
 		super(id, "Home");
-
+		this.createUIElements();
+		this.registerEventSources();
 	}
 
 	public void init() {

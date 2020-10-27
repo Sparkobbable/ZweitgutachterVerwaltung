@@ -12,7 +12,7 @@ public interface EventSource {
 	 * @param action  Action that shall be performed whenever an event with the
 	 *                given eventId is ommitted
 	 */
-	public void addEventHandler(EventId eventId, Runnable action);
+	public void addEventHandler(EventId eventId, Action action);
 
 	/**
 	 * Detects whether this EventSource can omit the event with the given eventId

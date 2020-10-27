@@ -3,6 +3,7 @@ package model.data;
 import java.util.Collection;
 import java.util.HashSet;
 
+import model.Action;
 import model.EventSource;
 import model.enums.EventId;
 
@@ -21,7 +22,7 @@ public class EventSourceHandler {
 		eventSources.addAll(eventSource);
 	}
 
-	public void addEventHandler(EventId event, Runnable action) {
+	public void addEventHandler(EventId event, Action action) {
 		eventSources.stream().filter(eventSource -> eventSource.canOmit(event))
 				.forEach(eventSource -> eventSource.addEventHandler(event, action));
 	}

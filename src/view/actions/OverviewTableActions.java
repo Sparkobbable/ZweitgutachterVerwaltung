@@ -3,6 +3,7 @@ package view.actions;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.swing.JButton;
 
@@ -17,6 +18,7 @@ public class OverviewTableActions extends AbstractView {
 	private static final long serialVersionUID = 1L;
 
 	private JButton edit;
+	private Supplier<?>[] reviewerNames;
 
 	/**
 	 * Provides a section with several buttons for interaction with the table.
@@ -27,9 +29,13 @@ public class OverviewTableActions extends AbstractView {
 	 *           it is not a top-level-view. Maybe we need to add another Abstract
 	 *           class?
 	 */
-	public OverviewTableActions(ViewId id) {
+	public OverviewTableActions(ViewId id, Supplier<?>... reviewerNames) {
 		super(id, "");
+		this.reviewerNames = reviewerNames;
 		this.setBorder(UNTITLED_BORDER);
+
+		this.createUIElements();
+		this.registerEventSources();
 	}
 
 	@Override
@@ -41,7 +47,7 @@ public class OverviewTableActions extends AbstractView {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.EDIT, edit));
+		return List.of(new ButtonEventSource(EventId.EDIT, edit, reviewerNames));
 	}
 
 	@Override

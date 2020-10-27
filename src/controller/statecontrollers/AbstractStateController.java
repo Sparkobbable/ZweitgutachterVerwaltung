@@ -1,5 +1,6 @@
 package controller.statecontrollers;
 
+import model.Action;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -45,7 +46,7 @@ public abstract class AbstractStateController {
 	 * @param eventId Event Id whose omittance shall be observed
 	 * @param action Action performed when this event is omited in this state
 	 */
-	public void registerEvent(EventId eventId, Runnable action) {
+	public void registerEvent(EventId eventId, Action action) {
 		this.view.atState(state).addEventHandler(eventId, action);
 	}
 

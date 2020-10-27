@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import model.Action;
 import model.EventSource;
 import model.data.EventSourceHandler;
 import model.enums.EventId;
@@ -50,7 +51,11 @@ public abstract class AbstractView extends JPanel implements EventSource {
 		this.viewId = viewId;
 		this.title = title;
 		this.eventHandler = new EventSourceHandler();
-		this.createUIElements();
+//		this.createUIElements();
+//		this.registerEventSources();
+	}
+
+	protected void registerEventSources() {
 		this.eventHandler.registerAll(this.getEventSources());
 	}
 
@@ -122,7 +127,7 @@ public abstract class AbstractView extends JPanel implements EventSource {
 	 *                                  found in this object
 	 */
 	@Override
-	public void addEventHandler(EventId eventId, Runnable action) {
+	public void addEventHandler(EventId eventId, Action action) {
 		if (!eventHandler.canOmit(eventId)) {
 			throw new IllegalArgumentException(String.format(
 					"Button with ButtonId %s does not exist in Panel \"%s\". Could not add ActionListener.", eventId,
