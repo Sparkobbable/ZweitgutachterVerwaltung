@@ -100,11 +100,12 @@ public class OverviewTable extends AbstractView {
 		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerNames());
 	}
 
-	protected List<Object> getSelectedReviewerNames() {
-		int nameColumn = ((AbstractTableModel) this.getReviewerOverviewTable().getModel()).findColumn("Name");
-		return IntStream.of(reviewerOverviewTable.getSelectedRows())
-				.mapToObj(selectedRow -> this.getReviewerOverviewTable().getValueAt(selectedRow, nameColumn))
-				.collect(Collectors.toList());
+	protected int getSelectedReviewerNames() {
+//		int nameColumn = ((AbstractTableModel) this.getReviewerOverviewTable().getModel()).findColumn("Name");
+//		return IntStream.of(reviewerOverviewTable.getSelectedRows())
+//				.mapToObj(selectedRow -> reviewers.findReviewerByName((String) this.getReviewerOverviewTable().getValueAt(selectedRow, nameColumn)))
+//				.collect(Collectors.toList());
+		return reviewerOverviewTable.getSelectedRow();
 	}
 
 }

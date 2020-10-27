@@ -18,20 +18,20 @@ public class OverviewTableActions extends AbstractView {
 	private static final long serialVersionUID = 1L;
 
 	private JButton edit;
-	private Supplier<?>[] reviewerNames;
+	private Supplier<?> reviewerName;
 
 	/**
 	 * Provides a section with several buttons for interaction with the table.
 	 * 
-	 * @param id Unique ID from
+	 * @param id Unique ID from {@link ViewId}
 	 *           <p>
 	 *           TODO From my Understanding, this should not be an AbstractView as
 	 *           it is not a top-level-view. Maybe we need to add another Abstract
 	 *           class?
 	 */
-	public OverviewTableActions(ViewId id, Supplier<?>... reviewerNames) {
+	public OverviewTableActions(ViewId id, Supplier<?> reviewerName) {
 		super(id, "");
-		this.reviewerNames = reviewerNames;
+		this.reviewerName = reviewerName;
 		this.setBorder(UNTITLED_BORDER);
 
 		this.createUIElements();
@@ -47,7 +47,7 @@ public class OverviewTableActions extends AbstractView {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.EDIT, edit, reviewerNames));
+		return List.of(new ButtonEventSource(EventId.EDIT, edit, reviewerName));
 	}
 
 	@Override

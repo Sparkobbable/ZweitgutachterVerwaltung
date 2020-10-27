@@ -130,7 +130,7 @@ public abstract class AbstractView extends JPanel implements EventSource {
 	public void addEventHandler(EventId eventId, Action action) {
 		if (!eventHandler.canOmit(eventId)) {
 			throw new IllegalArgumentException(String.format(
-					"Button with ButtonId %s does not exist in Panel \"%s\". Could not add ActionListener.", eventId,
+					"Component with ComponentId %s does not exist in Panel \"%s\". Could not add ActionListener.", eventId,
 					viewId));
 		}
 		eventHandler.addEventHandler(eventId, action);

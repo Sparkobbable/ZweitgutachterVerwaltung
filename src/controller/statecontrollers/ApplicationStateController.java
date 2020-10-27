@@ -31,6 +31,7 @@ public class ApplicationStateController {
 		stateControllers.put(ApplicationState.HOME, new HomeStateController(view, this, model));
 		stateControllers.put(ApplicationState.REVIEWER_OVERVIEW,
 				new ReviewerOverviewStateController(view, this, model));
+		stateControllers.put(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorStateController(view, this, model));
 	}
 
 	/**

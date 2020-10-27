@@ -50,8 +50,8 @@ public class Model extends Observable{
 
 	public void removeIdx(int rowIdx) {
 		this.reviewers.remove(rowIdx);
-		this.notifyObservers();
 		this.setChanged();
+		this.notifyObservers();
 	}
 	
 }

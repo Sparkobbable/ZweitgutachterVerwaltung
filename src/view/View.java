@@ -6,8 +6,10 @@ import java.util.Map;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.ViewId;
+import view.editor.ReviewerEditor;
 import view.table.OverviewTable;
 
+// TODO JavaDoc
 public class View {
 
 	private Map<ApplicationState, AbstractView> viewsByApplicationStates;
@@ -25,6 +27,7 @@ public class View {
 		this.viewsByApplicationStates = new HashMap<>();
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewTable(ViewId.OVERVIEW_TABLE, data));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor"));
 	}
 
 	private void registerView(ApplicationState applicationState, AbstractView abstractView) {
