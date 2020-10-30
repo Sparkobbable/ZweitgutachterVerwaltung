@@ -27,7 +27,7 @@ public class View {
 		this.viewsByApplicationStates = new HashMap<>();
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewTable(ViewId.OVERVIEW_TABLE, data));
-		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor"));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor", data));
 	}
 
 	private void registerView(ApplicationState applicationState, AbstractView abstractView) {

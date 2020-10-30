@@ -16,7 +16,7 @@ public class Controller {
 	public Controller(Model data, View view) {
 		this.data = data;
 		this.view = view;
-		this.applicationStateController = new ApplicationStateController(data, view );
+		this.applicationStateController = new ApplicationStateController(data, view);
 		
 		//TODO expand or remove this class
 	}

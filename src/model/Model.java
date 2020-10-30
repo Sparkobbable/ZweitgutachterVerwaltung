@@ -15,6 +15,7 @@ import model.data.Reviewer;
 public class Model extends Observable{
 
 	private List<Reviewer> reviewers;
+	private Reviewer selectedReviewer;
 
 	public Model() {
 		this.reviewers = new ArrayList<>();
@@ -44,6 +45,16 @@ public class Model extends Observable{
 		this.notifyObservers();
 	}
 	
+	public Reviewer getSelectedReviewer() {
+		return selectedReviewer;
+	}
+
+	public void setSelectedReviewer(Reviewer selectedReviewer) {
+		this.selectedReviewer = selectedReviewer;
+		this.setChanged();
+		this.notifyObservers(this.selectedReviewer);
+	}
+
 	public Reviewer findReviewerByName(String name) {
 		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
 	}

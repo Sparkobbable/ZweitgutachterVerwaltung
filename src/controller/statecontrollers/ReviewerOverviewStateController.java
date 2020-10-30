@@ -1,8 +1,9 @@
 package controller.statecontrollers;
 
 import static model.enums.EventId.EDIT;
+import static model.enums.EventId.DELETE;
+import static model.enums.EventId.NEW;
 
-import java.util.List;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
@@ -26,6 +27,16 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(EDIT, (params) -> switchToEdit(params));
+		this.registerEvent(DELETE, (params) -> deleteEntry(params));
+		this.registerEvent(NEW, (params) -> addNewReviewer(params));
+	}
+
+	private void addNewReviewer(Supplier<?>[] params) {
+		
+	}
+	
+	private void deleteEntry(Supplier<?>[] params) {
+		
 	}
 
 	/**
@@ -41,8 +52,10 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 		// TODO check that one and only one row is selected
 		Logger.getLogger(ReviewerOverviewStateController.class.getName())
 				.info(String.format("Starting editmode on reviewer %s", params[0].get()));
-//		((List<Reviewer>) params[0].get()).get(0).setSelected(true);
-		data.getReviewers().get((int) params[0].get()).setSelected(true);;
+
+		Reviewer reviewer = data.getReviewers().get((int) params[0].get());
+		data.setSelectedReviewer(reviewer);
+
 		switchState(ApplicationState.REVIEWER_EDITOR);
 	}
 }

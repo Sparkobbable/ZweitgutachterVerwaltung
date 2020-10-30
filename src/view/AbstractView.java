@@ -1,6 +1,7 @@
 package view;
 
 import java.util.List;
+import java.util.Observer;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -19,7 +20,8 @@ import model.enums.ViewId;
  * {@link MainWindow}
  *
  */
-public abstract class AbstractView extends JPanel implements EventSource {
+@SuppressWarnings("deprecation")
+public abstract class AbstractView extends JPanel implements EventSource, Observer {
 
 	protected static final Border UNTITLED_BORDER = BorderFactory.createEtchedBorder();
 

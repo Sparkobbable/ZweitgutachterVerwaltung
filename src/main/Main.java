@@ -5,6 +5,7 @@ import java.util.List;
 
 import controller.Controller;
 import model.Model;
+import model.data.Author;
 import model.data.BachelorThesis;
 import model.data.Reviewer;
 import view.View;
@@ -14,6 +15,7 @@ public class Main {
 	//TODO move to main.Main
 		public static void main(String[] args) {
 			Model data = mockReviewerList();
+			data.setSelectedReviewer(new Reviewer());
 			View view = new View(data);
 			new Controller(data, view);
 			view.setVisible();
@@ -32,7 +34,7 @@ public class Main {
 			Reviewer reviewer = new Reviewer(String.format("Dozent #%d", i));
 			int rand = (int) (Math.random() * 5);
 			for (int j = 0; j < rand; j++) {
-				reviewer.addBachelorThesis(new BachelorThesis(null, null, null));
+				reviewer.addBachelorThesis(new BachelorThesis(null, new Author(null, null), null));
 			}
 			reviewerList.add(reviewer);
 		}

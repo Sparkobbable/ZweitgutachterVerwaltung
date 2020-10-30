@@ -4,24 +4,23 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import model.EventSource;
+import model.Model;
 import model.data.Reviewer;
 import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
-import view.eventsources.ButtonEventSource;
 import view.eventsources.TextFieldEventSource;
 
 @SuppressWarnings("deprecation")
 public class ReviewerEditor extends AbstractView {
 	private static final long serialVersionUID = 1L;
 	private Reviewer reviewer;
+	private Model data;
 	private JTextField nameField;
 	private JTable supervisedThesisTable;
 	private JScrollPane supervisedThesisPane;
@@ -32,16 +31,11 @@ public class ReviewerEditor extends AbstractView {
 	 * @param viewId    Unique viewId from {@link ViewId}
 	 * @param title		Needs a title
 	 */
-	public ReviewerEditor(ViewId id, String title) {
+	public ReviewerEditor(ViewId id, String title, Model reviewers) {
 		super(id, title);
-		this.reviewer = new Reviewer();
-		this.reviewer.addObserver(new Observer() {
-			
-			@Override
-			public void update(Observable o, Object arg) {
-				ReviewerEditor.this.nameField.setText(((Reviewer) o).getName());
-			}
-		});
+		this.data = reviewers;
+		this.data.addObserver(this);
+		this.reviewer = reviewers.getSelectedReviewer();
 		this.nameField = new JTextField();
 		initEditorWindow();
 		this.createUIElements();
@@ -75,5 +69,14 @@ public class ReviewerEditor extends AbstractView {
 		
 		this.add(this.nameField);
 		this.add(this.supervisedThesisPane);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		this.nameField.setText(((Reviewer) arg).getName());
+	}
+
+	public Reviewer getReviewer() {
+		return reviewer;
 	}
 }

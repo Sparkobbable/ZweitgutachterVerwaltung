@@ -4,14 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
-
 import model.EventSource;
 import model.Model;
 import model.enums.ViewId;
@@ -41,15 +35,6 @@ public class OverviewTable extends AbstractView {
 		this.reviewers = reviewers;
 		this.createUIElements();
 		this.registerEventSources();
-		// TODO doesnt work, why??
-		this.reviewers.addObserver(new Observer() {
-
-			@Override
-			public void update(Observable o, Object arg) {
-				OverviewTable.this.reviewers = (Model) arg;
-				OverviewTable.this.initTable();
-			}
-		});
 	}
 
 	/**
@@ -106,6 +91,12 @@ public class OverviewTable extends AbstractView {
 //				.mapToObj(selectedRow -> reviewers.findReviewerByName((String) this.getReviewerOverviewTable().getValueAt(selectedRow, nameColumn)))
 //				.collect(Collectors.toList());
 		return reviewerOverviewTable.getSelectedRow();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
