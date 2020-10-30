@@ -32,7 +32,7 @@ public class Main {
 			Reviewer reviewer = new Reviewer(String.format("Dozent #%d", i));
 			int rand = (int) (Math.random() * 5);
 			for (int j = 0; j < rand; j++) {
-				reviewer.addBachelorThesis(new BachelorThesis(null, null, null));
+				reviewer.addBachelorThesis(new BachelorThesis(null, null));
 			}
 			reviewerList.add(reviewer);
 		}

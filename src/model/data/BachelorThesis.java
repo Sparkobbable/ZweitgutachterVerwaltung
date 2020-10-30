@@ -19,10 +19,9 @@ public class BachelorThesis extends AbstractModel {
 	 * @param author Author of the BachelorThesis (Student)
 	 * @param firstReview First Review made by a Reviewer
 	 */
-	public BachelorThesis(String topic, Author author, Review firstReview) {
+	public BachelorThesis(String topic, Author author) {
 		this.topic = topic;
 		this.author = author;
-		this.firstReview = firstReview;
 	}
 
 	/**
@@ -41,6 +40,12 @@ public class BachelorThesis extends AbstractModel {
 
 	public Review getSecondReview() {
 		return secondReview;
+	}
+	
+	public void setFirstReview(Review firstReview) {
+		this.firstReview = firstReview;
+		this.notifyObservers();
+		this.setChanged();
 	}
 
 	public void setSecondReview(Review secondReview) {
