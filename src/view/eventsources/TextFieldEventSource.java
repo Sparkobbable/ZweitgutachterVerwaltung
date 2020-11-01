@@ -21,11 +21,7 @@ public class TextFieldEventSource extends SingleEventSource {
 	}
 
 	@Override
-	public void addEventHandler(EventId eventId, Action action) {
-		if (!this.canOmit(eventId)) {
-			throw new IllegalArgumentException(String.format(
-					"JTextField will never omit event %s. EventHandler could not be added", eventId));
-		}
+	public void addEventHandler(Action action) {
 		textField.addPropertyChangeListener(e -> action.perform(params));
 	}
 

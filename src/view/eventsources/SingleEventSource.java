@@ -2,6 +2,7 @@ package view.eventsources;
 
 import java.util.function.Supplier;
 
+import model.Action;
 import model.EventSource;
 import model.enums.EventId;
 
@@ -24,5 +25,12 @@ public abstract class SingleEventSource implements EventSource {
 		return this.eventId == eventId;
 	}
 
+	@Override
+	public void addEventHandler(EventId eventId, Action action) {
+		this.validateEventId(eventId);
+		this.addEventHandler(action);
+	}
+
+	public abstract void addEventHandler(Action action);
 
 }

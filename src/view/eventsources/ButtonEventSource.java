@@ -19,11 +19,7 @@ public class ButtonEventSource extends SingleEventSource {
 	}
 
 	@Override
-	public void addEventHandler(EventId eventId, Action action) {
-		if (!this.canOmit(eventId)) {
-			throw new IllegalArgumentException(String.format(
-					"JButton %s will never omit event %s. EventHandler could not be added", button.getText(), eventId));
-		}
+	public void addEventHandler(Action action) {
 		button.addActionListener(e -> action.perform(params));
 	}
 

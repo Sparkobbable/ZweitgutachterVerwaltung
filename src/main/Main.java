@@ -24,7 +24,6 @@ public class Main {
 	 * Creates a sample list of reviewers
 	 * <p>
 	 * TODO add valid BachelorThesises TODO remove this before deploying to prod
-	 * TODO put this back into Controller when this gets a Model of all Data
 	 */
 	private static Model mockReviewerList() {
 		List<Reviewer> reviewerList = new ArrayList<>();
