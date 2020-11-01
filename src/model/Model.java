@@ -52,7 +52,8 @@ public class Model extends Observable{
 	public void setSelectedReviewer(Reviewer selectedReviewer) {
 		this.selectedReviewer = selectedReviewer;
 		this.setChanged();
-		this.notifyObservers(this.selectedReviewer);
+		this.notifyObservers(); // TODO Maybe pass an eventId to let the views know which change triggered the observer, not sure if necessary (but would probably increase the performance)
+								// A global observer would then be possible as well
 	}
 
 	public Reviewer findReviewerByName(String name) {

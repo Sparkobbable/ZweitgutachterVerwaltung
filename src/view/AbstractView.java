@@ -1,6 +1,7 @@
 package view;
 
 import java.util.List;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 
@@ -148,5 +149,16 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	 * in the constructor and will be called before {@link #getEventSources()}
 	 */
 	protected abstract void createUIElements();
+
+	@Override
+	public abstract void update(Observable o, Object arg);
+	
+	/**
+	 * Adds the current view as an observer to the specified observable values.
+	 * @param observables Needs the values to observer
+	 */
+	protected void addObservables(Observable... observables) {
+		List.of(observables).forEach(o -> o.addObserver(this));
+	}
 
 }

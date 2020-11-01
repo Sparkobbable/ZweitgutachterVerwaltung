@@ -47,6 +47,8 @@ public class OverviewTableActions extends AbstractView {
 		this.setLayout(new FlowLayout()); // TODO Not quite sure which is the best layout
 		this.setBackground(Color.CYAN);
 		this.add(edit);
+		this.add(delete);
+		this.add(newReviewer);
 	}
 
 	@Override

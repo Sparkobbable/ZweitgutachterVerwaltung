@@ -35,6 +35,7 @@ public class OverviewTable extends AbstractView {
 		this.reviewers = reviewers;
 		this.createUIElements();
 		this.registerEventSources();
+		addObservables(this.reviewers);
 	}
 
 	/**
@@ -45,8 +46,13 @@ public class OverviewTable extends AbstractView {
 		super.init();
 		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
 		this.actions.init();
-
+		
+		refreshElements();
+	}
+	
+	private void refreshElements() {
 		initTable();
+		
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
 
 		this.reviewerOverviewScrollPane.setBackground(Color.PINK);
@@ -54,7 +60,6 @@ public class OverviewTable extends AbstractView {
 		this.setLayout(new BorderLayout());
 		this.add(reviewerOverviewScrollPane, BorderLayout.CENTER);
 		this.add(this.actions, BorderLayout.PAGE_END);
-
 	}
 
 	private void initTable() {
@@ -95,8 +100,7 @@ public class OverviewTable extends AbstractView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		refreshElements();
 	}
 
 }

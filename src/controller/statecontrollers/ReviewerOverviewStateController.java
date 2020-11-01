@@ -11,7 +11,6 @@ import model.Model;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 import view.View;
-import view.table.OverviewTable;
 
 /**
  * Handles the Application when in ApplicationState
@@ -27,25 +26,20 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(EDIT, (params) -> switchToEdit(params));
-		this.registerEvent(DELETE, (params) -> deleteEntry(params));
+		this.registerEvent(DELETE, (params) -> deleteEntry(params)); // TODO View isnt correctly refreshed
 		this.registerEvent(NEW, (params) -> addNewReviewer(params));
 	}
 
 	private void addNewReviewer(Supplier<?>[] params) {
+		Logger.getLogger(ReviewerOverviewStateController.class.getName()).info("Starting editmode on new Reviewer");
+		Reviewer reviewer = new Reviewer();
+		data.setSelectedReviewer(reviewer);
 		
+		switchState(ApplicationState.REVIEWER_EDITOR);
 	}
 	
 	private void deleteEntry(Supplier<?>[] params) {
-		
-	}
-
-	/**
-	 * Deletes the selected entry from the model
-	 */
-	public void deleteEntry() {
-		// TODO modify model, not view
-		int rowIdx = ((OverviewTable) this.view.assumeState(state)).getReviewerOverviewTable().getSelectedRow();
-		this.data.removeIdx(rowIdx);
+		this.data.removeIdx((int) params[0].get());
 	}
 
 	private void switchToEdit(Supplier<?>[] params) {
