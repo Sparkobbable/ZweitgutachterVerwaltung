@@ -3,35 +3,47 @@ package view;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.Action;
+import model.EventSource;
 import model.Model;
+import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
+import model.enums.EventId;
 import model.enums.ViewId;
 import view.editor.ReviewerEditor;
 import view.table.OverviewTable;
 
 // TODO JavaDoc
-public class View {
+public class View implements EventSource{
 
 	private Map<ApplicationState, AbstractView> viewsByApplicationStates;
-	private Model data; // TODO change to Model model ?!
+	private CompositeEventSource eventSourceHandler;
+	private Model model;
+	
 	private MainWindow window;
+	private MenuBarHandler menuHandler;
 
-	public View(Model data) {
-		this.data = data;
+	public View(Model model) {
+		this.model = model;
 		this.window = new MainWindow();
+		this.menuHandler = new MenuBarHandler();
+		this.eventSourceHandler = new CompositeEventSource();
+		this.eventSourceHandler.register(this.menuHandler);
 		this.createViews();
 
 	}
 
 	private void createViews() {
 		this.viewsByApplicationStates = new HashMap<>();
+
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
-		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewTable(ViewId.OVERVIEW_TABLE, data));
-		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor", data));
+		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewTable(ViewId.OVERVIEW_TABLE, model));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor", model));
 	}
 
 	private void registerView(ApplicationState applicationState, AbstractView abstractView) {
 		this.viewsByApplicationStates.put(applicationState, abstractView);
+		this.eventSourceHandler.register(abstractView);
 		this.window.registerView(abstractView);
 	}
 
@@ -49,7 +61,9 @@ public class View {
 	 */
 	private void init() {
 		viewsByApplicationStates.values().forEach(AbstractView::init);
+		menuHandler.init();
 		window.init();
+		window.setJMenuBar(menuHandler);
 	}
 
 
@@ -77,5 +91,30 @@ public class View {
 	public AbstractView atState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
+
+	/**
+	 * @return this for linguistically meaningful API calls
+	 */
+	public View atAnyState() {
+		return this;
+	}
+
+	/*
+	 * -----------------------------------------------------------------------------
+	 * -- | Delegate methods to the responsible Objects
+	 * -----------------------------------------------------------------------------
+	 * --
+	 */
+
+	@Override
+	public void addEventHandler(EventId eventId, Action action) {
+		this.eventSourceHandler.addEventHandler(eventId, action);
+	}
+
+	@Override
+	public boolean canOmit(EventId eventId) {
+		return this.eventSourceHandler.canOmit(eventId);
+	}
+
 
 }

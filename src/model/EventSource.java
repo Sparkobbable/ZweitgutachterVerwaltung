@@ -22,4 +22,21 @@ public interface EventSource {
 	 *         given eventId
 	 */
 	public boolean canOmit(EventId eventId);
+
+	/**
+	 * Validates that adding an Action for the given EventId is theoretically possible 
+	 * 
+	 * @param eventId The id of the event
+	 * @throws IllegalArgumentException if Events with the given EventId can't be omitted by this EventSource
+	 * @return true if and only if this EventSource can omit the event with the
+	 *         given eventId
+	 * 
+	 */
+	public default void validateEventId(EventId eventId) {
+		if (!this.canOmit(eventId)) {
+			throw new IllegalArgumentException(String.format(
+					"The EventSource will never omit Events with eventId %s. EventHandler could not be added to.",
+					eventId, this));
+		}
+	}
 }

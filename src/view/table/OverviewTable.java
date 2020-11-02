@@ -4,24 +4,28 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 import java.util.Observable;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
 import model.EventSource;
 import model.Model;
 import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
 
-@SuppressWarnings("deprecation")
 public class OverviewTable extends AbstractView {
 
 	private static final long serialVersionUID = 1L; // TODO remove ?!
 
+	private Model reviewers;
+	
 	// UI-components
+	private ReviewerOverviewTableModel tableModel;
 	private JTable reviewerOverviewTable;
 	private JScrollPane reviewerOverviewScrollPane;
 	private OverviewTableActions actions;
-	private Model reviewers;
+	
 
 	/**
 	 * Creates a view containing a table presenting the reviewers and buttons for
@@ -33,6 +37,10 @@ public class OverviewTable extends AbstractView {
 	public OverviewTable(ViewId viewId, Model reviewers) {
 		super(viewId, "Dozentenübersicht");
 		this.reviewers = reviewers;
+		this.tableModel = new ReviewerOverviewTableModel(reviewers);
+		this.reviewerOverviewTable = new JTable(this.tableModel);
+		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
+
 		this.createUIElements();
 		this.registerEventSources();
 		addObservables(this.reviewers);
@@ -46,27 +54,14 @@ public class OverviewTable extends AbstractView {
 		super.init();
 		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
 		this.actions.init();
+		this.reviewerOverviewTable.setFillsViewportHeight(true);
 		
-		refreshElements();
+		this.setLayout(new BorderLayout());
+		this.add(this.reviewerOverviewScrollPane, BorderLayout.CENTER);
+		this.add(this.actions, BorderLayout.PAGE_END);
+		
 	}
 	
-	private void refreshElements() {
-		initTable();
-		
-		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
-
-		this.reviewerOverviewScrollPane.setBackground(Color.PINK);
-
-		this.setLayout(new BorderLayout());
-		this.add(reviewerOverviewScrollPane, BorderLayout.CENTER);
-		this.add(this.actions, BorderLayout.PAGE_END);
-	}
-
-	private void initTable() {
-		this.reviewerOverviewTable = new JTable(new ReviewerOverviewTableModel(reviewers));
-		this.reviewerOverviewTable.setFillsViewportHeight(true);
-	}
-
 	/**
 	 * Accesses actions as buttons which are embedded in this view.
 	 * 
@@ -100,8 +95,8 @@ public class OverviewTable extends AbstractView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		refreshElements();
-		repaint();
+		// table updates automatically, only repaint is required
+		this.repaint();
 	}
 
 }

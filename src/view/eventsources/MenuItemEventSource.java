@@ -16,13 +16,7 @@ public class MenuItemEventSource extends SingleEventSource {
 	}
 
 	@Override
-	public void addEventHandler(EventId eventId, Action action) {
-		if (!this.canOmit(eventId)) {
-			throw new IllegalArgumentException(
-					String.format("JMenuItem %s will never omit event %s. EventHandler could not be added",
-							menuItem.getText(), eventId));
-		}
-
+	public void addEventHandler(Action action) {
 		// TODO don't use JMenus like that because this is abuse and leads to weird
 		// behavior
 		menuItem.addMenuListener(new MenuListener() {

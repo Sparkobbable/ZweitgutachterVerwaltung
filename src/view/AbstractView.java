@@ -12,7 +12,7 @@ import javax.swing.border.TitledBorder;
 
 import model.Action;
 import model.EventSource;
-import model.data.EventSourceHandler;
+import model.data.CompositeEventSource;
 import model.enums.EventId;
 import model.enums.ViewId;
 
@@ -37,7 +37,7 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	/**
 	 * This map stores all event sources in this panel.
 	 */
-	protected EventSourceHandler eventHandler;
+	protected CompositeEventSource eventSourceHandler;
 	private String title;
 
 	/**
@@ -47,19 +47,18 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 
 	/**
 	 * Creates a new Abstract View
+	 * 
 	 * @param viewId Id of this View. It must be ensured that this id is unique
-	 * @param title Title of this view that will be shown on the UI
+	 * @param title  Title of this view that will be shown on the UI
 	 */
 	public AbstractView(ViewId viewId, String title) {
 		this.viewId = viewId;
 		this.title = title;
-		this.eventHandler = new EventSourceHandler();
-//		this.createUIElements();
-//		this.registerEventSources();
+		this.eventSourceHandler = new CompositeEventSource();
 	}
 
 	protected void registerEventSources() {
-		this.eventHandler.registerAll(this.getEventSources());
+		this.eventSourceHandler.registerAll(this.getEventSources());
 	}
 
 	/**
@@ -119,32 +118,6 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	}
 
 	/**
-	 * 
-	 * Adds an action that is performed when the specified event is ommitted
-	 * <p>
-	 * TODO replace Runnable with custom class to avoid Threading confusion?
-	 * 
-	 * @param eventId Id of the Event to be observed
-	 * @param action  Action that is performed on button press
-	 * @throws IllegalArgumentException if no button with the given buttonId is
-	 *                                  found in this object
-	 */
-	@Override
-	public void addEventHandler(EventId eventId, Action action) {
-		if (!eventHandler.canOmit(eventId)) {
-			throw new IllegalArgumentException(String.format(
-					"Component with ComponentId %s does not exist in Panel \"%s\". Could not add ActionListener.", eventId,
-					viewId));
-		}
-		eventHandler.addEventHandler(eventId, action);
-	}
-
-	@Override
-	public boolean canOmit(EventId event) {
-		return eventHandler.canOmit(event);
-	}
-
-	/**
 	 * This method should be used to create UI elements. It is automatically called
 	 * in the constructor and will be called before {@link #getEventSources()}
 	 */
@@ -152,13 +125,30 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 
 	@Override
 	public abstract void update(Observable o, Object arg);
-	
+
 	/**
 	 * Adds the current view as an observer to the specified observable values.
+	 * 
 	 * @param observables Needs the values to observer
 	 */
 	protected void addObservables(Observable... observables) {
 		List.of(observables).forEach(o -> o.addObserver(this));
+	}
+	/*
+	 * -----------------------------------------------------------------------------
+	 * -- | Delegate methods to the responsible Objects
+	 * -----------------------------------------------------------------------------
+	 * --
+	 */
+
+	@Override
+	public void addEventHandler(EventId eventId, Action action) {
+		this.eventSourceHandler.addEventHandler(eventId, action);
+	}
+
+	@Override
+	public boolean canOmit(EventId eventId) {
+		return this.eventSourceHandler.canOmit(eventId);
 	}
 
 }

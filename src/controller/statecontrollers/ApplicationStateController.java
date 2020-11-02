@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import controller.Controller;
 import model.Model;
 import model.enums.ApplicationState;
+import model.enums.EventId;
 import view.View;
 
 /**
@@ -32,14 +33,21 @@ public class ApplicationStateController {
 		stateControllers.put(ApplicationState.REVIEWER_OVERVIEW,
 				new ReviewerOverviewStateController(view, this, model));
 		stateControllers.put(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorStateController(view, this, model));
+
+		//TODO add nav stack
+		this.view.atAnyState().addEventHandler(EventId.BACK,
+				(params) -> this.switchState(ApplicationState.HOME));
 	}
 
 	/**
 	 * Switches to a new ApplicationState
+	 * 
 	 * @param state The new ApplicationState
 	 */
-	public void switchState(ApplicationState state) {
-		Logger.getLogger(Controller.class.getName()).info(String.format("Switched to State: %s", state));
-		view.switchState(state);
+	public void switchState(ApplicationState applicationState) {
+		Logger.getLogger(Controller.class.getName())
+				.info(String.format("Switched to ApplicationState: %s", applicationState));
+		this.model.setApplicationState(applicationState);
+		view.switchState(applicationState); // TODO remove, add observer
 	}
 }

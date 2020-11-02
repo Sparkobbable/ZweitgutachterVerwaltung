@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Observable;
 
 import model.data.Reviewer;
+import model.enums.ApplicationState;
 
 /**
  *	Data store for all reviewers 
@@ -16,6 +17,7 @@ public class Model extends Observable{
 
 	private List<Reviewer> reviewers;
 	private Reviewer selectedReviewer;
+	private ApplicationState applicationState;
 
 	public Model() {
 		this.reviewers = new ArrayList<>();
@@ -65,5 +67,16 @@ public class Model extends Observable{
 		this.setChanged();
 		this.notifyObservers();
 	}
+
+	public ApplicationState getApplicationState() {
+		return applicationState;
+	}
+
+	public void setApplicationState(ApplicationState applicationState) {
+		this.applicationState = applicationState;
+		this.setChanged();
+		this.notifyObservers();
+	}
+	
 	
 }
