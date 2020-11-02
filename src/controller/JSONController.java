@@ -16,6 +16,7 @@ import javax.json.JsonValue.ValueType;
 import javax.json.JsonWriter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import model.data.Author;
@@ -39,12 +40,12 @@ public class JSONController {
 	
 	/**
 	 * Saves all reviewers including every other Object from the current model in a Json file.
-	 * @param reviewers ArrayList of current reviewers in the system.
+	 * @param list ArrayList of current reviewers in the system.
 	 */
-	public void saveReviewers(ArrayList<Reviewer> reviewers) {
+	public void saveReviewers(List<Reviewer> list) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		JsonArrayBuilder arr = Json.createArrayBuilder();
-		for(Reviewer r : reviewers) {
+		for(Reviewer r : list) {
 			JsonObjectBuilder reviewerbuilder = Json.createObjectBuilder();
 			reviewerbuilder.add("name", r.getName());
 			
