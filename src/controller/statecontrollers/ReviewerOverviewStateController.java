@@ -1,14 +1,16 @@
 package controller.statecontrollers;
 
+import static model.enums.EventId.DELETE;
 import static model.enums.EventId.EDIT;
+import static model.enums.EventId.NEW;
 
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import model.Model;
+import model.data.Reviewer;
 import model.enums.ApplicationState;
 import view.View;
-import view.table.OverviewTable;
 
 /**
  * Handles the Application when in ApplicationState
@@ -24,28 +26,37 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(EDIT, (params) -> switchToEdit(params));
+		this.registerEvent(DELETE, (params) -> deleteEntry(params)); // TODO View isnt correctly refreshed
+		this.registerEvent(NEW, (params) -> addNewReviewer(params));
 	}
 
-	/**
-	 * Deletes the selected entry from the model
-	 */
-	public void deleteEntry() {
-		// TODO modify model, not view
-		int rowIdx = ((OverviewTable) this.view.assumeState(state)).getReviewerOverviewTable().getSelectedRow();
-		this.data.removeIdx(rowIdx);
+	private void addNewReviewer(Supplier<?>[] params) {
+		Logger.getLogger(ReviewerOverviewStateController.class.getName()).info("Starting editmode on new Reviewer");
+		Reviewer reviewer = new Reviewer();
+		data.setSelectedReviewer(reviewer);
+		
+		switchState(ApplicationState.REVIEWER_EDITOR);
+	}
+	
+	private void deleteEntry(Supplier<?>[] params) {
+		this.data.removeIdx((int) params[0].get());
 	}
 
 	private void switchToEdit(Supplier<?>[] params) {
 		// TODO check that one and only one row is selected
 		Logger.getLogger(ReviewerOverviewStateController.class.getName())
 				.info(String.format("Starting editmode on reviewer %s", params[0].get()));
+		
 		if ((int) params[0].get() == -1) {
 			Logger.getLogger(ReviewerOverviewStateController.class.getName())
 					.warning(String.format("No reviewer selected. Ignoring EDIT event.", params[0].get()));
 			return;
 		}
-		// ((List<Reviewer>) params[0].get()).get(0).setSelected(true);
-		data.getReviewers().get((int) params[0].get()).setSelected(true);
+		
+
+		Reviewer reviewer = data.getReviewers().get((int) params[0].get());
+		data.setSelectedReviewer(reviewer);
+
 		switchState(ApplicationState.REVIEWER_EDITOR);
 	}
 }

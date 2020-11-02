@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Observable;
 
 import javax.swing.JButton;
 
@@ -13,6 +14,7 @@ import view.eventsources.ButtonEventSource;
 /**
  * Basic home panel, allows navigating to different application sections
  */
+@SuppressWarnings("deprecation")
 public class HomePanel extends AbstractView {
 
 	private static final long serialVersionUID = 1L;
@@ -47,5 +49,11 @@ public class HomePanel extends AbstractView {
 				new ButtonEventSource(EventId.SHOW_REVIEWERS, showReviewers),
 				new ButtonEventSource(EventId.IMPORT_FIRST_REVIEWERS, importFirstReviewers),
 				new ButtonEventSource(EventId.ANALYSE, analyse));
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

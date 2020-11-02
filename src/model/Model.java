@@ -16,6 +16,7 @@ import model.enums.ApplicationState;
 public class Model extends Observable{
 
 	private List<Reviewer> reviewers;
+	private Reviewer selectedReviewer;
 	private ApplicationState applicationState;
 
 	public Model() {
@@ -46,6 +47,17 @@ public class Model extends Observable{
 		this.notifyObservers();
 	}
 	
+	public Reviewer getSelectedReviewer() {
+		return selectedReviewer;
+	}
+
+	public void setSelectedReviewer(Reviewer selectedReviewer) {
+		this.selectedReviewer = selectedReviewer;
+		this.setChanged();
+		this.notifyObservers(); // TODO Maybe pass an eventId to let the views know which change triggered the observer, not sure if necessary (but would probably increase the performance)
+								// A global observer would then be possible as well
+	}
+
 	public Reviewer findReviewerByName(String name) {
 		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
 	}

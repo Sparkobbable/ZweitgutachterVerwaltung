@@ -8,7 +8,6 @@ import model.AbstractModel;
 public class Reviewer extends AbstractModel {
 	private String name;
 	private ArrayList<BachelorThesis> supervised;
-	private boolean selected;
 	
 	/**
 	 * Creates a empty Reviewer
@@ -52,13 +51,9 @@ public class Reviewer extends AbstractModel {
 		return this.name;
 	}
 
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
+	public void setName(String name) {
+		this.name = name;
 		this.setChanged();
-		this.notifyObservers();
+		this.notifyObservers(this);
 	}
 }

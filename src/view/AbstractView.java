@@ -1,6 +1,8 @@
 package view;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -19,7 +21,8 @@ import model.enums.ViewId;
  * {@link MainWindow}
  *
  */
-public abstract class AbstractView extends JPanel implements EventSource {
+@SuppressWarnings("deprecation")
+public abstract class AbstractView extends JPanel implements EventSource, Observer {
 
 	protected static final Border UNTITLED_BORDER = BorderFactory.createEtchedBorder();
 
@@ -120,6 +123,17 @@ public abstract class AbstractView extends JPanel implements EventSource {
 	 */
 	protected abstract void createUIElements();
 
+	@Override
+	public abstract void update(Observable o, Object arg);
+
+	/**
+	 * Adds the current view as an observer to the specified observable values.
+	 * 
+	 * @param observables Needs the values to observer
+	 */
+	protected void addObservables(Observable... observables) {
+		List.of(observables).forEach(o -> o.addObserver(this));
+	}
 	/*
 	 * -----------------------------------------------------------------------------
 	 * -- | Delegate methods to the responsible Objects
