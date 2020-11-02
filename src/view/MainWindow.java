@@ -2,10 +2,14 @@ package view;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -45,6 +49,7 @@ public class MainWindow extends JFrame {
 		this.setBackground(Color.PINK);
 		// center
 		this.setLocationRelativeTo(null);
+		this.setIconImage(getApplicationIcon());
 
 		menuHandler.init();
 
@@ -55,6 +60,17 @@ public class MainWindow extends JFrame {
 		this.setVisible(true); // TODO maybe extract to controller to allow initialization before children's
 								// initialization?
 
+	}
+
+	private Image getApplicationIcon() {
+		try {
+			URL resource = this.getClass().getResource("resource/images/diploma-icon.png");
+			return ImageIO.read(resource);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 
 	/**

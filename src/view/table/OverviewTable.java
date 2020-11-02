@@ -87,10 +87,10 @@ public class OverviewTable extends AbstractView {
 
 	@Override
 	protected void createUIElements() {
-		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerNames());
+		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerId());
 	}
 
-	protected int getSelectedReviewerNames() {
+	protected int getSelectedReviewerId() {
 //		int nameColumn = ((AbstractTableModel) this.getReviewerOverviewTable().getModel()).findColumn("Name");
 //		return IntStream.of(reviewerOverviewTable.getSelectedRows())
 //				.mapToObj(selectedRow -> reviewers.findReviewerByName((String) this.getReviewerOverviewTable().getValueAt(selectedRow, nameColumn)))
@@ -101,6 +101,7 @@ public class OverviewTable extends AbstractView {
 	@Override
 	public void update(Observable o, Object arg) {
 		refreshElements();
+		repaint();
 	}
 
 }
