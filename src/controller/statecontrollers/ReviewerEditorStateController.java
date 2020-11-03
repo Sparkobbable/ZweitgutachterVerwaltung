@@ -2,6 +2,7 @@ package controller.statecontrollers;
 
 import static model.enums.EventId.SAVE_REVIEWER;
 import static model.enums.EventId.ADD_THESIS;
+import static model.enums.EventId.DELETE_THESIS;
 
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -9,7 +10,6 @@ import java.util.logging.Logger;
 import model.Model;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
-import model.enums.EventId;
 import view.View;
 
 /**
@@ -25,11 +25,15 @@ public class ReviewerEditorStateController extends AbstractStateController {
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.VALUE_ENTERED, (value) -> updateName(value));
 		this.registerEvent(SAVE_REVIEWER, (params) -> saveReviewer(params));
 		this.registerEvent(ADD_THESIS, (params) -> addThesis(params));
+		this.registerEvent(DELETE_THESIS, (params) -> deleteThesis(params));
 	}
 
+
+	private void deleteThesis(Supplier<?>[] indices) {
+		this.data.getSelectedReviewer().ifPresent(reviewer -> reviewer.removeThesisByIndices((int[]) indices[0].get()));
+	}
 
 	private void addThesis(Supplier<?>[] params) {
 		Logger.getLogger(ReviewerEditorStateController.class.getName()).info(String.format("Starting add-thesis on Reviewer %s", ((Reviewer) params[0].get()).getName()));
@@ -42,11 +46,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 			data.removeByIndex(index);
 		}
 		data.addReviewer((Reviewer) params[0].get());
-	}
-	
-	private void updateName(Supplier<?>[] value) { // TODO really needed? Name should be written in model during saving
-		String newName = (String) value[0].get();
-		// TODO update name
+		switchState(ApplicationState.REVIEWER_OVERVIEW);
 	}
 
 }

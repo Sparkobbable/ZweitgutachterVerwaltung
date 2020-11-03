@@ -17,7 +17,6 @@ public class Main {
 	//TODO move to main.Main
 		public static void main(String[] args) {
 			Model data = mockReviewerList();
-			data.setSelectedReviewer(new Reviewer());
 			View view = new View(data);
 			new Controller(data, view);
 			view.setVisible();

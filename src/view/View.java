@@ -10,8 +10,8 @@ import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import model.enums.ViewId;
-import view.editor.ReviewerEditor;
-import view.table.OverviewTable;
+import view.editor.ReviewerEditorPanel;
+import view.table.OverviewPanel;
 
 // TODO JavaDoc
 public class View implements EventSource{
@@ -38,8 +38,8 @@ public class View implements EventSource{
 
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
 
-		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewTable(ViewId.OVERVIEW_TABLE, model));
-		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor", model));
+		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewPanel(ViewId.OVERVIEW_TABLE, model));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, "Dozenteneditor", model));
 		this.registerView(ApplicationState.JSON_CHOOSER, new JsonChooserPanel(ViewId.JSON_CHOOSER));
 	}
 

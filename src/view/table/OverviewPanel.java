@@ -14,7 +14,8 @@ import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
 
-public class OverviewTable extends AbstractView {
+@SuppressWarnings("deprecation")
+public class OverviewPanel extends AbstractView {
 
 	private static final long serialVersionUID = 1L; // TODO remove ?!
 
@@ -34,7 +35,7 @@ public class OverviewTable extends AbstractView {
 	 * @param viewId    Unique viewId from {@link ViewId}
 	 * @param reviewers Needs the reviewers as the data access
 	 */
-	public OverviewTable(ViewId viewId, Model reviewers) {
+	public OverviewPanel(ViewId viewId, Model reviewers) {
 		super(viewId, "Dozentenübersicht");
 		this.reviewers = reviewers;
 		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerIds());
@@ -64,7 +65,6 @@ public class OverviewTable extends AbstractView {
 		this.setLayout(new BorderLayout());
 		this.add(this.reviewerOverviewScrollPane, BorderLayout.CENTER);
 		this.add(this.actions, BorderLayout.PAGE_END);
-		
 	}
 	
 	@Override
@@ -73,16 +73,11 @@ public class OverviewTable extends AbstractView {
 	}
 
 	protected int[] getSelectedReviewerIds() {
-//		int nameColumn = ((AbstractTableModel) this.getReviewerOverviewTable().getModel()).findColumn("Name");
-//		return IntStream.of(reviewerOverviewTable.getSelectedRows())
-//				.mapToObj(selectedRow -> reviewers.findReviewerByName((String) this.getReviewerOverviewTable().getValueAt(selectedRow, nameColumn)))
-//				.collect(Collectors.toList());
 		return reviewerOverviewTable.getSelectedRows();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// table updates automatically, only repaint is required
 		this.repaint();
 	}
 

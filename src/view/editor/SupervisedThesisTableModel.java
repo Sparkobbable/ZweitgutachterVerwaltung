@@ -1,25 +1,27 @@
 package view.editor;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.swing.table.AbstractTableModel;
 
 import model.data.BachelorThesis;
+import model.data.Reviewer;
 
 public class SupervisedThesisTableModel extends AbstractTableModel {
-	private ArrayList<BachelorThesis> supervisedThesis;
+	private static final long serialVersionUID = 1L;
+	private Optional<Reviewer> selectedReviewer;
 	
 	/**
 	 * Creates a TableModel of assigned bachelorThesis.
 	 * @param supervisedThesis Needs the list of by the reviewer supervised thesis.
 	 */
-	public SupervisedThesisTableModel(ArrayList<BachelorThesis> supervisedThesis) {
-		this.supervisedThesis = supervisedThesis;
+	public SupervisedThesisTableModel(Optional<Reviewer> selectedReviewer) {
+		this.selectedReviewer = selectedReviewer;
 	}
 	
 	@Override
 	public int getRowCount() {
-		return this.supervisedThesis.size();
+		return this.selectedReviewer.map(reviewer -> reviewer.getSupervisedThesis().size()).orElse(0);
 	}
 
 	@Override
@@ -41,7 +43,10 @@ public class SupervisedThesisTableModel extends AbstractTableModel {
 
 	@Override
 	public String getValueAt(int rowIndex, int columnIndex) {
-		BachelorThesis bachelorThesis = this.supervisedThesis.get(rowIndex);
+		if (this.selectedReviewer.isEmpty()) {
+			return null;
+		}
+		BachelorThesis bachelorThesis = this.selectedReviewer.get().getSupervisedThesis().get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return bachelorThesis.getTopic();
@@ -50,6 +55,10 @@ public class SupervisedThesisTableModel extends AbstractTableModel {
 		default: 
 			return null;
 		}
+	}
+
+	public void setSelectedReviewer(Optional<Reviewer> selectedReviewer) {
+		this.selectedReviewer = selectedReviewer;
 	}
 
 

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Observable;
+import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -20,15 +21,16 @@ import view.eventsources.ButtonEventSource;
 import view.eventsources.TextFieldEventSource;
 
 @SuppressWarnings("deprecation")
-public class ReviewerEditor extends AbstractView {
+public class ReviewerEditorPanel extends AbstractView {
 	private static final long serialVersionUID = 1L;
-	private Reviewer reviewer;
-	private Model data;
+	private Optional<Reviewer> optReviewer;
+	private Model model;
 	private JTextField nameField;
 	private JTable supervisedThesisTable;
 	private JScrollPane supervisedThesisPane;
 	private JButton save;
 	private JButton addBachelorThesis;
+	private JButton deleteThesis;
 	
 	/**
 	 * Creates a view containing a table presenting the reviewer's supervised bachelorThesis and other data of the reviewer
@@ -36,15 +38,15 @@ public class ReviewerEditor extends AbstractView {
 	 * @param viewId    Unique viewId from {@link ViewId}
 	 * @param title		Needs a title
 	 */
-	public ReviewerEditor(ViewId id, String title, Model reviewers) {
+	public ReviewerEditorPanel(ViewId id, String title, Model model) {
 		super(id, title);
-		this.data = reviewers;
-		this.reviewer = reviewers.getSelectedReviewer();
+		this.model = model;
 		this.nameField = new JTextField();
+		this.optReviewer = Optional.empty();
 		initEditorWindow();
 		this.createUIElements();
 		this.registerEventSources();
-		addObservables(this.data);
+		addObservables(this.model);
 	}
 
 	private void initEditorWindow() {
@@ -58,9 +60,13 @@ public class ReviewerEditor extends AbstractView {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new TextFieldEventSource(EventId.VALUE_ENTERED, nameField, () -> getNameFieldValue()),
-						new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
-						new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()));
+		return List.of(	new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
+						new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
+						new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
+	}
+
+	private int[] getThesis() {
+		return this.supervisedThesisTable.getSelectedRows();
 	}
 
 	private String getNameFieldValue() {
@@ -69,27 +75,35 @@ public class ReviewerEditor extends AbstractView {
 
 	@Override
 	protected void createUIElements() {
-		this.supervisedThesisTable = new JTable(new SupervisedThesisTableModel(reviewer.getSupervisedThesis()));
-		this.supervisedThesisTable.setFillsViewportHeight(true);
-		
-		this.supervisedThesisPane = new JScrollPane(this.supervisedThesisTable);
 		
 		this.save = new JButton("Speichern");
 		this.addBachelorThesis = new JButton("Bachelorarbeit hinzufügen");
+		this.deleteThesis = new JButton("Bachelorarbeit löschen");
 		
+		this.supervisedThesisTable = new JTable(new SupervisedThesisTableModel(optReviewer));
+		this.supervisedThesisTable.setFillsViewportHeight(true);
+		
+		this.supervisedThesisPane = new JScrollPane(this.supervisedThesisTable);
 		this.add(this.nameField);
 		this.add(this.supervisedThesisPane);
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
+		this.add(this.deleteThesis);
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		this.nameField.setText(((Model) o).getSelectedReviewer().getName());
+		if (o.getClass().equals(Model.class)) {
+			this.optReviewer = ((Model) o).getSelectedReviewer();
+			this.nameField.setText(optReviewer.map(reviewer -> reviewer.getName()).orElse(null));
+			((SupervisedThesisTableModel) this.supervisedThesisTable.getModel()).setSelectedReviewer(optReviewer);
+			optReviewer.ifPresent(reviewer -> addObservables(reviewer));
+		}
+		this.repaint();
 	}
 
 	private Reviewer getReviewer() {
-		this.reviewer.setName(this.getNameFieldValue());
-		return reviewer;
+		this.optReviewer.get().setName(this.getNameFieldValue());
+		return optReviewer.get();
 	}
 }

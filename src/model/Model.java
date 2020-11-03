@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Observable;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import model.data.Reviewer;
@@ -19,15 +20,17 @@ import model.enums.ApplicationState;
 public class Model extends Observable {
 
 	private List<Reviewer> reviewers;
-	private Reviewer selectedReviewer;
+	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
 
 	public Model() {
 		this.reviewers = new ArrayList<>();
+		this.selectedReviewer = Optional.empty();
 	}
 
 	public Model(List<Reviewer> reviewers) {
 		this.reviewers = reviewers;
+		this.selectedReviewer = Optional.empty();
 	}
 
 	public List<Reviewer> getReviewers() {
@@ -50,12 +53,12 @@ public class Model extends Observable {
 		this.notifyObservers();
 	}
 
-	public Reviewer getSelectedReviewer() {
+	public Optional<Reviewer> getSelectedReviewer() {
 		return selectedReviewer;
 	}
 
 	public void setSelectedReviewer(Reviewer selectedReviewer) {
-		this.selectedReviewer = selectedReviewer;
+		this.selectedReviewer = Optional.of(selectedReviewer);
 		this.setChanged();
 		this.notifyObservers(); // TODO Maybe pass an eventId to let the views know which change triggered the
 								// observer, not sure if necessary (but would probably increase the performance)
