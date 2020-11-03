@@ -1,11 +1,13 @@
 package controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -23,6 +25,7 @@ import model.data.Author;
 import model.data.BachelorThesis;
 import model.data.Review;
 import model.data.Reviewer;
+import model.enums.ApplicationState;
 import util.ReviewStatus;
 
 
@@ -44,40 +47,41 @@ public class JSONController {
 	 */
 	public void saveReviewers(List<Reviewer> list) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
-		JsonArrayBuilder arr = Json.createArrayBuilder();
+		JsonArrayBuilder reviewers = Json.createArrayBuilder();
 		for(Reviewer r : list) {
 			JsonObjectBuilder reviewerbuilder = Json.createObjectBuilder();
-			reviewerbuilder.add("name", r.getName());
 			
-			JsonArrayBuilder arrb = Json.createArrayBuilder();
+			JsonArrayBuilder supervised = Json.createArrayBuilder();
 			for(BachelorThesis b : r.getSupervisedThesis()) {
 				JsonObjectBuilder thesisbuilder = Json.createObjectBuilder();
-				thesisbuilder.add("topic", b.getTopic());
 				
 				JsonObjectBuilder authorbuilder = Json.createObjectBuilder();
 				authorbuilder.add("name", b.getAuthor().getName());
 				authorbuilder.add("studyGroup", b.getAuthor().getStudyGroup());
-				thesisbuilder.add("author", authorbuilder);
 				
 				JsonObjectBuilder firstreviewBuilder = Json.createObjectBuilder();
-				firstreviewBuilder.add("reviewer", reviewerbuilder);
+				firstreviewBuilder.add("reviewer", r.getName());
 				firstreviewBuilder.add("status", b.getFirstReview().getStatus().getName());
 				firstreviewBuilder.add("bachelorThesis", thesisbuilder);
-				thesisbuilder.add("firstReview", firstreviewBuilder);
 				
 				JsonObjectBuilder secondreviewBuilder = Json.createObjectBuilder();
-				secondreviewBuilder.add("reviewer", reviewerbuilder);
+				secondreviewBuilder.add("reviewer", r.getName());
 				secondreviewBuilder.add("status", b.getSecondReview().getStatus().getName());
 				secondreviewBuilder.add("bachelorThesis", thesisbuilder);
+				
+				thesisbuilder.add("topic", b.getTopic());
+				thesisbuilder.add("author", authorbuilder);
+				thesisbuilder.add("firstReview", firstreviewBuilder);
 				thesisbuilder.add("secondReview", secondreviewBuilder);
-				arrb.add(thesisbuilder);
+				supervised.add(thesisbuilder);
 			}
 			
-			reviewerbuilder.add("supervised", arrb);
+			reviewerbuilder.add("name", r.getName());
+			reviewerbuilder.add("supervised", supervised);
 			reviewerbuilder.add("selected", r.isSelected());
-			arr.add(reviewerbuilder);
+			reviewers.add(reviewerbuilder);
 		}
-		builder.add("reviewers", arr);
+		builder.add("reviewers", reviewers);
 		JsonObject jo = builder.build();
 		try {
 			FileWriter fw = new FileWriter(filename);
@@ -107,9 +111,11 @@ public class JSONController {
 			
 			if(value.getValueType() == ValueType.OBJECT) {
 				JsonObject object = (JsonObject) value;
-				value = object.get("reviewers");
+				return createObjects(object.getJsonArray("reviewers"));
+			} else {
+				System.out.println("Error: Die geladene Json Datei beinhaltet keinen Systemstatus");
+				return null;
 			}
-			return createObjects(value);
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 		} catch(IOException e) {
@@ -123,28 +129,29 @@ public class JSONController {
 	 * @param value - Jsonvalue from the Json file
 	 * @return ArrayList including all objects from the Json file
 	 */
-	private ArrayList<Reviewer> createObjects(JsonValue value) {
+	private ArrayList<Reviewer> createObjects(JsonArray reviewers) {
 		ArrayList<Reviewer> result = new ArrayList<Reviewer>();
-		JsonObject object = (JsonObject) value;
-		for(Entry<String, JsonValue> set : object.entrySet())
+		for(JsonValue set : reviewers)
 		{
-			JsonObject r = (JsonObject) set.getValue();
+			JsonObject jReviewer = set.asJsonObject();
 			
-			Reviewer reviewer = new Reviewer(r.getString("name"));
-			reviewer.setSelected(r.getBoolean("selected"));
-			for(JsonValue tvalue : r.getJsonArray("supervised")) {
-				JsonObject t = (JsonObject) tvalue;
+			Reviewer reviewer = new Reviewer(jReviewer.getString("name"));
+			reviewer.setSelected(jReviewer.getBoolean("selected"));
+			for(JsonValue supervised : jReviewer.getJsonArray("supervised")) {
+				JsonObject jThesis = supervised.asJsonObject();
 				
-				JsonObject a = t.getJsonObject("author");
-				Author author = new Author(a.getString("name"), a.getString("studyGroup"));
-				BachelorThesis thesis = new BachelorThesis(t.getString("topic"), author);
+				JsonObject jAuthor = jThesis.getJsonObject("author");
+				Author author = new Author(jAuthor.getString("name"), jAuthor.getString("studyGroup"));
 				
-				JsonObject fR = t.getJsonObject("firstReview");
-				Review firstReview = new Review(reviewer, true, ReviewStatus.valueOf(fR.getString("status")), thesis);
+				BachelorThesis thesis = new BachelorThesis(jThesis.getString("topic"), author);
+				
+				JsonObject jFirstReview = jThesis.getJsonObject("firstReview");
+				Review firstReview = new Review(reviewer, true, ReviewStatus.valueOf(jFirstReview.getString("status")), thesis);
 				thesis.setFirstReview(firstReview);
 				
-				JsonObject sR = t.getJsonObject("secondReview");
-				Review secondReview = new Review(reviewer, false, ReviewStatus.valueOf(sR.getString("status")), thesis);
+				JsonObject jSecondReview = jThesis.getJsonObject("secondReview");
+				Review secondReview = new Review(reviewer, false, ReviewStatus.valueOf(jSecondReview.getString("status")), thesis);
+				thesis.setSecondReview(secondReview);
 				reviewer.addBachelorThesis(thesis);
 			}
 			result.add(reviewer);

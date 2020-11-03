@@ -9,10 +9,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.JSONController;
 import model.Model;
+import model.data.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import view.View;
 
+/**
+ * Handles the Application when in ApplicationState
+ * {@link ApplicationState#JSON_CHOOSER}
+ */
 public class JsonChooserStateController extends AbstractStateController {
 	
 	private ArrayList<String> jsonFiles;
@@ -28,6 +33,10 @@ public class JsonChooserStateController extends AbstractStateController {
 		this.registerEvent(EventId.SAVE_JSON, (params) -> saveJson(params));
 	}
 	
+	/**
+	 * This Method handles the Event {@link EventId#LOAD_JSON} starting a JFileChooser and giving the chosen path to the {@link JSONController}
+	 * @param params
+	 */
 	private void loadJson(Supplier<?>[] params) {
 		JFileChooser chooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Json Dateien", "json");
@@ -38,16 +47,23 @@ public class JsonChooserStateController extends AbstractStateController {
 			jsonFiles.add(path);
 			
 			JSONController json = new JSONController(path);
-			json.loadReviewers();
+			ArrayList<Reviewer> reviewers = json.loadReviewers();
+			if(reviewers != null) {
+				this.data.setReviewers(reviewers);
+			}
 		}
-		
-		
-		
+	
 	}
 	
+	/**
+	 * This Method handles the Event {@link EventId#SAVE_JSON} starting a JFileChooser and giving the chosen path to the {@link JSONController}
+	 * @param params
+	 */
 	private void saveJson(Supplier<?>[] params) {
 		JFileChooser chooser = new JFileChooser();
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Json Dateien", "json");
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setFileFilter(filter);
 		int returnVal = chooser.showOpenDialog(null);
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			String path = chooser.getSelectedFile().getAbsolutePath();
