@@ -4,6 +4,7 @@ import static model.enums.EventId.SHOW_REVIEWERS;
 
 import model.Model;
 import model.enums.ApplicationState;
+import model.enums.EventId;
 import view.View;
 
 /**
@@ -18,5 +19,6 @@ public class HomeStateController extends AbstractStateController{
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(SHOW_REVIEWERS, (params) -> switchState(ApplicationState.REVIEWER_OVERVIEW));
+		this.registerEvent(EventId.CHOOSE_JSON_FILEPATH, (params) -> switchState(ApplicationState.JSON_CHOOSER));
 	}
 }

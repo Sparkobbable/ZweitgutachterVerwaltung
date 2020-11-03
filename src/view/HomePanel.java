@@ -21,6 +21,7 @@ public class HomePanel extends AbstractView {
 	private JButton showReviewers;
 	private JButton importFirstReviewers;
 	private JButton analyse;
+	private JButton choosejsonfilepath;
 
 	public HomePanel(ViewId id) { // Maybe add a contructor with standard id?
 		super(id, "Home");
@@ -34,6 +35,7 @@ public class HomePanel extends AbstractView {
 		this.add(showReviewers);
 		this.add(importFirstReviewers);
 		this.add(analyse);
+		this.add(choosejsonfilepath);
 	}
 
 	@Override
@@ -41,6 +43,7 @@ public class HomePanel extends AbstractView {
 		this.showReviewers = new JButton("Gutachter anzeigen");
 		this.importFirstReviewers = new JButton("Importiere Erstgutachter");
 		this.analyse = new JButton("Analyse");
+		this.choosejsonfilepath = new JButton("Systemzustand verwalten");
 	}
 
 	@Override
@@ -48,7 +51,8 @@ public class HomePanel extends AbstractView {
 		return List.of(//
 				new ButtonEventSource(EventId.SHOW_REVIEWERS, showReviewers),
 				new ButtonEventSource(EventId.IMPORT_FIRST_REVIEWERS, importFirstReviewers),
-				new ButtonEventSource(EventId.ANALYSE, analyse));
+				new ButtonEventSource(EventId.ANALYSE, analyse),
+				new ButtonEventSource(EventId.CHOOSE_JSON_FILEPATH, choosejsonfilepath));
 	}
 
 	@Override

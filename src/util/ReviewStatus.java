@@ -1,5 +1,9 @@
 package util;
 
 public enum ReviewStatus {
-	REQUESTED, APPROVED
+	REQUESTED, APPROVED;
+	
+	public String getName() {
+		return this.name();
+	}
 }
