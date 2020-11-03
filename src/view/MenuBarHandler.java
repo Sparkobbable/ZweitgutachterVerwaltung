@@ -20,7 +20,7 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
-		this.back = new JMenu("Zurück");
+		this.back = new JMenuItem("Zurück");
 		this.registerEventSources();
 	}
 
