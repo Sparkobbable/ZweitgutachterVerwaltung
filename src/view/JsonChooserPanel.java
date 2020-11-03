@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Observable;
 
 import javax.swing.JButton;
 
@@ -44,5 +45,11 @@ public class JsonChooserPanel extends AbstractView {
 		return List.of(
 				new ButtonEventSource(EventId.LOAD_JSON, loadJson),
 				new ButtonEventSource(EventId.SAVE_JSON, saveJson));
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }
