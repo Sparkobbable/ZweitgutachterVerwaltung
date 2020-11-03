@@ -40,7 +40,7 @@ public class View implements EventSource{
 
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewTable(ViewId.OVERVIEW_TABLE, model));
 		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor", model));
-		this.registerView(ApplicationState.JSON_CHOOSER, new JsonChooserPanel(ViewId.JSON_CHOOSER));
+		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
 	}
 
 	private void registerView(ApplicationState applicationState, AbstractView abstractView) {

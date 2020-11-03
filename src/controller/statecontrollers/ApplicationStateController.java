@@ -33,7 +33,7 @@ public class ApplicationStateController {
 		stateControllers.put(ApplicationState.REVIEWER_OVERVIEW,
 				new ReviewerOverviewStateController(view, this, model));
 		stateControllers.put(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorStateController(view, this, model));
-		stateControllers.put(ApplicationState.JSON_CHOOSER, new JsonChooserStateController(view, this, model));
+		stateControllers.put(ApplicationState.STATE_CHOOSER, new StateChooserStateController(view, this, model));
 
 		//TODO add nav stack
 		this.view.atAnyState().addEventHandler(EventId.BACK,

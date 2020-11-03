@@ -52,7 +52,7 @@ public class HomePanel extends AbstractView {
 				new ButtonEventSource(EventId.SHOW_REVIEWERS, showReviewers),
 				new ButtonEventSource(EventId.IMPORT_FIRST_REVIEWERS, importFirstReviewers),
 				new ButtonEventSource(EventId.ANALYSE, analyse),
-				new ButtonEventSource(EventId.CHOOSE_JSON_FILEPATH, choosejsonfilepath));
+				new ButtonEventSource(EventId.CHOOSE_FILEPATH, choosejsonfilepath));
 	}
 
 	@Override
