@@ -1,7 +1,10 @@
 package view;
 
+import java.awt.Dimension;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import model.Action;
 import model.EventSource;
@@ -13,7 +16,7 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 
 	private static final long serialVersionUID = 1L;
 	private CompositeEventSource eventSourceHandler;
-	private JMenu back; // TODO replace with JMenuItem
+	private JMenuItem back;
 
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
@@ -22,6 +25,9 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	}
 
 	public void init() {
+		// TODO fix required
+		this.back.setMaximumSize(new Dimension((int) this.back.getPreferredSize().getWidth(),
+				(int) this.back.getMaximumSize().getHeight()));
 		this.add(back);
 	}
 
@@ -30,9 +36,10 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	}
 
 	/*
-	 * -------------------------------------------------------------------------------
-	 * | Delegate methods to the responsible Objects 
-	 * -------------------------------------------------------------------------------
+	 * -----------------------------------------------------------------------------
+	 * -- | Delegate methods to the responsible Objects
+	 * -----------------------------------------------------------------------------
+	 * --
 	 */
 	@Override
 	public void addEventHandler(EventId eventId, Action action) {
