@@ -37,15 +37,20 @@ public class OverviewTable extends AbstractView {
 	public OverviewTable(ViewId viewId, Model reviewers) {
 		super(viewId, "Dozentenübersicht");
 		this.reviewers = reviewers;
-		this.tableModel = new ReviewerOverviewTableModel(reviewers);
-		this.reviewerOverviewTable = new JTable(this.tableModel);
-		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
-
+		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerIds());
+		
 		this.createUIElements();
 		this.registerEventSources();
 		addObservables(this.reviewers);
 	}
 
+	@Override
+	protected void createUIElements() {
+		this.tableModel = new ReviewerOverviewTableModel(reviewers);
+		this.reviewerOverviewTable = new JTable(this.tableModel);
+		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);		
+	}
+	
 	/**
 	 * Initializes this component and loads data into the table
 	 */
@@ -62,35 +67,17 @@ public class OverviewTable extends AbstractView {
 		
 	}
 	
-	/**
-	 * Accesses actions as buttons which are embedded in this view.
-	 * 
-	 * @return Returns a JPanel containing the actions
-	 */
-	public OverviewTableActions getActions() {
-		return this.actions;
-	}
-
-	public JTable getReviewerOverviewTable() {
-		return reviewerOverviewTable;
-	}
-
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List.of(actions);
 	}
 
-	@Override
-	protected void createUIElements() {
-		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerId());
-	}
-
-	protected int getSelectedReviewerId() {
+	protected int[] getSelectedReviewerIds() {
 //		int nameColumn = ((AbstractTableModel) this.getReviewerOverviewTable().getModel()).findColumn("Name");
 //		return IntStream.of(reviewerOverviewTable.getSelectedRows())
 //				.mapToObj(selectedRow -> reviewers.findReviewerByName((String) this.getReviewerOverviewTable().getValueAt(selectedRow, nameColumn)))
 //				.collect(Collectors.toList());
-		return reviewerOverviewTable.getSelectedRow();
+		return reviewerOverviewTable.getSelectedRows();
 	}
 
 	@Override

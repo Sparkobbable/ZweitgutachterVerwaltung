@@ -39,7 +39,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		Logger.getLogger(ReviewerEditorStateController.class.getName()).info(String.format("Saving edited Reviewer %s", ((Reviewer) params[0].get()).getName()));
 		int index = data.getReviewers().indexOf((Reviewer) params[0].get());
 		if (index >= 0) {
-			data.removeIdx(index);
+			data.removeByIndex(index);
 		}
 		data.addReviewer((Reviewer) params[0].get());
 	}
