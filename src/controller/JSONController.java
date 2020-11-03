@@ -78,7 +78,6 @@ public class JSONController {
 			
 			reviewerbuilder.add("name", r.getName());
 			reviewerbuilder.add("supervised", supervised);
-			reviewerbuilder.add("selected", r.isSelected());
 			reviewers.add(reviewerbuilder);
 		}
 		builder.add("reviewers", reviewers);
@@ -136,7 +135,6 @@ public class JSONController {
 			JsonObject jReviewer = set.asJsonObject();
 			
 			Reviewer reviewer = new Reviewer(jReviewer.getString("name"));
-			reviewer.setSelected(jReviewer.getBoolean("selected"));
 			for(JsonValue supervised : jReviewer.getJsonArray("supervised")) {
 				JsonObject jThesis = supervised.asJsonObject();
 				
