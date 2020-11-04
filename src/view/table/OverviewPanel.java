@@ -10,9 +10,11 @@ import javax.swing.JTable;
 
 import model.EventSource;
 import model.Model;
+import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
+import view.eventsources.TableClickEventSource;
 
 @SuppressWarnings("deprecation")
 public class OverviewPanel extends AbstractView {
@@ -20,13 +22,12 @@ public class OverviewPanel extends AbstractView {
 	private static final long serialVersionUID = 1L; // TODO remove ?!
 
 	private Model reviewers;
-	
+
 	// UI-components
 	private ReviewerOverviewTableModel tableModel;
 	private JTable reviewerOverviewTable;
 	private JScrollPane reviewerOverviewScrollPane;
 	private OverviewTableActions actions;
-	
 
 	/**
 	 * Creates a view containing a table presenting the reviewers and buttons for
@@ -39,7 +40,7 @@ public class OverviewPanel extends AbstractView {
 		super(viewId, "Dozentenübersicht");
 		this.reviewers = reviewers;
 		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerIds());
-		
+
 		this.createUIElements();
 		this.registerEventSources();
 		addObservables(this.reviewers);
@@ -49,9 +50,9 @@ public class OverviewPanel extends AbstractView {
 	protected void createUIElements() {
 		this.tableModel = new ReviewerOverviewTableModel(reviewers);
 		this.reviewerOverviewTable = new JTable(this.tableModel);
-		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);		
+		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
 	}
-	
+
 	/**
 	 * Initializes this component and loads data into the table
 	 */
@@ -61,15 +62,16 @@ public class OverviewPanel extends AbstractView {
 		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
 		this.actions.init();
 		this.reviewerOverviewTable.setFillsViewportHeight(true);
-		
+
 		this.setLayout(new BorderLayout());
 		this.add(this.reviewerOverviewScrollPane, BorderLayout.CENTER);
 		this.add(this.actions, BorderLayout.PAGE_END);
 	}
-	
+
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(actions);
+		return List.of(actions,
+				new TableClickEventSource(EventId.EDIT, reviewerOverviewTable, () -> getSelectedReviewerIds()));
 	}
 
 	protected int[] getSelectedReviewerIds() {
