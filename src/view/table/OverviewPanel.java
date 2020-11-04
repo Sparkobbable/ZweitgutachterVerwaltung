@@ -42,32 +42,29 @@ public class OverviewPanel extends AbstractView {
 		this.reviewers = reviewers;
 		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerIds());
 
+		this.setLayout(new BorderLayout());
+		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
+
 		this.createUIElements();
+		this.addUIElements();
 		this.registerEventSources();
 		addObservables(this.reviewers);
 	}
 
-	@Override
+	private void addUIElements() {
+		this.add(this.reviewerOverviewScrollPane, BorderLayout.CENTER);
+		this.add(this.actions, BorderLayout.PAGE_END);
+	}
+
 	protected void createUIElements() {
 		this.tableModel = new ReviewerOverviewTableModel(reviewers);
 		this.reviewerOverviewTable = new JTable(this.tableModel);
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
-	}
-
-	/**
-	 * Initializes this component and loads data into the table
-	 */
-	@Override
-	public void init() {
-		super.init();
-		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
-		this.actions.init();
+		
 		this.reviewerOverviewTable.setFillsViewportHeight(true);
 		//TODO observe sorting behavior when bachelor thesis count >= 10
 		this.reviewerOverviewTable.setAutoCreateRowSorter(true);
-		this.setLayout(new BorderLayout());
-		this.add(this.reviewerOverviewScrollPane, BorderLayout.CENTER);
-		this.add(this.actions, BorderLayout.PAGE_END);
+
 	}
 
 	@Override

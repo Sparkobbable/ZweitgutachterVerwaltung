@@ -46,39 +46,17 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.model = model;
 		this.nameField = new JTextField();
 		this.optReviewer = Optional.empty();
-		initEditorWindow();
-		this.createUIElements();
-		this.registerEventSources();
-		addObservables(this.model);
-	}
 
-	private void initEditorWindow() {
 		this.setBackground(Color.MAGENTA); // TODO only for component identification, remove before launch
 		this.setLayout(new GridLayout(4, 1));
+
+		this.createUIElements();
+		this.addUIElements();
+		this.registerEventSources();
+		this.addObservables(this.model);
 	}
 
-	public JTextField getNameField() {
-		return nameField;
-	}
-
-	@Override
-	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
-				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
-				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
-	}
-
-	private int[] getThesis() {
-		return this.supervisedThesisTable.getSelectedRows();
-	}
-
-	private String getNameFieldValue() {
-		return this.nameField.getText();
-	}
-
-	@Override
-	protected void createUIElements() {
-
+	private void createUIElements() {
 		this.save = new JButton("Speichern");
 		this.addBachelorThesis = new JButton("Bachelorarbeit hinzufügen");
 		this.deleteThesis = new JButton("Bachelorarbeit löschen");
@@ -89,12 +67,21 @@ public class ReviewerEditorPanel extends AbstractView {
 		// TODO observe sorting behavior when bachelor thesis count >= 10
 		this.supervisedThesisTable.setAutoCreateRowSorter(true);
 		this.supervisedThesisPane = new JScrollPane(this.supervisedThesisTable);
+	}
 
+	private void addUIElements() {
 		this.add(this.nameField);
 		this.add(this.supervisedThesisPane);
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
+	}
+	
+	@Override
+	protected List<EventSource> getEventSources() {
+		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
+				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
+				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
 	}
 
 	@Override
@@ -110,7 +97,15 @@ public class ReviewerEditorPanel extends AbstractView {
 	}
 
 	private Reviewer getReviewer() {
-		this.optReviewer.get().setName(this.getNameFieldValue());
+		this.optReviewer.get().setName(this.getNameFieldText());
 		return optReviewer.get();
+	}
+
+	private String getNameFieldText() {
+		return this.nameField.getText();
+	}
+	
+	private int[] getThesis() {
+		return this.supervisedThesisTable.getSelectedRows();
 	}
 }

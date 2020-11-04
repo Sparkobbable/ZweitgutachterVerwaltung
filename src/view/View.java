@@ -30,7 +30,7 @@ public class View implements EventSource{
 		this.eventSourceHandler = new CompositeEventSource();
 		this.eventSourceHandler.register(this.menuHandler);
 		this.createViews();
-
+		window.setJMenuBar(menuHandler);
 	}
 
 	private void createViews() {
@@ -53,22 +53,8 @@ public class View implements EventSource{
 	 * [Initializes the views and] shows the window.
 	 */
 	public void setVisible() {
-		// TODO remove init or leave it here and rename the method
-		init();
 		window.setVisible(true);
 	}
-
-	/**
-	 * initializes all view components
-	 */
-	private void init() {
-		viewsByApplicationStates.values().forEach(AbstractView::init);
-		menuHandler.init();
-		window.init();
-		window.setJMenuBar(menuHandler);
-	}
-
-
 
 	public void switchState(ApplicationState state) {
 		window.switchToView(viewsByApplicationStates.get(state).getViewId());

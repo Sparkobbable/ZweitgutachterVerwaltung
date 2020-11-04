@@ -25,25 +25,25 @@ public class HomePanel extends AbstractView {
 
 	public HomePanel(ViewId id) { // Maybe add a contructor with standard id?
 		super(id, "Home");
+		this.setBackground(Color.GREEN); // TODO remove
 		this.createUIElements();
+		this.addUIElements();
 		this.registerEventSources();
 	}
 
-	public void init() {
-		super.init();
-		this.setBackground(Color.GREEN); // TODO remove
-		this.add(showReviewers);
-		this.add(importFirstReviewers);
-		this.add(analyse);
-		this.add(choosejsonfilepath);
-	}
-
-	@Override
-	protected void createUIElements() {
+	
+	private void createUIElements() {
 		this.showReviewers = new JButton("Gutachter anzeigen");
 		this.importFirstReviewers = new JButton("Importiere Erstgutachter");
 		this.analyse = new JButton("Analyse");
 		this.choosejsonfilepath = new JButton("Systemzustand verwalten");
+	}
+	
+	private void addUIElements() {
+		this.add(showReviewers);
+		this.add(importFirstReviewers);
+		this.add(analyse);
+		this.add(choosejsonfilepath);
 	}
 
 	@Override
@@ -57,7 +57,6 @@ public class HomePanel extends AbstractView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		//TODO add empty method body in AbstractView?
 	}
 }

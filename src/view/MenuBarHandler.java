@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Dimension;
 
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
@@ -21,14 +20,10 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
 		this.back = new JMenuItem("Zurück");
-		this.registerEventSources();
-	}
-
-	public void init() {
-		// TODO fix required
 		this.back.setMaximumSize(new Dimension((int) this.back.getPreferredSize().getWidth(),
 				(int) this.back.getMaximumSize().getHeight()));
 		this.add(back);
+		this.registerEventSources();
 	}
 
 	protected void registerEventSources() {
