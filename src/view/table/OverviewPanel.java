@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 import java.util.Observable;
+import java.util.stream.IntStream;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -62,7 +63,8 @@ public class OverviewPanel extends AbstractView {
 		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
 		this.actions.init();
 		this.reviewerOverviewTable.setFillsViewportHeight(true);
-
+		//TODO observe sorting behavior when bachelor thesis count >= 10
+		this.reviewerOverviewTable.setAutoCreateRowSorter(true);
 		this.setLayout(new BorderLayout());
 		this.add(this.reviewerOverviewScrollPane, BorderLayout.CENTER);
 		this.add(this.actions, BorderLayout.PAGE_END);
@@ -75,11 +77,13 @@ public class OverviewPanel extends AbstractView {
 	}
 
 	protected int[] getSelectedReviewerIds() {
-		return reviewerOverviewTable.getSelectedRows();
+		return IntStream.of(this.reviewerOverviewTable.getSelectedRows())
+				.map(this.reviewerOverviewTable::convertRowIndexToModel).toArray();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
+		this.tableModel.fireTableDataChanged();
 		this.repaint();
 	}
 
