@@ -68,7 +68,6 @@ public class ThesisEditorPanel extends AbstractView {
 		return thesis;
 	}
 
-	@Override
 	protected void createUIElements() {
 			this.authorName = new JTextField(this.bachelorThesis.map(thesis -> this.author.getName()).orElse(null));
 			this.topic = new JTextField(this.bachelorThesis.map(thesis -> thesis.getTopic()).orElse(null));
