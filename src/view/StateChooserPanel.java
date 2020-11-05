@@ -24,10 +24,12 @@ public class StateChooserPanel extends AbstractView {
 	
 	public StateChooserPanel(ViewId viewId) {
 		super(viewId, "Systemzustand Manager");
-		this.registerEventSources();
 		
 		this.chooseJson = new JFileChooser();
 		this.buttons = new StateChooserButtonsPanel(ViewId.STATE_BUTTONS);
+		this.registerEventSources();
+		
+		this.init();
 	}
 	
 	public void init() {

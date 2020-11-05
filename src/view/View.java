@@ -39,8 +39,6 @@ public class View implements EventSource{
 		this.viewsByApplicationStates = new HashMap<>();
 
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
-
-
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewPanel(ViewId.OVERVIEW_TABLE, model));
 		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, "Dozenteneditor", model));
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));

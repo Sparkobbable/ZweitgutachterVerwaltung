@@ -24,10 +24,12 @@ public class StateChooserButtonsPanel extends AbstractView{
 
 	public StateChooserButtonsPanel(ViewId viewId) {
 		super(viewId, "Options");
-		this.registerEventSources();
 		
 		this.loadState = new JButton("Systemzustand laden");
 		this.saveState = new JButton("Systemzustand speichern");
+		this.registerEventSources();
+		
+		this.init();
 	}
 	
 	public void init() {
