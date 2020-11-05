@@ -6,7 +6,7 @@ import model.Action;
 import model.enums.EventId;
 
 public class MenuItemEventSource extends SingleEventSource {
-	private JMenuItem menuItem; // TODO change to JMenuItem
+	private JMenuItem menuItem;
 
 	public MenuItemEventSource(EventId eventId, JMenuItem menuItem) {
 		super(eventId);
@@ -15,8 +15,6 @@ public class MenuItemEventSource extends SingleEventSource {
 
 	@Override
 	public void addEventHandler(Action action) {
-		// TODO don't use JMenus like that because this is abuse and leads to weird
-		// behavior
 		menuItem.addActionListener(e -> action.perform());
 	}
 

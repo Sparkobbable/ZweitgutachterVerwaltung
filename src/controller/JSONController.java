@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -19,13 +18,10 @@ import javax.json.JsonWriter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
-
 import model.data.Author;
 import model.data.BachelorThesis;
 import model.data.Review;
 import model.data.Reviewer;
-import model.enums.ApplicationState;
 import util.ReviewStatus;
 
 
@@ -61,12 +57,12 @@ public class JSONController {
 				
 				JsonObjectBuilder firstreviewBuilder = Json.createObjectBuilder();
 				firstreviewBuilder.add("reviewer", r.getName());
-				firstreviewBuilder.add("status", b.getFirstReview().getStatus().getName());
+				b.getFirstReview().ifPresent(review -> firstreviewBuilder.add("status", review.getStatus().getName()));;
 				firstreviewBuilder.add("bachelorThesis", thesisbuilder);
 				
 				JsonObjectBuilder secondreviewBuilder = Json.createObjectBuilder();
 				secondreviewBuilder.add("reviewer", r.getName());
-				secondreviewBuilder.add("status", b.getSecondReview().getStatus().getName());
+				b.getSecondReview().ifPresent(review -> secondreviewBuilder.add("status", review.getStatus().getName()));
 				secondreviewBuilder.add("bachelorThesis", thesisbuilder);
 				
 				thesisbuilder.add("topic", b.getTopic());

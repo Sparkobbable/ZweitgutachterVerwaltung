@@ -33,14 +33,7 @@ public class MainWindow extends JFrame {
 		this.cardLayout = new CardLayout();
 		this.availableViews = new HashMap<>();
 		this.mainContainer.setLayout(cardLayout);
-	}
-
-	/**
-	 * Initializes the Window
-	 * 
-	 */
-	public void init() {
-
+		
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
@@ -48,13 +41,7 @@ public class MainWindow extends JFrame {
 		// center
 		this.setLocationRelativeTo(null);
 		this.setIconImage(getApplicationIcon());
-
-		mainContainer.setBackground(Color.BLACK);
 		this.add(mainContainer);
-
-		this.setVisible(true); // TODO maybe extract to controller to allow initialization before children's
-								// initialization?
-
 	}
 
 	private Image getApplicationIcon() {

@@ -36,16 +36,23 @@ public class OverviewTableActions extends AbstractView {
 	public OverviewTableActions(ViewId id, Supplier<?> reviewerName) {
 		super(id, "");
 		this.reviewerName = reviewerName;
+		
 		this.setBorder(UNTITLED_BORDER);
-
+		this.setLayout(new FlowLayout()); // TODO Not quite sure which is the best layout
+		this.setBackground(Color.CYAN);
+		
 		this.createUIElements();
+		this.addUIElements();
 		this.registerEventSources();
 	}
 
-	@Override
-	public void init() {
-		this.setLayout(new FlowLayout()); // TODO Not quite sure which is the best layout
-		this.setBackground(Color.CYAN);
+	private void createUIElements() {
+		this.edit = new JButton("Bearbeiten");
+		this.delete = new JButton("Löschen");
+		this.newReviewer = new JButton("Neu");
+	}
+
+	private void addUIElements() {
 		this.add(edit);
 		this.add(delete);
 		this.add(newReviewer);
@@ -53,22 +60,15 @@ public class OverviewTableActions extends AbstractView {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.EDIT, edit, reviewerName), 
-						new ButtonEventSource(EventId.DELETE, delete, reviewerName),
-						new ButtonEventSource(EventId.NEW, newReviewer));
-	}
-
-	@Override
-	protected void createUIElements() {
-		this.edit = new JButton("Bearbeiten");
-		this.delete = new JButton("Löschen");
-		this.newReviewer = new JButton("Neu");
+		return List.of(ButtonEventSource.of(EventId.EDIT, edit, reviewerName),
+				ButtonEventSource.of(EventId.DELETE, delete, reviewerName),
+				ButtonEventSource.of(EventId.NEW, newReviewer));
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

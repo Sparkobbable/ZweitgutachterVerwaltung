@@ -42,7 +42,7 @@ public class StateChooserStateController extends AbstractStateController {
 			JSONController json = new JSONController(filepath);
 			ArrayList<Reviewer> reviewers = json.loadReviewers();
 			if(reviewers != null) {
-				this.data.setReviewers(reviewers);
+				this.model.setReviewers(reviewers);
 			}
 	}
 	
@@ -52,7 +52,7 @@ public class StateChooserStateController extends AbstractStateController {
 	 */
 	private void saveState() {
 			JSONController json = new JSONController(filepath);
-			json.saveReviewers(data.getReviewers());
+			json.saveReviewers(model.getReviewers());
 	}
 	
 	private void setFilePath(String filepath) {
