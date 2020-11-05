@@ -40,10 +40,13 @@ public class View implements EventSource{
 
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
 
+
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewPanel(ViewId.OVERVIEW_TABLE, model));
 		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, "Dozenteneditor", model));
-		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
+		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));
 		this.registerView(ApplicationState.THESIS_EDITOR, new ThesisEditorPanel(ViewId.THESIS_EDITOR, "Bachelorthesis-Editor", Optional.empty()));
+		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
+
 	}
 
 	private void registerView(ApplicationState applicationState, AbstractView abstractView) {
@@ -56,6 +59,7 @@ public class View implements EventSource{
 	 * [Initializes the views and] shows the window.
 	 */
 	public void setVisible() {
+
 		window.setVisible(true);
 	}
 

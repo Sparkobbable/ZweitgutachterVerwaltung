@@ -24,12 +24,13 @@ public class StateChooserButtonsPanel extends AbstractView{
 
 	public StateChooserButtonsPanel(ViewId viewId) {
 		super(viewId, "Options");
-		this.createUIElements();
 		this.registerEventSources();
+		
+		this.loadState = new JButton("Systemzustand laden");
+		this.saveState = new JButton("Systemzustand speichern");
 	}
 	
 	public void init() {
-		super.init();
 		this.setBackground(Color.gray);
 		this.add(loadState);
 		this.add(saveState);
@@ -40,13 +41,6 @@ public class StateChooserButtonsPanel extends AbstractView{
 		return List.of(
 				new ButtonEventSource(EventId.LOAD_STATE, loadState),
 				new ButtonEventSource(EventId.SAVE_STATE, saveState));
-	}
-
-	@Override
-	protected void createUIElements() {
-		this.loadState = new JButton("Systemzustand laden");
-		this.saveState = new JButton("Systemzustand speichern");
-		
 	}
 
 	@Override

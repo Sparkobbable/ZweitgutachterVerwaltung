@@ -24,13 +24,13 @@ public class StateChooserPanel extends AbstractView {
 	
 	public StateChooserPanel(ViewId viewId) {
 		super(viewId, "Systemzustand Manager");
-		this.createUIElements();
 		this.registerEventSources();
+		
+		this.chooseJson = new JFileChooser();
+		this.buttons = new StateChooserButtonsPanel(ViewId.STATE_BUTTONS);
 	}
 	
 	public void init() {
-		super.init();
-		this.buttons.init();
 		this.setBackground(Color.gray);
 		this.setLayout(new GridLayout(2, 2));
 		this.add(chooseJson);
@@ -38,12 +38,6 @@ public class StateChooserPanel extends AbstractView {
 		
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Json Datei", "json");
 		chooseJson.setFileFilter(filter);
-	}
-
-	@Override
-	protected void createUIElements() {
-		this.chooseJson = new JFileChooser();
-		this.buttons = new StateChooserButtonsPanel(ViewId.STATE_BUTTONS);
 	}
 	
 	@Override
