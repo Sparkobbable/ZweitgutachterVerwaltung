@@ -2,6 +2,7 @@ package view;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import model.Action;
 import model.EventSource;
@@ -10,8 +11,9 @@ import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import model.enums.ViewId;
-import view.editor.ReviewerEditor;
-import view.table.OverviewTable;
+import view.editor.ReviewerEditorPanel;
+import view.editor.ThesisEditorPanel;
+import view.table.OverviewPanel;
 
 // TODO JavaDoc
 public class View implements EventSource{
@@ -30,7 +32,7 @@ public class View implements EventSource{
 		this.eventSourceHandler = new CompositeEventSource();
 		this.eventSourceHandler.register(this.menuHandler);
 		this.createViews();
-
+		window.setJMenuBar(menuHandler);
 	}
 
 	private void createViews() {
@@ -38,9 +40,10 @@ public class View implements EventSource{
 
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
 
-		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewTable(ViewId.OVERVIEW_TABLE, model));
-		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditor(ViewId.EDITOR, "Dozenteneditor", model));
+		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewPanel(ViewId.OVERVIEW_TABLE, model));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, "Dozenteneditor", model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
+		this.registerView(ApplicationState.THESIS_EDITOR, new ThesisEditorPanel(ViewId.THESIS_EDITOR, "Bachelorthesis-Editor", Optional.empty()));
 	}
 
 	private void registerView(ApplicationState applicationState, AbstractView abstractView) {
@@ -53,22 +56,8 @@ public class View implements EventSource{
 	 * [Initializes the views and] shows the window.
 	 */
 	public void setVisible() {
-		// TODO remove init or leave it here and rename the method
-		init();
 		window.setVisible(true);
 	}
-
-	/**
-	 * initializes all view components
-	 */
-	private void init() {
-		viewsByApplicationStates.values().forEach(AbstractView::init);
-		menuHandler.init();
-		window.init();
-		window.setJMenuBar(menuHandler);
-	}
-
-
 
 	public void switchState(ApplicationState state) {
 		window.switchToView(viewsByApplicationStates.get(state).getViewId());
