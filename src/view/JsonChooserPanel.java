@@ -13,33 +13,30 @@ import view.eventsources.ButtonEventSource;
 
 public class JsonChooserPanel extends AbstractView {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JButton loadJson;
 	private JButton saveJson;
 	
 	public JsonChooserPanel(ViewId viewId) {
 		super(viewId, "Systemzustand Manager");
+		this.setBackground(Color.gray);
+
 		this.createUIElements();
+		this.addUIElements();
 		this.registerEventSources();
 	}
 	
-	public void init() {
-		super.init();
-		this.setBackground(Color.gray);
+	protected void createUIElements() {
+		this.loadJson = new JButton("Systemzustand laden");
+		this.saveJson = new JButton("Systemzustand speichern");
+	}
+	
+	public void addUIElements() {
 		this.add(loadJson);
 		this.add(saveJson);
 	}
 
-	@Override
-	protected void createUIElements() {
-		this.loadJson = new JButton("Systemzustand laden");
-		this.saveJson = new JButton("Systemzustand speichern");
-		
-	}
-	
+
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List.of(

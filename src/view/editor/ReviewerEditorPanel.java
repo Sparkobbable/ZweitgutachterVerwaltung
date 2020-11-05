@@ -18,77 +18,70 @@ import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
 import view.eventsources.ButtonEventSource;
-import view.eventsources.TextFieldEventSource;
 
 @SuppressWarnings("deprecation")
 public class ReviewerEditorPanel extends AbstractView {
 	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> optReviewer;
 	private Model model;
-	private JTextField nameField;
+
+	private SupervisedThesisTableModel supervisedThesisTableModel;
 	private JTable supervisedThesisTable;
 	private JScrollPane supervisedThesisPane;
+
+	private JTextField nameField;
 	private JButton save;
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
-	
+
 	/**
-	 * Creates a view containing a table presenting the reviewer's supervised bachelorThesis and other data of the reviewer
+	 * Creates a view containing a table presenting the reviewer's supervised
+	 * bachelorThesis and other data of the reviewer
 	 * 
-	 * @param viewId    Unique viewId from {@link ViewId}
-	 * @param title		Needs a title
+	 * @param viewId Unique viewId from {@link ViewId}
+	 * @param title  Needs a title
 	 */
 	public ReviewerEditorPanel(ViewId id, String title, Model model) {
 		super(id, title);
 		this.model = model;
 		this.nameField = new JTextField();
 		this.optReviewer = Optional.empty();
-		initEditorWindow();
-		this.createUIElements();
-		this.registerEventSources();
-		addObservables(this.model);
-	}
 
-	private void initEditorWindow() {
 		this.setBackground(Color.MAGENTA); // TODO only for component identification, remove before launch
 		this.setLayout(new GridLayout(4, 1));
+
+		this.createUIElements();
+		this.addUIElements();
+		this.registerEventSources();
+		this.addObservables(this.model);
 	}
 
-	public JTextField getNameField() {
-		return nameField;
-	}
-
-	@Override
-	protected List<EventSource> getEventSources() {
-		return List.of(	new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
-						new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
-						new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
-	}
-
-	private int[] getThesis() {
-		return this.supervisedThesisTable.getSelectedRows();
-	}
-
-	private String getNameFieldValue() {
-		return this.nameField.getText();
-	}
-
-	@Override
-	protected void createUIElements() {
-		
+	private void createUIElements() {
 		this.save = new JButton("Speichern");
 		this.addBachelorThesis = new JButton("Bachelorarbeit hinzufügen");
 		this.deleteThesis = new JButton("Bachelorarbeit löschen");
-		
-		this.supervisedThesisTable = new JTable(new SupervisedThesisTableModel(optReviewer));
+
+		this.supervisedThesisTableModel = new SupervisedThesisTableModel(this.optReviewer);
+		this.supervisedThesisTable = new JTable(supervisedThesisTableModel);
 		this.supervisedThesisTable.setFillsViewportHeight(true);
-		
+		// TODO observe sorting behavior when bachelor thesis count >= 10
+		this.supervisedThesisTable.setAutoCreateRowSorter(true);
 		this.supervisedThesisPane = new JScrollPane(this.supervisedThesisTable);
+	}
+
+	private void addUIElements() {
 		this.add(this.nameField);
 		this.add(this.supervisedThesisPane);
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
+	}
+	
+	@Override
+	protected List<EventSource> getEventSources() {
+		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
+				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
+				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
 	}
 
 	@Override
@@ -96,14 +89,23 @@ public class ReviewerEditorPanel extends AbstractView {
 		if (o.getClass().equals(Model.class)) {
 			this.optReviewer = ((Model) o).getSelectedReviewer();
 			this.nameField.setText(optReviewer.map(reviewer -> reviewer.getName()).orElse(null));
-			((SupervisedThesisTableModel) this.supervisedThesisTable.getModel()).setSelectedReviewer(optReviewer);
-			optReviewer.ifPresent(reviewer -> addObservables(reviewer));
+			this.supervisedThesisTableModel.setSelectedReviewer(optReviewer);
+			this.optReviewer.ifPresent(reviewer -> addObservables(reviewer));
 		}
+		this.supervisedThesisTableModel.fireTableDataChanged();
 		this.repaint();
 	}
 
 	private Reviewer getReviewer() {
-		this.optReviewer.get().setName(this.getNameFieldValue());
+		this.optReviewer.get().setName(this.getNameFieldText());
 		return optReviewer.get();
+	}
+
+	private String getNameFieldText() {
+		return this.nameField.getText();
+	}
+	
+	private int[] getThesis() {
+		return this.supervisedThesisTable.getSelectedRows();
 	}
 }

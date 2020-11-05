@@ -3,7 +3,6 @@ package view;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -55,24 +54,11 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 		this.viewId = viewId;
 		this.title = title;
 		this.eventSourceHandler = new CompositeEventSource();
+		this.setBorder(titledBorder(title));
 	}
 
 	protected void registerEventSources() {
 		this.eventSourceHandler.registerAll(this.getEventSources());
-	}
-
-	/**
-	 * Initializes the user interface by adding all its children.
-	 * <p>
-	 * For object creation, consider using {@link #createUIElements()} instead.
-	 */
-	public void init() {
-		Logger.getLogger(AbstractView.class.getName()).info(String.format("Initializing view %s", this.title));
-		if (this.initialized) {
-			throw new IllegalStateException("This panel has already been initialized. It cannot be initialized again.");
-		}
-		this.initialized = true;
-		this.setBorder(titledBorder(title));
 	}
 
 	/**
@@ -81,7 +67,7 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	 * @param title Title of the Component
 	 * @return Returns the Border with the title
 	 */
-	protected TitledBorder titledBorder(String title) {
+	protected static TitledBorder titledBorder(String title) {
 		return BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title, TitledBorder.LEFT,
 				TitledBorder.TOP);
 	}
@@ -116,12 +102,6 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	public ViewId getViewId() {
 		return viewId;
 	}
-
-	/**
-	 * This method should be used to create UI elements. It is automatically called
-	 * in the constructor and will be called before {@link #getEventSources()}
-	 */
-	protected abstract void createUIElements();
 
 	@Override
 	public abstract void update(Observable o, Object arg);
