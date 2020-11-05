@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import model.Model;
+import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 import view.View;
@@ -19,8 +20,8 @@ import view.View;
 public class ReviewerEditorStateController extends AbstractStateController {
 
 	public ReviewerEditorStateController(View view,
-			ApplicationStateController applicationStateController, Model data) {
-		super(ApplicationState.REVIEWER_EDITOR, view, applicationStateController, data);
+			ApplicationStateController applicationStateController, Model model) {
+		super(ApplicationState.REVIEWER_EDITOR, view, applicationStateController, model);
 	}
 
 	@Override
@@ -32,20 +33,22 @@ public class ReviewerEditorStateController extends AbstractStateController {
 
 
 	private void deleteThesis(Supplier<?>[] indices) {
-		this.data.getSelectedReviewer().ifPresent(reviewer -> reviewer.removeThesisByIndices((int[]) indices[0].get()));
+		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.removeThesisByIndices((int[]) indices[0].get()));
 	}
 
 	private void addThesis(Supplier<?>[] params) {
 		Logger.getLogger(ReviewerEditorStateController.class.getName()).info(String.format("Starting add-thesis on Reviewer %s", ((Reviewer) params[0].get()).getName()));
+		//this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.setSelectedThesis()); TODO for editing a thesis
+		switchState(ApplicationState.THESIS_EDITOR);
 	}
 
 	private void saveReviewer(Supplier<?>[] params) {
 		Logger.getLogger(ReviewerEditorStateController.class.getName()).info(String.format("Saving edited Reviewer %s", ((Reviewer) params[0].get()).getName()));
-		int index = data.getReviewers().indexOf((Reviewer) params[0].get());
+		int index = model.getReviewers().indexOf((Reviewer) params[0].get());
 		if (index >= 0) {
-			data.removeByIndex(index);
+			model.removeByIndex(index);
 		}
-		data.addReviewer((Reviewer) params[0].get());
+		model.addReviewer((Reviewer) params[0].get());
 		switchState(ApplicationState.REVIEWER_OVERVIEW);
 	}
 

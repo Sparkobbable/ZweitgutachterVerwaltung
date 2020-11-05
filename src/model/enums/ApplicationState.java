@@ -2,5 +2,5 @@ package model.enums;
 
 public enum ApplicationState {
 
-	HOME, REVIEWER_OVERVIEW, REVIEWER_EDITOR, JSON_CHOOSER //, ...
+	HOME, REVIEWER_OVERVIEW, REVIEWER_EDITOR, JSON_CHOOSER, THESIS_EDITOR //, ...
 }

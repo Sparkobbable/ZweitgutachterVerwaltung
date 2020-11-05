@@ -20,11 +20,24 @@ public class Author extends AbstractModel {
 		this.studyGroup = studyGroup;
 	}
 
+	/**
+	 * Creates an Author of a BachelorThesis
+	 * @param name Name of the Author
+	 */
+	public Author(String name) {
+		super();
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public String getStudyGroup() {
 		return studyGroup;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
