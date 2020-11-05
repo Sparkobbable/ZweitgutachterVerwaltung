@@ -40,8 +40,8 @@ public class JsonChooserPanel extends AbstractView {
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List.of(
-				new ButtonEventSource(EventId.LOAD_JSON, loadJson),
-				new ButtonEventSource(EventId.SAVE_JSON, saveJson));
+				new ButtonEventSource(EventId.LOAD_STATE, loadJson),
+				new ButtonEventSource(EventId.SAVE_STATE, saveJson));
 	}
 
 	@Override

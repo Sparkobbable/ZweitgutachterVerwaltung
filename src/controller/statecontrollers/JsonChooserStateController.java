@@ -21,14 +21,14 @@ public class JsonChooserStateController extends AbstractStateController {
 	private ArrayList<String> jsonFiles;
 	
 	public JsonChooserStateController(View view, ApplicationStateController applicationStateController, Model model) {
-		super(ApplicationState.JSON_CHOOSER, view, applicationStateController, model);
+		super(ApplicationState.STATE_CHOOSER, view, applicationStateController, model);
 		jsonFiles = new ArrayList<>();
 	}
 	
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.LOAD_JSON, (params) -> loadJson(params));
-		this.registerEvent(EventId.SAVE_JSON, (params) -> saveJson(params));
+		this.registerEvent(EventId.LOAD_STATE, (params) -> loadJson(params));
+		this.registerEvent(EventId.SAVE_STATE, (params) -> saveJson(params));
 	}
 	
 	/**
