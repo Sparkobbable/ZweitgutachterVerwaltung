@@ -2,6 +2,7 @@ package view;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import model.Action;
 import model.EventSource;
@@ -11,6 +12,7 @@ import model.enums.ApplicationState;
 import model.enums.EventId;
 import model.enums.ViewId;
 import view.editor.ReviewerEditorPanel;
+import view.editor.ThesisEditorPanel;
 import view.table.OverviewPanel;
 
 // TODO JavaDoc
@@ -42,7 +44,8 @@ public class View implements EventSource{
 		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, "Dozenteneditor", model));
 		this.registerView(ApplicationState.JSON_CHOOSER, new JsonChooserPanel(ViewId.JSON_CHOOSER));
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));
-		
+		this.registerView(ApplicationState.THESIS_EDITOR, new ThesisEditorPanel(ViewId.THESIS_EDITOR, "Bachelorthesis-Editor", Optional.empty()));
+
 	}
 
 	private void registerView(ApplicationState applicationState, AbstractView abstractView) {

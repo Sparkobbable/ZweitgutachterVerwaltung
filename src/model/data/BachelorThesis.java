@@ -1,5 +1,7 @@
 package model.data;
 
+import java.util.Optional;
+
 import model.AbstractModel;
 
 @SuppressWarnings("deprecation")
@@ -10,8 +12,8 @@ import model.AbstractModel;
 public class BachelorThesis extends AbstractModel {
 	private String topic;
 	private Author author;
-	private Review firstReview;
-	private Review secondReview;
+	private Optional<Review> firstReview;
+	private Optional<Review> secondReview;
 	
 	/**
 	 * Creates a BachelorThesis with an unspecified second reviewer
@@ -31,25 +33,36 @@ public class BachelorThesis extends AbstractModel {
 	 * @param firstReview First Review made by a Reviewer
 	 * @param secondReview Second Review made by a Reviewer
 	 */
-	public BachelorThesis(String topic, Author author, Review firstReview, Review secondReview) {
+	public BachelorThesis(String topic, Author author, Optional<Review> firstReview, Optional<Review> secondReview) {
 		this.topic = topic;
 		this.author = author;
 		this.firstReview = firstReview;
 		this.secondReview = secondReview;
 	}
 
-	public Review getSecondReview() {
+	/**
+	 * Empty constructor for creating a new BachelorThesis in editing-mode
+	 */
+	public BachelorThesis() {
+
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+
+	public Optional<Review> getSecondReview() {
 		return secondReview;
 	}
 	
 	public void setFirstReview(Review firstReview) {
-		this.firstReview = firstReview;
+		this.firstReview = Optional.of(firstReview);
 		this.notifyObservers();
 		this.setChanged();
 	}
 
 	public void setSecondReview(Review secondReview) {
-		this.secondReview = secondReview;
+		this.secondReview = Optional.of(secondReview);
 		this.notifyObservers();
 		this.setChanged();
 	}
@@ -62,7 +75,12 @@ public class BachelorThesis extends AbstractModel {
 		return author;
 	}
 
-	public Review getFirstReview() {
+	public Optional<Review> getFirstReview() {
 		return firstReview;
+	}
+
+	public BachelorThesis setAuthor(Author author) {
+		this.author = author;
+		return this;
 	}
 }

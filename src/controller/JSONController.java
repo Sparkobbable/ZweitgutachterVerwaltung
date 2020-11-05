@@ -57,12 +57,12 @@ public class JSONController {
 				
 				JsonObjectBuilder firstreviewBuilder = Json.createObjectBuilder();
 				firstreviewBuilder.add("reviewer", r.getName());
-				firstreviewBuilder.add("status", b.getFirstReview().getStatus().getName());
+				b.getFirstReview().ifPresent(review -> firstreviewBuilder.add("status", review.getStatus().getName()));;
 				firstreviewBuilder.add("bachelorThesis", thesisbuilder);
 				
 				JsonObjectBuilder secondreviewBuilder = Json.createObjectBuilder();
 				secondreviewBuilder.add("reviewer", r.getName());
-				secondreviewBuilder.add("status", b.getSecondReview().getStatus().getName());
+				b.getSecondReview().ifPresent(review -> secondreviewBuilder.add("status", review.getStatus().getName()));
 				secondreviewBuilder.add("bachelorThesis", thesisbuilder);
 				
 				thesisbuilder.add("topic", b.getTopic());

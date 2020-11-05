@@ -33,13 +33,13 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	private void addNewReviewer() {
 		Logger.getLogger(ReviewerOverviewStateController.class.getName()).info("Starting editmode on new Reviewer");
 		Reviewer reviewer = new Reviewer();
-		data.setSelectedReviewer(reviewer);
+		model.setSelectedReviewer(reviewer);
 
 		switchState(ApplicationState.REVIEWER_EDITOR);
 	}
 
 	private void deleteEntries(int[] indices) {
-		this.data.removeByIndices(indices);
+		this.model.removeByIndices(indices);
 	}
 
 	private void switchToEdit(int[] indices) {
@@ -54,7 +54,7 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 		
 		Logger.getLogger(ReviewerOverviewStateController.class.getName())
 				.info(String.format("Starting editmode on reviewer %s", index));
-		data.setSelectedReviewer(index);
+		model.setSelectedReviewer(index);
 		switchState(ApplicationState.REVIEWER_EDITOR);
 	}
 }

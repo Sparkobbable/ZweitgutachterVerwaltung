@@ -14,7 +14,7 @@ public abstract class AbstractStateController {
 	// referenced objects
 	protected View view;
 	private ApplicationStateController applicationStateController;
-	protected Model data;
+	protected Model model;
 
 	/**
 	 * The ApplicationState that this StateController is Responsible for
@@ -30,11 +30,11 @@ public abstract class AbstractStateController {
 	 * @param applicationStateController
 	 */
 	public AbstractStateController(ApplicationState state, View view,
-			ApplicationStateController applicationStateController, Model data) {
+			ApplicationStateController applicationStateController, Model model) {
 		this.state = state;
 		this.view = view;
 		this.applicationStateController = applicationStateController;
-		this.data = data;
+		this.model = model;
 		
 		this.registerEvents();
 	}
