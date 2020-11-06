@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 
@@ -92,6 +93,22 @@ public class Model extends Observable {
 		this.applicationState = applicationState;
 		this.setChanged();
 		this.notifyObservers();
+	}
+	
+	/**
+	 * Finds all bachelorThesis without a second review
+	 * @return ArrayList of the found bachelorThesis
+	 */
+	public ArrayList<BachelorThesis> getThesisMissingSecReview() {
+		ArrayList<BachelorThesis> thesisList = new ArrayList<>();
+		for (Reviewer reviewer : this.getReviewers()) {
+			for (BachelorThesis thesis : reviewer.getSupervisedThesis()) {
+				if (thesis.getSecondReview().isEmpty()) {
+					thesisList.add(thesis);
+				}
+			}
+		}
+		return thesisList;
 	}
 
 }

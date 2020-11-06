@@ -12,8 +12,8 @@ import model.enums.ApplicationState;
 import model.enums.EventId;
 import model.enums.ViewId;
 import view.editor.ReviewerEditorPanel;
-import view.editor.ThesisEditorPanel;
-import view.table.OverviewPanel;
+import view.editor.ThesisAssignmentPanel;
+import view.overview.OverviewPanel;
 
 // TODO JavaDoc
 public class View implements EventSource{
@@ -42,7 +42,7 @@ public class View implements EventSource{
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewPanel(ViewId.OVERVIEW_TABLE, model));
 		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, "Dozenteneditor", model));
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));
-		this.registerView(ApplicationState.THESIS_EDITOR, new ThesisEditorPanel(ViewId.THESIS_EDITOR, "Bachelorthesis-Editor", Optional.empty()));
+		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(ViewId.THESIS_ASSIGNMENT, "Bachelorthesis-Editor", model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
 
 	}

@@ -1,4 +1,4 @@
-package view.editor;
+package view.tableModels;
 
 import java.util.Optional;
 

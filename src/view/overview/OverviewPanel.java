@@ -1,4 +1,4 @@
-package view.table;
+package view.overview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,13 +16,14 @@ import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
 import view.eventsources.TableClickEventSource;
+import view.tableModels.ReviewerOverviewTableModel;
 
 @SuppressWarnings("deprecation")
 public class OverviewPanel extends AbstractView {
 
 	private static final long serialVersionUID = 1L; // TODO remove ?!
 
-	private Model reviewers;
+	private Model model;
 
 	// UI-components
 	private ReviewerOverviewTableModel tableModel;
@@ -35,11 +36,11 @@ public class OverviewPanel extends AbstractView {
 	 * interacting with the data
 	 * 
 	 * @param viewId    Unique viewId from {@link ViewId}
-	 * @param reviewers Needs the reviewers as the data access
+	 * @param model Needs the model as the data access
 	 */
-	public OverviewPanel(ViewId viewId, Model reviewers) {
+	public OverviewPanel(ViewId viewId, Model model) {
 		super(viewId, "Dozentenübersicht");
-		this.reviewers = reviewers;
+		this.model = model;
 		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerIds());
 
 		this.setLayout(new BorderLayout());
@@ -48,7 +49,7 @@ public class OverviewPanel extends AbstractView {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
-		addObservables(this.reviewers);
+		addObservables(this.model);
 	}
 
 	private void addUIElements() {
@@ -57,7 +58,7 @@ public class OverviewPanel extends AbstractView {
 	}
 
 	protected void createUIElements() {
-		this.tableModel = new ReviewerOverviewTableModel(reviewers);
+		this.tableModel = new ReviewerOverviewTableModel(model);
 		this.reviewerOverviewTable = new JTable(this.tableModel);
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
 		

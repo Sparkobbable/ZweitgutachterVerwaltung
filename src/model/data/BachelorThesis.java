@@ -24,6 +24,8 @@ public class BachelorThesis extends AbstractModel {
 	public BachelorThesis(String topic, Author author) {
 		this.topic = topic;
 		this.author = author;
+		this.firstReview = Optional.empty();
+		this.secondReview = Optional.empty();
 	}
 
 	/**
@@ -44,7 +46,8 @@ public class BachelorThesis extends AbstractModel {
 	 * Empty constructor for creating a new BachelorThesis in editing-mode
 	 */
 	public BachelorThesis() {
-
+		this.firstReview = Optional.empty();
+		this.secondReview = Optional.empty();
 	}
 
 	public void setTopic(String topic) {

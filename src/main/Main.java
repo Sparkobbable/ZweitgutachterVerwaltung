@@ -80,7 +80,8 @@ public class Main {
 			}
 			
 			thesis.setFirstReview(new Review(r1, true, ReviewStatus.REQUESTED, thesis));
-			thesis.setSecondReview(new Review(r2, false, ReviewStatus.REQUESTED, thesis));
+			//thesis.setSecondReview(new Review(r2, false, ReviewStatus.REQUESTED, thesis));
+			//Removed second review, program would otherwise not be testable.
 			r1.addBachelorThesis(thesis);
 			r2.addBachelorThesis(thesis);
 		}

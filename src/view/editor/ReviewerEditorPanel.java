@@ -18,6 +18,7 @@ import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
 import view.eventsources.ButtonEventSource;
+import view.tableModels.SupervisedThesisTableModel;
 
 @SuppressWarnings("deprecation")
 public class ReviewerEditorPanel extends AbstractView {
@@ -40,6 +41,7 @@ public class ReviewerEditorPanel extends AbstractView {
 	 * 
 	 * @param viewId Unique viewId from {@link ViewId}
 	 * @param title  Needs a title
+	 * @param model  Needs the model as data access
 	 */
 	public ReviewerEditorPanel(ViewId id, String title, Model model) {
 		super(id, title);

@@ -34,6 +34,7 @@ public class ApplicationStateController {
 				new ReviewerOverviewStateController(view, this, model));
 		stateControllers.put(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorStateController(view, this, model));
 		stateControllers.put(ApplicationState.STATE_CHOOSER, new StateChooserStateController(view, this, model));
+		stateControllers.put(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentStateController(view, this, model));
 
 		//TODO add nav stack
 		this.view.atAnyState().addEventHandler(EventId.BACK,

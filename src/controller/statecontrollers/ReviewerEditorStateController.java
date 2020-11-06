@@ -38,8 +38,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 
 	private void addThesis(Supplier<?>[] params) {
 		Logger.getLogger(ReviewerEditorStateController.class.getName()).info(String.format("Starting add-thesis on Reviewer %s", ((Reviewer) params[0].get()).getName()));
-		//this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.setSelectedThesis()); TODO for editing a thesis
-		switchState(ApplicationState.THESIS_EDITOR);
+		switchState(ApplicationState.THESIS_ASSIGNMENT);
 	}
 
 	private void saveReviewer(Supplier<?>[] params) {
