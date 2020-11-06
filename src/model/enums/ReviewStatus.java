@@ -1,4 +1,4 @@
-package util;
+package model.enums;
 
 public enum ReviewStatus {
 	REQUESTED, APPROVED;

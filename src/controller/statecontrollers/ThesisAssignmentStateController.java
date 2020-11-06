@@ -10,7 +10,7 @@ import model.Model;
 import model.data.BachelorThesis;
 import model.data.Review;
 import model.enums.ApplicationState;
-import util.ReviewStatus;
+import model.enums.ReviewStatus;
 import view.View;
 
 /**

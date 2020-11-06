@@ -1,7 +1,7 @@
 package model.data;
 
 import model.AbstractModel;
-import util.ReviewStatus;
+import model.enums.ReviewStatus;
 
 @SuppressWarnings("deprecation")
 public class Review extends AbstractModel {

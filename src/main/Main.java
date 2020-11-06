@@ -10,7 +10,7 @@ import model.data.Author;
 import model.data.BachelorThesis;
 import model.data.Review;
 import model.data.Reviewer;
-import util.ReviewStatus;
+import model.enums.ReviewStatus;
 import view.View;
 
 public class Main {
