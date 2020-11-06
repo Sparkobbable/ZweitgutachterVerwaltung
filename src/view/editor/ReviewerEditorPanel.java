@@ -31,6 +31,7 @@ public class ReviewerEditorPanel extends AbstractView {
 	private JScrollPane supervisedThesisPane;
 
 	private JTextField nameField;
+	private JTextField maxSupervised;
 	private JButton save;
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
@@ -47,6 +48,7 @@ public class ReviewerEditorPanel extends AbstractView {
 		super(id, title);
 		this.model = model;
 		this.nameField = new JTextField();
+		this.maxSupervised = new JTextField();
 		this.optReviewer = Optional.empty();
 
 		this.setBackground(Color.MAGENTA); // TODO only for component identification, remove before launch
@@ -74,6 +76,7 @@ public class ReviewerEditorPanel extends AbstractView {
 	private void addUIElements() {
 		this.add(this.nameField);
 		this.add(this.supervisedThesisPane);
+		this.add(this.maxSupervised);
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
@@ -90,16 +93,22 @@ public class ReviewerEditorPanel extends AbstractView {
 	public void update(Observable o, Object arg) {
 		if (o.getClass().equals(Model.class)) {
 			this.optReviewer = ((Model) o).getSelectedReviewer();
-			this.nameField.setText(optReviewer.map(reviewer -> reviewer.getName()).orElse(null));
+			optReviewer.ifPresent(this::setReviewerFields);
 			this.supervisedThesisTableModel.setSelectedReviewer(optReviewer);
 			this.optReviewer.ifPresent(reviewer -> addObservables(reviewer));
 		}
 		this.supervisedThesisTableModel.fireTableDataChanged();
 		this.repaint();
 	}
+	
+	private void setReviewerFields(Reviewer reviewer) {
+		this.nameField.setText(reviewer.getName());
+		this.maxSupervised.setText(String.valueOf(reviewer.getMaxSupervisedThesis()));
+	}
 
 	private Reviewer getReviewer() {
 		this.optReviewer.get().setName(this.getNameFieldText());
+		this.optReviewer.get().setMaxSupervisedThesis(Integer.valueOf(this.maxSupervised.getText()));
 		return optReviewer.get();
 	}
 

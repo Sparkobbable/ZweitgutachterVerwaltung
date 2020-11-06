@@ -1,10 +1,7 @@
 package model.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 import model.AbstractModel;
@@ -12,6 +9,7 @@ import model.AbstractModel;
 @SuppressWarnings("deprecation")
 public class Reviewer extends AbstractModel {
 	private String name;
+	private int maxSupervisedThesis;
 	private ArrayList<BachelorThesis> supervised;
 	
 	/**
@@ -70,5 +68,15 @@ public class Reviewer extends AbstractModel {
 		this.name = name;
 		this.setChanged();
 		this.notifyObservers(this);
+	}
+
+	public int getMaxSupervisedThesis() {
+		return maxSupervisedThesis;
+	}
+
+	public void setMaxSupervisedThesis(int maxSupervisedThesis) {
+		this.maxSupervisedThesis = maxSupervisedThesis;
+		this.setChanged();
+		this.notifyObservers();
 	}
 }
