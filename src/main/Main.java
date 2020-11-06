@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import controller.Controller;
 import model.Model;
@@ -65,6 +66,7 @@ public class Main {
 		for (int i = 0; i < 100; i++) {
 			String name = firstname[(int)(Math.random() * firstname.length)] + " " + surname[(int)(Math.random() * surname.length)];
 			Reviewer reviewer = new Reviewer(name);
+			reviewer.setMaxSupervisedThesis(new Random().nextInt(10));
 			reviewerList.add(reviewer);
 		}
 		for(int i = 0; i < topic.length; i++) {
