@@ -64,7 +64,11 @@ public class ThesisAssignmentPanel extends AbstractView {
 	private void createUIElements() {
 			this.thesisTable = new JTable(new ThesisTableModel(this.thesisList));
 			this.thesisScrollPane = new JScrollPane(this.thesisTable);
-			this.addThesis = new JButton(String.format("Zweitgutachten %s zuordnen", this.selectedReviewer.map(reviewer -> reviewer.getName()).orElse("X")));
+			this.addThesis = new JButton(this.getButtonText());
+	}
+
+	protected String getButtonText() {
+		return String.format("Zweitgutachten %s zuordnen", this.selectedReviewer.map(reviewer -> reviewer.getName()).orElse("X"));
 	}
 
 	private void addUIElements() {
@@ -76,9 +80,7 @@ public class ThesisAssignmentPanel extends AbstractView {
 	public void update(Observable o, Object arg) {
 		if (o.getClass().equals(Model.class)) {
 			this.selectedReviewer = ((Model) o).getSelectedReviewer();
-			this.removeAll();
-			this.createUIElements();
-			this.addUIElements();
+			this.addThesis.setText(this.getButtonText());
 		}
 		this.repaint();
 	}
