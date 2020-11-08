@@ -2,7 +2,6 @@ package view;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import model.Action;
 import model.EventSource;
@@ -57,7 +56,6 @@ public class View implements EventSource{
 	 * [Initializes the views and] shows the window.
 	 */
 	public void setVisible() {
-
 		window.setVisible(true);
 	}
 

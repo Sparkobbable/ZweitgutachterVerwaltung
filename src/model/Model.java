@@ -1,9 +1,10 @@
 package model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -14,22 +15,21 @@ import model.enums.ApplicationState;
 /**
  * Data store for all reviewers
  * <p>
- * TODO extend AbstractModel??
  */
-@SuppressWarnings("deprecation") 
-// using the Observable pattern and therefore Observable is encouraged in this project
-public class Model extends Observable {
+public class Model implements ChangeableProperties{
+
+	private PropertyChangeSupport propertyChangeSupport;
 
 	private List<Reviewer> reviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
 
 	public Model() {
-		this.reviewers = new ArrayList<>();
-		this.selectedReviewer = Optional.empty();
+		this(new ArrayList<>());
 	}
 
 	public Model(List<Reviewer> reviewers) {
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.reviewers = reviewers;
 		this.selectedReviewer = Optional.empty();
 	}
@@ -39,19 +39,15 @@ public class Model extends Observable {
 	}
 
 	public void setReviewers(List<Reviewer> reviewers) {
+		List<Reviewer> old = this.reviewers;
 		this.reviewers = reviewers;
+		this.propertyChangeSupport.firePropertyChange("reviewers", old, reviewers);
 	}
 
 	public void addReviewer(Reviewer reviewer) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.add(reviewer);
-		this.setChanged();
-		this.notifyObservers();
-	}
-
-	public void setReviewer(List<Reviewer> reviewer) {
-		this.reviewers = reviewer;
-		this.setChanged();
-		this.notifyObservers();
+		this.propertyChangeSupport.firePropertyChange("reviewers", old, this.reviewers);
 	}
 
 	public Optional<Reviewer> getSelectedReviewer() {
@@ -59,11 +55,9 @@ public class Model extends Observable {
 	}
 
 	public void setSelectedReviewer(Reviewer selectedReviewer) {
-		this.selectedReviewer = Optional.of(selectedReviewer);
-		this.setChanged();
-		this.notifyObservers(); // TODO Maybe pass an eventId to let the views know which change triggered the
-								// observer, not sure if necessary (but would probably increase the performance)
-								// A global observer would then be possible as well
+		Optional<Reviewer> old = this.selectedReviewer;
+		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
+		this.propertyChangeSupport.firePropertyChange("selectedReviewer", old, this.selectedReviewer);
 	}
 
 	public void setSelectedReviewer(int reviewerIndex) {
@@ -74,15 +68,18 @@ public class Model extends Observable {
 		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
 	}
 
-	public void removeByIndex(int rowIdx) {
-		this.reviewers.remove(rowIdx);
-		this.setChanged();
-		this.notifyObservers();
+	public void removeByIndex(int index) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		this.reviewers.remove(index);
+		this.propertyChangeSupport.firePropertyChange("reviewers", old, this.reviewers);
 	}
 
 	public void removeByIndices(int[] indices) {
-		// TODO maybe use an ID system?
-		IntStream.of(indices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).forEach(this::removeByIndex);
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		IntStream.of(indices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).mapToInt(Integer::intValue)
+				.forEach(this.reviewers::remove);
+		this.propertyChangeSupport.firePropertyChange("reviewers", old, this.reviewers);
+
 	}
 
 	public ApplicationState getApplicationState() {
@@ -90,13 +87,14 @@ public class Model extends Observable {
 	}
 
 	public void setApplicationState(ApplicationState applicationState) {
+		ApplicationState old = this.applicationState;
 		this.applicationState = applicationState;
-		this.setChanged();
-		this.notifyObservers();
+		this.propertyChangeSupport.firePropertyChange("applicationState", old, this.applicationState);
 	}
-	
+
 	/**
 	 * Finds all bachelorThesis without a second review
+	 * 
 	 * @return ArrayList of the found bachelorThesis
 	 */
 	public ArrayList<BachelorThesis> getThesisMissingSecReview() {
@@ -109,6 +107,16 @@ public class Model extends Observable {
 			}
 		}
 		return thesisList;
+	}
+
+	/*
+	 * -----------------------------------------------------------------------------
+	 * | Delegate methods to the responsible Objects
+	 * -----------------------------------------------------------------------------
+	 */
+
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		this.propertyChangeSupport.addPropertyChangeListener(pcl);
 	}
 
 }

@@ -1,31 +1,42 @@
 package model.data;
 
-import model.AbstractModel;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * Author of a BachelorThesis
  *
  */
-public class Author extends AbstractModel {
+public class Author {
+	// references
+	private PropertyChangeSupport propertyChangeSupport;
+
+	// descriptors
+	public static final String NAME = "name";
+	public static final String STUDY_GROUP = "studyGroup";
+
+	// data
 	private String name;
 	private String studyGroup;
-	
+
 	/**
 	 * Creates an Author of a BachelorThesis
-	 * @param name Name of the Author
+	 * 
+	 * @param name       Name of the Author
 	 * @param studyGroup StudyGroup of the Author
 	 */
 	public Author(String name, String studyGroup) {
-		this.name = name;
+		this(name);
 		this.studyGroup = studyGroup;
 	}
 
 	/**
 	 * Creates an Author of a BachelorThesis
+	 * 
 	 * @param name Name of the Author
 	 */
 	public Author(String name) {
-		super();
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.name = name;
 	}
 
@@ -38,6 +49,26 @@ public class Author extends AbstractModel {
 	}
 
 	public void setName(String name) {
+		String old = this.name;
 		this.name = name;
+		// Fire PropertyChange after property has changed
+		this.propertyChangeSupport.firePropertyChange(NAME, old, name);
+	}
+
+	public void setStudyGroup(String studyGroup) {
+		String old = this.studyGroup;
+		this.studyGroup = studyGroup;
+		// Fire PropertyChange after property has changed
+		this.propertyChangeSupport.firePropertyChange(STUDY_GROUP, old, studyGroup);
+	}
+
+	/*
+	 * -----------------------------------------------------------------------------
+	 * | Delegate methods to the responsible Objects
+	 * -----------------------------------------------------------------------------
+	 */
+
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		this.propertyChangeSupport.addPropertyChangeListener(pcl);
 	}
 }

@@ -3,7 +3,6 @@ package view.overview;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
-import java.util.Observable;
 import java.util.stream.IntStream;
 
 import javax.swing.JScrollPane;
@@ -11,6 +10,7 @@ import javax.swing.JTable;
 
 import model.EventSource;
 import model.Model;
+import model.data.Reviewer;
 import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
@@ -18,7 +18,6 @@ import view.actions.OverviewTableActions;
 import view.eventsources.TableClickEventSource;
 import view.tableModels.ReviewerOverviewTableModel;
 
-@SuppressWarnings("deprecation")
 public class OverviewPanel extends AbstractView {
 
 	private static final long serialVersionUID = 1L; // TODO remove ?!
@@ -35,8 +34,8 @@ public class OverviewPanel extends AbstractView {
 	 * Creates a view containing a table presenting the reviewers and buttons for
 	 * interacting with the data
 	 * 
-	 * @param viewId    Unique viewId from {@link ViewId}
-	 * @param model Needs the model as the data access
+	 * @param viewId Unique viewId from {@link ViewId}
+	 * @param model  Needs the model as the data access
 	 */
 	public OverviewPanel(ViewId viewId, Model model) {
 		super(viewId, "Dozentenübersicht");
@@ -49,6 +48,7 @@ public class OverviewPanel extends AbstractView {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
+		this.initializePropertyChangeConsumers();
 		addObservables(this.model);
 	}
 
@@ -61,9 +61,9 @@ public class OverviewPanel extends AbstractView {
 		this.tableModel = new ReviewerOverviewTableModel(model);
 		this.reviewerOverviewTable = new JTable(this.tableModel);
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
-		
+
 		this.reviewerOverviewTable.setFillsViewportHeight(true);
-		//TODO observe sorting behavior when bachelor thesis count >= 10
+		// TODO observe sorting behavior when bachelor thesis count >= 10
 		this.reviewerOverviewTable.setAutoCreateRowSorter(true);
 
 	}
@@ -79,8 +79,12 @@ public class OverviewPanel extends AbstractView {
 				.map(this.reviewerOverviewTable::convertRowIndexToModel).toArray();
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
+	@SuppressWarnings("unchecked")
+	private void initializePropertyChangeConsumers() {
+		this.onPropertyChange("reviewers", (evt) -> updateReviewers((List<Reviewer>) evt.getNewValue()));
+	}
+
+	private void updateReviewers(List<Reviewer> reviewers) {
 		this.tableModel.fireTableDataChanged();
 		this.repaint();
 	}

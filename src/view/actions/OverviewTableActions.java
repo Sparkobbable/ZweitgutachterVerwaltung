@@ -3,7 +3,6 @@ package view.actions;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.List;
-import java.util.Observable;
 import java.util.function.Supplier;
 
 import javax.swing.JButton;
@@ -14,7 +13,6 @@ import model.enums.ViewId;
 import view.AbstractView;
 import view.eventsources.ButtonEventSource;
 
-@SuppressWarnings("deprecation")
 public class OverviewTableActions extends AbstractView {
 
 	private static final long serialVersionUID = 1L;
@@ -63,12 +61,6 @@ public class OverviewTableActions extends AbstractView {
 		return List.of(ButtonEventSource.of(EventId.EDIT, edit, reviewerName),
 				ButtonEventSource.of(EventId.DELETE, delete, reviewerName),
 				ButtonEventSource.of(EventId.NEW, newReviewer));
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

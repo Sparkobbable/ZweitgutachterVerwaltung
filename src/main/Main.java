@@ -15,7 +15,6 @@ import view.View;
 
 public class Main {
 
-	//TODO move to main.Main
 		public static void main(String[] args) {
 			Model data = mockReviewerList();
 			View view = new View(data);

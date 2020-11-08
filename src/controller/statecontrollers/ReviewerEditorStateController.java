@@ -1,14 +1,13 @@
 package controller.statecontrollers;
 
-import static model.enums.EventId.SAVE_REVIEWER;
 import static model.enums.EventId.ADD_THESIS;
 import static model.enums.EventId.DELETE_THESIS;
+import static model.enums.EventId.SAVE_REVIEWER;
 
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import model.Model;
-import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 import view.View;
