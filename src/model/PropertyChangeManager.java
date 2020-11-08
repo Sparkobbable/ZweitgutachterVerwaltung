@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class PropertyChangeManager implements PropertyChangeListener {
 
@@ -34,7 +35,9 @@ public class PropertyChangeManager implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println("Source: " + evt.getSource());
 		this.propertyChangeHandlers.computeIfAbsent(evt.getPropertyName(), k -> new ArrayList<>()).stream()
+				.filter(propertyChangeHandler -> propertyChangeHandler.getSource() != null)
 				.filter(propertyChangeHandler -> propertyChangeHandler.getSource() == ANY
 						|| propertyChangeHandler.getSource().equals(evt.getSource()))
 				.forEach(propertyChangeHandler -> propertyChangeHandler.getConsumer().accept(evt));
@@ -48,13 +51,13 @@ public class PropertyChangeManager implements PropertyChangeListener {
 	 * @param propertyName Name of the property to be observed
 	 * @param consumer     Method to be called on property change
 	 */
-	public void onPropertyChange(Object source, String propertyName, Consumer<PropertyChangeEvent> consumer) {
+	public void onPropertyChange(Supplier<Object> source, String propertyName, Consumer<PropertyChangeEvent> consumer) {
 		this.propertyChangeHandlers.computeIfAbsent(propertyName, k -> new ArrayList<>())
 				.add(new PropertyChangeHandler(source, consumer));
 	}
 
 	public void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> consumer) {
-		this.onPropertyChange(ANY, propertyName, consumer);
+		this.onPropertyChange(() -> ANY, propertyName, consumer);
 	}
 
 	/**
@@ -62,16 +65,17 @@ public class PropertyChangeManager implements PropertyChangeListener {
 	 * 
 	 */
 	private class PropertyChangeHandler {
-		private final Object source;
+		private final Supplier<Object> source;
 		private final Consumer<PropertyChangeEvent> consumer;
 
-		public PropertyChangeHandler(Object source, Consumer<PropertyChangeEvent> consumer) {
+		public PropertyChangeHandler(Supplier<Object> source, Consumer<PropertyChangeEvent> consumer) {
 			this.source = source;
 			this.consumer = consumer;
 		}
 
 		public Object getSource() {
-			return source;
+			System.out.println("Expected: " + source.get());
+			return source.get();
 		}
 
 		public Consumer<PropertyChangeEvent> getConsumer() {

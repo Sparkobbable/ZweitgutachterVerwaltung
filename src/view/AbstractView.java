@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -139,7 +140,7 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 		this.propertyChangeManager.propertyChange(evt);
 	}
 	
-	public void onPropertyChange(Object source, String propertyName, Consumer<PropertyChangeEvent> delegation) {
+	public void onPropertyChange(Supplier<Object> source, String propertyName, Consumer<PropertyChangeEvent> delegation) {
 		this.propertyChangeManager.onPropertyChange(source, propertyName, delegation);
 	}
 	
