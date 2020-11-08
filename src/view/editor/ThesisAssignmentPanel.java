@@ -35,11 +35,10 @@ public class ThesisAssignmentPanel extends AbstractView {
 	 * second review and other data of the thesis
 	 * 
 	 * @param viewId Unique viewId from {@link ViewId}
-	 * @param title  Needs a title
 	 * @param model  Needs the model as data access
 	 */
-	public ThesisAssignmentPanel(ViewId viewId, String title, Model model) {
-		super(viewId, title);
+	public ThesisAssignmentPanel(ViewId viewId, Model model) {
+		super(viewId, "Bachelorthesis-Editor");
 		this.thesisList = model.getThesisMissingSecReview();
 		this.selectedReviewer = model.getSelectedReviewer();
 

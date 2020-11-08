@@ -39,11 +39,10 @@ public class ReviewerEditorPanel extends AbstractView {
 	 * bachelorThesis and other data of the reviewer
 	 * 
 	 * @param viewId Unique viewId from {@link ViewId}
-	 * @param title  Needs a title
 	 * @param model  Needs the model as data access
 	 */
-	public ReviewerEditorPanel(ViewId id, String title, Model model) {
-		super(id, title);
+	public ReviewerEditorPanel(ViewId id, Model model) {
+		super(id, "Dozenteneditor");
 		this.model = model;
 		this.nameField = new JTextField();
 		this.maxSupervised = new JTextField();
