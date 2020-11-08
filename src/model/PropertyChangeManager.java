@@ -10,19 +10,73 @@ import java.util.function.Consumer;
 
 public class PropertyChangeManager implements PropertyChangeListener {
 
-	public Map<String, List<Consumer<PropertyChangeEvent>>> delegations;
+	/**
+	 * Map which stores a List of PropertyChangeHandler responsible for a Property
+	 * <p>
+	 * Each propertyChangeHandler consists of a consumer method to be called on
+	 * property change as well as the source object whose property change should
+	 * call the method.
+	 * <p>
+	 * The source object is not stored in the map's key since it may not easily be
+	 * accessible (in the future TODO)
+	 */
+	public Map<String, List<PropertyChangeHandler>> propertyChangeHandlers;
+
+	/**
+	 * If this is set as source for a {@link PropertyChangeHandler}, the given
+	 * method will be called on property changes of any object
+	 */
+	private static final Object ANY = new Object();
 
 	public PropertyChangeManager() {
-		this.delegations = new HashMap<>();
+		this.propertyChangeHandlers = new HashMap<>();
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		this.delegations.computeIfAbsent(evt.getPropertyName(), k -> new ArrayList<>()).forEach(c -> c.accept(evt));
+		this.propertyChangeHandlers.computeIfAbsent(evt.getPropertyName(), k -> new ArrayList<>()).stream()
+				.filter(propertyChangeHandler -> propertyChangeHandler.getSource() == ANY
+						|| propertyChangeHandler.getSource().equals(evt.getSource()))
+				.forEach(propertyChangeHandler -> propertyChangeHandler.getConsumer().accept(evt));
 	}
 
-	public void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> delegation) {
-		this.delegations.computeIfAbsent(propertyName, k -> new ArrayList<>()).add(delegation);
+	/**
+	 * Adds a method that will be called when the source Object's property with the
+	 * given name is changed.
+	 * 
+	 * @param source       Object that should be observed
+	 * @param propertyName Name of the property to be observed
+	 * @param consumer     Method to be called on property change
+	 */
+	public void onPropertyChange(Object source, String propertyName, Consumer<PropertyChangeEvent> consumer) {
+		this.propertyChangeHandlers.computeIfAbsent(propertyName, k -> new ArrayList<>())
+				.add(new PropertyChangeHandler(source, consumer));
+	}
+
+	public void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> consumer) {
+		this.onPropertyChange(ANY, propertyName, consumer);
+	}
+
+	/**
+	 * Stores a consumer and a source object
+	 * 
+	 */
+	private class PropertyChangeHandler {
+		private final Object source;
+		private final Consumer<PropertyChangeEvent> consumer;
+
+		public PropertyChangeHandler(Object source, Consumer<PropertyChangeEvent> consumer) {
+			this.source = source;
+			this.consumer = consumer;
+		}
+
+		public Object getSource() {
+			return source;
+		}
+
+		public Consumer<PropertyChangeEvent> getConsumer() {
+			return consumer;
+		}
 	}
 
 }

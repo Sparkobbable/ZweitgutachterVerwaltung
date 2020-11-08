@@ -81,7 +81,7 @@ public class OverviewPanel extends AbstractView {
 
 	@SuppressWarnings("unchecked")
 	private void initializePropertyChangeConsumers() {
-		this.onPropertyChange("reviewers", (evt) -> updateReviewers((List<Reviewer>) evt.getNewValue()));
+		this.onPropertyChange(Model.REVIEWERS, (evt) -> updateReviewers((List<Reviewer>) evt.getNewValue()));
 	}
 
 	private void updateReviewers(List<Reviewer> reviewers) {

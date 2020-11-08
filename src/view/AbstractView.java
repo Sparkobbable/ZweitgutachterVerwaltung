@@ -139,6 +139,10 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 		this.propertyChangeManager.propertyChange(evt);
 	}
 	
+	public void onPropertyChange(Object source, String propertyName, Consumer<PropertyChangeEvent> delegation) {
+		this.propertyChangeManager.onPropertyChange(source, propertyName, delegation);
+	}
+	
 	public void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> delegation) {
 		this.propertyChangeManager.onPropertyChange(propertyName, delegation);
 	}

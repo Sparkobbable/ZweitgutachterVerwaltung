@@ -89,7 +89,7 @@ public class ReviewerEditorPanel extends AbstractView {
 
 	@SuppressWarnings("unchecked")
 	protected void initializePropertyChangeConsumers() {
-		this.onPropertyChange("selectedReviewer",
+		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
 	}
 

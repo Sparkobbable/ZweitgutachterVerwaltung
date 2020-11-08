@@ -80,7 +80,7 @@ public class ThesisAssignmentPanel extends AbstractView {
 
 	@SuppressWarnings("unchecked")
 	private void initializePropertyChangeConsumers() {
-		this.onPropertyChange("selectedReviewer",
+		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
 	}
 

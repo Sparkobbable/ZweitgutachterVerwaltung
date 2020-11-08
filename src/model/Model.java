@@ -20,6 +20,11 @@ public class Model implements ChangeableProperties{
 
 	private PropertyChangeSupport propertyChangeSupport;
 
+	public static final String APPLICATION_STATE = "applicationState";
+
+	public static final String SELECTED_REVIEWER = "selectedReviewer";
+
+	public static final String REVIEWERS = "reviewers";
 	private List<Reviewer> reviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -32,64 +37,6 @@ public class Model implements ChangeableProperties{
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.reviewers = reviewers;
 		this.selectedReviewer = Optional.empty();
-	}
-
-	public List<Reviewer> getReviewers() {
-		return reviewers;
-	}
-
-	public void setReviewers(List<Reviewer> reviewers) {
-		List<Reviewer> old = this.reviewers;
-		this.reviewers = reviewers;
-		this.propertyChangeSupport.firePropertyChange("reviewers", old, reviewers);
-	}
-
-	public void addReviewer(Reviewer reviewer) {
-		List<Reviewer> old = new ArrayList<>(this.reviewers);
-		this.reviewers.add(reviewer);
-		this.propertyChangeSupport.firePropertyChange("reviewers", old, this.reviewers);
-	}
-
-	public Optional<Reviewer> getSelectedReviewer() {
-		return selectedReviewer;
-	}
-
-	public void setSelectedReviewer(Reviewer selectedReviewer) {
-		Optional<Reviewer> old = this.selectedReviewer;
-		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
-		this.propertyChangeSupport.firePropertyChange("selectedReviewer", old, this.selectedReviewer);
-	}
-
-	public void setSelectedReviewer(int reviewerIndex) {
-		this.setSelectedReviewer(this.reviewers.get(reviewerIndex));
-	}
-
-	public Reviewer findReviewerByName(String name) {
-		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
-	}
-
-	public void removeByIndex(int index) {
-		List<Reviewer> old = new ArrayList<>(this.reviewers);
-		this.reviewers.remove(index);
-		this.propertyChangeSupport.firePropertyChange("reviewers", old, this.reviewers);
-	}
-
-	public void removeByIndices(int[] indices) {
-		List<Reviewer> old = new ArrayList<>(this.reviewers);
-		IntStream.of(indices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).mapToInt(Integer::intValue)
-				.forEach(this.reviewers::remove);
-		this.propertyChangeSupport.firePropertyChange("reviewers", old, this.reviewers);
-
-	}
-
-	public ApplicationState getApplicationState() {
-		return applicationState;
-	}
-
-	public void setApplicationState(ApplicationState applicationState) {
-		ApplicationState old = this.applicationState;
-		this.applicationState = applicationState;
-		this.propertyChangeSupport.firePropertyChange("applicationState", old, this.applicationState);
 	}
 
 	/**
@@ -109,14 +56,68 @@ public class Model implements ChangeableProperties{
 		return thesisList;
 	}
 
-	/*
-	 * -----------------------------------------------------------------------------
-	 * | Delegate methods to the responsible Objects
-	 * -----------------------------------------------------------------------------
-	 */
+	public Reviewer findReviewerByName(String name) {
+		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
+	}
 
-	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-		this.propertyChangeSupport.addPropertyChangeListener(pcl);
+	public ApplicationState getApplicationState() {
+		return applicationState;
+	}
+
+	public Optional<Reviewer> getSelectedReviewer() {
+		return selectedReviewer;
+	}
+
+	public List<Reviewer> getReviewers() {
+		return reviewers;
+	}
+
+	public void setApplicationState(ApplicationState applicationState) {
+		ApplicationState old = this.applicationState;
+		this.applicationState = applicationState;
+		this.propertyChangeSupport.firePropertyChange(APPLICATION_STATE, old, this.applicationState);
+	}
+
+	public void setSelectedReviewer(Reviewer selectedReviewer) {
+		Optional<Reviewer> old = this.selectedReviewer;
+		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
+		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
+	}
+
+	public void setSelectedReviewer(int reviewerIndex) {
+		this.setSelectedReviewer(this.reviewers.get(reviewerIndex));
+	}
+
+	public void setReviewers(List<Reviewer> reviewers) {
+		List<Reviewer> old = this.reviewers;
+		this.reviewers = reviewers;
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, reviewers);
+	}
+
+	public void addReviewer(Reviewer reviewer) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		this.reviewers.add(reviewer);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	}
+
+	public void removeByIndex(int index) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		this.reviewers.remove(index);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	}
+
+	public void removeByIndices(int[] indices) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		IntStream.of(indices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).mapToInt(Integer::intValue)
+				.forEach(this.reviewers::remove);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+		this.reviewers.forEach(reviewer -> reviewer.addPropertyChangeListener(propertyChangeListener));
 	}
 
 }
