@@ -1,9 +1,10 @@
 package model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -14,89 +15,33 @@ import model.enums.ApplicationState;
 /**
  * Data store for all reviewers
  * <p>
- * TODO extend AbstractModel??
  */
-@SuppressWarnings("deprecation") 
-// using the Observable pattern and therefore Observable is encouraged in this project
-public class Model extends Observable {
+public class Model implements ChangeableProperties{
 
+	private PropertyChangeSupport propertyChangeSupport;
+
+	public static final String APPLICATION_STATE = "applicationState";
+
+	public static final String SELECTED_REVIEWER = "selectedReviewer";
+
+	public static final String REVIEWERS = "reviewers";
 	private List<Reviewer> reviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
 
 	public Model() {
-		this.reviewers = new ArrayList<>();
-		this.selectedReviewer = Optional.empty();
+		this(new ArrayList<>());
 	}
 
 	public Model(List<Reviewer> reviewers) {
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.reviewers = reviewers;
 		this.selectedReviewer = Optional.empty();
 	}
 
-	public List<Reviewer> getReviewers() {
-		return reviewers;
-	}
-
-	public void setReviewers(List<Reviewer> reviewers) {
-		this.reviewers = reviewers;
-	}
-
-	public void addReviewer(Reviewer reviewer) {
-		this.reviewers.add(reviewer);
-		this.setChanged();
-		this.notifyObservers();
-	}
-
-	public void setReviewer(List<Reviewer> reviewer) {
-		this.reviewers = reviewer;
-		this.setChanged();
-		this.notifyObservers();
-	}
-
-	public Optional<Reviewer> getSelectedReviewer() {
-		return selectedReviewer;
-	}
-
-	public void setSelectedReviewer(Reviewer selectedReviewer) {
-		this.selectedReviewer = Optional.of(selectedReviewer);
-		this.setChanged();
-		this.notifyObservers(); // TODO Maybe pass an eventId to let the views know which change triggered the
-								// observer, not sure if necessary (but would probably increase the performance)
-								// A global observer would then be possible as well
-	}
-
-	public void setSelectedReviewer(int reviewerIndex) {
-		this.setSelectedReviewer(this.reviewers.get(reviewerIndex));
-	}
-
-	public Reviewer findReviewerByName(String name) {
-		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
-	}
-
-	public void removeByIndex(int rowIdx) {
-		this.reviewers.remove(rowIdx);
-		this.setChanged();
-		this.notifyObservers();
-	}
-
-	public void removeByIndices(int[] indices) {
-		// TODO maybe use an ID system?
-		IntStream.of(indices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).forEach(this::removeByIndex);
-	}
-
-	public ApplicationState getApplicationState() {
-		return applicationState;
-	}
-
-	public void setApplicationState(ApplicationState applicationState) {
-		this.applicationState = applicationState;
-		this.setChanged();
-		this.notifyObservers();
-	}
-	
 	/**
 	 * Finds all bachelorThesis without a second review
+	 * 
 	 * @return ArrayList of the found bachelorThesis
 	 */
 	public ArrayList<BachelorThesis> getThesisMissingSecReview() {
@@ -109,6 +54,70 @@ public class Model extends Observable {
 			}
 		}
 		return thesisList;
+	}
+
+	public Reviewer findReviewerByName(String name) {
+		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
+	}
+
+	public ApplicationState getApplicationState() {
+		return applicationState;
+	}
+
+	public Optional<Reviewer> getSelectedReviewer() {
+		return selectedReviewer;
+	}
+
+	public List<Reviewer> getReviewers() {
+		return reviewers;
+	}
+
+	public void setApplicationState(ApplicationState applicationState) {
+		ApplicationState old = this.applicationState;
+		this.applicationState = applicationState;
+		this.propertyChangeSupport.firePropertyChange(APPLICATION_STATE, old, this.applicationState);
+	}
+
+	public void setSelectedReviewer(Reviewer selectedReviewer) {
+		Optional<Reviewer> old = this.selectedReviewer;
+		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
+		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
+	}
+
+	public void setSelectedReviewer(int reviewerIndex) {
+		this.setSelectedReviewer(this.reviewers.get(reviewerIndex));
+	}
+
+	public void setReviewers(List<Reviewer> reviewers) {
+		List<Reviewer> old = this.reviewers;
+		this.reviewers = reviewers;
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, reviewers);
+	}
+
+	public void addReviewer(Reviewer reviewer) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		this.reviewers.add(reviewer);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	}
+
+	public void removeByIndex(int index) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		this.reviewers.remove(index);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	}
+
+	public void removeByIndices(int[] indices) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		IntStream.of(indices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).mapToInt(Integer::intValue)
+				.forEach(this.reviewers::remove);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+		this.reviewers.forEach(reviewer -> reviewer.addPropertyChangeListener(propertyChangeListener));
 	}
 
 }

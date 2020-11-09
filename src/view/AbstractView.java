@@ -1,8 +1,10 @@
 package view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -10,7 +12,9 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import model.Action;
+import model.ChangeableProperties;
 import model.EventSource;
+import model.PropertyChangeManager;
 import model.data.CompositeEventSource;
 import model.enums.EventId;
 import model.enums.ViewId;
@@ -20,8 +24,7 @@ import model.enums.ViewId;
  * {@link MainWindow}
  *
  */
-@SuppressWarnings("deprecation")
-public abstract class AbstractView extends JPanel implements EventSource, Observer {
+public abstract class AbstractView extends JPanel implements EventSource, PropertyChangeListener {
 
 	protected static final Border UNTITLED_BORDER = BorderFactory.createEtchedBorder();
 
@@ -36,7 +39,9 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	/**
 	 * This map stores all event sources in this panel.
 	 */
-	protected CompositeEventSource eventSourceHandler;
+	private CompositeEventSource eventSourceHandler;
+	private PropertyChangeManager propertyChangeManager;
+
 	private String title;
 
 	/**
@@ -51,9 +56,11 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	 * @param title  Title of this view that will be shown on the UI
 	 */
 	public AbstractView(ViewId viewId, String title) {
+		this.eventSourceHandler = new CompositeEventSource();
+		this.propertyChangeManager = new PropertyChangeManager();
 		this.viewId = viewId;
 		this.title = title;
-		this.eventSourceHandler = new CompositeEventSource();
+
 		this.setBorder(titledBorder(title));
 	}
 
@@ -103,16 +110,13 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 		return viewId;
 	}
 
-	@Override
-	public abstract void update(Observable o, Object arg);
-
 	/**
 	 * Adds the current view as an observer to the specified observable values.
 	 * 
 	 * @param observables Needs the values to observer
 	 */
-	protected void addObservables(Observable... observables) {
-		List.of(observables).forEach(o -> o.addObserver(this));
+	protected void addObservables(ChangeableProperties... observables) {
+		List.of(observables).forEach(o -> o.addPropertyChangeListener(this));
 	}
 	/*
 	 * -----------------------------------------------------------------------------
@@ -130,5 +134,19 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	public boolean canOmit(EventId eventId) {
 		return this.eventSourceHandler.canOmit(eventId);
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		this.propertyChangeManager.propertyChange(evt);
+	}
+	
+	public void onPropertyChange(Supplier<Object> source, String propertyName, Consumer<PropertyChangeEvent> delegation) {
+		this.propertyChangeManager.onPropertyChange(source, propertyName, delegation);
+	}
+	
+	public void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> delegation) {
+		this.propertyChangeManager.onPropertyChange(propertyName, delegation);
+	}
+	
 
 }

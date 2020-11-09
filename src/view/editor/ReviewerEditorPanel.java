@@ -3,7 +3,6 @@ package view.editor;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
-import java.util.Observable;
 import java.util.Optional;
 
 import javax.swing.JButton;
@@ -20,7 +19,6 @@ import view.AbstractView;
 import view.eventsources.ButtonEventSource;
 import view.tableModels.SupervisedThesisTableModel;
 
-@SuppressWarnings("deprecation")
 public class ReviewerEditorPanel extends AbstractView {
 	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> optReviewer;
@@ -41,11 +39,10 @@ public class ReviewerEditorPanel extends AbstractView {
 	 * bachelorThesis and other data of the reviewer
 	 * 
 	 * @param viewId Unique viewId from {@link ViewId}
-	 * @param title  Needs a title
 	 * @param model  Needs the model as data access
 	 */
-	public ReviewerEditorPanel(ViewId id, String title, Model model) {
-		super(id, title);
+	public ReviewerEditorPanel(ViewId id, Model model) {
+		super(id, "Dozenteneditor");
 		this.model = model;
 		this.nameField = new JTextField();
 		this.maxSupervised = new JTextField();
@@ -57,6 +54,7 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
+		this.initializePropertyChangeConsumers();
 		this.addObservables(this.model);
 	}
 
@@ -81,7 +79,7 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
 	}
-	
+
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
@@ -89,18 +87,21 @@ public class ReviewerEditorPanel extends AbstractView {
 				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o.getClass().equals(Model.class)) {
-			this.optReviewer = ((Model) o).getSelectedReviewer();
-			optReviewer.ifPresent(this::setReviewerFields);
-			this.supervisedThesisTableModel.setSelectedReviewer(optReviewer);
-			this.optReviewer.ifPresent(reviewer -> addObservables(reviewer));
-		}
+	@SuppressWarnings("unchecked")
+	protected void initializePropertyChangeConsumers() {
+		this.onPropertyChange(Model.SELECTED_REVIEWER,
+				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
+	}
+
+	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
+		this.optReviewer = selectedReviewer;
+		this.optReviewer.ifPresent(this::setReviewerFields);
+		this.supervisedThesisTableModel.setSelectedReviewer(optReviewer);
+		this.optReviewer.ifPresent(reviewer -> addObservables(reviewer));
 		this.supervisedThesisTableModel.fireTableDataChanged();
 		this.repaint();
 	}
-	
+
 	private void setReviewerFields(Reviewer reviewer) {
 		this.nameField.setText(reviewer.getName());
 		this.maxSupervised.setText(String.valueOf(reviewer.getMaxSupervisedThesis()));
@@ -115,7 +116,7 @@ public class ReviewerEditorPanel extends AbstractView {
 	private String getNameFieldText() {
 		return this.nameField.getText();
 	}
-	
+
 	private int[] getThesis() {
 		return this.supervisedThesisTable.getSelectedRows();
 	}

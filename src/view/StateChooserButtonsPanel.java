@@ -2,9 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.util.List;
-import java.util.Observable;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 import model.EventSource;
@@ -44,11 +42,4 @@ public class StateChooserButtonsPanel extends AbstractView{
 				new ButtonEventSource(EventId.LOAD_STATE, loadState),
 				new ButtonEventSource(EventId.SAVE_STATE, saveState));
 	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

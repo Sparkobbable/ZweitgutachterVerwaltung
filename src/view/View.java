@@ -2,7 +2,6 @@ package view;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import model.Action;
 import model.EventSource;
@@ -40,9 +39,9 @@ public class View implements EventSource{
 
 		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new OverviewPanel(ViewId.OVERVIEW_TABLE, model));
-		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, "Dozenteneditor", model));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, model));
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));
-		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(ViewId.THESIS_ASSIGNMENT, "Bachelorthesis-Editor", model));
+		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(ViewId.THESIS_ASSIGNMENT, model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
 
 	}
@@ -57,7 +56,6 @@ public class View implements EventSource{
 	 * [Initializes the views and] shows the window.
 	 */
 	public void setVisible() {
-
 		window.setVisible(true);
 	}
 

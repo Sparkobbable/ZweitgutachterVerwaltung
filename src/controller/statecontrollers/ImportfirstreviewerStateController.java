@@ -9,7 +9,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import controller.JSONController;
 import model.Model;
 import model.data.BachelorThesis;
-import model.data.Review;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
