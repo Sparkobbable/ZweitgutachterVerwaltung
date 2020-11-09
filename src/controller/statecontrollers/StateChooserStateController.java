@@ -1,6 +1,9 @@
 package controller.statecontrollers;
 
+import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
@@ -24,7 +27,10 @@ public class StateChooserStateController extends AbstractStateController {
 	
 	public StateChooserStateController(View view, ApplicationStateController applicationStateController, Model model) {
 		super(ApplicationState.STATE_CHOOSER, view, applicationStateController, model);
-		filepath = "systemstate.json";
+		
+		GregorianCalendar now = new GregorianCalendar();
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + df.format(now.getTime()) + ".json";
 	}
 	
 	@Override
@@ -39,11 +45,11 @@ public class StateChooserStateController extends AbstractStateController {
 	 * @param params
 	 */
 	private void loadState() {
-			JSONController json = new JSONController(filepath);
-			ArrayList<Reviewer> reviewers = json.loadReviewers();
-			if(reviewers != null) {
-				this.model.setReviewers(reviewers);
-			}
+		JSONController json = new JSONController(filepath);
+		ArrayList<Reviewer> reviewers = json.loadReviewers();
+		if(!reviewers.isEmpty()) {
+			this.model.setReviewers(reviewers);
+		}
 	}
 	
 	/**
@@ -51,12 +57,30 @@ public class StateChooserStateController extends AbstractStateController {
 	 * @param params
 	 */
 	private void saveState() {
+		File file = new File(filepath);
+		if(file.exists()) {
 			JSONController json = new JSONController(filepath);
 			json.saveReviewers(model.getReviewers());
+			System.out.println("Der Systemzustand wurde erfolgreich unter \"" + filepath + "\" gespeichert.");
+		} else {
+			System.out.println("Die ausgewählte Datei existiert nicht.");
+		}
 	}
 	
 	private void setFilePath(String filepath) {
-		this.filepath = filepath;
-		System.out.println(filepath);
+		if(filepath.substring(filepath.length() - 5, filepath.length()).equals(".json")) {
+			this.filepath = filepath;
+			System.out.println("Dateipfad \"" + this.filepath + "\" wurde erfolgreich geändert");
+		} else {
+			if(filepath.contains(".")) {
+				this.filepath = filepath.substring(0, filepath.indexOf(".")) + ".json";
+				System.out.println("Dateipfad \"" + this.filepath + "\" wurde erfolgreich geändert");
+			} else {
+				this.filepath = filepath + ".json";
+				System.out.println("Dateipfad \"" + this.filepath + "\" wurde erfolgreich geändert");
+			}
+			
+		}
+		
 	}
 }

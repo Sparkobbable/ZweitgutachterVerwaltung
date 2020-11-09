@@ -109,14 +109,14 @@ public class JSONController {
 				return createObjects(object.getJsonArray("reviewers"));
 			} else {
 				System.out.println("Error: Die geladene Json Datei beinhaltet keinen Systemstatus");
-				return null;
+				return new ArrayList<Reviewer>();
 			}
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new ArrayList<Reviewer>();
 	}
 	
 	/**

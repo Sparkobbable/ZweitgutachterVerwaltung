@@ -40,6 +40,7 @@ public class StateChooserPanel extends AbstractView {
 		
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Json Datei", "json");
 		chooseJson.setFileFilter(filter);
+		chooseJson.setApproveButtonText("Select");
 	}
 	
 	@Override
