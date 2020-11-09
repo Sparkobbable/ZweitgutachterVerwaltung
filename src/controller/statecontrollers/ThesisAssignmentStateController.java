@@ -32,7 +32,7 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 	private void addThesis(Supplier<?>[] params) {
 		int[] thesisIndices = (int[]) params[0].get();
 		IntStream.of(thesisIndices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).forEach(this::setThesis);
-		switchState(ApplicationState.REVIEWER_EDITOR);
+		switchToLastVisitedState();
 	}
 
 	private void setThesis(Integer idx) {
