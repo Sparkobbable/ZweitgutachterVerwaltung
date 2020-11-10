@@ -92,8 +92,9 @@ public class JSONController {
 	/**
 	 * Loads all reviewers including every other Object from the Json file.
 	 * @return ArrayList including all objects from the Json file
+	 * @throws Exception when the loaded Json file is not in the correct format
 	 */
-	public ArrayList<Reviewer> loadReviewers() {
+	public ArrayList<Reviewer> loadReviewers() throws Exception {
 		FileReader fr;
 		JsonStructure struct;
 		try {
@@ -108,8 +109,7 @@ public class JSONController {
 				JsonObject object = (JsonObject) value;
 				return createObjects(object.getJsonArray("reviewers"));
 			} else {
-				System.out.println("Error: Die geladene Json Datei beinhaltet keinen Systemstatus");
-				return new ArrayList<Reviewer>();
+				throw new Exception("Die geladene Json Datei beinhaltet keinen Systemstatus");
 			}
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
@@ -139,13 +139,21 @@ public class JSONController {
 				
 				BachelorThesis thesis = new BachelorThesis(jThesis.getString("topic"), author);
 				
-				JsonObject jFirstReview = jThesis.getJsonObject("firstReview");
-				Review firstReview = new Review(reviewer, true, ReviewStatus.valueOf(jFirstReview.getString("status")), thesis);
-				thesis.setFirstReview(firstReview);
+				try {
+					JsonObject jFirstReview = jThesis.getJsonObject("firstReview");
+					Review firstReview = new Review(reviewer, true, ReviewStatus.valueOf(jFirstReview.getString("status")), thesis);
+					thesis.setFirstReview(firstReview);
+				} catch(NullPointerException e) {
+					
+				}
 				
-				JsonObject jSecondReview = jThesis.getJsonObject("secondReview");
-				Review secondReview = new Review(reviewer, false, ReviewStatus.valueOf(jSecondReview.getString("status")), thesis);
-				thesis.setSecondReview(secondReview);
+				try {
+					JsonObject jSecondReview = jThesis.getJsonObject("secondReview");
+					Review secondReview = new Review(reviewer, false, ReviewStatus.valueOf(jSecondReview.getString("status")), thesis);
+					thesis.setSecondReview(secondReview);
+				} catch(NullPointerException e) {
+					
+				}
 				reviewer.addBachelorThesis(thesis);
 			}
 			result.add(reviewer);
