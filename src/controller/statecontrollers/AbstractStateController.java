@@ -58,6 +58,13 @@ public abstract class AbstractStateController {
 	public void switchState(ApplicationState state) {
 		applicationStateController.switchState(state);
 	}
+	
+	/**
+	 * Switches to the last visited {@link ApplicationState}
+	 */
+	protected void switchToLastVisitedState() {
+		applicationStateController.switchToLastVisitedState();
+	}
 
 	/**
 	 * Registers each event possibly occurring in this state by defining an action

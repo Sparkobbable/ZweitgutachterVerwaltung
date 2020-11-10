@@ -44,9 +44,16 @@ public class ApplicationStateController {
 		stateControllers.put(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentStateController(view, this, model));
 
 		this.view.atAnyState().addEventHandler(EventId.BACK,
-				(params) -> this.switchState(this.getLastVisitedState()));
-	}
+				(params) -> switchToLastVisitedState());
+		}
 
+	/**
+	* Switches to the last visited {@link ApplicationState}
+	*/
+	public void switchToLastVisitedState() {
+		this.switchState(this.getLastVisitedState());
+	}
+	
 	/**
 	 * Switches to a new ApplicationState
 	 * 

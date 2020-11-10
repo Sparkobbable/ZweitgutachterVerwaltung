@@ -48,7 +48,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 			model.removeByIndex(index);
 		}
 		model.addReviewer((Reviewer) params[0].get());
-		switchState(ApplicationState.REVIEWER_OVERVIEW);
+		switchToLastVisitedState();
 	}
 
 }
