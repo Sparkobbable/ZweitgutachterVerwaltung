@@ -16,6 +16,7 @@ import model.enums.ViewId;
 import view.AbstractView;
 import view.actions.OverviewTableActions;
 import view.eventsources.TableClickEventSource;
+import view.tableModels.ProgressRenderer;
 import view.tableModels.ReviewerOverviewTableModel;
 
 public class OverviewPanel extends AbstractView {
@@ -60,6 +61,7 @@ public class OverviewPanel extends AbstractView {
 	protected void createUIElements() {
 		this.tableModel = new ReviewerOverviewTableModel(model);
 		this.reviewerOverviewTable = new JTable(this.tableModel);
+		this.reviewerOverviewTable.getColumnModel().getColumn(2).setCellRenderer(new ProgressRenderer());
 		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
 
 		this.reviewerOverviewTable.setFillsViewportHeight(true);

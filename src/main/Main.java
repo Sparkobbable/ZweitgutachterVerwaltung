@@ -65,7 +65,7 @@ public class Main {
 		for (int i = 0; i < 100; i++) {
 			String name = firstname[(int)(Math.random() * firstname.length)] + " " + surname[(int)(Math.random() * surname.length)];
 			Reviewer reviewer = new Reviewer(name);
-			reviewer.setMaxSupervisedThesis(new Random().nextInt(10));
+			reviewer.setMaxSupervisedThesis(new Random().nextInt(10) + 1);
 			reviewerList.add(reviewer);
 		}
 		for(int i = 0; i < topic.length; i++) {
@@ -85,6 +85,9 @@ public class Main {
 			//Removed second review, program would otherwise not be testable.
 			r1.addBachelorThesis(thesis);
 			r2.addBachelorThesis(thesis);
+			
+			r1.setMaxSupervisedThesis(r1.getMaxSupervisedThesis() + 1);
+			r2.setMaxSupervisedThesis(r2.getMaxSupervisedThesis() + 1);
 		}
 		return new Model(reviewerList);
 	}

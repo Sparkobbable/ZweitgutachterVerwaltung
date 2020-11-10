@@ -1,11 +1,13 @@
 package view.tableModels;
 
+import javax.swing.JProgressBar;
 import javax.swing.table.AbstractTableModel;
 
 import model.Model;
 import model.data.Reviewer;
 
 public class ReviewerOverviewTableModel extends AbstractTableModel {
+	private static final String OCCUPATION = "Auslastung";
 	private static final long serialVersionUID = 1L;
 	private Model data;
 	
@@ -18,6 +20,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 	 */
 	public ReviewerOverviewTableModel(Model data) {
 		this.data = data;
+		this.findColumn(OCCUPATION);
 	}
 
 	@Override
@@ -27,6 +30,8 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 			return "Name";
 		case 1:
 			return "Anzahl betreute Bachelorarbeiten";
+		case 2:
+			return OCCUPATION;
 		default:
 			return "";
 		}
@@ -39,7 +44,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -50,6 +55,8 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 			return reviewer.getName();
 		case 1:
 			return reviewer.getSupervisedThesis().size();
+		case 2:
+			return (int) (reviewer.getOccupation() * 100);
 		default:
 			return null;
 		}

@@ -20,6 +20,7 @@ public class Reviewer implements ChangeableProperties {
 	// Data
 	private String name;
 	private int maxSupervisedThesis;
+	private float occupation;
 	private ArrayList<BachelorThesis> supervised;
 
 	/**
@@ -48,6 +49,11 @@ public class Reviewer implements ChangeableProperties {
 		return maxSupervisedThesis;
 	}
 
+	/**
+	 * Never add a Thesis by adding it to the by this method returned ArrayList.
+	 * Use instead {@link Reviewer#addBachelorThesis(BachelorThesis)}
+	 * @return Returns the ArrayList of supervised bachelorThesis only for reading.
+	 */
 	public ArrayList<BachelorThesis> getSupervisedThesis() {
 		return this.supervised;
 	}
@@ -61,12 +67,15 @@ public class Reviewer implements ChangeableProperties {
 	public void setMaxSupervisedThesis(int maxSupervisedThesis) {
 		int old = this.maxSupervisedThesis;
 		this.maxSupervisedThesis = maxSupervisedThesis;
+		this.maxSupervisedThesis = maxSupervisedThesis;
+		this.occupation = (float) this.supervised.size() / this.maxSupervisedThesis;
 		this.propertyChangeSupport.firePropertyChange(MAX_SUPERVISED_THESES, old, maxSupervisedThesis);
 	}
 
 	public void addBachelorThesis(BachelorThesis bachelorThesis) {
 		ArrayList<BachelorThesis> old = new ArrayList<>(this.supervised);
 		this.supervised.add(bachelorThesis);
+		this.occupation = (float) this.supervised.size() / this.maxSupervisedThesis;
 		this.propertyChangeSupport.firePropertyChange(SUPERVISED_THESES, old, this.supervised);
 	}
 
@@ -86,5 +95,9 @@ public class Reviewer implements ChangeableProperties {
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+	}
+
+	public float getOccupation() {
+		return occupation;
 	}
 }
