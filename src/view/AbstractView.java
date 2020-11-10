@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -79,6 +80,23 @@ public abstract class AbstractView extends JPanel implements EventSource, Observ
 	 * @return A list of all EventSources that shall be registered
 	 */
 	protected abstract List<EventSource> getEventSources();
+	
+	/**
+	 * Creates a pop-up with a notification of the given type.
+	 * If the given type is a QUESTION_MESSAGE the pop-up will have Options to choose.
+	 * 
+	 * @param message Message shown in the pop-up
+	 * @param messageType Must be part of the {@link JOptionPane} values
+	 * @return Chosen option or an open confirmation if the messageType is not QUESTION_MESSAGE 
+	 */
+	public int alert(String message, int messageType) {
+		if(messageType == JOptionPane.QUESTION_MESSAGE) {
+			return JOptionPane.showConfirmDialog(this, message, "thesisSpace", JOptionPane.YES_NO_OPTION);
+		} else {
+			JOptionPane.showMessageDialog(this, message, "thesisSpace", messageType);
+			return JOptionPane.CLOSED_OPTION;
+		}
+	}
 
 	/**
 	 * Detects if this view has already been initialized to prevent repeated

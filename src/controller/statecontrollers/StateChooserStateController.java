@@ -1,7 +1,11 @@
 package controller.statecontrollers;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
+import javax.swing.JOptionPane;
 
 import controller.JSONController;
 import model.Model;
@@ -20,7 +24,9 @@ public class StateChooserStateController extends AbstractStateController {
 	
 	public StateChooserStateController(View view, ApplicationStateController applicationStateController, Model model) {
 		super(ApplicationState.STATE_CHOOSER, view, applicationStateController, model);
-		filepath = "systemstate.json";
+		GregorianCalendar now = new GregorianCalendar();
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + df.format(now.getTime()) + ".json";
 	}
 	
 	@Override
@@ -35,11 +41,20 @@ public class StateChooserStateController extends AbstractStateController {
 	 * @param params
 	 */
 	private void loadState() {
-		JSONController json = new JSONController(filepath);
-		ArrayList<Reviewer> reviewers = json.loadReviewers();
-		if(!reviewers.isEmpty()) {
-			this.model.setReviewers(reviewers);
+		File file = new File(filepath);
+		if(file.exists()) {
+			JSONController json = new JSONController(filepath);
+			try {
+				ArrayList<Reviewer> reviewers = json.loadReviewers();
+				this.model.setReviewers(reviewers);
+				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Systemstatus wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
+			} catch(Exception e) {
+				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
 		}
+		
 	}
 	
 	/**
@@ -49,27 +64,33 @@ public class StateChooserStateController extends AbstractStateController {
 	private void saveState() {
 		File file = new File(filepath);
 		if(file.exists()) {
+			int result = this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Die Datei exisiert bereits. \n Wollen Sie diese überschreiben?", JOptionPane.QUESTION_MESSAGE);
+			if(result == JOptionPane.YES_OPTION) {
+				JSONController json = new JSONController(filepath);
+				json.saveReviewers(model.getReviewers());
+				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Speichern des Systemzustands wurde abgebrochen", JOptionPane.INFORMATION_MESSAGE);
+			}
+		} else {
 			JSONController json = new JSONController(filepath);
 			json.saveReviewers(model.getReviewers());
-			System.out.println("Der Systemzustand wurde erfolgreich unter \"" + filepath + "\" gespeichert.");
-		} else {
-			System.out.println("Die ausgewählte Datei existiert nicht.");
+			this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
 	private void setFilePath(String filepath) {
 		if(filepath.substring(filepath.length() - 5, filepath.length()).equals(".json")) {
 			this.filepath = filepath;
-			System.out.println("Dateipfad \"" + this.filepath + "\" wurde erfolgreich geändert");
+			this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			if(filepath.contains(".")) {
 				this.filepath = filepath.substring(0, filepath.indexOf(".")) + ".json";
-				System.out.println("Dateipfad \"" + this.filepath + "\" wurde erfolgreich geändert");
+				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Dder Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				this.filepath = filepath + ".json";
-				System.out.println("Dateipfad \"" + this.filepath + "\" wurde erfolgreich geändert");
+				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 			}
-			
 		}
 	}
 }

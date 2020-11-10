@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.JSONController;
@@ -41,9 +42,14 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 			String path = chooser.getSelectedFile().getAbsolutePath();
 			
 			JSONController json = new JSONController(path);
-			ArrayList<Reviewer> reviewers = json.loadReviewers();
-			if(reviewers != null) {
+			/*@Leonie die Änderung musste ich machen, weil ich im JsonController was ändern müsste.
+			 * Bin mir aber nicht ganz sicher, ob dich das wirklich betrifft, wenn du fertig bist.
+			 */
+			try {
+				ArrayList<Reviewer> reviewers = json.loadReviewers();
 				this.model.setReviewers(reviewers);
+			} catch(Exception e) {
+				this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Es ist ein Fehler beim Laden der Erstgutachter aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	
