@@ -10,6 +10,7 @@ import model.AbstractModel;
 public class Reviewer extends AbstractModel {
 	private String name;
 	private int maxSupervisedThesis;
+	private float occupation;
 	private ArrayList<BachelorThesis> supervised;
 	
 	/**
@@ -36,16 +37,22 @@ public class Reviewer extends AbstractModel {
 	public Reviewer(String name, BachelorThesis bachelorThesis) {
 		this.name = name;
 		ArrayList<BachelorThesis> supervised = new ArrayList<BachelorThesis>();
-		supervised.add(bachelorThesis);
+		this.addBachelorThesis(bachelorThesis);
 		this.supervised = supervised;
 	}
 
 	public void addBachelorThesis(BachelorThesis bachelorThesis) {
 		this.supervised.add(bachelorThesis);
+		this.occupation = (float) this.supervised.size() / this.maxSupervisedThesis;
 		this.setChanged();
 		this.notifyObservers();
 	}
 	
+	/**
+	 * Never add a Thesis by adding it to the by this method returned ArrayList.
+	 * Use instead {@link Reviewer#addBachelorThesis(BachelorThesis)}
+	 * @return Returns the ArrayList of supervised bachelorThesis only for reading.
+	 */
 	public ArrayList<BachelorThesis> getSupervisedThesis() {
 		return this.supervised;
 	}
@@ -76,7 +83,12 @@ public class Reviewer extends AbstractModel {
 
 	public void setMaxSupervisedThesis(int maxSupervisedThesis) {
 		this.maxSupervisedThesis = maxSupervisedThesis;
+		this.occupation = (float) this.supervised.size() / this.maxSupervisedThesis;
 		this.setChanged();
 		this.notifyObservers();
+	}
+
+	public float getOccupation() {
+		return occupation;
 	}
 }
