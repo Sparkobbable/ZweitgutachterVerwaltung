@@ -3,7 +3,6 @@ package view;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
-import java.util.Observable;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,11 +51,5 @@ public class StateChooserPanel extends AbstractView {
 	
 	private String getFilePath() {
 		return chooseJson.getSelectedFile().getAbsolutePath();
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 	}
 }

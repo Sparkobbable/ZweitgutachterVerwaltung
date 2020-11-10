@@ -1,14 +1,7 @@
 package controller.statecontrollers;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.JSONController;
 import model.Model;
@@ -27,10 +20,7 @@ public class StateChooserStateController extends AbstractStateController {
 	
 	public StateChooserStateController(View view, ApplicationStateController applicationStateController, Model model) {
 		super(ApplicationState.STATE_CHOOSER, view, applicationStateController, model);
-		
-		GregorianCalendar now = new GregorianCalendar();
-		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + df.format(now.getTime()) + ".json";
+		filepath = "systemstate.json";
 	}
 	
 	@Override
@@ -81,6 +71,5 @@ public class StateChooserStateController extends AbstractStateController {
 			}
 			
 		}
-		
 	}
 }
