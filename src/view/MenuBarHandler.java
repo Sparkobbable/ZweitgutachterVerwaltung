@@ -1,33 +1,35 @@
 package view;
 
-import java.awt.Dimension;
-
+import javax.swing.JButton;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 import model.Action;
 import model.EventSource;
 import model.data.CompositeEventSource;
 import model.enums.EventId;
-import view.eventsources.MenuItemEventSource;
+import view.eventsources.ButtonEventSource;
 
 public class MenuBarHandler extends JMenuBar implements EventSource {
 
 	private static final long serialVersionUID = 1L;
 	private CompositeEventSource eventSourceHandler;
-	private JMenuItem back;
+	private JButton back;
 
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
-		this.back = new JMenuItem("Zurück");
-		this.back.setMaximumSize(new Dimension((int) this.back.getPreferredSize().getWidth(),
-				(int) this.back.getMaximumSize().getHeight()));
+		this.back = new JButton("Zurück");
+		this.back.setOpaque(true);
+		this.back.setContentAreaFilled(false);
+		this.back.setBorderPainted(false);
+		this.back.setFocusable(false);
 		this.add(back);
+
 		this.registerEventSources();
 	}
 
 	protected void registerEventSources() {
-		this.eventSourceHandler.register(new MenuItemEventSource(EventId.BACK, back));
+		this.eventSourceHandler.register(new ButtonEventSource(EventId.BACK, back));
+
 	}
 
 	/*
