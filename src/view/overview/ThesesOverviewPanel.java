@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
 import model.Model;
 import model.data.BachelorThesis;
 import model.enums.ViewId;
-import view.actions.ThesesOverviewTableActions;
 import view.tableModels.ThesisOverviewTableModel;
 
 public class ThesesOverviewPanel extends OverviewPanel {
@@ -25,7 +24,7 @@ public class ThesesOverviewPanel extends OverviewPanel {
 	 */
 	public ThesesOverviewPanel(ViewId viewId, Model model) {
 		super(viewId, model, "Bachelorthesis-Übersicht");
-		this.actions = new ThesesOverviewTableActions(ViewId.ACTIONS, () -> getSelectedRowIndex());
+		this.actions = new ThesesOverviewActionPanel(ViewId.ACTIONS, () -> getSelectedRowIndex());
 		this.thesisList = model.getThesisMissingSecReview();
 
 		addObservables(model);

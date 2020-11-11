@@ -2,7 +2,6 @@ package view.overview;
 
 import model.Model;
 import model.enums.ViewId;
-import view.actions.OverviewTableActions;
 import view.tableModels.ProgressRenderer;
 import view.tableModels.ReviewerOverviewTableModel;
 
@@ -19,7 +18,7 @@ public class ReviewerOverviewPanel extends OverviewPanel {
 	 */
 	public ReviewerOverviewPanel(ViewId viewId, Model model) {
 		super(viewId, model, "Dozentenübersicht");
-		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedRowIndex());
+		this.actions = new ReviewerOverviewActionPanel(ViewId.ACTIONS, () -> getSelectedRowIndex());
 
 		this.createUIElements();
 		this.addUIElements();
