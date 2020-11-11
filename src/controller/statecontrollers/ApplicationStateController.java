@@ -30,7 +30,7 @@ public class ApplicationStateController {
 	 * Navigation stack which stores the visited ApplicationStates
 	 */
 	private Stack<ApplicationState> visitedStates;
-	
+
 	public ApplicationStateController(Model model, View view) {
 		this.view = view;
 		this.model = model;
@@ -41,10 +41,11 @@ public class ApplicationStateController {
 				new ReviewerOverviewStateController(view, this, model));
 		stateControllers.put(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorStateController(view, this, model));
 		stateControllers.put(ApplicationState.STATE_CHOOSER, new StateChooserStateController(view, this, model));
-		stateControllers.put(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentStateController(view, this, model));
-
-		this.view.atAnyState().addEventHandler(EventId.BACK,
-				(params) -> switchToLastVisitedState());
+		stateControllers.put(ApplicationState.THESIS_ASSIGNMENT,
+				new ThesisAssignmentStateController(view, this, model));
+		stateControllers.put(ApplicationState.FIRSTREVIEWER_IMPORT,
+				new ImportfirstreviewerStateController(view, this, model));
+		this.view.atAnyState().addEventHandler(EventId.BACK, (params) -> switchToLastVisitedState());
 	}
 
 	/**
@@ -64,23 +65,24 @@ public class ApplicationStateController {
 				.info(String.format("Switched to ApplicationState: %s", applicationState));
 		this.model.setApplicationState(applicationState);
 		view.switchState(applicationState); // TODO remove, add observer
-		
-		if(this.visitedStates.empty() || !this.visitedStates.peek().equals(applicationState)) {
+
+		if (this.visitedStates.empty() || !this.visitedStates.peek().equals(applicationState)) {
 			this.visitedStates.push(applicationState);
 		}
 	}
-	
+
 	/**
-	 * Sets the first ApplicationState in the navigation stack to the one before and returns it
+	 * Sets the first ApplicationState in the navigation stack to the one before and
+	 * returns it
 	 * 
 	 * @return ApplicationState Last visited ApplicatonState
 	 */
 	private ApplicationState getLastVisitedState() {
-		if(this.visitedStates.empty()) {
+		if (this.visitedStates.empty()) {
 			return ApplicationState.HOME;
 		} else {
 			this.visitedStates.pop().toString();
-			if(this.visitedStates.empty()) {
+			if (this.visitedStates.empty()) {
 				return ApplicationState.HOME;
 			} else {
 				return this.visitedStates.peek();
