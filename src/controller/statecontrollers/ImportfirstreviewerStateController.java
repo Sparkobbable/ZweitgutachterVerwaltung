@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controller.CSVController;
 import controller.JSONController;
 import model.Model;
 import model.data.BachelorThesis;
@@ -42,15 +43,16 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 		File file = new File(filepath);
 		if(file.exists()) {
 			//TODO in CSVController
-			JSONController json = new JSONController(filepath);
+			CSVController csv = new CSVController(filepath);
 			try {
-				ArrayList<Reviewer> reviewers = json.loadReviewers();
+				ArrayList<Reviewer> reviewers = csv.loadcsvImport();
 				this.model.setReviewers(reviewers);
+				this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Die Datei wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
 				} catch(Exception e) {
-				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
+				this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Es ist ein Fehler beim Laden der Datei aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
-			this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
+			this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
 		}
 	
 	}
