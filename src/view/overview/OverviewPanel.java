@@ -1,94 +1,79 @@
 package view.overview;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 
 import model.EventSource;
 import model.Model;
-import model.data.Reviewer;
 import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
-import view.actions.OverviewTableActions;
 import view.eventsources.TableClickEventSource;
 import view.tableModels.ProgressRenderer;
-import view.tableModels.ReviewerOverviewTableModel;
+import view.tableModels.ThesisOverviewTableModel;
 
-public class OverviewPanel extends AbstractView {
+public abstract class OverviewPanel extends AbstractView {
 
-	private static final long serialVersionUID = 1L; // TODO remove ?!
+	private static final long serialVersionUID = 1L;
 
-	private Model model;
+	protected Model model;
 
 	// UI-components
-	private ReviewerOverviewTableModel tableModel;
-	private JTable reviewerOverviewTable;
-	private JScrollPane reviewerOverviewScrollPane;
-	private OverviewTableActions actions;
+	protected AbstractTableModel tableModel;
+	protected JTable table;
+	protected JScrollPane tableScrollPane;
+	protected AbstractView actions;
 
-	/**
-	 * Creates a view containing a table presenting the reviewers and buttons for
-	 * interacting with the data
-	 * 
-	 * @param viewId Unique viewId from {@link ViewId}
-	 * @param model  Needs the model as the data access
-	 */
-	public OverviewPanel(ViewId viewId, Model model) {
-		super(viewId, "Dozentenübersicht");
+	public OverviewPanel(ViewId viewId, Model model, String title) {
+		super(viewId, title);
 		this.model = model;
-		this.actions = new OverviewTableActions(ViewId.ACTIONS, () -> getSelectedReviewerIds());
-
 		this.setLayout(new BorderLayout());
-		this.setBackground(Color.YELLOW); // TODO only for component identification, remove before launch
 
-		this.createUIElements();
-		this.addUIElements();
-		this.registerEventSources();
-		this.initializePropertyChangeConsumers();
-		addObservables(this.model);
 	}
 
-	private void addUIElements() {
-		this.add(this.reviewerOverviewScrollPane, BorderLayout.CENTER);
+	protected abstract AbstractTableModel createTableModel();
+
+	protected void addUIElements() {
+		this.add(this.tableScrollPane, BorderLayout.CENTER);
 		this.add(this.actions, BorderLayout.PAGE_END);
 	}
 
 	protected void createUIElements() {
-		this.tableModel = new ReviewerOverviewTableModel(model);
-		this.reviewerOverviewTable = new JTable(this.tableModel);
-		this.reviewerOverviewTable.getColumnModel().getColumn(2).setCellRenderer(new ProgressRenderer());
-		this.reviewerOverviewScrollPane = new JScrollPane(this.reviewerOverviewTable);
+		this.tableModel = createTableModel();
+		this.table = new JTable(this.tableModel);
+		this.tableScrollPane = new JScrollPane(this.table);
 
-		this.reviewerOverviewTable.setFillsViewportHeight(true);
+		this.table.setFillsViewportHeight(true);
 		// TODO observe sorting behavior when bachelor thesis count >= 10
-		this.reviewerOverviewTable.setAutoCreateRowSorter(true);
+		this.table.setAutoCreateRowSorter(true);
+	}
 
+	protected int[] getSelectedRows() {
+		return this.table.getSelectedRows();
+	}
+
+	protected int[] getSelectedRowIndex() {
+		return IntStream.of(this.table.getSelectedRows()).map(this.table::convertRowIndexToModel).toArray();
 	}
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(actions,
-				new TableClickEventSource(EventId.EDIT, reviewerOverviewTable, () -> getSelectedReviewerIds()));
+		return List.of(this.actions, new TableClickEventSource(EventId.EDIT, this.table, () -> getSelectedRowIndex()));
 	}
 
-	protected int[] getSelectedReviewerIds() {
-		return IntStream.of(this.reviewerOverviewTable.getSelectedRows())
-				.map(this.reviewerOverviewTable::convertRowIndexToModel).toArray();
-	}
-
-	@SuppressWarnings("unchecked")
-	private void initializePropertyChangeConsumers() {
-		this.onPropertyChange(Model.REVIEWERS, (evt) -> updateReviewers((List<Reviewer>) evt.getNewValue()));
-	}
-
-	private void updateReviewers(List<Reviewer> reviewers) {
+	protected void updateTableModel() {
 		this.tableModel.fireTableDataChanged();
 		this.repaint();
+	}
+
+	protected void initializePropertyChangeConsumers() {
+		this.onPropertyChange(Model.REVIEWERS, (evt) -> updateTableModel());
 	}
 
 }

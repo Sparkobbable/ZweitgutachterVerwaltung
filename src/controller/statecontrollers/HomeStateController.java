@@ -19,6 +19,7 @@ public class HomeStateController extends AbstractStateController{
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(SHOW_REVIEWERS, (params) -> switchState(ApplicationState.REVIEWER_OVERVIEW));
+		this.registerEvent(EventId.SHOW_THESES, (params) -> switchState(ApplicationState.THESES_OVERVIEW));
 		this.registerEvent(EventId.CHOOSE_FILEPATH, (params) -> switchState(ApplicationState.STATE_CHOOSER));
 	}
 }

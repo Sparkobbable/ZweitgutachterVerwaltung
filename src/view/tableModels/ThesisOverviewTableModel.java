@@ -1,23 +1,23 @@
 package view.tableModels;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import model.data.BachelorThesis;
 
-public class ThesisTableModel extends AbstractTableModel {
+public class ThesisOverviewTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<BachelorThesis> thesisList;
+	private List<BachelorThesis> thesisList;
 	
 	/**
 	 * Creates a TableModel of the bachelorThesis-list
 	 * 
 	 * @param thesisList Needs the list of bachelorThesis to be shown
 	 */
-	public ThesisTableModel(ArrayList<BachelorThesis> thesisList) {
+	public ThesisOverviewTableModel(List<BachelorThesis> thesisList) {
 		this.thesisList = thesisList;
 	}
 	
