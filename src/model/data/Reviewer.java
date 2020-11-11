@@ -12,6 +12,8 @@ public class Reviewer extends AbstractModel {
 	private int maxSupervisedThesis;
 	private float occupation;
 	private ArrayList<BachelorThesis> supervised;
+	private String email = "";
+	private String comment = "";
 	
 	/**
 	 * Creates a empty Reviewer
@@ -90,5 +92,27 @@ public class Reviewer extends AbstractModel {
 
 	public float getOccupation() {
 		return occupation;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public Reviewer setEmail(String email) {
+		this.email = email;
+		this.setChanged();
+		this.notifyObservers();
+		return this;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public Reviewer setComment(String comment) {
+		this.comment = comment;
+		this.setChanged();
+		this.notifyObservers();
+		return this;
 	}
 }

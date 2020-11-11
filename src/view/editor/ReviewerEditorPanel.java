@@ -32,6 +32,8 @@ public class ReviewerEditorPanel extends AbstractView {
 
 	private JTextField nameField;
 	private JTextField maxSupervised;
+	private JTextField email;
+	private JTextField comment;
 	private JButton save;
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
@@ -49,6 +51,8 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.model = model;
 		this.nameField = new JTextField();
 		this.maxSupervised = new JTextField();
+		this.email = new JTextField();
+		this.comment = new JTextField();
 		this.optReviewer = Optional.empty();
 
 		this.setBackground(Color.MAGENTA); // TODO only for component identification, remove before launch
@@ -77,6 +81,8 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.add(this.nameField);
 		this.add(this.supervisedThesisPane);
 		this.add(this.maxSupervised);
+		this.add(this.email);					// TODO Supply mockdata
+		this.add(this.comment);					// and for this
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
@@ -104,11 +110,15 @@ public class ReviewerEditorPanel extends AbstractView {
 	private void setReviewerFields(Reviewer reviewer) {
 		this.nameField.setText(reviewer.getName());
 		this.maxSupervised.setText(String.valueOf(reviewer.getMaxSupervisedThesis()));
+		this.email.setText(reviewer.getEmail());
+		this.comment.setText(reviewer.getComment());
 	}
 
 	private Reviewer getReviewer() {
 		this.optReviewer.get().setName(this.getNameFieldText());
 		this.optReviewer.get().setMaxSupervisedThesis(Integer.valueOf(this.maxSupervised.getText()));
+		this.optReviewer.get().setEmail(this.email.getText());
+		this.optReviewer.get().setComment(this.comment.getText());
 		return optReviewer.get();
 	}
 
