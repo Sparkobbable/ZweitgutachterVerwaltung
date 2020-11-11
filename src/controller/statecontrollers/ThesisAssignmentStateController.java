@@ -4,11 +4,16 @@ import static model.enums.EventId.ADD_THESIS_TO_REVIEWER;
 
 import java.util.Comparator;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import javax.swing.JOptionPane;
 
 import model.Model;
 import model.data.BachelorThesis;
 import model.data.Review;
+import model.data.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;
 import view.View;
@@ -31,7 +36,16 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 
 	private void addThesis(Supplier<?>[] params) {
 		int[] thesisIndices = (int[]) params[0].get();
-		IntStream.of(thesisIndices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).forEach(this::setThesis);
+		Supplier<Stream<Integer>> indicesSupplier = () -> IntStream.of(thesisIndices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder());
+		Reviewer reviewer = this.model.getSelectedReviewer().get();
+		if (indicesSupplier.get().collect(Collectors.toList()).size() + reviewer.getSupervisedThesis().size() > reviewer.getMaxSupervisedThesis()) {
+			this.view.assumeState(ApplicationState.THESIS_ASSIGNMENT)
+						.alert(String.format("Die Anzahl der gewählten Bachelorarbeiten überschreitet die maximale Anzahl an Arbeiten die der Dozent %s betreut.",  reviewer.getName()),
+								JOptionPane.WARNING_MESSAGE);
+			return;
+			
+		}
+		indicesSupplier.get().forEach(this::setThesis);
 		switchToLastVisitedState();
 	}
 
