@@ -16,12 +16,16 @@ public class Reviewer implements ChangeableProperties {
 	private static final String NAME = "name";
 	private static final String MAX_SUPERVISED_THESES = "maxSupervisedTheses";
 	private static final String SUPERVISED_THESES = "supervisedTheses";
+	private static final String EMAIL = "email";
+	private static final String COMMENT = "comment";
 
 	// Data
 	private String name;
 	private int maxSupervisedThesis;
 	private float occupation;
 	private ArrayList<BachelorThesis> supervised;
+	private String email = "";
+	private String comment = "";
 
 	/**
 	 * Creates an empty Reviewer
@@ -49,9 +53,18 @@ public class Reviewer implements ChangeableProperties {
 		return maxSupervisedThesis;
 	}
 
+	public String getEmail() {
+		return this.email;
+	}
+
+	public String getComment() {
+		return this.comment;
+	}
+
 	/**
-	 * Never add a Thesis by adding it to the by this method returned ArrayList.
-	 * Use instead {@link Reviewer#addBachelorThesis(BachelorThesis)}
+	 * Never add a Thesis by adding it to the by this method returned ArrayList. Use
+	 * instead {@link Reviewer#addBachelorThesis(BachelorThesis)}
+	 * 
 	 * @return Returns the ArrayList of supervised bachelorThesis only for reading.
 	 */
 	public ArrayList<BachelorThesis> getSupervisedThesis() {
@@ -62,6 +75,18 @@ public class Reviewer implements ChangeableProperties {
 		String old = this.name;
 		this.name = name;
 		this.propertyChangeSupport.firePropertyChange(NAME, old, name);
+	}
+	
+	public void setEmail(String email) {
+		String old = this.email;
+		this.email = name;
+		this.propertyChangeSupport.firePropertyChange(EMAIL, old, email);
+	}
+	
+	public void setComment(String comment) {
+		String old = this.comment;
+		this.comment = name;
+		this.propertyChangeSupport.firePropertyChange(COMMENT, old, comment);
 	}
 
 	public void setMaxSupervisedThesis(int maxSupervisedThesis) {
