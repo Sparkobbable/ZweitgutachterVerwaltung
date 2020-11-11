@@ -18,7 +18,7 @@ public class ReviewerOverviewPanel extends OverviewPanel {
 	 */
 	public ReviewerOverviewPanel(ViewId viewId, Model model) {
 		super(viewId, model, "Dozentenübersicht");
-		this.actions = new ReviewerOverviewActionPanel(ViewId.ACTIONS, () -> getSelectedRowIndex());
+		this.actionPanel = new ReviewerOverviewActionPanel(ViewId.ACTIONS, () -> getSelectedRowIndex());
 
 		this.createUIElements();
 		this.addUIElements();

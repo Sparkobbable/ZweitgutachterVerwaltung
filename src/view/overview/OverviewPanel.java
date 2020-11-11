@@ -2,7 +2,6 @@ package view.overview;
 
 import java.awt.BorderLayout;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import javax.swing.JScrollPane;
@@ -15,8 +14,6 @@ import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
 import view.eventsources.TableClickEventSource;
-import view.tableModels.ProgressRenderer;
-import view.tableModels.ThesisOverviewTableModel;
 
 public abstract class OverviewPanel extends AbstractView {
 
@@ -28,7 +25,7 @@ public abstract class OverviewPanel extends AbstractView {
 	protected AbstractTableModel tableModel;
 	protected JTable table;
 	protected JScrollPane tableScrollPane;
-	protected AbstractView actions;
+	protected OverviewActionPanel actionPanel;
 
 	public OverviewPanel(ViewId viewId, Model model, String title) {
 		super(viewId, title);
@@ -41,7 +38,7 @@ public abstract class OverviewPanel extends AbstractView {
 
 	protected void addUIElements() {
 		this.add(this.tableScrollPane, BorderLayout.CENTER);
-		this.add(this.actions, BorderLayout.PAGE_END);
+		this.add(this.actionPanel, BorderLayout.PAGE_END);
 	}
 
 	protected void createUIElements() {
@@ -64,7 +61,7 @@ public abstract class OverviewPanel extends AbstractView {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(this.actions, new TableClickEventSource(EventId.EDIT, this.table, () -> getSelectedRowIndex()));
+		return List.of(this.actionPanel, new TableClickEventSource(EventId.EDIT, this.table, () -> getSelectedRowIndex()));
 	}
 
 	protected void updateTableModel() {

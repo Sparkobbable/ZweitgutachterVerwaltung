@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import model.data.BachelorThesis;
 
-public class ThesisOverviewTableModel extends AbstractTableModel {
+public class ThesesOverviewTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -17,7 +17,7 @@ public class ThesisOverviewTableModel extends AbstractTableModel {
 	 * 
 	 * @param thesisList Needs the list of bachelorThesis to be shown
 	 */
-	public ThesisOverviewTableModel(List<BachelorThesis> thesisList) {
+	public ThesesOverviewTableModel(List<BachelorThesis> thesisList) {
 		this.thesisList = thesisList;
 	}
 	

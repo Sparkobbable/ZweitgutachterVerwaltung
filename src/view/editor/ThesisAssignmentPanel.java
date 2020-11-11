@@ -18,7 +18,7 @@ import model.enums.EventId;
 import model.enums.ViewId;
 import view.AbstractView;
 import view.eventsources.ButtonEventSource;
-import view.tableModels.ThesisOverviewTableModel;
+import view.tableModels.ThesesOverviewTableModel;
 
 public class ThesisAssignmentPanel extends AbstractView {
 
@@ -63,7 +63,7 @@ public class ThesisAssignmentPanel extends AbstractView {
 	}
 
 	private void createUIElements() {
-		this.thesisTable = new JTable(new ThesisOverviewTableModel(this.thesisList));
+		this.thesisTable = new JTable(new ThesesOverviewTableModel(this.thesisList));
 		this.thesisScrollPane = new JScrollPane(this.thesisTable);
 		this.addThesis = new JButton(this.createButtonText());
 	}

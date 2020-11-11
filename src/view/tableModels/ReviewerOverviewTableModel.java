@@ -1,6 +1,5 @@
 package view.tableModels;
 
-import javax.swing.JProgressBar;
 import javax.swing.table.AbstractTableModel;
 
 import model.Model;
@@ -9,17 +8,17 @@ import model.data.Reviewer;
 public class ReviewerOverviewTableModel extends AbstractTableModel {
 	private static final String OCCUPATION = "Auslastung";
 	private static final long serialVersionUID = 1L;
-	private Model data;
+	private Model model;
 	
 	public static final int REVIEWER_COLUMN = 0;
 
 	/**
 	 * Creates a TableModel of the Reviewerlist
 	 * 
-	 * @param data Needs the DataAccess of the Application
+	 * @param model Needs the DataAccess of the Application
 	 */
-	public ReviewerOverviewTableModel(Model data) {
-		this.data = data;
+	public ReviewerOverviewTableModel(Model model) {
+		this.model = model;
 		this.findColumn(OCCUPATION);
 	}
 
@@ -39,7 +38,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return data.getReviewers().size();
+		return model.getReviewers().size();
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Reviewer reviewer = data.getReviewers().get(rowIndex);
+		Reviewer reviewer = model.getReviewers().get(rowIndex);
 		switch (columnIndex) {
 		case REVIEWER_COLUMN:
 			return reviewer.getName();
