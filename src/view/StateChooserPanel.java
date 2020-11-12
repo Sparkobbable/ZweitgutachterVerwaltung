@@ -9,7 +9,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.eventsources.ChooserEventSource;
 
 public class StateChooserPanel extends AbstractView {
@@ -21,11 +20,11 @@ public class StateChooserPanel extends AbstractView {
 	private JFileChooser chooseJson;
 	private AbstractView buttons;
 	
-	public StateChooserPanel(ViewId viewId) {
-		super(viewId, "Systemzustand Manager");
+	public StateChooserPanel() {
+		super("Systemzustand Manager");
 		
 		this.chooseJson = new JFileChooser();
-		this.buttons = new StateChooserButtonsPanel(ViewId.STATE_BUTTONS);
+		this.buttons = new StateChooserButtonsPanel();
 		this.registerEventSources();
 		
 		this.init();
@@ -46,7 +45,7 @@ public class StateChooserPanel extends AbstractView {
 	protected List<EventSource> getEventSources() {
 		return List.of(
 				new ChooserEventSource(EventId.CHOOSE_FILEPATH, chooseJson, () -> getFilePath()),
-				this.buttons);
+				buttons);
 	}
 	
 	private String getFilePath() {

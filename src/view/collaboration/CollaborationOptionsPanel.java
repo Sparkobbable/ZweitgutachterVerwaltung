@@ -27,8 +27,8 @@ public class CollaborationOptionsPanel extends AbstractView{
 	private AbstractView chooseData;
 	private AbstractView choosePresentation;
 	
-	public CollaborationOptionsPanel(ViewId viewId, Model model) {
-		super(viewId, "");
+	public CollaborationOptionsPanel(Model model) {
+		super("");
 		this.model = model;
 		
 		this.setBackground(Color.GREEN);
@@ -44,9 +44,9 @@ public class CollaborationOptionsPanel extends AbstractView{
 		this.reviewername = new JLabel("Ausgewählter Gutachter:");
 		this.nameField = new JTextField();
 		String[] options = {"Nur Erstgutachter", "Nur Zweitgutachter", "Zweit- & Erstgutachter"};
-		this.chooseData = new CollaborationComboBoxPanel(ViewId.COLLABORATION_CHOOSE_DATA, "Ansicht", options, EventId.CHOOSE_DATA_FOR_COLLABORATION);
+		this.chooseData = new CollaborationComboBoxPanel("Ansicht", options, EventId.CHOOSE_DATA_FOR_COLLABORATION);
 		String[] options2 = {"Tabelle", "Tortendiagramm"};
-		this.choosePresentation = new CollaborationComboBoxPanel(ViewId.COLLABORATION_CHOOSE_PRESENTATION, "Darstellung", options2, EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION);
+		this.choosePresentation = new CollaborationComboBoxPanel("Darstellung", options2, EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION);
 	}
 	
 	private void addUIElements() {

@@ -9,7 +9,6 @@ import model.Model;
 import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.collaboration.CollaborationPanel;
 import view.editor.ReviewerEditorPanel;
 import view.editor.ThesisAssignmentPanel;
@@ -17,12 +16,12 @@ import view.overview.ReviewerOverviewPanel;
 import view.overview.ThesesOverviewPanel;
 
 // TODO JavaDoc
-public class View implements EventSource{
+public class View implements EventSource {
 
 	private Map<ApplicationState, AbstractView> viewsByApplicationStates;
 	private CompositeEventSource eventSourceHandler;
 	private Model model;
-	
+
 	private MainWindow window;
 	private MenuBarHandler menuHandler;
 
@@ -39,14 +38,14 @@ public class View implements EventSource{
 	private void createViews() {
 		this.viewsByApplicationStates = new HashMap<>();
 
-		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
-		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new ReviewerOverviewPanel(ViewId.OVERVIEW_TABLE, model));
-		this.registerView(ApplicationState.THESES_OVERVIEW, new ThesesOverviewPanel(ViewId.THESES_OVERVIEW, model));
-		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, model));
-		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));
-		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(ViewId.THESIS_ASSIGNMENT, model));
-		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
-		this.registerView(ApplicationState.COLLABORATION, new CollaborationPanel(ViewId.COLLABORATION_OVERVIEW, model));
+		this.registerView(ApplicationState.HOME, new HomePanel());
+		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new ReviewerOverviewPanel(model));
+		this.registerView(ApplicationState.THESES_OVERVIEW, new ThesesOverviewPanel(model));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(model));
+		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel());
+		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(model));
+		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel());
+		this.registerView(ApplicationState.COLLABORATION, new CollaborationPanel(model));
 
 	}
 
@@ -72,17 +71,17 @@ public class View implements EventSource{
 	 * @param state
 	 * @return A view of the view responsible for handling that state
 	 */
-	//TODO return view of view instead of whole object?
+	// TODO return view of view instead of whole object?
 	public AbstractView assumeState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
-	
+
 	/**
 	 * 
 	 * @param state
 	 * @return A (different) view of the view responsible for handling that state
 	 */
-	//TODO return view of view instead of whole object?
+	// TODO return view of view instead of whole object?
 	public AbstractView atState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
@@ -110,6 +109,5 @@ public class View implements EventSource{
 	public boolean canOmit(EventId eventId) {
 		return this.eventSourceHandler.canOmit(eventId);
 	}
-
 
 }

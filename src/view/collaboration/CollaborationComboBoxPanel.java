@@ -22,8 +22,8 @@ public class CollaborationComboBoxPanel extends AbstractView {
 	private JComboBox<String> choosePresentationMode;
 	private EventId eventId;
 	
-	public CollaborationComboBoxPanel(ViewId viewId, String headline, String[] options, EventId eventId) {
-		super(viewId, "");
+	public CollaborationComboBoxPanel(String headline, String[] options, EventId eventId) {
+		super("");
 		this.eventId = eventId;
 		
 		this.setBackground(Color.RED);

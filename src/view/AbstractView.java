@@ -3,6 +3,7 @@ package view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -18,7 +19,6 @@ import model.EventSource;
 import model.PropertyChangeManager;
 import model.data.CompositeEventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
 
 /**
  * Abstract class for all different masks that can be set as content for the
@@ -32,6 +32,8 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 	// TODO discuss if this class should inherit from JPanel (it probably shouldn't)
 	private static final long serialVersionUID = 1L;
 
+	
+	private static final AtomicInteger VIEW_ID_GENERATOR = new AtomicInteger();
 	/**
 	 * Indicates whether this Panel has already been initialized.
 	 */
@@ -48,18 +50,16 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 	/**
 	 * Unique identifier for this view
 	 */
-	private ViewId viewId;
+	private Integer viewId;
 
 	/**
 	 * Creates a new Abstract View
-	 * 
-	 * @param viewId Id of this View. It must be ensured that this id is unique
 	 * @param title  Title of this view that will be shown on the UI
 	 */
-	public AbstractView(ViewId viewId, String title) {
+	public AbstractView(String title) {
 		this.eventSourceHandler = new CompositeEventSource();
 		this.propertyChangeManager = new PropertyChangeManager();
-		this.viewId = viewId;
+		this.viewId = VIEW_ID_GENERATOR.incrementAndGet();
 		this.title = title;
 
 		this.setBorder(titledBorder(title));
@@ -82,7 +82,7 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 
 	/**
 	 * All EventSources returned by this method will be registered in
-	 * {@link AbstractView#AbstractView(ViewId, String)}
+	 * {@link AbstractView#AbstractView(String)}
 	 * 
 	 * @return A list of all EventSources that shall be registered
 	 */
@@ -124,7 +124,7 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 	/**
 	 * @return The unique viewId of this View.
 	 */
-	public ViewId getViewId() {
+	public Integer getViewId() {
 		return viewId;
 	}
 

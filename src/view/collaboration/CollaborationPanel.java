@@ -30,8 +30,8 @@ public class CollaborationPanel extends AbstractView {
 	private AbstractView options;
 	private AbstractView chart;
 	
-	public CollaborationPanel(ViewId viewId, Model model) {
-		super(viewId, "Zusammenarbeit anzeigen");
+	public CollaborationPanel(Model model) {
+		super("Zusammenarbeit anzeigen");
 		this.model = model;
 		this.selectedPresentationMode = PresentationMode.TABLE;
 		
@@ -46,7 +46,7 @@ public class CollaborationPanel extends AbstractView {
 	}
 	
 	private void createUIElements() {
-		this.options = new CollaborationOptionsPanel(ViewId.COLLABORATION_OPTIONS, this.model);
+		this.options = new CollaborationOptionsPanel(this.model);
 	}
 	
 	private void addUIElements() {
