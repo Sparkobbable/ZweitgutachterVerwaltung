@@ -14,70 +14,74 @@ import view.panelstructure.DefaultViewPanel;
 public class CollaborationPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String SELECTED_PRESENTATIONMODE = "selectedPresentationMode";
-	
+
 	private Model model;
 	private PresentationMode selectedPresentationMode;
-	
+
 	private AbstractViewPanel options;
 	private AbstractViewPanel chart;
-	
+
 	public CollaborationPanel(Model model) {
 		super("Zusammenarbeit anzeigen");
 		this.model = model;
 		this.selectedPresentationMode = PresentationMode.TABLE;
-		
+
 		this.setBackground(Color.DARK_GRAY);
-		this.setLayout(new GridLayout(3,2));
-		
-		this.onPropertyChange(SELECTED_PRESENTATIONMODE, evt -> switchPresentationMode((PresentationMode) evt.getNewValue()));
+		this.setLayout(new GridLayout(3, 2));
+
+		this.onPropertyChange(SELECTED_PRESENTATIONMODE,
+				evt -> switchPresentationMode((PresentationMode) evt.getNewValue()));
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
 		this.addObservables(this.model);
 	}
-	
+
 	private void createUIElements() {
 		this.options = new CollaborationOptionsPanel(this.model);
 	}
-	
+
 	private void addUIElements() {
 		this.add(this.options);
 	}
-	
+
 	public void setPresentationMode(PresentationMode presentationMode) {
 		this.selectedPresentationMode = presentationMode;
 	}
-	
+
 	public PresentationMode getPresentationMode() {
 		return this.selectedPresentationMode;
 	}
-	
+
+	// TODO rmv
 	private void switchPresentationMode(PresentationMode presentationMode) {
-		if(presentationMode == PresentationMode.TABLE) {
+		if (presentationMode == PresentationMode.TABLE) {
 			System.out.println("Wechsle zu Tabelle");
 		} else {
 			System.out.println("Wechsle zu Tortendiagramm");
 		}
 	}
-	
+
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List.of(this.options);
 	}
-	
+
 	@Override
 	public void initializeState(ViewState viewState) {
-		switch(viewState) {
+		switch (viewState) {
 		case TABLE:
-				this.setPresentationMode(PresentationMode.TABLE);
+			this.setPresentationMode(PresentationMode.TABLE);
+			this.setBackground(Color.GREEN);
 			break;
 		case PIECHART:
-				this.setPresentationMode(PresentationMode.PIECHART);
+			this.setPresentationMode(PresentationMode.PIECHART);
+			this.setBackground(Color.BLUE);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");
 		}
- 	}
+	}
 }

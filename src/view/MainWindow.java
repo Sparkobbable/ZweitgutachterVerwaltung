@@ -97,9 +97,9 @@ public class MainWindow extends JFrame {
 	 */
 	public void registerView(AbstractViewPanel view) {
 		if (this.availableViews.containsKey(view.getViewId())) {
-			Log.info(this, "View %s is already registered in MainWindow. It will not be registered again.", view.getViewId());
+			Log.info(this, "View %s is already registered in MainWindow. It will not be registered again.", view);
 		} else {
-			Log.info(this, "Registering view %s", view.getViewId());
+			Log.info(this, "Registering view %s.", view);
 			this.availableViews.put(view.getViewId(), view);
 			this.mainContainer.add(view, view.getViewId().toString());
 		}

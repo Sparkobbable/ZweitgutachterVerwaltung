@@ -50,7 +50,6 @@ public class CollaborationComboBoxPanel extends DefaultViewPanel {
 	}
 	
 	private PresentationMode getPresentationMode() {
-		System.out.println((String) this.choosePresentationMode.getSelectedItem());
 		return PresentationMode.of((String) this.choosePresentationMode.getSelectedItem()).orElseThrow(() -> new IllegalArgumentException());
 	}
 }

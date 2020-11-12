@@ -1,5 +1,6 @@
 package view.panelstructure;
 
+import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 
 import model.Action;
@@ -11,19 +12,21 @@ public class ViewPanelDecorator extends AbstractViewPanel {
 
 	private AbstractViewPanel innerPanel;
 	private ViewState viewState;
-	
+
 	public ViewPanelDecorator(AbstractViewPanel innerPanel, ViewState viewState) {
 		this.innerPanel = innerPanel;
 		this.viewState = viewState;
-		this.add(innerPanel);
+		this.setLayout(new BorderLayout());
+
 	}
-	
+
 	@Override
 	public void prepare() {
+		this.add(innerPanel);
 		this.innerPanel.initializeState(this.viewState);
 		this.innerPanel.prepare();
 	}
-	
+
 	// ----------------------------------------------
 	// Delegates all other methods to the inner panel
 	// ----------------------------------------------
@@ -47,5 +50,9 @@ public class ViewPanelDecorator extends AbstractViewPanel {
 		return this.innerPanel.alert(message, messageType);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("ViewPanelDecorator(viewState=%s, inner=%s)", this.viewState, this.innerPanel);
+	}
 
 }

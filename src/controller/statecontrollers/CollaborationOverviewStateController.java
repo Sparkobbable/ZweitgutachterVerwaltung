@@ -15,17 +15,19 @@ public class CollaborationOverviewStateController extends AbstractStateControlle
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION, (params) -> switchPresentation((PresentationMode) params[0].get()));
-		
+		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
+				(params) -> switchPresentation((PresentationMode) params[0].get()));
+
 	}
-	
+
 	private void switchPresentation(PresentationMode params) {
-		
-		System.out.println("test");
-		PresentationMode selectedPresentationMode = params;
-		
-		
-		
+
+		if (params == PresentationMode.PIECHART) {
+			switchState(ApplicationState.COLLABORATION_PIECHART);
+		}
+		if (params == PresentationMode.TABLE) {
+			switchState(ApplicationState.COLLABORATION_TABLE);
+		}
 	}
 
 }
