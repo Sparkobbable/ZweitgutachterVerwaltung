@@ -1,11 +1,11 @@
 package view.editor;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -32,6 +32,11 @@ public class ReviewerEditorPanel extends AbstractView {
 	private JTextField maxSupervised;
 	private JTextField email;
 	private JTextField comment;
+	private JLabel nameFieldLabel;
+	private JLabel maxSupervisedLabel;
+	private JLabel emailLabel;
+	private JLabel commentLabel;
+	private JLabel supervisedLabel;
 	private JButton save;
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
@@ -46,14 +51,20 @@ public class ReviewerEditorPanel extends AbstractView {
 	public ReviewerEditorPanel(ViewId id, Model model) {
 		super(id, "Dozenteneditor");
 		this.model = model;
+		
 		this.nameField = new JTextField();
 		this.maxSupervised = new JTextField();
 		this.email = new JTextField();
 		this.comment = new JTextField();
+		this.nameFieldLabel = new JLabel("Name: ");
+		this.maxSupervisedLabel = new JLabel("Max. Anzahl Bachelorarbeiten: ");
+		this.emailLabel = new JLabel("Email: ");
+		this.commentLabel = new JLabel("Bemerkung: ");
+		this.supervisedLabel = new JLabel("Betreute Bachelorarbeiten: ");
+		
 		this.optReviewer = Optional.empty();
 
-		this.setBackground(Color.MAGENTA); // TODO only for component identification, remove before launch
-		this.setLayout(new GridLayout(4, 1));
+		this.setLayout(new GridLayout(7, 2));
 
 		this.createUIElements();
 		this.addUIElements();
@@ -76,11 +87,21 @@ public class ReviewerEditorPanel extends AbstractView {
 	}
 
 	private void addUIElements() {
+		this.add(this.nameFieldLabel);
+		this.nameFieldLabel.setLabelFor(this.nameField);
 		this.add(this.nameField);
-		this.add(this.supervisedThesisPane);
+		this.add(this.maxSupervisedLabel);
+		this.maxSupervisedLabel.setLabelFor(this.maxSupervised);
 		this.add(this.maxSupervised);
+		this.add(this.emailLabel);
+		this.emailLabel.setLabelFor(this.email);
 		this.add(this.email);					// TODO Supply mockdata
+		this.add(this.commentLabel);
+		this.commentLabel.setLabelFor(this.comment);
 		this.add(this.comment);					// and for this
+		this.add(this.supervisedLabel);
+		this.supervisedLabel.setLabelFor(this.supervisedThesisPane);
+		this.add(this.supervisedThesisPane);
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
