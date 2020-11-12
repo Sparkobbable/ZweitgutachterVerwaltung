@@ -9,8 +9,8 @@ import view.View;
 public class CollaborationOverviewStateController extends AbstractStateController {
 
 	public CollaborationOverviewStateController(View view, ApplicationStateController applicationStateController,
-			Model model) {
-		super(ApplicationState.COLLABORATION, view, applicationStateController, model);
+			Model model, ApplicationState applicationState) {
+		super(applicationState, view, applicationStateController, model);
 	}
 
 	@Override

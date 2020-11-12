@@ -53,7 +53,10 @@ public class View implements EventSource {
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel());
 		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel());
-		this.registerView(ApplicationState.COLLABORATION, new CollaborationPanel(model));
+		
+		CollaborationPanel collabPanel = new CollaborationPanel(model);
+		this.registerView(ApplicationState.COLLABORATION_TABLE, collabPanel.atState(ViewState.TABLE));
+		this.registerView(ApplicationState.COLLABORATION_PIECHART, collabPanel.atState(ViewState.PIECHART));
 
 	}
 

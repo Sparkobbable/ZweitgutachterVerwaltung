@@ -27,7 +27,7 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	protected void registerEvents() {
 		this.registerEvent(EDIT, (params) -> switchToState(ApplicationState.REVIEWER_EDITOR, (int[]) params[0].get()));
 		this.registerEvent(DELETE, (params) -> deleteEntries((int[]) params[0].get())); // TODO View isnt correctly
-		this.registerEvent(EventId.SHOW_COLLABORATION, (params) -> switchToState(ApplicationState.COLLABORATION, (int[]) params[0].get()));
+		this.registerEvent(EventId.SHOW_COLLABORATION, (params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (int[]) params[0].get()));
 																						// refreshed
 		this.registerEvent(NEW, (params) -> addNewReviewer());
 	}

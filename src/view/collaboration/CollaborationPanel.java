@@ -7,6 +7,7 @@ import java.util.List;
 import model.EventSource;
 import model.Model;
 import model.enums.PresentationMode;
+import view.ViewState;
 import view.panelstructure.AbstractViewPanel;
 import view.panelstructure.DefaultViewPanel;
 
@@ -65,4 +66,18 @@ public class CollaborationPanel extends DefaultViewPanel {
 	protected List<EventSource> getEventSources() {
 		return List.of(this.options);
 	}
+	
+	@Override
+	public void initializeState(ViewState viewState) {
+		switch(viewState) {
+		case TABLE:
+				this.setPresentationMode(PresentationMode.TABLE);
+			break;
+		case PIECHART:
+				this.setPresentationMode(PresentationMode.PIECHART);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid ViewState");
+		}
+ 	}
 }

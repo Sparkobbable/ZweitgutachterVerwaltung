@@ -15,6 +15,7 @@ public class ViewPanelDecorator extends AbstractViewPanel {
 	public ViewPanelDecorator(AbstractViewPanel innerPanel, ViewState viewState) {
 		this.innerPanel = innerPanel;
 		this.viewState = viewState;
+		this.add(innerPanel);
 	}
 	
 	@Override
