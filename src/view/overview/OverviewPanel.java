@@ -11,7 +11,6 @@ import javax.swing.table.AbstractTableModel;
 import model.EventSource;
 import model.Model;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.AbstractView;
 import view.eventsources.TableClickEventSource;
 
@@ -27,8 +26,8 @@ public abstract class OverviewPanel extends AbstractView {
 	protected JScrollPane tableScrollPane;
 	protected OverviewActionPanel actionPanel;
 
-	public OverviewPanel(ViewId viewId, Model model, String title) {
-		super(viewId, title);
+	public OverviewPanel(Model model, String title) {
+		super(title);
 		this.model = model;
 		this.setLayout(new BorderLayout());
 

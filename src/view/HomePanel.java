@@ -7,7 +7,6 @@ import javax.swing.JButton;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.eventsources.ButtonEventSource;
 
 /**
@@ -22,8 +21,8 @@ public class HomePanel extends AbstractView {
 	private JButton analyse;
 	private JButton choosejsonfilepath;
 
-	public HomePanel(ViewId id) { // Maybe add a contructor with standard id?
-		super(id, "Home");
+	public HomePanel() { // Maybe add a contructor with standard id?
+		super("Home");
 		this.setBackground(Color.GREEN); // TODO remove
 		this.createUIElements();
 		this.addUIElements();

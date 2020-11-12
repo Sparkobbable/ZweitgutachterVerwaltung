@@ -1,7 +1,6 @@
 package view.overview;
 
 import model.Model;
-import model.enums.ViewId;
 import view.tableModels.ProgressRenderer;
 import view.tableModels.ReviewerOverviewTableModel;
 
@@ -16,9 +15,9 @@ public class ReviewerOverviewPanel extends OverviewPanel {
 	 * @param viewId Unique viewId from {@link ViewId}
 	 * @param model  Needs the model as the data access
 	 */
-	public ReviewerOverviewPanel(ViewId viewId, Model model) {
-		super(viewId, model, "Dozentenübersicht");
-		this.actionPanel = new ReviewerOverviewActionPanel(ViewId.ACTIONS, () -> getSelectedRowIndex());
+	public ReviewerOverviewPanel(Model model) {
+		super(model, "Dozentenübersicht");
+		this.actionPanel = new ReviewerOverviewActionPanel(() -> getSelectedRowIndex());
 
 		this.createUIElements();
 		this.addUIElements();
