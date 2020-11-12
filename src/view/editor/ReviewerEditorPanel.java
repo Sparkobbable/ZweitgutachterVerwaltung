@@ -14,11 +14,11 @@ import model.EventSource;
 import model.Model;
 import model.data.Reviewer;
 import model.enums.EventId;
-import view.AbstractView;
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
-public class ReviewerEditorPanel extends AbstractView {
+public class ReviewerEditorPanel extends DefaultViewPanel {
 	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> optReviewer;
 	private Model model;

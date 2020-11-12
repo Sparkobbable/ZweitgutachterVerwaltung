@@ -3,22 +3,14 @@ package view.collaboration;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
-import java.util.Optional;
-
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import model.EventSource;
 import model.Model;
-import model.data.Reviewer;
-import model.enums.EventId;
 import model.enums.PresentationMode;
-import model.enums.ViewId;
-import view.AbstractView;
-import view.eventsources.ButtonEventSource;
+import view.panelstructure.AbstractViewPanel;
+import view.panelstructure.DefaultViewPanel;
 
-public class CollaborationPanel extends AbstractView {
+public class CollaborationPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -27,8 +19,8 @@ public class CollaborationPanel extends AbstractView {
 	private Model model;
 	private PresentationMode selectedPresentationMode;
 	
-	private AbstractView options;
-	private AbstractView chart;
+	private AbstractViewPanel options;
+	private AbstractViewPanel chart;
 	
 	public CollaborationPanel(Model model) {
 		super("Zusammenarbeit anzeigen");

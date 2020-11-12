@@ -23,6 +23,7 @@ public class ThesesOverviewPanel extends OverviewPanel {
 	 */
 	public ThesesOverviewPanel(Model model) {
 		super(model, "Bachelorthesis-Übersicht");
+
 		this.actionPanel = new ThesesOverviewActionPanel(() -> getSelectedRowIndex());
 		this.thesisList = model.getThesisMissingSecReview();
 

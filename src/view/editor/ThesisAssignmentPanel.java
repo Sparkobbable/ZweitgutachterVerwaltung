@@ -15,11 +15,12 @@ import model.Model;
 import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.EventId;
-import view.AbstractView;
+
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 import view.tableModels.ThesesOverviewTableModel;
 
-public class ThesisAssignmentPanel extends AbstractView {
+public class ThesisAssignmentPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<BachelorThesis> thesisList;

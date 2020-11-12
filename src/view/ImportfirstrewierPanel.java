@@ -8,8 +8,9 @@ import javax.swing.JButton;
 import model.EventSource;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 
-public class ImportfirstrewierPanel extends AbstractView {
+public class ImportfirstrewierPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JButton loadReview;
