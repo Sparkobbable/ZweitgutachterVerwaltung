@@ -18,10 +18,13 @@ import javax.json.JsonWriter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import model.data.Author;
 import model.data.BachelorThesis;
-import model.data.Review;
+import model.data.FirstReview;
 import model.data.Reviewer;
+import model.data.SecondReview;
 import model.enums.ReviewStatus;
 
 
@@ -57,7 +60,6 @@ public class JSONController {
 				
 				JsonObjectBuilder firstreviewBuilder = Json.createObjectBuilder();
 				firstreviewBuilder.add("reviewer", r.getName());
-				b.getFirstReview().ifPresent(review -> firstreviewBuilder.add("status", review.getStatus().getName()));;
 				firstreviewBuilder.add("bachelorThesis", thesisbuilder);
 				
 				JsonObjectBuilder secondreviewBuilder = Json.createObjectBuilder();
@@ -137,19 +139,13 @@ public class JSONController {
 				JsonObject jAuthor = jThesis.getJsonObject("author");
 				Author author = new Author(jAuthor.getString("name"), jAuthor.getString("studyGroup"));
 				
-				BachelorThesis thesis = new BachelorThesis(jThesis.getString("topic"), author);
+				BachelorThesis thesis = null;
 				
 				try {
-					JsonObject jFirstReview = jThesis.getJsonObject("firstReview");
-					Review firstReview = new Review(reviewer, true, ReviewStatus.valueOf(jFirstReview.getString("status")), thesis);
-					thesis.setFirstReview(firstReview);
-				} catch(NullPointerException e) {
-					
-				}
-				
-				try {
+					FirstReview firstReview = new FirstReview(reviewer, thesis);
+					thesis = new BachelorThesis(jThesis.getString("topic"), author, firstReview, Optional.empty());
 					JsonObject jSecondReview = jThesis.getJsonObject("secondReview");
-					Review secondReview = new Review(reviewer, false, ReviewStatus.valueOf(jSecondReview.getString("status")), thesis);
+					SecondReview secondReview = new SecondReview(reviewer, ReviewStatus.valueOf(jSecondReview.getString("status")), thesis);
 					thesis.setSecondReview(secondReview);
 				} catch(NullPointerException e) {
 					

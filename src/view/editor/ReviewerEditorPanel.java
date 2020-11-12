@@ -1,5 +1,6 @@
 package view.editor;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,7 @@ public class ReviewerEditorPanel extends AbstractView {
 	private JButton save;
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
+	private JButton approveSecReview;
 
 	/**
 	 * Creates a view containing a table presenting the reviewer's supervised
@@ -65,6 +67,7 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.optReviewer = Optional.empty();
 
 		this.setLayout(new GridLayout(7, 2));
+		this.setBackground(Color.GRAY);
 
 		this.createUIElements();
 		this.addUIElements();
@@ -77,6 +80,7 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.save = new JButton("Speichern");
 		this.addBachelorThesis = new JButton("Bachelorarbeit hinzufügen");
 		this.deleteThesis = new JButton("Bachelorarbeit löschen");
+		this.approveSecReview = new JButton("Zweitgutachten bestätigen");
 
 		this.supervisedThesisTableModel = new SupervisedThesisTableModel(this.optReviewer);
 		this.supervisedThesisTable = new JTable(supervisedThesisTableModel);
@@ -105,13 +109,15 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
+		this.add(this.approveSecReview);
 	}
 
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
 				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
-				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
+				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getTheses()),
+				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getTheses()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -148,7 +154,11 @@ public class ReviewerEditorPanel extends AbstractView {
 		return this.nameField.getText();
 	}
 
-	private int[] getThesis() {
+	private int[] getTheses() {
 		return this.supervisedThesisTable.getSelectedRows();
+	}
+	
+	public boolean validateFields() {
+		return !(this.getNameFieldText().isBlank() || this.maxSupervised.getText().isBlank());
 	}
 }

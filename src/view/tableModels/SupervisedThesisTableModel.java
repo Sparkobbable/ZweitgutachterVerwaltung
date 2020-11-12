@@ -1,11 +1,13 @@
 package view.tableModels;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.table.AbstractTableModel;
 
 import model.data.BachelorThesis;
 import model.data.Reviewer;
+import model.enums.ReviewStatus;
 
 public class SupervisedThesisTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +28,7 @@ public class SupervisedThesisTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -36,6 +38,8 @@ public class SupervisedThesisTableModel extends AbstractTableModel {
 			return "Titel";
 		case 1:
 			return "Autor";
+		case 2:
+			return "Status";
 		default:
 			return null;
 		}
@@ -52,6 +56,13 @@ public class SupervisedThesisTableModel extends AbstractTableModel {
 			return bachelorThesis.getTopic();
 		case 1:
 			return bachelorThesis.getAuthor().getName();
+		case 2:
+			List<BachelorThesis> secReviewedTheses = this.selectedReviewer.get().getSecReviewedTheses();
+			int idx = secReviewedTheses.indexOf(bachelorThesis);
+			if (idx == -1) {
+				return "Erstgutachten";
+			}
+			return secReviewedTheses.get(idx).getSecondReview().get().getStatus().equals(ReviewStatus.REQUESTED) ? "Angefragt" : "Bestätigt";
 		default: 
 			return null;
 		}

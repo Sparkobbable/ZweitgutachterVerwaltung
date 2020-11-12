@@ -2,15 +2,15 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import controller.Controller;
 import model.Model;
 import model.data.Author;
 import model.data.BachelorThesis;
-import model.data.Review;
+import model.data.FirstReview;
 import model.data.Reviewer;
-import model.enums.ReviewStatus;
 import view.View;
 
 public class Main {
@@ -72,15 +72,14 @@ public class Main {
 			String name = firstname[(int)(Math.random() * firstname.length)] + " " + surname[(int)(Math.random() * surname.length)];
 			String studygroup = studyGroup[(int)(Math.random() * studyGroup.length)];
 			Author author = new Author(name, studygroup);
-			BachelorThesis thesis = new BachelorThesis(topic[i], author);
 			
 			Reviewer r1 = reviewerList.get((int)(Math.random() * reviewerList.size()));
 			Reviewer r2 = reviewerList.get((int)(Math.random() * reviewerList.size()));
 			while(r1.getName().equals(r2.getName())) {
 				r2 = reviewerList.get((int)(Math.random() * reviewerList.size()));
 			}
-			
-			thesis.setFirstReview(new Review(r1, true, ReviewStatus.REQUESTED, thesis));
+			BachelorThesis thesis = null;
+			thesis = new BachelorThesis(topic[i], author, new FirstReview(r1, thesis), Optional.empty());
 			//thesis.setSecondReview(new Review(r2, false, ReviewStatus.REQUESTED, thesis));
 			//Removed second review, program would otherwise not be testable.
 			r1.addBachelorThesis(thesis);
