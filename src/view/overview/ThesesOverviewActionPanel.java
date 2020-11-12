@@ -22,7 +22,7 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel {
 	 * @param id Unique ID from {@link ViewId}
 	 */
 	public ThesesOverviewActionPanel(ViewId id, Supplier<int[]> selectedRowIndexSupplier) {
-		super(id, selectedRowIndexSupplier);
+		super(selectedRowIndexSupplier);
 		
 		this.createUIElements();
 		this.addUIElements();

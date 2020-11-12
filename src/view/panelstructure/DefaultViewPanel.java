@@ -1,14 +1,12 @@
-package view;
+package view.panelstructure;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -18,24 +16,17 @@ import model.EventSource;
 import model.PropertyChangeManager;
 import model.data.CompositeEventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
+import view.MainWindow;
 
 /**
  * Abstract class for all different masks that can be set as content for the
  * {@link MainWindow}
  *
  */
-public abstract class AbstractView extends JPanel implements EventSource, PropertyChangeListener {
+@SuppressWarnings("serial")
+public abstract class DefaultViewPanel extends AbstractViewPanel {
 
 	protected static final Border UNTITLED_BORDER = BorderFactory.createEtchedBorder();
-
-	// TODO discuss if this class should inherit from JPanel (it probably shouldn't)
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Indicates whether this Panel has already been initialized.
-	 */
-	private boolean initialized = false;
 
 	/**
 	 * This map stores all event sources in this panel.
@@ -46,20 +37,13 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 	private String title;
 
 	/**
-	 * Unique identifier for this view
-	 */
-	private ViewId viewId;
-
-	/**
 	 * Creates a new Abstract View
-	 * 
-	 * @param viewId Id of this View. It must be ensured that this id is unique
 	 * @param title  Title of this view that will be shown on the UI
 	 */
-	public AbstractView(ViewId viewId, String title) {
+	public DefaultViewPanel(String title) {
+		super();
 		this.eventSourceHandler = new CompositeEventSource();
 		this.propertyChangeManager = new PropertyChangeManager();
-		this.viewId = viewId;
 		this.title = title;
 
 		this.setBorder(titledBorder(title));
@@ -82,50 +66,34 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 
 	/**
 	 * All EventSources returned by this method will be registered in
-	 * {@link AbstractView#AbstractView(ViewId, String)}
+	 * {@link DefaultViewPanel#AbstractView(String)}
 	 * 
 	 * @return A list of all EventSources that shall be registered
 	 */
 	protected abstract List<EventSource> getEventSources();
-	
+
 	/**
-	 * Creates a pop-up with a notification of the given type.
-	 * If the given type is a QUESTION_MESSAGE the pop-up will have Options to choose.
+	 * Creates a pop-up with a notification of the given type. If the given type is
+	 * a QUESTION_MESSAGE the pop-up will have Options to choose.
 	 * 
-	 * @param message Message shown in the pop-up
+	 * @param message     Message shown in the pop-up
 	 * @param messageType Must be part of the {@link JOptionPane} values
-	 * @return Chosen option or an open confirmation if the messageType is not QUESTION_MESSAGE 
+	 * @return Chosen option or an open confirmation if the messageType is not
+	 *         QUESTION_MESSAGE
 	 */
+	@Override
 	public int alert(String message, int messageType) {
-		if(messageType == JOptionPane.QUESTION_MESSAGE) {
+		if (messageType == JOptionPane.QUESTION_MESSAGE) {
 			return JOptionPane.showConfirmDialog(this, message, "thesisSpace", JOptionPane.YES_NO_OPTION);
 		} else {
 			JOptionPane.showMessageDialog(this, message, "thesisSpace", messageType);
 			return JOptionPane.CLOSED_OPTION;
 		}
 	}
-
-	/**
-	 * Detects if this view has already been initialized to prevent repeated
-	 * initialization
-	 * 
-	 * @return true, if and only if this object has already been initialized by
-	 *         calling the {@link #init()} method
-	 */
-	public boolean isInitialized() {
-		return initialized;
-	}
-
+	
 	@Override
 	public String toString() {
-		return String.format("View(viewId=%s, title=%s)", viewId, title);
-	}
-
-	/**
-	 * @return The unique viewId of this View.
-	 */
-	public ViewId getViewId() {
-		return viewId;
+		return String.format("%s(title=%s)", this.getClass().getName(), title);
 	}
 
 	/**
@@ -157,14 +125,23 @@ public abstract class AbstractView extends JPanel implements EventSource, Proper
 	public void propertyChange(PropertyChangeEvent evt) {
 		this.propertyChangeManager.propertyChange(evt);
 	}
-	
-	public void onPropertyChange(Supplier<Object> source, String propertyName, Consumer<PropertyChangeEvent> delegation) {
+
+	protected void onPropertyChange(Supplier<Object> source, String propertyName,
+			Consumer<PropertyChangeEvent> delegation) {
 		this.propertyChangeManager.onPropertyChange(source, propertyName, delegation);
 	}
-	
-	public void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> delegation) {
+
+	protected void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> delegation) {
 		this.propertyChangeManager.onPropertyChange(propertyName, delegation);
 	}
-	
+
+	/**
+	 * Actions that prepare the window for getting shown. This method will be called
+	 * whenever this view is made visible-
+	 */
+	@Override
+	public void prepare() {
+		// this method may be overwritten by the implementing classes
+	}
 
 }

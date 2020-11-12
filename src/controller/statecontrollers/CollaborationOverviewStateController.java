@@ -1,7 +1,5 @@
 package controller.statecontrollers;
 
-import java.util.logging.Logger;
-
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;

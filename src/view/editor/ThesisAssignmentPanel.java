@@ -16,11 +16,11 @@ import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.EventId;
 import model.enums.ViewId;
-import view.AbstractView;
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 import view.tableModels.ThesesOverviewTableModel;
 
-public class ThesisAssignmentPanel extends AbstractView {
+public class ThesisAssignmentPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<BachelorThesis> thesisList;
@@ -37,8 +37,8 @@ public class ThesisAssignmentPanel extends AbstractView {
 	 * @param viewId Unique viewId from {@link ViewId}
 	 * @param model  Needs the model as data access
 	 */
-	public ThesisAssignmentPanel(ViewId viewId, Model model) {
-		super(viewId, "Bachelorthesis-Editor");
+	public ThesisAssignmentPanel(Model model) {
+		super("Bachelorthesis-Editor");
 		this.thesisList = model.getThesisMissingSecReview();
 		this.selectedReviewer = model.getSelectedReviewer();
 

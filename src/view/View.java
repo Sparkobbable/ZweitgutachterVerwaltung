@@ -6,25 +6,27 @@ import java.util.Map;
 import model.Action;
 import model.EventSource;
 import model.Model;
+import model.PropertyChangeManager;
 import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.collaboration.CollaborationPanel;
 import view.editor.ReviewerEditorPanel;
 import view.editor.ThesisAssignmentPanel;
 import view.overview.ReviewerOverviewPanel;
 import view.overview.ThesesOverviewPanel;
+import view.panelstructure.AbstractViewPanel;
 
 // TODO JavaDoc
-public class View implements EventSource{
+public class View implements EventSource {
 
-	private Map<ApplicationState, AbstractView> viewsByApplicationStates;
+	private Map<ApplicationState, AbstractViewPanel> viewsByApplicationStates;
 	private CompositeEventSource eventSourceHandler;
 	private Model model;
-	
+
 	private MainWindow window;
 	private MenuBarHandler menuHandler;
+	private PropertyChangeManager propertyChangeManager;
 
 	public View(Model model) {
 		this.model = model;
@@ -34,37 +36,43 @@ public class View implements EventSource{
 		this.eventSourceHandler.register(this.menuHandler);
 		this.createViews();
 		window.setJMenuBar(menuHandler);
+
+		this.propertyChangeManager = new PropertyChangeManager();
+		this.propertyChangeManager.onPropertyChange(Model.APPLICATION_STATE,
+				(evt) -> switchState((ApplicationState) evt.getOldValue(), (ApplicationState) evt.getNewValue()));
+		this.model.addPropertyChangeListener(propertyChangeManager);
 	}
 
 	private void createViews() {
 		this.viewsByApplicationStates = new HashMap<>();
 
-		this.registerView(ApplicationState.HOME, new HomePanel(ViewId.HOME));
-		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new ReviewerOverviewPanel(ViewId.OVERVIEW_TABLE, model));
-		this.registerView(ApplicationState.THESES_OVERVIEW, new ThesesOverviewPanel(ViewId.THESES_OVERVIEW, model));
-		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(ViewId.EDITOR, model));
-		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));
-		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(ViewId.THESIS_ASSIGNMENT, model));
-		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
-		this.registerView(ApplicationState.COLLABORATION, new CollaborationPanel(ViewId.COLLABORATION_OVERVIEW, model));
+		this.registerView(ApplicationState.HOME, new HomePanel());
+		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new ReviewerOverviewPanel(model));
+		this.registerView(ApplicationState.THESES_OVERVIEW, new ThesesOverviewPanel(model));
+		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(model));
+		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel());
+		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(model));
+		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel());
+		this.registerView(ApplicationState.COLLABORATION, new CollaborationPanel(model));
 
 	}
 
-	private void registerView(ApplicationState applicationState, AbstractView abstractView) {
+	private void registerView(ApplicationState applicationState, AbstractViewPanel abstractView) {
 		this.viewsByApplicationStates.put(applicationState, abstractView);
 		this.eventSourceHandler.register(abstractView);
 		this.window.registerView(abstractView);
 	}
 
 	/**
-	 * [Initializes the views and] shows the window.
+	 * Shows the window.
 	 */
 	public void setVisible() {
 		window.setVisible(true);
 	}
 
-	public void switchState(ApplicationState state) {
-		window.switchToView(viewsByApplicationStates.get(state).getViewId());
+	private void switchState(ApplicationState oldState, ApplicationState newState) {
+		viewsByApplicationStates.get(newState).prepare();
+		window.switchToView(viewsByApplicationStates.get(newState).getViewId());
 	}
 
 	/**
@@ -72,18 +80,18 @@ public class View implements EventSource{
 	 * @param state
 	 * @return A view of the view responsible for handling that state
 	 */
-	//TODO return view of view instead of whole object?
-	public AbstractView assumeState(ApplicationState state) {
+
+	public AbstractViewPanel assumeState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
-	
+
 	/**
 	 * 
 	 * @param state
 	 * @return A (different) view of the view responsible for handling that state
 	 */
-	//TODO return view of view instead of whole object?
-	public AbstractView atState(ApplicationState state) {
+	// TODO return view of view instead of whole object?
+	public AbstractViewPanel atState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
 
@@ -110,6 +118,5 @@ public class View implements EventSource{
 	public boolean canOmit(EventId eventId) {
 		return this.eventSourceHandler.canOmit(eventId);
 	}
-
 
 }

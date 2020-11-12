@@ -65,7 +65,6 @@ public class ApplicationStateController {
 		Logger.getLogger(Controller.class.getName())
 				.info(String.format("Switched to ApplicationState: %s", applicationState));
 		this.model.setApplicationState(applicationState);
-		view.switchState(applicationState); // TODO remove, add observer
 
 		if (this.visitedStates.empty() || !this.visitedStates.peek().equals(applicationState)) {
 			this.visitedStates.push(applicationState);

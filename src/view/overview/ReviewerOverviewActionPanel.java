@@ -22,8 +22,8 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel {
 	 * 
 	 * @param id Unique ID from {@link ViewId}
 	 */
-	public ReviewerOverviewActionPanel(ViewId id, Supplier<int[]> selectedRowIndexSupplier) {
-		super(id, selectedRowIndexSupplier);
+	public ReviewerOverviewActionPanel(Supplier<int[]> selectedRowIndexSupplier) {
+		super(selectedRowIndexSupplier);
 
 		this.createUIElements();
 		this.addUIElements();

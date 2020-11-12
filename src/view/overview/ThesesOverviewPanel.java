@@ -22,8 +22,8 @@ public class ThesesOverviewPanel extends OverviewPanel {
 	 * @param viewId Unique viewId from {@link ViewId}
 	 * @param model  Needs the model as data access
 	 */
-	public ThesesOverviewPanel(ViewId viewId, Model model) {
-		super(viewId, model, "Bachelorthesis-Übersicht");
+	public ThesesOverviewPanel(Model model) {
+		super(model, "Bachelorthesis-Übersicht");
 		this.actionPanel = new ThesesOverviewActionPanel(ViewId.ACTIONS, () -> getSelectedRowIndex());
 		this.thesisList = model.getThesisMissingSecReview();
 

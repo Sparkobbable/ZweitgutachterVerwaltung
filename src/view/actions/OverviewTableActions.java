@@ -10,10 +10,10 @@ import javax.swing.JButton;
 import model.EventSource;
 import model.enums.EventId;
 import model.enums.ViewId;
-import view.AbstractView;
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 
-public class OverviewTableActions extends AbstractView {
+public class OverviewTableActions extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,8 +32,8 @@ public class OverviewTableActions extends AbstractView {
 	 *           it is not a top-level-view. Maybe we need to add another Abstract
 	 *           class?
 	 */
-	public OverviewTableActions(ViewId id, Supplier<?> reviewerName) {
-		super(id, "");
+	public OverviewTableActions(Supplier<?> reviewerName) {
+		super("");
 		this.reviewerName = reviewerName;
 		
 		this.setBorder(UNTITLED_BORDER);

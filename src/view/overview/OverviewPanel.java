@@ -11,11 +11,10 @@ import javax.swing.table.AbstractTableModel;
 import model.EventSource;
 import model.Model;
 import model.enums.EventId;
-import model.enums.ViewId;
-import view.AbstractView;
 import view.eventsources.TableClickEventSource;
+import view.panelstructure.DefaultViewPanel;
 
-public abstract class OverviewPanel extends AbstractView {
+public abstract class OverviewPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,8 +26,8 @@ public abstract class OverviewPanel extends AbstractView {
 	protected JScrollPane tableScrollPane;
 	protected OverviewActionPanel actionPanel;
 
-	public OverviewPanel(ViewId viewId, Model model, String title) {
-		super(viewId, title);
+	public OverviewPanel(Model model, String title) {
+		super(title);
 		this.model = model;
 		this.setLayout(new BorderLayout());
 

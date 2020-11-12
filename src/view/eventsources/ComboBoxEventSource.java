@@ -3,7 +3,6 @@ package view.eventsources;
 import java.util.function.Supplier;
 
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 
 import model.Action;
 import model.enums.EventId;

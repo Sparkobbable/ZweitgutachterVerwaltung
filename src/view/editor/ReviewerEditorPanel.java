@@ -15,11 +15,11 @@ import model.Model;
 import model.data.Reviewer;
 import model.enums.EventId;
 import model.enums.ViewId;
-import view.AbstractView;
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
-public class ReviewerEditorPanel extends AbstractView {
+public class ReviewerEditorPanel extends DefaultViewPanel {
 	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> optReviewer;
 	private Model model;
@@ -48,8 +48,8 @@ public class ReviewerEditorPanel extends AbstractView {
 	 * @param viewId Unique viewId from {@link ViewId}
 	 * @param model  Needs the model as data access
 	 */
-	public ReviewerEditorPanel(ViewId id, Model model) {
-		super(id, "Dozenteneditor");
+	public ReviewerEditorPanel(Model model) {
+		super("Dozenteneditor");
 		this.model = model;
 		
 		this.nameField = new JTextField();
