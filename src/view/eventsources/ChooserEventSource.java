@@ -7,7 +7,8 @@ import javax.swing.JFileChooser;
 import model.Action;
 import model.enums.EventId;
 
-public class ChooserEventSource extends SingleEventSource{
+public class ChooserEventSource extends SingleEventSource {
+	
 	private JFileChooser filechooser;
 	
 	public ChooserEventSource(EventId eventId, JFileChooser filechooser, Supplier<?>... params) {

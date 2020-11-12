@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
+import model.enums.PresentationMode;
 
 /**
  * Data store for all reviewers

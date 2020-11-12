@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import model.Model;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
+import model.enums.EventId;
 import view.View;
 
 /**
@@ -24,8 +25,9 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EDIT, (params) -> switchToEdit((int[]) params[0].get()));
+		this.registerEvent(EDIT, (params) -> switchToState(ApplicationState.REVIEWER_EDITOR, (int[]) params[0].get()));
 		this.registerEvent(DELETE, (params) -> deleteEntries((int[]) params[0].get())); // TODO View isnt correctly
+		this.registerEvent(EventId.SHOW_COLLABORATION, (params) -> switchToState(ApplicationState.COLLABORATION, (int[]) params[0].get()));
 																						// refreshed
 		this.registerEvent(NEW, (params) -> addNewReviewer());
 	}
@@ -42,7 +44,7 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 		this.model.removeByIndices(indices);
 	}
 
-	private void switchToEdit(int[] indices) {
+	private void switchToState(ApplicationState applicationState, int[] indices) {
 		// check that one and only one row is selected
 		if (indices.length != 1) {
 			Logger.getLogger(ReviewerOverviewStateController.class.getName())
@@ -55,6 +57,6 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 		Logger.getLogger(ReviewerOverviewStateController.class.getName())
 				.info(String.format("Starting editmode on reviewer %s", index));
 		model.setSelectedReviewer(index);
-		switchState(ApplicationState.REVIEWER_EDITOR);
+		switchState(applicationState);
 	}
 }

@@ -42,6 +42,7 @@ public class ApplicationStateController {
 		stateControllers.put(ApplicationState.THESES_OVERVIEW, new ThesesOverviewStateController(view, this, model));
 		stateControllers.put(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorStateController(view, this, model));
 		stateControllers.put(ApplicationState.STATE_CHOOSER, new StateChooserStateController(view, this, model));
+		stateControllers.put(ApplicationState.COLLABORATION, new CollaborationOverviewStateController(view, this, model));
 		stateControllers.put(ApplicationState.THESIS_ASSIGNMENT,
 				new ThesisAssignmentStateController(view, this, model));
 

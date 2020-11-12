@@ -10,6 +10,7 @@ import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import model.enums.ViewId;
+import view.collaboration.CollaborationPanel;
 import view.editor.ReviewerEditorPanel;
 import view.editor.ThesisAssignmentPanel;
 import view.overview.ReviewerOverviewPanel;
@@ -45,6 +46,7 @@ public class View implements EventSource{
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel(ViewId.FIRSTREVIEWER_IMPORT));
 		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(ViewId.THESIS_ASSIGNMENT, model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel(ViewId.STATE_CHOOSER));
+		this.registerView(ApplicationState.COLLABORATION, new CollaborationPanel(ViewId.COLLABORATION_OVERVIEW, model));
 
 	}
 

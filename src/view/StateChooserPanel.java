@@ -46,7 +46,7 @@ public class StateChooserPanel extends AbstractView {
 	protected List<EventSource> getEventSources() {
 		return List.of(
 				new ChooserEventSource(EventId.CHOOSE_FILEPATH, chooseJson, () -> getFilePath()),
-				buttons);
+				this.buttons);
 	}
 	
 	private String getFilePath() {
