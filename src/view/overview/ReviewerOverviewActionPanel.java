@@ -7,7 +7,6 @@ import javax.swing.JButton;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.eventsources.ButtonEventSource;
 
 public class ReviewerOverviewActionPanel extends OverviewActionPanel {
@@ -22,8 +21,8 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel {
 	 * 
 	 * @param id Unique ID from {@link ViewId}
 	 */
-	public ReviewerOverviewActionPanel(ViewId id, Supplier<int[]> selectedRowIndexSupplier) {
-		super(id, selectedRowIndexSupplier);
+	public ReviewerOverviewActionPanel(Supplier<int[]> selectedRowIndexSupplier) {
+		super(selectedRowIndexSupplier);
 
 		this.createUIElements();
 		this.addUIElements();

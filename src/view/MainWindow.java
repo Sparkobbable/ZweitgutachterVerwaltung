@@ -15,14 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import model.enums.ViewId;
 import util.Log;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel mainContainer;
-	private Map<ViewId, AbstractView> availableViews; // TODO can/shall we remove this?
+	private Map<Integer, AbstractView> availableViews; // TODO can/shall we remove this?
 	private CardLayout cardLayout;
 
 	static {
@@ -79,11 +78,11 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param viewId Id of the view that shall be shown.
 	 */
-	public void switchToView(ViewId viewId) {
+	public void switchToView(Integer viewId) {
 		if (!this.availableViews.containsKey(viewId)) {
 			throw new IllegalArgumentException(String.format("View %s not registered for this window.", viewId));
 		}
-		cardLayout.show(mainContainer, viewId.name());
+		cardLayout.show(mainContainer, viewId.toString());
 	}
 
 	/**
@@ -99,7 +98,7 @@ public class MainWindow extends JFrame {
 		} else {
 			Log.info(this, "Registering view %s", view.getViewId());
 			this.availableViews.put(view.getViewId(), view);
-			this.mainContainer.add(view, view.getViewId().name());
+			this.mainContainer.add(view, view.getViewId().toString());
 		}
 
 	}

@@ -7,7 +7,6 @@ import javax.swing.JButton;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.eventsources.ButtonEventSource;
 
 public class StateChooserButtonsPanel extends AbstractView{
@@ -20,8 +19,8 @@ public class StateChooserButtonsPanel extends AbstractView{
 	private JButton loadState;
 	private JButton saveState;
 
-	public StateChooserButtonsPanel(ViewId viewId) {
-		super(viewId, "Options");
+	public StateChooserButtonsPanel() {
+		super("Options");
 		
 		this.loadState = new JButton("Systemzustand laden");
 		this.saveState = new JButton("Systemzustand speichern");

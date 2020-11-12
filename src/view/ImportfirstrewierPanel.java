@@ -7,7 +7,6 @@ import javax.swing.JButton;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
 import view.eventsources.ButtonEventSource;
 
 public class ImportfirstrewierPanel extends AbstractView {
@@ -15,8 +14,8 @@ public class ImportfirstrewierPanel extends AbstractView {
 	private static final long serialVersionUID = 1L;
 	private JButton loadReview;
 
-	public ImportfirstrewierPanel(ViewId viewId) {
-		super(viewId, "FirstReviewer Import");
+	public ImportfirstrewierPanel() {
+		super("FirstReviewer Import");
 		this.setBackground(Color.orange);
 
 		this.createUIElements();
