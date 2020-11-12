@@ -16,6 +16,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import model.enums.ViewId;
+import util.Log;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +34,7 @@ public class MainWindow extends JFrame {
 		this.cardLayout = new CardLayout();
 		this.availableViews = new HashMap<>();
 		this.mainContainer.setLayout(cardLayout);
-		
+
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
@@ -52,7 +53,7 @@ public class MainWindow extends JFrame {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
 
 	/**
@@ -94,11 +95,12 @@ public class MainWindow extends JFrame {
 	 */
 	public void registerView(AbstractView view) {
 		if (this.availableViews.containsKey(view.getViewId())) {
-			throw new IllegalArgumentException(
-					String.format("A View with id %s is already registered for this window.", view.getViewId()));
+			Log.info(this, "View %s is already registered in MainWindow. It will not be registered again.", view.getViewId());
+		} else {
+			Log.info(this, "Registering view %s", view.getViewId());
+			this.availableViews.put(view.getViewId(), view);
+			this.mainContainer.add(view, view.getViewId().name());
 		}
-		Logger.getLogger(MainWindow.class.getName()).info(String.format("Registering view %s", view.getViewId()));
-		this.availableViews.put(view.getViewId(), view);
-		this.mainContainer.add(view, view.getViewId().name());
+
 	}
 }
