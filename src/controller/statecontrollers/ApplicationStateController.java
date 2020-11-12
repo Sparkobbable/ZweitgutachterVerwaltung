@@ -1,7 +1,7 @@
 package controller.statecontrollers;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
 
@@ -22,9 +22,9 @@ public class ApplicationStateController {
 	private Model model;
 
 	/**
-	 * Map which stores the responsible controller for a given state
+	 * Set of responsible controller for a given state
 	 */
-	private Map<ApplicationState, AbstractStateController> stateControllers;
+	private Set<AbstractStateController> stateControllers;
 
 	/**
 	 * Navigation stack which stores the visited ApplicationStates
@@ -35,19 +35,18 @@ public class ApplicationStateController {
 		this.view = view;
 		this.model = model;
 		visitedStates = new Stack<>();
-		stateControllers = new HashMap<>();
-		stateControllers.put(ApplicationState.HOME, new HomeStateController(view, this, model));
-		stateControllers.put(ApplicationState.REVIEWER_OVERVIEW,
-				new ReviewerOverviewStateController(view, this, model));
-		stateControllers.put(ApplicationState.THESES_OVERVIEW, new ThesesOverviewStateController(view, this, model));
-		stateControllers.put(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorStateController(view, this, model));
-		stateControllers.put(ApplicationState.STATE_CHOOSER, new StateChooserStateController(view, this, model));
-		stateControllers.put(ApplicationState.THESIS_ASSIGNMENT,
-				new ThesisAssignmentStateController(view, this, model));
 		
-		stateControllers.put(ApplicationState.COLLABORATION_TABLE, new CollaborationOverviewStateController(view, this, model, ApplicationState.COLLABORATION_PIECHART));
-		stateControllers.put(ApplicationState.COLLABORATION_PIECHART, new CollaborationOverviewStateController(view, this, model, ApplicationState.COLLABORATION_PIECHART));
-		this.view.atAnyState().addEventHandler(EventId.BACK, (params) -> switchToLastVisitedState());
+		stateControllers = new HashSet<>();
+		stateControllers.add(new HomeStateController(view, this, model));
+		stateControllers.add(new ReviewerOverviewStateController(view, this, model));
+		stateControllers.add(new ThesesOverviewStateController(view, this, model));
+		stateControllers.add(new ReviewerEditorStateController(view, this, model));
+		stateControllers.add(new StateChooserStateController(view, this, model));
+		stateControllers.add(new ThesisAssignmentStateController(view, this, model));
+		stateControllers.add(new CollaborationOverviewStateController(view, this, model));
+		stateControllers.add(new CollaborationOverviewStateController(view, this, model));
+
+		this.view.addEventHandler(EventId.BACK, (params) -> switchToLastVisitedState());
 	}
 
 	/**
