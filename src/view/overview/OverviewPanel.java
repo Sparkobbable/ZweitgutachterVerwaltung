@@ -11,10 +11,10 @@ import javax.swing.table.AbstractTableModel;
 import model.EventSource;
 import model.Model;
 import model.enums.EventId;
-import view.AbstractView;
 import view.eventsources.TableClickEventSource;
+import view.panelstructure.DefaultViewPanel;
 
-public abstract class OverviewPanel extends AbstractView {
+public abstract class OverviewPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 

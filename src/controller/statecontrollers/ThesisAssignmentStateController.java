@@ -25,8 +25,8 @@ import view.View;
  */
 public class ThesisAssignmentStateController extends AbstractStateController {
 
-	public ThesisAssignmentStateController(View view,
-			ApplicationStateController applicationStateController, Model model) {
+	public ThesisAssignmentStateController(View view, ApplicationStateController applicationStateController,
+			Model model) {
 		super(ApplicationState.THESIS_ASSIGNMENT, view, applicationStateController, model);
 	}
 
@@ -37,14 +37,16 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 
 	private void addThesis(Supplier<?>[] params) {
 		int[] thesisIndices = (int[]) params[0].get();
-		Supplier<Stream<Integer>> indicesSupplier = () -> IntStream.of(thesisIndices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder());
+		Supplier<Stream<Integer>> indicesSupplier = () -> IntStream.of(thesisIndices).mapToObj(Integer::valueOf)
+				.sorted(Comparator.reverseOrder());
 		Reviewer reviewer = this.model.getSelectedReviewer().get();
-		if (indicesSupplier.get().collect(Collectors.toList()).size() + reviewer.getSupervisedThesis().size() > reviewer.getMaxSupervisedThesis()) {
-			this.view.assumeState(ApplicationState.THESIS_ASSIGNMENT)
-						.alert(String.format("Die Anzahl der gewählten Bachelorarbeiten überschreitet die maximale Anzahl an Arbeiten die der Dozent %s betreut.",  reviewer.getName()),
-								JOptionPane.WARNING_MESSAGE);
+		if (indicesSupplier.get().collect(Collectors.toList()).size() + reviewer.getSupervisedThesis().size() > reviewer
+				.getMaxSupervisedThesis()) {
+			this.view.alert(String.format(
+					"Die Anzahl der gewählten Bachelorarbeiten überschreitet die maximale Anzahl an Arbeiten die der Dozent %s betreut.",
+					reviewer.getName()), JOptionPane.WARNING_MESSAGE);
 			return;
-			
+
 		}
 		indicesSupplier.get().forEach(this::setThesis);
 		switchToLastVisitedState();
@@ -52,8 +54,9 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 
 	private void setThesis(Integer idx) {
 		BachelorThesis thesis = this.model.getThesisMissingSecReview().get(idx);
-		thesis.setSecondReview(new  SecondReview(this.model.getSelectedReviewer().get(), ReviewStatus.REQUESTED, thesis)); //TODO what exactly is the ReviewStatus? When is it set/changed?
 		this.model.getSelectedReviewer().get().addBachelorThesis(thesis);
+		thesis.setSecondReview(
+				new SecondReview(this.model.getSelectedReviewer().get(), ReviewStatus.REQUESTED, thesis));
 	}
 
 }

@@ -16,12 +16,13 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import util.Log;
+import view.panelstructure.AbstractViewPanel;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel mainContainer;
-	private Map<Integer, AbstractView> availableViews; // TODO can/shall we remove this?
+	private Map<Integer, AbstractViewPanel> availableViews; // TODO can/shall we remove this?
 	private CardLayout cardLayout;
 
 	static {
@@ -92,11 +93,11 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param view View to be registered.
 	 */
-	public void registerView(AbstractView view) {
+	public void registerView(AbstractViewPanel view) {
 		if (this.availableViews.containsKey(view.getViewId())) {
-			Log.info(this, "View %s is already registered in MainWindow. It will not be registered again.", view.getViewId());
+			Log.info(this, "View %s is already registered in MainWindow. It will not be registered again.", view);
 		} else {
-			Log.info(this, "Registering view %s", view.getViewId());
+			Log.info(this, "Registering view %s.", view);
 			this.availableViews.put(view.getViewId(), view);
 			this.mainContainer.add(view, view.getViewId().toString());
 		}

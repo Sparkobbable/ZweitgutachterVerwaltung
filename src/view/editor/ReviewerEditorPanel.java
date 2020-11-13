@@ -1,11 +1,8 @@
 package view.editor;
 
-import java.awt.Color;
 import java.awt.GridLayout;
-import java.beans.PropertyChangeEvent;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,15 +12,14 @@ import javax.swing.JTextField;
 
 import model.EventSource;
 import model.Model;
-import model.data.Review;
 import model.data.Reviewer;
 import model.data.SecondReview;
 import model.enums.EventId;
-import view.AbstractView;
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
-public class ReviewerEditorPanel extends AbstractView {
+public class ReviewerEditorPanel extends DefaultViewPanel {
 	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> optReviewer;
 	private Model model;
@@ -70,7 +66,6 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.optReviewer = Optional.empty();
 
 		this.setLayout(new GridLayout(7, 2));
-		this.setBackground(Color.GRAY);
 
 		this.createUIElements();
 		this.addUIElements();
@@ -174,6 +169,6 @@ public class ReviewerEditorPanel extends AbstractView {
 	}
 	
 	public boolean validateFields() {
-		return !(this.getNameFieldText().isBlank() || this.maxSupervised.getText().isBlank());
-	}
+        return !(this.getNameFieldText().isBlank() || this.maxSupervised.getText().isBlank());
+    }
 }

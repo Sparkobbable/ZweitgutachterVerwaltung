@@ -10,15 +10,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import model.EventSource;
 import model.enums.EventId;
 import view.eventsources.ChooserEventSource;
+import view.panelstructure.AbstractViewPanel;
+import view.panelstructure.DefaultViewPanel;
 
-public class StateChooserPanel extends AbstractView {
+public class StateChooserPanel extends DefaultViewPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JFileChooser chooseJson;
-	private AbstractView buttons;
+	private AbstractViewPanel buttons;
 	
 	public StateChooserPanel() {
 		super("Systemzustand Manager");

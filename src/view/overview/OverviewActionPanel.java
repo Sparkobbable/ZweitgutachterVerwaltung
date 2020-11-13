@@ -3,9 +3,10 @@ package view.overview;
 import java.awt.FlowLayout;
 import java.util.function.Supplier;
 
-import view.AbstractView;
+import view.panelstructure.DefaultViewPanel;
 
-public abstract class OverviewActionPanel extends AbstractView {
+
+public abstract class OverviewActionPanel extends DefaultViewPanel{
 	private static final long serialVersionUID = 1L;
 
 	protected Supplier<int[]> selectedRowIndexSupplier;

@@ -8,8 +8,9 @@ import javax.swing.JButton;
 import model.EventSource;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
+import view.panelstructure.DefaultViewPanel;
 
-public class StateChooserButtonsPanel extends AbstractView{
+public class StateChooserButtonsPanel extends DefaultViewPanel{
 
 	/**
 	 * 

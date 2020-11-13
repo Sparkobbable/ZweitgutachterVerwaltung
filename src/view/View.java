@@ -6,23 +6,27 @@ import java.util.Map;
 import model.Action;
 import model.EventSource;
 import model.Model;
+import model.PropertyChangeManager;
 import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import view.collaboration.CollaborationPanel;
 import view.editor.ReviewerEditorPanel;
 import view.editor.ThesisAssignmentPanel;
 import view.overview.ReviewerOverviewPanel;
 import view.overview.ThesesOverviewPanel;
+import view.panelstructure.AbstractViewPanel;
 
 // TODO JavaDoc
 public class View implements EventSource {
 
-	private Map<ApplicationState, AbstractView> viewsByApplicationStates;
+	private Map<ApplicationState, AbstractViewPanel> viewsByApplicationStates;
 	private CompositeEventSource eventSourceHandler;
 	private Model model;
 
 	private MainWindow window;
 	private MenuBarHandler menuHandler;
+	private PropertyChangeManager propertyChangeManager;
 
 	public View(Model model) {
 		this.model = model;
@@ -32,6 +36,11 @@ public class View implements EventSource {
 		this.eventSourceHandler.register(this.menuHandler);
 		this.createViews();
 		window.setJMenuBar(menuHandler);
+
+		this.propertyChangeManager = new PropertyChangeManager();
+		this.propertyChangeManager.onPropertyChange(Model.APPLICATION_STATE,
+				(evt) -> switchState((ApplicationState) evt.getOldValue(), (ApplicationState) evt.getNewValue()));
+		this.model.addPropertyChangeListener(propertyChangeManager);
 	}
 
 	private void createViews() {
@@ -45,32 +54,37 @@ public class View implements EventSource {
 		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel());
 
+		CollaborationPanel collabPanel = new CollaborationPanel(model);
+		this.registerView(ApplicationState.COLLABORATION_TABLE, collabPanel.atState(ViewState.TABLE));
+		this.registerView(ApplicationState.COLLABORATION_PIECHART, collabPanel.atState(ViewState.PIECHART));
+
 	}
 
-	private void registerView(ApplicationState applicationState, AbstractView abstractView) {
+	private void registerView(ApplicationState applicationState, AbstractViewPanel abstractView) {
 		this.viewsByApplicationStates.put(applicationState, abstractView);
 		this.eventSourceHandler.register(abstractView);
 		this.window.registerView(abstractView);
 	}
 
 	/**
-	 * [Initializes the views and] shows the window.
+	 * Shows the window.
 	 */
 	public void setVisible() {
 		window.setVisible(true);
 	}
 
-	public void switchState(ApplicationState state) {
-		window.switchToView(viewsByApplicationStates.get(state).getViewId());
+	private void switchState(ApplicationState oldState, ApplicationState newState) {
+		viewsByApplicationStates.get(newState).prepare();
+		window.switchToView(viewsByApplicationStates.get(newState).getViewId());
 	}
 
+	// TODO rmv
 	/**
 	 * 
 	 * @param state
 	 * @return A view of the view responsible for handling that state
 	 */
-	// TODO return view of view instead of whole object?
-	public AbstractView assumeState(ApplicationState state) {
+	public AbstractViewPanel assumeState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
 
@@ -80,15 +94,22 @@ public class View implements EventSource {
 	 * @return A (different) view of the view responsible for handling that state
 	 */
 	// TODO return view of view instead of whole object?
-	public AbstractView atState(ApplicationState state) {
+	public AbstractViewPanel atState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
 
 	/**
-	 * @return this for linguistically meaningful API calls
+	 * @see AbstractViewPanel#alert(String, int)
+	 * @param message     Message shown in the pop-upmessageType Must be part of the
+	 *                    JOptionPane values
+	 * @param messageType Must be part of the JOptionPane values
 	 */
-	public View atAnyState() {
-		return this;
+	public int alert(String message, int messageType) {
+		return this.getCurrentAbstractPanel().alert(message, messageType);
+	}
+
+	private AbstractViewPanel getCurrentAbstractPanel() {
+		return this.viewsByApplicationStates.get(this.model.getApplicationState());
 	}
 
 	/*
@@ -108,4 +129,8 @@ public class View implements EventSource {
 		return this.eventSourceHandler.canOmit(eventId);
 	}
 
+	public void addEventHandler(ApplicationState state, EventId eventId, Action action) {
+		this.viewsByApplicationStates.get(state).addEventHandler(eventId, action);
+		;
+	}
 }

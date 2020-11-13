@@ -47,12 +47,12 @@ public class StateChooserStateController extends AbstractStateController {
 			try {
 				ArrayList<Reviewer> reviewers = json.loadReviewers();
 				this.model.setReviewers(reviewers);
-				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Systemstatus wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
+				this.view.alert("Der Systemstatus wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
 			} catch(Exception e) {
-				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
+				this.view.alert("Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
-			this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
+			this.view.alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
@@ -64,32 +64,32 @@ public class StateChooserStateController extends AbstractStateController {
 	private void saveState() {
 		File file = new File(filepath);
 		if(file.exists()) {
-			int result = this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Die Datei exisiert bereits. \n Wollen Sie diese überschreiben?", JOptionPane.QUESTION_MESSAGE);
+			int result = this.view.alert("Die Datei exisiert bereits. \n Wollen Sie diese überschreiben?", JOptionPane.QUESTION_MESSAGE);
 			if(result == JOptionPane.YES_OPTION) {
 				JSONController json = new JSONController(filepath);
 				json.saveReviewers(model.getReviewers());
-				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
+				this.view.alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Speichern des Systemzustands wurde abgebrochen", JOptionPane.INFORMATION_MESSAGE);
+				this.view.alert("Speichern des Systemzustands wurde abgebrochen", JOptionPane.INFORMATION_MESSAGE);
 			}
 		} else {
 			JSONController json = new JSONController(filepath);
 			json.saveReviewers(model.getReviewers());
-			this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
+			this.view.alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
 	private void setFilePath(String filepath) {
 		if(filepath.substring(filepath.length() - 5, filepath.length()).equals(".json")) {
 			this.filepath = filepath;
-			this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+			this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			if(filepath.contains(".")) {
 				this.filepath = filepath.substring(0, filepath.indexOf(".")) + ".json";
-				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Dder Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				this.filepath = filepath + ".json";
-				this.view.assumeState(ApplicationState.STATE_CHOOSER).alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
