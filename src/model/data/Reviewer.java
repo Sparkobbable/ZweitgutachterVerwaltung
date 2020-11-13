@@ -3,12 +3,14 @@ package model.data;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import model.ChangeableProperties;
+import model.enums.CascadeMode;
+import model.enums.ReviewType;
 
 public class Reviewer implements ChangeableProperties {
 
@@ -17,7 +19,8 @@ public class Reviewer implements ChangeableProperties {
 	// Descriptors
 	public static final String NAME = "name";
 	public static final String MAX_SUPERVISED_THESES = "maxSupervisedTheses";
-	public static final String SUPERVISED_THESES = "supervisedTheses";
+	public static final String FIRST_REVIEWS = "firstReviews";
+	public static final String SECOND_REVIEWS = "secondReviews";
 	public static final String EMAIL = "email";
 	public static final String COMMENT = "comment";
 
@@ -25,26 +28,24 @@ public class Reviewer implements ChangeableProperties {
 	private String name;
 	private int maxSupervisedThesis;
 	private float occupation;
-	private ArrayList<BachelorThesis> supervised;
-	private String email = "";
-	private String comment = "";
+	private ArrayList<FirstReview> firstReviews;
+	private ArrayList<SecondReview> secondReviews;
+
+	private String email;
+	private String comment;
 
 	/**
 	 * Creates a Reviewer for BachelorThesis
 	 * 
-	 * @param name Name of the Reviewer
 	 */
-	public Reviewer(String name) {
+	public Reviewer(String name, int maxSupervisedThesis, String email, String comment) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.supervised = new ArrayList<BachelorThesis>();
+		this.firstReviews = new ArrayList<>();
+		this.secondReviews = new ArrayList<>();
 		this.name = name;
-	}
-
-	/**
-	 * Empty Constructor
-	 */
-	public Reviewer() {
-		this(null);
+		this.maxSupervisedThesis = maxSupervisedThesis;
+		this.email = email;
+		this.comment = comment;
 	}
 
 	public String getName() {
@@ -63,28 +64,18 @@ public class Reviewer implements ChangeableProperties {
 		return this.comment;
 	}
 
-	/**
-	 * Never add a Thesis by adding it to the by this method returned ArrayList. Use
-	 * instead {@link Reviewer#addBachelorThesis(BachelorThesis)}
-	 * 
-	 * @return Returns the ArrayList of supervised bachelorThesis only for reading.
-	 */
-	public ArrayList<BachelorThesis> getSupervisedThesis() {
-		return this.supervised;
-	}
-
 	public void setName(String name) {
 		String old = this.name;
 		this.name = name;
 		this.propertyChangeSupport.firePropertyChange(NAME, old, name);
 	}
-	
+
 	public void setEmail(String email) {
 		String old = this.email;
 		this.email = name;
 		this.propertyChangeSupport.firePropertyChange(EMAIL, old, email);
 	}
-	
+
 	public void setComment(String comment) {
 		String old = this.comment;
 		this.comment = name;
@@ -95,28 +86,76 @@ public class Reviewer implements ChangeableProperties {
 		int old = this.maxSupervisedThesis;
 		this.maxSupervisedThesis = maxSupervisedThesis;
 		this.maxSupervisedThesis = maxSupervisedThesis;
-		this.occupation = (float) this.supervised.size() / this.maxSupervisedThesis;
+		this.updateOppucation();
 		this.propertyChangeSupport.firePropertyChange(MAX_SUPERVISED_THESES, old, maxSupervisedThesis);
 	}
 
-	public void addBachelorThesis(BachelorThesis bachelorThesis) {
-		ArrayList<BachelorThesis> old = new ArrayList<>(this.supervised);
-		this.supervised.add(bachelorThesis);
-		this.occupation = (float) this.supervised.size() / this.maxSupervisedThesis;
-		this.propertyChangeSupport.firePropertyChange(SUPERVISED_THESES, old, this.supervised);
+	public void addReview(Review review, CascadeMode cascadeMode) {
+		if (review.getReviewType() == ReviewType.FIRST_REVIEW) {
+			this.addFirstReviewerReview((FirstReview) review, cascadeMode);
+		} else if (review.getReviewType() == ReviewType.SECOND_REVIEW) {
+			this.addSecondReviewerReview((SecondReview) review, cascadeMode);
+		} else {
+			throw new IllegalArgumentException(String.format(
+					"ReviewType must be one of FIRST_REVIEW or SECOND_REVIEW, but was %s. Review cannot be added to Reviewer.",
+					review.getReviewType()));
+		}
 	}
 
-	public void removeThesisByIndex(int thesisIdx) {
-		ArrayList<BachelorThesis> old = new ArrayList<>(this.supervised);
-		this.supervised.remove(thesisIdx);
-		this.propertyChangeSupport.firePropertyChange(SUPERVISED_THESES, old, this.supervised);
+	public void addBachelorThesis(BachelorThesis bachelorThesis, ReviewType reviewType) {
+		if (reviewType == ReviewType.FIRST_REVIEW) {
+			this.addReview(new FirstReview(this, bachelorThesis), CascadeMode.CASCADE);
+		} else if (reviewType == ReviewType.SECOND_REVIEW) {
+			this.addReview(new SecondReview(this, bachelorThesis), CascadeMode.CASCADE);
+		} else {
+			throw new IllegalArgumentException(String.format(
+					"ReviewType must be one of FIRST_REVIEW or SECOND_REVIEW, but was %s. Review cannot be added to Reviewer.",
+					reviewType));
+		}
 	}
 
-	public void removeThesisByIndices(int[] thesisIndices) {
-		ArrayList<BachelorThesis> old = new ArrayList<>(this.supervised);
-		IntStream.of(thesisIndices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder())
-				.mapToInt(Integer::intValue).forEach(this.supervised::remove);
-		this.propertyChangeSupport.firePropertyChange(SUPERVISED_THESES, old, this.supervised);
+	public void addFirstReviewerReview(FirstReview review, CascadeMode cascadeMode) {
+		ArrayList<Review> old = new ArrayList<>(this.firstReviews);
+		this.firstReviews.add(review);
+		this.updateOppucation();
+		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEWS, old, this.firstReviews);
+		if (cascadeMode == CascadeMode.CASCADE) {
+			review.getBachelorThesis().setFirstReview(review, CascadeMode.STOP);
+		}
+	}
+
+	public void addSecondReviewerReview(SecondReview review, CascadeMode cascadeMode) {
+		ArrayList<Review> old = new ArrayList<>(this.firstReviews);
+		this.secondReviews.add(review);
+		this.updateOppucation();
+		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.firstReviews);
+		if (cascadeMode == CascadeMode.CASCADE) {
+			review.getBachelorThesis().setSecondReview(review, CascadeMode.STOP);
+		}
+	}
+
+	public void deleteReviews(Collection<Review> reviews) {
+		reviews.forEach(this::deleteReview);
+	}
+
+	public void deleteReview(Review review) {
+		if (review.getReviewType() == ReviewType.FIRST_REVIEW) {
+			this.deleteFirstReview((FirstReview) review);
+		} else if (review.getReviewType() == ReviewType.SECOND_REVIEW) {
+			this.deleteSecondReview((SecondReview) review);
+		}
+	}
+
+	private void deleteFirstReview(FirstReview review) {
+		ArrayList<FirstReview> old = new ArrayList<>(this.firstReviews);
+		this.firstReviews.remove(review);
+		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEWS, old, this.firstReviews);
+	}
+
+	private void deleteSecondReview(SecondReview review) {
+		ArrayList<SecondReview> old = new ArrayList<>(this.secondReviews);
+		this.secondReviews.remove(review);
+		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEWS, old, this.secondReviews);
 	}
 
 	@Override
@@ -127,12 +166,26 @@ public class Reviewer implements ChangeableProperties {
 	public float getOccupation() {
 		return occupation;
 	}
-	
+
 	/**
 	 * Searches for all Bachelortheses that are second-reviewed by this reviewer
+	 * 
 	 * @return List of Bachelortheses with second review
 	 */
-	public List<BachelorThesis> getSecReviewedTheses() {
-		return this.supervised.stream().filter(thesis -> thesis.getSecondReview().map(review -> review.getReviewer().equals(this)).orElse(false)).collect(Collectors.toList());
+	public List<SecondReview> getSecondReviews() {
+		return this.secondReviews;
 	}
+
+	private void updateOppucation() {
+		this.occupation = (float) (this.firstReviews.size() + this.secondReviews.size()) / this.maxSupervisedThesis;
+	}
+
+	public List<Review> getSupervisedTheses() {
+		return Stream.concat(this.firstReviews.stream(), this.secondReviews.stream()).collect(Collectors.toList());
+	}
+
+	public int getSupervisedThesesSize() {
+		return this.firstReviews.size() + this.secondReviews.size();
+	}
+
 }

@@ -1,11 +1,6 @@
 package controller.statecontrollers;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
 import model.Model;
-import model.data.BachelorThesis;
-import model.data.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import model.enums.PresentationMode;
@@ -31,70 +26,6 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 		}
 		if (params == PresentationMode.TABLE) {
 			switchState(ApplicationState.COLLABORATION_TABLE);
-		}
-	}
-
-	public ArrayList<Reviewer> getSecondReviewersforReviewer() {
-		ArrayList<Reviewer> result = new ArrayList<>();
-		Optional<Reviewer> optionalReviewer = this.model.getSelectedReviewer();
-		if (optionalReviewer.isEmpty()) {
-			return result;
-		} else {
-			Reviewer currentReviewer = optionalReviewer.get();
-			ArrayList<BachelorThesis> supervisedTheses = currentReviewer.getSupervisedThesis();
-
-			for (BachelorThesis thesis : supervisedTheses) {
-
-				Reviewer rev = thesis.getFirstReview().getReviewer();
-				if (rev.equals(currentReviewer) && thesis.getSecondReview().isPresent()) {
-					result.add(thesis.getFirstReview().getReviewer());
-				}
-			}
-			return result;
-		}
-	}
-
-	public ArrayList<Reviewer> getFirstReviewersforReviewer() {
-		ArrayList<Reviewer> result = new ArrayList<>();
-		Optional<Reviewer> optionalReviewer = this.model.getSelectedReviewer();
-		if (optionalReviewer.isEmpty()) {
-			return result;
-		} else {
-			Reviewer currentReviewer = optionalReviewer.get();
-			ArrayList<BachelorThesis> supervisedTheses = currentReviewer.getSupervisedThesis();
-
-			for (BachelorThesis thesis : supervisedTheses) {
-				Reviewer rev = thesis.getFirstReview().getReviewer();
-				if (!rev.equals(currentReviewer) && thesis.getSecondReview().isPresent()) {
-					result.add(rev);
-				}
-			}
-			return result;
-		}
-	}
-
-	public ArrayList<Reviewer> getFirstandSecondReviewersforReviewer() {
-		ArrayList<Reviewer> result = new ArrayList<>();
-		Optional<Reviewer> optionalReviewer = this.model.getSelectedReviewer();
-		if (optionalReviewer.isEmpty()) {
-			return result;
-		} else {
-			Reviewer currentReviewer = optionalReviewer.get();
-			ArrayList<BachelorThesis> supervisedTheses = currentReviewer.getSupervisedThesis();
-
-			for (BachelorThesis thesis : supervisedTheses) {
-
-				Reviewer rev = thesis.getFirstReview().getReviewer();
-				if (rev.equals(currentReviewer)) {
-
-					if (thesis.getSecondReview().isPresent()) {
-						result.add(thesis.getFirstReview().getReviewer());
-					}
-				} else {
-					result.add(rev);
-				}
-			}
-			return result;
 		}
 	}
 }

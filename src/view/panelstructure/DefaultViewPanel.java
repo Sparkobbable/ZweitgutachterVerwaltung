@@ -1,6 +1,7 @@
 package view.panelstructure;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -38,7 +39,8 @@ public abstract class DefaultViewPanel extends AbstractViewPanel {
 
 	/**
 	 * Creates a new Abstract View
-	 * @param title  Title of this view that will be shown on the UI
+	 * 
+	 * @param title Title of this view that will be shown on the UI
 	 */
 	public DefaultViewPanel(String title) {
 		super();
@@ -90,10 +92,19 @@ public abstract class DefaultViewPanel extends AbstractViewPanel {
 			return JOptionPane.CLOSED_OPTION;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s(title=%s)", this.getClass().getName(), title);
+	}
+
+	/**
+	 * Adds the current view as an observer to the specified observable.
+	 * 
+	 * @param observables Needs the values to observer
+	 */
+	protected void observe(ChangeableProperties observable) {
+		observable.addPropertyChangeListener(this);
 	}
 
 	/**
@@ -101,8 +112,8 @@ public abstract class DefaultViewPanel extends AbstractViewPanel {
 	 * 
 	 * @param observables Needs the values to observer
 	 */
-	protected void addObservables(ChangeableProperties... observables) {
-		List.of(observables).forEach(o -> o.addPropertyChangeListener(this));
+	protected void observe(Collection<? extends ChangeableProperties> observables) {
+		observables.forEach(this::observe);
 	}
 	/*
 	 * -----------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 package model.data;
 
 import model.enums.ReviewStatus;
+import model.enums.ReviewType;
 
 public class SecondReview extends Review {
 
@@ -9,15 +10,26 @@ public class SecondReview extends Review {
 	protected ReviewStatus status;
 	
 	/**
-	 * Creates a Review for a BachelorThesis made by the first reviewer
+	 * Creates a SecondReview for a BachelorThesis
 	 * 
 	 * @param reviewer       The Reviewer reviewing the BachelorThesis
-	 * @param status		 Defines whether the reviewer accepted the second review
 	 * @param bachelorThesis The BachelorThesis to be reviewed
+	 * @param status		 Defines whether the reviewer accepted the second review
 	 */
-	public SecondReview(Reviewer reviewer, ReviewStatus status, BachelorThesis bachelorThesis) {
+	public SecondReview(Reviewer reviewer, BachelorThesis bachelorThesis, ReviewStatus status) {
 		super(reviewer, bachelorThesis);
 		this.status = status;
+	}
+
+	/**
+	 * Creates a SecondReview for a BachelorThesis
+	 * <p>
+	 * the value for {@link #status} is set to its default value APPROVED
+	 * @param reviewer
+	 * @param bachelorThesis
+	 */
+	public SecondReview(Reviewer reviewer, BachelorThesis bachelorThesis) {
+		this(reviewer, bachelorThesis, ReviewStatus.APPROVED);
 	}
 
 	public void setStatus(ReviewStatus status) {
@@ -29,4 +41,14 @@ public class SecondReview extends Review {
 	public ReviewStatus getStatus() {
 		return status;
 	}
+	
+	@Override
+	public ReviewType getReviewType() {
+		return ReviewType.SECOND_REVIEW;
+	}
+
+	public void approve() {
+		this.setStatus(ReviewStatus.APPROVED);
+	}
+
 }

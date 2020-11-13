@@ -2,7 +2,6 @@ package view.collaboration;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.util.List;
 
 import model.EventSource;
@@ -37,7 +36,7 @@ public class CollaborationPanel extends DefaultViewPanel {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
-		this.addObservables(this.model);
+		this.observe(this.model);
 	}
 
 	private void createUIElements() {

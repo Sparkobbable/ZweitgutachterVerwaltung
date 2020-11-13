@@ -1,13 +1,18 @@
 package model.data;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Optional;
+
+import model.ChangeableProperties;
+import model.enums.CascadeMode;
+import model.enums.ReviewStatus;
 
 /**
  * stores information about a BachelorThesis
  * 
  */
-public class BachelorThesis {
+public class BachelorThesis implements ChangeableProperties{
 	private PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors passed to PropertyChangedEvents
@@ -29,10 +34,10 @@ public class BachelorThesis {
 	 * @param firstReview  First Review made by a Reviewer
 	 * @param secondReview Second Review made by a Reviewer
 	 */
-	public BachelorThesis(String topic, Author author, FirstReview firstReview, Optional<SecondReview> secondReview) {
+	public BachelorThesis(String topic, Author author, Reviewer firstReviewer) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.firstReview = firstReview;
-		this.secondReview = secondReview;
+		this.firstReview = new FirstReview(firstReviewer, this);
+		this.secondReview = Optional.empty();
 		this.topic = topic;
 		this.author = author;
 	}
@@ -57,7 +62,7 @@ public class BachelorThesis {
 		String old = this.topic;
 		this.topic = topic;
 		this.propertyChangeSupport.firePropertyChange(TOPIC, old, this.topic);
-	
+
 	}
 
 	public void setAuthor(Author author) {
@@ -66,17 +71,36 @@ public class BachelorThesis {
 		this.propertyChangeSupport.firePropertyChange(AUTHOR, old, this.author);
 	}
 
-	//Probably not used anymore
-	
-//	public void setFirstReview(Review firstReview) {
-//		Optional<Review> old = this.firstReview;
-//		this.firstReview = Optional.of(firstReview);
-//		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.firstReview);
-//	}
-
-	public void setSecondReview(SecondReview secondReview) {
+	public void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
 		Optional<SecondReview> old = this.secondReview;
 		this.secondReview = Optional.of(secondReview);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);
+		if (cascadeMode == CascadeMode.CASCADE) {
+			secondReview.getReviewer().addSecondReviewerReview(secondReview, CascadeMode.STOP);
+		}
 	}
+	
+	public void setFirstReview(FirstReview review, CascadeMode cascadeMode) {
+		FirstReview old = this.firstReview;
+		this.firstReview = review;
+		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.secondReview);
+		if (cascadeMode == CascadeMode.CASCADE) {
+			review.getReviewer().addFirstReviewerReview(review, CascadeMode.STOP);
+		}
+	}
+	
+
+	public void setSecondReviewer(Reviewer secondReviewer, CascadeMode cascadeMode) {
+		this.setSecondReview(new SecondReview(secondReviewer, this, ReviewStatus.REQUESTED), cascadeMode);
+	}
+
+	public void setSecondReviewer(Reviewer reviewer) {
+		this.setSecondReviewer(reviewer, CascadeMode.CASCADE);
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+
 }

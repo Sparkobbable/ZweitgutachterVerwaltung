@@ -1,5 +1,7 @@
 package model.data;
 
+import model.enums.ReviewType;
+
 public class FirstReview extends Review {
 
 	/**
@@ -10,6 +12,11 @@ public class FirstReview extends Review {
 	 */
 	public FirstReview(Reviewer reviewer, BachelorThesis bachelorThesis) {
 		super(reviewer, bachelorThesis);
+	}
+
+	@Override
+	public ReviewType getReviewType() {
+		return ReviewType.FIRST_REVIEW;
 	}
 
 }
