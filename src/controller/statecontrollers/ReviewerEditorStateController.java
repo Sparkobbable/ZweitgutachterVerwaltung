@@ -42,7 +42,8 @@ public class ReviewerEditorStateController extends AbstractStateController {
 
 	private void approveThesis(Supplier<?>[] indices) {
 		Stream<Integer> indicesStream = IntStream.of((int[]) indices[0].get()).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder());
-		indicesStream.forEach(index -> this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getSupervisedThesis().get(index).getSecondReview().ifPresent(review -> review.setStatus(ReviewStatus.APPROVED)))); 
+		indicesStream.forEach(index -> this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getSupervisedThesis().get(index)
+				.getSecondReview().ifPresent(review -> review.setStatus(review.getReviewer().equals(reviewer) ? ReviewStatus.APPROVED : review.getStatus())))); 
 	}
 
 	private void deleteThesis(Supplier<?>[] indices) {
