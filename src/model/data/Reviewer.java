@@ -15,11 +15,11 @@ public class Reviewer implements ChangeableProperties {
 	private PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors
-	private static final String NAME = "name";
-	private static final String MAX_SUPERVISED_THESES = "maxSupervisedTheses";
-	private static final String SUPERVISED_THESES = "supervisedTheses";
-	private static final String EMAIL = "email";
-	private static final String COMMENT = "comment";
+	public static final String NAME = "name";
+	public static final String MAX_SUPERVISED_THESES = "maxSupervisedTheses";
+	public static final String SUPERVISED_THESES = "supervisedTheses";
+	public static final String EMAIL = "email";
+	public static final String COMMENT = "comment";
 
 	// Data
 	private String name;

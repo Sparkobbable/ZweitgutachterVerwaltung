@@ -2,8 +2,10 @@ package view.editor;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.beans.PropertyChangeEvent;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,7 +15,9 @@ import javax.swing.JTextField;
 
 import model.EventSource;
 import model.Model;
+import model.data.Review;
 import model.data.Reviewer;
+import model.data.SecondReview;
 import model.enums.EventId;
 import view.AbstractView;
 import view.eventsources.ButtonEventSource;
@@ -73,6 +77,8 @@ public class ReviewerEditorPanel extends AbstractView {
 		this.registerEventSources();
 		this.initializePropertyChangeConsumers();
 		this.addObservables(this.model);
+		this.optReviewer.ifPresent(reviewer -> this.addObservables(reviewer));
+		this.optReviewer.ifPresent(reviewer -> reviewer.getSecReviewedTheses().forEach(thesis -> thesis.getSecondReview().ifPresent(review -> addObservables(review))));
 	}
 
 	private void createUIElements() {
@@ -123,6 +129,16 @@ public class ReviewerEditorPanel extends AbstractView {
 	protected void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.SUPERVISED_THESES, (evt) -> setObserversForSecTheses());
+		this.onPropertyChange(SecondReview.STATUS, (evt) -> updateThesisTable());
+	}
+	
+	private void setObserversForSecTheses() {
+		this.optReviewer.ifPresent(reviewer -> reviewer.getSecReviewedTheses().forEach(thesis -> thesis.getSecondReview().ifPresent(review -> addObservables(review))));
+	}
+
+	private void updateThesisTable() {
+		this.repaint();
 	}
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {

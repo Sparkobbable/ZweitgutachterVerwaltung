@@ -51,8 +51,8 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 
 	private void setThesis(Integer idx) {
 		BachelorThesis thesis = this.model.getThesisMissingSecReview().get(idx);
-		this.model.getSelectedReviewer().get().addBachelorThesis(thesis);
 		thesis.setSecondReview(new  SecondReview(this.model.getSelectedReviewer().get(), ReviewStatus.REQUESTED, thesis)); //TODO what exactly is the ReviewStatus? When is it set/changed?
+		this.model.getSelectedReviewer().get().addBachelorThesis(thesis);
 	}
 
 }

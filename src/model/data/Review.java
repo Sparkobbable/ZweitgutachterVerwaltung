@@ -1,30 +1,22 @@
 package model.data;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import model.enums.ReviewStatus;
+import model.ChangeableProperties;
 
-public class Review {
+public class Review implements ChangeableProperties {
 	protected PropertyChangeSupport propertyChangeSupport;
 
 	// descriptors
 	public static final String REVIEWER = "reviewer";
 	public static final String FIRST_REVIEW = "firstReview";
-	public static final String STATUS = "reviewStatus";
 	public static final String BACHELOR_THESIS = "bachelorThesis";
 
 	// data
 	protected Reviewer reviewer;
 	protected boolean firstReview;
-	protected ReviewStatus status;
 	protected BachelorThesis bachelorThesis;
-
-	protected Review(Reviewer reviewer, ReviewStatus status, BachelorThesis bachelorThesis) {
-		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.reviewer = reviewer;
-		this.status = status;
-		this.bachelorThesis = bachelorThesis;
-	}
 
 	protected Review(Reviewer reviewer, BachelorThesis bachelorThesis) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
@@ -38,5 +30,10 @@ public class Review {
 
 	public BachelorThesis getBachelorThesis() {
 		return bachelorThesis;
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 	}
 }
