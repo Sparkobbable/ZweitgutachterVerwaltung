@@ -22,12 +22,13 @@ import view.tableModels.ThesesOverviewTableModel;
 public class ThesisAssignmentPanel extends AbstractView {
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<BachelorThesis> thesisList;
 	private Optional<Reviewer> selectedReviewer;
+	private Model model;
 
 	private JTable thesisTable;
 	private JScrollPane thesisScrollPane;
 	private JButton addThesis;
+	private ThesesOverviewTableModel thesesTableModel;
 
 	/**
 	 * Creates a view containing a table presenting the bachelorThesis without a
@@ -38,10 +39,11 @@ public class ThesisAssignmentPanel extends AbstractView {
 	 */
 	public ThesisAssignmentPanel(Model model) {
 		super("Bachelorthesis-Editor");
-		this.thesisList = model.getThesisMissingSecReview();
+		this.model = model;
 		this.selectedReviewer = model.getSelectedReviewer();
 
 		addObservables(model);
+		model.getSelectedReviewer().ifPresent(reviewer -> addObservables(reviewer));
 
 		this.setBackground(Color.DARK_GRAY); // TODO only for component identification, remove before launch
 		this.setLayout(new GridLayout(4, 1));
@@ -62,7 +64,8 @@ public class ThesisAssignmentPanel extends AbstractView {
 	}
 
 	private void createUIElements() {
-		this.thesisTable = new JTable(new ThesesOverviewTableModel(this.thesisList));
+		this.thesesTableModel = new ThesesOverviewTableModel(this.model, this.selectedReviewer);
+		this.thesisTable = new JTable(this.thesesTableModel);
 		this.thesisScrollPane = new JScrollPane(this.thesisTable);
 		this.addThesis = new JButton(this.createButtonText());
 	}
@@ -81,6 +84,13 @@ public class ThesisAssignmentPanel extends AbstractView {
 	private void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.SUPERVISED_THESES, (evt) -> updateThesesList( (ArrayList<BachelorThesis>) evt.getNewValue()));
+	}
+
+	private void updateThesesList(ArrayList<BachelorThesis> updatedThesisList) {
+		this.thesesTableModel.getNewData();
+		this.thesesTableModel.fireTableDataChanged();
+		this.repaint();	
 	}
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {

@@ -44,7 +44,7 @@ public class Model implements ChangeableProperties{
 	 * 
 	 * @return ArrayList of the found bachelorThesis
 	 */
-	public ArrayList<BachelorThesis> getThesisMissingSecReview() {
+	public ArrayList<BachelorThesis> getThesisMissingSecReview(Optional<List<BachelorThesis>> excludedTheses) {
 		ArrayList<BachelorThesis> thesisList = new ArrayList<>();
 		for (Reviewer reviewer : this.getReviewers()) {
 			for (BachelorThesis thesis : reviewer.getSupervisedThesis()) {
@@ -53,6 +53,7 @@ public class Model implements ChangeableProperties{
 				}
 			}
 		}
+		excludedTheses.ifPresent(excludeList -> thesisList.removeAll(excludeList));
 		return thesisList;
 	}
 
@@ -118,6 +119,10 @@ public class Model implements ChangeableProperties{
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 		this.reviewers.forEach(reviewer -> reviewer.addPropertyChangeListener(propertyChangeListener));
+	}
+
+	public ArrayList<BachelorThesis> getThesisMissingSecReview() {
+		return getThesisMissingSecReview(Optional.empty());
 	}
 
 }

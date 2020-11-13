@@ -1,24 +1,31 @@
 package view.tableModels;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.table.AbstractTableModel;
 
+import model.Model;
 import model.data.BachelorThesis;
+import model.data.Reviewer;
 
 public class ThesesOverviewTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private List<BachelorThesis> thesisList;
+	private Model model;
+	private Optional<Reviewer> selectedReviewer;
 	
 	/**
 	 * Creates a TableModel of the bachelorThesis-list
 	 * 
 	 * @param thesisList Needs the list of bachelorThesis to be shown
 	 */
-	public ThesesOverviewTableModel(List<BachelorThesis> thesisList) {
-		this.thesisList = thesisList;
+	public ThesesOverviewTableModel(Model model, Optional<Reviewer> selectedReviewer) {
+		this.model = model;
+		this.selectedReviewer = selectedReviewer;
+		this.thesisList = model.getThesisMissingSecReview(selectedReviewer.map(reviewer -> reviewer.getSecReviewedTheses()));
 	}
 	
 	@Override
@@ -58,6 +65,10 @@ public class ThesesOverviewTableModel extends AbstractTableModel {
 			default:
 				return null;
 		}
+	}
+
+	public void getNewData() {
+		this.thesisList = model.getThesisMissingSecReview(selectedReviewer.map(reviewer -> reviewer.getSecReviewedTheses()));
 	}
 
 }

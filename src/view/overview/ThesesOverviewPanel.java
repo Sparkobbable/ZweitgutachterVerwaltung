@@ -12,7 +12,6 @@ import view.tableModels.ThesesOverviewTableModel;
 public class ThesesOverviewPanel extends OverviewPanel {
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<BachelorThesis> thesisList;
 
 	/**
 	 * Creates a view containing a table presenting the bachelorThesis without a
@@ -24,7 +23,6 @@ public class ThesesOverviewPanel extends OverviewPanel {
 	public ThesesOverviewPanel(Model model) {
 		super(model, "Bachelorthesis-Übersicht");
 		this.actionPanel = new ThesesOverviewActionPanel(() -> getSelectedRowIndex());
-		this.thesisList = model.getThesisMissingSecReview();
 
 		addObservables(model);
 
@@ -37,6 +35,6 @@ public class ThesesOverviewPanel extends OverviewPanel {
 	
 	@Override
 	protected AbstractTableModel createTableModel() {
-		return new ThesesOverviewTableModel(this.thesisList);
+		return new ThesesOverviewTableModel(model, model.getSelectedReviewer());
 	}
 }
