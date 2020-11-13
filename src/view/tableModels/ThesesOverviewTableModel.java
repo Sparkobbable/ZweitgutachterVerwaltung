@@ -54,7 +54,7 @@ public class ThesesOverviewTableModel extends AbstractTableModel {
 			case 1: 
 				return thesis.getTopic();
 			case 2: 
-				return thesis.getFirstReview().get().getReviewer().getName();
+				return thesis.getFirstReview().getReviewer().getName();
 			default:
 				return null;
 		}

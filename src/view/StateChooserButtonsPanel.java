@@ -20,7 +20,6 @@ public class StateChooserButtonsPanel extends DefaultViewPanel{
 	private JButton loadState;
 	private JButton saveState;
 
-
 	public StateChooserButtonsPanel() {
 		super("Options");
 		

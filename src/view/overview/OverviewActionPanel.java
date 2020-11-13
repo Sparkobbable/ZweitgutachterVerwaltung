@@ -3,7 +3,6 @@ package view.overview;
 import java.awt.FlowLayout;
 import java.util.function.Supplier;
 
-
 import view.panelstructure.DefaultViewPanel;
 
 

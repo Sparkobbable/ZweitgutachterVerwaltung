@@ -18,23 +18,8 @@ public class BachelorThesis {
 
 	private String topic;
 	private Author author;
-	private Optional<Review> firstReview;
-	private Optional<Review> secondReview;
-
-	/**
-	 * Base constructor for a BachelorThesis with a given first and second Reviewer
-	 * <p>
-	 * Should be called in all other constructors.
-	 * 
-	 * @param firstReview
-	 * @param secondReview
-	 */
-	public BachelorThesis(Optional<Review> firstReview, Optional<Review> secondReview) {
-		this.propertyChangeSupport = new PropertyChangeSupport(this);
-
-		this.firstReview = firstReview;
-		this.secondReview = secondReview;
-	}
+	private FirstReview firstReview;
+	private Optional<SecondReview> secondReview;
 
 	/**
 	 * Creates a BachelorThesis
@@ -44,28 +29,12 @@ public class BachelorThesis {
 	 * @param firstReview  First Review made by a Reviewer
 	 * @param secondReview Second Review made by a Reviewer
 	 */
-	public BachelorThesis(String topic, Author author, Optional<Review> firstReview, Optional<Review> secondReview) {
-		this(firstReview, secondReview);
+	public BachelorThesis(String topic, Author author, FirstReview firstReview, Optional<SecondReview> secondReview) {
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		this.firstReview = firstReview;
+		this.secondReview = secondReview;
 		this.topic = topic;
 		this.author = author;
-	}
-
-	/**
-	 * Creates a BachelorThesis with an unspecified first and second reviewer
-	 * 
-	 * @param topic       Topic of the BachelorThesis
-	 * @param author      Author of the BachelorThesis (Student)
-	 * @param firstReview First Review made by a Reviewer
-	 */
-	public BachelorThesis(String topic, Author author) {
-		this(topic, author, Optional.empty(), Optional.empty());
-	}
-
-	/**
-	 * Empty constructor for creating a new BachelorThesis in editing-mode
-	 */
-	public BachelorThesis() {
-		this(Optional.empty(), Optional.empty());
 	}
 
 	public String getTopic() {
@@ -76,11 +45,11 @@ public class BachelorThesis {
 		return author;
 	}
 
-	public Optional<Review> getFirstReview() {
+	public FirstReview getFirstReview() {
 		return firstReview;
 	}
 
-	public Optional<Review> getSecondReview() {
+	public Optional<SecondReview> getSecondReview() {
 		return secondReview;
 	}
 
@@ -97,14 +66,16 @@ public class BachelorThesis {
 		this.propertyChangeSupport.firePropertyChange(AUTHOR, old, this.author);
 	}
 
-	public void setFirstReview(Review firstReview) {
-		Optional<Review> old = this.firstReview;
-		this.firstReview = Optional.of(firstReview);
-		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.firstReview);
-	}
+	//Probably not used anymore
+	
+//	public void setFirstReview(Review firstReview) {
+//		Optional<Review> old = this.firstReview;
+//		this.firstReview = Optional.of(firstReview);
+//		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.firstReview);
+//	}
 
-	public void setSecondReview(Review secondReview) {
-		Optional<Review> old = this.secondReview;
+	public void setSecondReview(SecondReview secondReview) {
+		Optional<SecondReview> old = this.secondReview;
 		this.secondReview = Optional.of(secondReview);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);
 	}

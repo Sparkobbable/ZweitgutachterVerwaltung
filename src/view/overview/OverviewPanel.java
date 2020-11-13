@@ -11,7 +11,6 @@ import javax.swing.table.AbstractTableModel;
 import model.EventSource;
 import model.Model;
 import model.enums.EventId;
-//github.com/Sparkobbable/ZweitgutachterVerwaltung
 import view.eventsources.TableClickEventSource;
 import view.panelstructure.DefaultViewPanel;
 

@@ -18,7 +18,7 @@ import view.overview.ThesesOverviewPanel;
 import view.panelstructure.AbstractViewPanel;
 
 // TODO JavaDoc
-public class View implements EventSource{
+public class View implements EventSource {
 
 	private Map<ApplicationState, AbstractViewPanel> viewsByApplicationStates;
 	private CompositeEventSource eventSourceHandler;
@@ -78,7 +78,7 @@ public class View implements EventSource{
 		window.switchToView(viewsByApplicationStates.get(newState).getViewId());
 	}
 
-	//TODO rmv
+	// TODO rmv
 	/**
 	 * 
 	 * @param state
@@ -94,7 +94,6 @@ public class View implements EventSource{
 	 * @return A (different) view of the view responsible for handling that state
 	 */
 	// TODO return view of view instead of whole object?
-
 	public AbstractViewPanel atState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
@@ -131,7 +130,7 @@ public class View implements EventSource{
 	}
 
 	public void addEventHandler(ApplicationState state, EventId eventId, Action action) {
-		this.viewsByApplicationStates.get(state).addEventHandler(eventId, action);;
+		this.viewsByApplicationStates.get(state).addEventHandler(eventId, action);
+		;
 	}
-
 }

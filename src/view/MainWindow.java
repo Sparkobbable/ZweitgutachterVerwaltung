@@ -22,9 +22,7 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel mainContainer;
-
 	private Map<Integer, AbstractViewPanel> availableViews; // TODO can/shall we remove this?
-
 	private CardLayout cardLayout;
 
 	static {

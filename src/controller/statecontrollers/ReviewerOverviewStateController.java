@@ -33,9 +33,8 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	}
 
 	private void addNewReviewer() {
-		Logger.getLogger(ReviewerOverviewStateController.class.getName()).info("Starting editmode on new Reviewer");
-		Reviewer reviewer = new Reviewer();
-		model.setSelectedReviewer(reviewer);
+		Logger.getLogger(ReviewerOverviewStateController.class.getName()).info("Starting creationmode on new Reviewer");
+		this.model.setSelectedReviewer(new Reviewer());
 
 		switchState(ApplicationState.REVIEWER_EDITOR);
 	}

@@ -1,7 +1,6 @@
 package view.collaboration;
 
 import java.util.List;
-import java.util.Map;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

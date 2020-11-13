@@ -4,6 +4,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import model.ChangeableProperties;
@@ -13,11 +15,11 @@ public class Reviewer implements ChangeableProperties {
 	private PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors
-	private static final String NAME = "name";
-	private static final String MAX_SUPERVISED_THESES = "maxSupervisedTheses";
-	private static final String SUPERVISED_THESES = "supervisedTheses";
-	private static final String EMAIL = "email";
-	private static final String COMMENT = "comment";
+	public static final String NAME = "name";
+	public static final String MAX_SUPERVISED_THESES = "maxSupervisedTheses";
+	public static final String SUPERVISED_THESES = "supervisedTheses";
+	public static final String EMAIL = "email";
+	public static final String COMMENT = "comment";
 
 	// Data
 	private String name;
@@ -28,21 +30,21 @@ public class Reviewer implements ChangeableProperties {
 	private String comment = "";
 
 	/**
-	 * Creates an empty Reviewer
-	 */
-	public Reviewer() {
-		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.supervised = new ArrayList<BachelorThesis>();
-	}
-
-	/**
 	 * Creates a Reviewer for BachelorThesis
 	 * 
 	 * @param name Name of the Reviewer
 	 */
 	public Reviewer(String name) {
-		this();
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		this.supervised = new ArrayList<BachelorThesis>();
 		this.name = name;
+	}
+
+	/**
+	 * Empty Constructor
+	 */
+	public Reviewer() {
+		this(null);
 	}
 
 	public String getName() {
@@ -124,5 +126,13 @@ public class Reviewer implements ChangeableProperties {
 
 	public float getOccupation() {
 		return occupation;
+	}
+	
+	/**
+	 * Searches for all Bachelortheses that are second-reviewed by this reviewer
+	 * @return List of Bachelortheses with second review
+	 */
+	public List<BachelorThesis> getSecReviewedTheses() {
+		return this.supervised.stream().filter(thesis -> thesis.getSecondReview().map(review -> review.getReviewer().equals(this)).orElse(false)).collect(Collectors.toList());
 	}
 }

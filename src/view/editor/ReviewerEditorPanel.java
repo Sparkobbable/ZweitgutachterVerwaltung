@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import model.EventSource;
 import model.Model;
 import model.data.Reviewer;
+import model.data.SecondReview;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.panelstructure.DefaultViewPanel;
@@ -39,6 +40,7 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 	private JButton save;
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
+	private JButton approveSecReview;
 
 	/**
 	 * Creates a view containing a table presenting the reviewer's supervised
@@ -70,12 +72,15 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		this.registerEventSources();
 		this.initializePropertyChangeConsumers();
 		this.addObservables(this.model);
+		this.optReviewer.ifPresent(reviewer -> this.addObservables(reviewer));
+		this.optReviewer.ifPresent(reviewer -> reviewer.getSecReviewedTheses().forEach(thesis -> thesis.getSecondReview().ifPresent(review -> addObservables(review))));
 	}
 
 	private void createUIElements() {
 		this.save = new JButton("Speichern");
 		this.addBachelorThesis = new JButton("Bachelorarbeit hinzufügen");
 		this.deleteThesis = new JButton("Bachelorarbeit löschen");
+		this.approveSecReview = new JButton("Zweitgutachten bestätigen");
 
 		this.supervisedThesisTableModel = new SupervisedThesisTableModel(this.optReviewer);
 		this.supervisedThesisTable = new JTable(supervisedThesisTableModel);
@@ -104,19 +109,31 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
+		this.add(this.approveSecReview);
 	}
 
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
 				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
-				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getThesis()));
+				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getTheses()),
+				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getTheses()));
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.SUPERVISED_THESES, (evt) -> setObserversForSecTheses());
+		this.onPropertyChange(SecondReview.STATUS, (evt) -> updateThesisTable());
+	}
+	
+	private void setObserversForSecTheses() {
+		this.optReviewer.ifPresent(reviewer -> reviewer.getSecReviewedTheses().forEach(thesis -> thesis.getSecondReview().ifPresent(review -> addObservables(review))));
+	}
+
+	private void updateThesisTable() {
+		this.repaint();
 	}
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
@@ -147,7 +164,11 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		return this.nameField.getText();
 	}
 
-	private int[] getThesis() {
+	private int[] getTheses() {
 		return this.supervisedThesisTable.getSelectedRows();
 	}
+	
+	public boolean validateFields() {
+        return !(this.getNameFieldText().isBlank() || this.maxSupervised.getText().isBlank());
+    }
 }

@@ -20,7 +20,6 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel {
 	 * 
 	 * @param id Unique ID from {@link ViewId}
 	 */
-
 	public ThesesOverviewActionPanel(Supplier<int[]> selectedRowIndexSupplier) {
 		super(selectedRowIndexSupplier);
 		

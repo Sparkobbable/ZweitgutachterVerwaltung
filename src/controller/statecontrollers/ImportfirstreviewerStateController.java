@@ -20,7 +20,7 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 	private BachelorThesis firstreview;
 	public ImportfirstreviewerStateController(View view, ApplicationStateController applicationStateController, Model model) {
 		super(ApplicationState.FIRSTREVIEWER_IMPORT, view, applicationStateController, model);
-		firstreview = new BachelorThesis();
+//		firstreview = new BachelorThesis(); // TODO doesn't work anymore, theses shouldnt be created while not adding the needed attributes
 	}
 
 	@Override

@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 
 import model.Model;
 import model.data.BachelorThesis;
-import model.data.Review;
 import model.data.Reviewer;
+import model.data.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;
 import view.View;
@@ -55,13 +55,7 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 		BachelorThesis thesis = this.model.getThesisMissingSecReview().get(idx);
 		this.model.getSelectedReviewer().get().addBachelorThesis(thesis);
 		thesis.setSecondReview(
-				new Review(this.model.getSelectedReviewer().get(), false, ReviewStatus.REQUESTED, thesis)); // TODO what
-																											// exactly
-																											// is the
-																											// ReviewStatus?
-																											// When is
-																											// it
-																											// set/changed?
+				new SecondReview(this.model.getSelectedReviewer().get(), ReviewStatus.REQUESTED, thesis));
 	}
 
 }
