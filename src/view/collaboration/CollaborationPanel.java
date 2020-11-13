@@ -1,5 +1,6 @@
 package view.collaboration;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
@@ -29,7 +30,7 @@ public class CollaborationPanel extends DefaultViewPanel {
 		this.selectedPresentationMode = PresentationMode.TABLE;
 
 		this.setBackground(Color.DARK_GRAY);
-		this.setLayout(new GridLayout(3, 2));
+		this.setLayout(new BorderLayout());
 
 		this.onPropertyChange(SELECTED_PRESENTATIONMODE,
 				evt -> switchPresentationMode((PresentationMode) evt.getNewValue()));
@@ -41,10 +42,12 @@ public class CollaborationPanel extends DefaultViewPanel {
 
 	private void createUIElements() {
 		this.options = new CollaborationOptionsPanel(this.model);
+		this.chart = new PieChart();
 	}
 
 	private void addUIElements() {
-		this.add(this.options);
+		this.add(this.options, BorderLayout.PAGE_START);
+		this.add(this.chart, BorderLayout.CENTER);
 	}
 
 	public void setPresentationMode(PresentationMode presentationMode) {
