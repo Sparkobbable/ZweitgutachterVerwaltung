@@ -48,7 +48,7 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 				ArrayList<Reviewer> reviewers = json.loadReviewers();
 				this.model.setReviewers(reviewers);
 			} catch(Exception e) {
-				this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Es ist ein Fehler beim Laden der Erstgutachter aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
+				this.view.alert("Es ist ein Fehler beim Laden der Erstgutachter aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	

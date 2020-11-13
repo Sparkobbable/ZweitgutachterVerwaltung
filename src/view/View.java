@@ -18,7 +18,7 @@ import view.overview.ThesesOverviewPanel;
 import view.panelstructure.AbstractViewPanel;
 
 // TODO JavaDoc
-public class View implements EventSource {
+public class View implements EventSource{
 
 	private Map<ApplicationState, AbstractViewPanel> viewsByApplicationStates;
 	private CompositeEventSource eventSourceHandler;
@@ -53,7 +53,7 @@ public class View implements EventSource {
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel());
 		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel());
-		
+
 		CollaborationPanel collabPanel = new CollaborationPanel(model);
 		this.registerView(ApplicationState.COLLABORATION_TABLE, collabPanel.atState(ViewState.TABLE));
 		this.registerView(ApplicationState.COLLABORATION_PIECHART, collabPanel.atState(ViewState.PIECHART));
@@ -78,12 +78,12 @@ public class View implements EventSource {
 		window.switchToView(viewsByApplicationStates.get(newState).getViewId());
 	}
 
+	//TODO rmv
 	/**
 	 * 
 	 * @param state
 	 * @return A view of the view responsible for handling that state
 	 */
-
 	public AbstractViewPanel assumeState(ApplicationState state) {
 		return viewsByApplicationStates.get(state);
 	}
@@ -100,10 +100,17 @@ public class View implements EventSource {
 	}
 
 	/**
-	 * @return this for linguistically meaningful API calls
+	 * @see AbstractViewPanel#alert(String, int)
+	 * @param message     Message shown in the pop-upmessageType Must be part of the
+	 *                    JOptionPane values
+	 * @param messageType Must be part of the JOptionPane values
 	 */
-	public View atAnyState() {
-		return this;
+	public int alert(String message, int messageType) {
+		return this.getCurrentAbstractPanel().alert(message, messageType);
+	}
+
+	private AbstractViewPanel getCurrentAbstractPanel() {
+		return this.viewsByApplicationStates.get(this.model.getApplicationState());
 	}
 
 	/*
@@ -121,6 +128,10 @@ public class View implements EventSource {
 	@Override
 	public boolean canOmit(EventId eventId) {
 		return this.eventSourceHandler.canOmit(eventId);
+	}
+
+	public void addEventHandler(ApplicationState state, EventId eventId, Action action) {
+		this.viewsByApplicationStates.get(state).addEventHandler(eventId, action);;
 	}
 
 }
