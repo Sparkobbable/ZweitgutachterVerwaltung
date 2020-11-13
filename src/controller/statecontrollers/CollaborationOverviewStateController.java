@@ -1,7 +1,5 @@
 package controller.statecontrollers;
 
-import java.util.Set;
-
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -12,8 +10,7 @@ public class CollaborationOverviewStateController extends AbstractStateControlle
 
 	public CollaborationOverviewStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {
-		super(Set.of(ApplicationState.COLLABORATION_PIECHART, ApplicationState.COLLABORATION_TABLE), view,
-				applicationStateController, model);
+		super(ApplicationState.COLLABORATION_TABLE, view, applicationStateController, model);
 	}
 
 	@Override
