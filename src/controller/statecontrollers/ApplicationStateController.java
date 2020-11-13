@@ -43,8 +43,8 @@ public class ApplicationStateController {
 		stateControllers.add(new ReviewerEditorStateController(view, this, model));
 		stateControllers.add(new StateChooserStateController(view, this, model));
 		stateControllers.add(new ThesisAssignmentStateController(view, this, model));
-		stateControllers.add(new CollaborationOverviewStateController(view, this, model));
-		stateControllers.add(new CollaborationOverviewStateController(view, this, model));
+		stateControllers.add(new CollaborationOverviewTableStateController(view, this, model));
+		stateControllers.add(new CollaborationOverviewPieChartStateController(view, this, model));
 
 		this.view.addEventHandler(EventId.BACK, (params) -> switchToLastVisitedState());
 	}
