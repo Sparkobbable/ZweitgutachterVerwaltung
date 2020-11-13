@@ -71,4 +71,8 @@ public class ThesesOverviewTableModel extends AbstractTableModel {
 		this.thesisList = model.getThesisMissingSecReview(selectedReviewer.map(reviewer -> reviewer.getSecReviewedTheses()));
 	}
 
+	public void setSelectedReviewer(Optional<Reviewer> selectedReviewer) {
+		this.selectedReviewer = selectedReviewer;
+	}
+
 }

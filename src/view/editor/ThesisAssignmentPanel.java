@@ -2,7 +2,6 @@ package view.editor;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +11,6 @@ import javax.swing.JTable;
 
 import model.EventSource;
 import model.Model;
-import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
@@ -84,10 +82,10 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 	private void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
-		this.onPropertyChange(Reviewer.SUPERVISED_THESES, (evt) -> updateThesesList( (ArrayList<BachelorThesis>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.SUPERVISED_THESES, (evt) -> updateThesesList());
 	}
 
-	private void updateThesesList(ArrayList<BachelorThesis> updatedThesisList) {
+	private void updateThesesList() {
 		this.thesesTableModel.getNewData();
 		this.thesesTableModel.fireTableDataChanged();
 		this.repaint();	
@@ -95,6 +93,7 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
 		this.selectedReviewer = selectedReviewer;
+		this.thesesTableModel.setSelectedReviewer(selectedReviewer);
 		this.addThesis.setText(this.createButtonText());
 		this.repaint();
 	}

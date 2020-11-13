@@ -3,7 +3,6 @@ package controller.statecontrollers;
 import static model.enums.EventId.ADD_THESIS_TO_REVIEWER;
 
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -54,9 +53,9 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 
 	private void setThesis(Integer idx) {
 		BachelorThesis thesis = this.model.getThesisMissingSecReview().get(idx);
-		this.model.getSelectedReviewer().get().addBachelorThesis(thesis);
 		thesis.setSecondReview(
 				new SecondReview(this.model.getSelectedReviewer().get(), ReviewStatus.REQUESTED, thesis));
+		this.model.getSelectedReviewer().get().addBachelorThesis(thesis);
 	}
 
 }
