@@ -64,11 +64,11 @@ public class Reviewer implements ChangeableProperties {
 		return this.comment;
 	}
 
-	public List<Review> getSupervisedTheses() {
+	public List<Review> getAllReviews() {
 		return Stream.concat(this.firstReviews.stream(), this.secondReviews.stream()).collect(Collectors.toList());
 	}
 
-	public int getSupervisedThesesSize() {
+	public int getTotalReviewCount() {
 		return this.firstReviews.size() + this.secondReviews.size();
 	}
 
@@ -237,6 +237,16 @@ public class Reviewer implements ChangeableProperties {
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+	}
+
+	/**
+	 * 
+	 * @param thesis
+	 * @return True if and only if this Reviewer reviews the given thesis as first
+	 *         or second reviewer
+	 */
+	public boolean reviewsThesis(BachelorThesis thesis) {
+		return this.getAllReviews().stream().map(Review::getBachelorThesis).anyMatch(t -> t == thesis);
 	}
 
 }

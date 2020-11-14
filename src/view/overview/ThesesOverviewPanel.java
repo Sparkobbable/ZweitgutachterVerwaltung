@@ -1,15 +1,13 @@
 package view.overview;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-
-import javax.swing.table.AbstractTableModel;
 
 import model.Model;
 import model.data.BachelorThesis;
+import view.tableModels.AbstractDataTableModel;
 import view.tableModels.ThesesOverviewTableModel;
 
-public class ThesesOverviewPanel extends OverviewPanel {
+public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,10 +29,11 @@ public class ThesesOverviewPanel extends OverviewPanel {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
+		this.tableModel.updateData();
 	}
 	
 	@Override
-	protected AbstractTableModel createTableModel() {
-		return new ThesesOverviewTableModel(model, model.getSelectedReviewer());
+	protected AbstractDataTableModel<BachelorThesis> createTableModel() {
+		return new ThesesOverviewTableModel(model);
 	}
 }

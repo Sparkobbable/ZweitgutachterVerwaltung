@@ -1,10 +1,12 @@
 package view.overview;
 
 import model.Model;
+import model.data.Reviewer;
+import view.tableModels.AbstractDataTableModel;
 import view.tableModels.ProgressRenderer;
 import view.tableModels.ReviewerOverviewTableModel;
 
-public class ReviewerOverviewPanel extends OverviewPanel {
+public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -12,7 +14,7 @@ public class ReviewerOverviewPanel extends OverviewPanel {
 	 * Creates a view containing a table presenting the reviewers and buttons for
 	 * interacting with the data
 	 * 
-	 * @param model  Needs the model as the data access
+	 * @param model Needs the model as the data access
 	 */
 	public ReviewerOverviewPanel(Model model) {
 		super(model, "Dozentenübersicht");
@@ -23,12 +25,15 @@ public class ReviewerOverviewPanel extends OverviewPanel {
 		this.registerEventSources();
 		this.initializePropertyChangeConsumers();
 		this.observe(this.model);
+
+		this.tableModel.updateData();
+
 	}
 
-	protected ReviewerOverviewTableModel createTableModel() {
+	protected AbstractDataTableModel<Reviewer> createTableModel() {
 		return new ReviewerOverviewTableModel(model);
 	}
-	
+
 	@Override
 	protected void createUIElements() {
 		super.createUIElements();

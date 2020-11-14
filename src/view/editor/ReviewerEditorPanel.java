@@ -135,28 +135,27 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		this.onPropertyChange(Reviewer.SECOND_REVIEWS,
 				(evt) -> updateObserversForSecondReviews((List<Review>) evt.getOldValue(),
 						(List<Review>) evt.getNewValue()));
-		this.onPropertyChange(SecondReview.STATUS, (evt) -> updateThesisTable());
+		this.onPropertyChange(SecondReview.STATUS, (evt) -> this.refreshTableModel());
 	}
 
 	private void updateObserversForSecondReviews(List<Review> oldReviews, List<Review> newReviews) {
-		// TODO remove observers
 		this.observe(newReviews);
+		this.refreshTableModel();
 	}
 
-	private void updateThesisTable() {
+	private void refreshTableModel() {
+		this.supervisedThesisTableModel.updateData();
 		this.repaint();
 	}
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
 		this.selectedReviewer = selectedReviewer;
-
 		// observe reviewer and the theses where they are second reviewers
 		if (this.selectedReviewer.isPresent()) {
 			Reviewer reviewer = this.selectedReviewer.get();
 			this.updateReviewerFields(reviewer);
 			this.observeReviewer(reviewer);
-			this.supervisedThesisTableModel.setSelectedReviewer(this.selectedReviewer);
-			this.supervisedThesisTableModel.fireTableDataChanged();
+			this.supervisedThesisTableModel.setSelectedReviewer(reviewer);
 
 		}
 
@@ -165,7 +164,7 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 
 	protected void observeReviewer(Reviewer reviewer) {
 		this.observe(reviewer);
-		this.observe(reviewer.getSecondReviews().stream().map(Review::getBachelorThesis).collect(Collectors.toSet()));
+		this.observe(reviewer.getSecondReviews());
 	}
 
 	private void updateReviewerFields(Reviewer reviewer) {
@@ -188,7 +187,7 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 	private List<Review> getSelectedReviews() {
 		return IntStream.of(this.supervisedThesisTable.getSelectedRows())
 				.map(this.supervisedThesisTable::convertRowIndexToModel)
-				.mapToObj(this.supervisedThesisTableModel::getReviewerByIndex).collect(Collectors.toList());
+				.mapToObj(this.supervisedThesisTableModel::getByIndex).collect(Collectors.toList());
 	}
 
 	public boolean validateFields() {

@@ -6,22 +6,22 @@ import java.util.stream.IntStream;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 
 import model.EventSource;
 import model.Model;
 import model.enums.EventId;
 import view.eventsources.TableClickEventSource;
 import view.panelstructure.DefaultViewPanel;
+import view.tableModels.AbstractDataTableModel;
 
-public abstract class OverviewPanel extends DefaultViewPanel {
+public abstract class OverviewPanel<T> extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	protected Model model;
 
 	// UI-components
-	protected AbstractTableModel tableModel;
+	protected AbstractDataTableModel<T> tableModel;
 	protected JTable table;
 	protected JScrollPane tableScrollPane;
 	protected OverviewActionPanel actionPanel;
@@ -33,7 +33,7 @@ public abstract class OverviewPanel extends DefaultViewPanel {
 
 	}
 
-	protected abstract AbstractTableModel createTableModel();
+	protected abstract AbstractDataTableModel<T> createTableModel();
 
 	protected void addUIElements() {
 		this.add(this.tableScrollPane, BorderLayout.CENTER);

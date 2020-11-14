@@ -230,7 +230,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * @param reviewer
 	 */
 	private void addThesesForReviewer(Reviewer reviewer) {
-		reviewer.getSupervisedTheses().stream().map(Review::getBachelorThesis).forEach(this::addThesis);
+		reviewer.getAllReviews().stream().map(Review::getBachelorThesis).forEach(this::addThesis);
 	}
 
 }

@@ -1,64 +1,36 @@
 package view.tableModels;
 
-import javax.swing.table.AbstractTableModel;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 
 import model.Model;
 import model.data.Reviewer;
 
-public class ReviewerOverviewTableModel extends AbstractTableModel {
-	private static final String OCCUPATION = "Auslastung";
+public class ReviewerOverviewTableModel extends AbstractDataTableModel<Reviewer> {
+
 	private static final long serialVersionUID = 1L;
 	private Model model;
-	
-	public static final int REVIEWER_COLUMN = 0;
 
-	/**
-	 * Creates a TableModel of the Reviewerlist
-	 * 
-	 * @param model Needs the DataAccess of the Application
-	 */
-	public ReviewerOverviewTableModel(Model model) {
+	private static final Column<Reviewer, String> NAME = Column.of("Name", Reviewer::getName, String.class);
+	private static final Column<Reviewer, Integer> THESIS_COUNT = Column.of("Anzahl betreute Bachelorarbeiten",
+			Reviewer::getTotalReviewCount, Integer.class);
+	private static final Column<Reviewer, Integer> OCCUPATION = Column.of("Auslastung",
+			r -> (int) (r.getOccupation() * 100), Integer.class);
+
+	public ReviewerOverviewTableModel(List<Column<Reviewer, ?>> columns, List<Predicate<Reviewer>> filters, Model model) {
+		super(columns, filters);
 		this.model = model;
-		this.findColumn(OCCUPATION);
+	}
+
+	public ReviewerOverviewTableModel(Model model) {
+		this(List.of(NAME, THESIS_COUNT, OCCUPATION), Collections.emptyList(), model);
 	}
 
 	@Override
-	public String getColumnName(int column) {
-		switch (column) {
-		case REVIEWER_COLUMN:
-			return "Name";
-		case 1:
-			return "Anzahl betreute Bachelorarbeiten";
-		case 2:
-			return OCCUPATION;
-		default:
-			return "";
-		}
-	}
-
-	@Override
-	public int getRowCount() {
-		return model.getReviewers().size();
-	}
-
-	@Override
-	public int getColumnCount() {
-		return 3;
-	}
-
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		Reviewer reviewer = model.getReviewers().get(rowIndex);
-		switch (columnIndex) {
-		case REVIEWER_COLUMN:
-			return reviewer.getName();
-		case 1:
-			return reviewer.getSupervisedThesesSize();
-		case 2:
-			return (int) (reviewer.getOccupation() * 100);
-		default:
-			return null;
-		}
+	protected Collection<Reviewer> getUnfilteredData() {
+		return model.getReviewers();
 	}
 
 }

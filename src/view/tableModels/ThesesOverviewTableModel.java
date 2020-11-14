@@ -1,85 +1,45 @@
 package view.tableModels;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import javax.swing.table.AbstractTableModel;
+import java.util.function.Predicate;
 
 import model.Model;
 import model.data.BachelorThesis;
+import model.data.Review;
 import model.data.Reviewer;
 
-public class ThesesOverviewTableModel extends AbstractTableModel {
+public class ThesesOverviewTableModel extends AbstractDataTableModel<BachelorThesis> {
+
+	public static final Column<BachelorThesis, String> AUTHOR_NAME = Column.of("Autor (Name)",
+			t -> t.getAuthor().getName(), String.class);
+	public static final Column<BachelorThesis, String> AUTHOR_STUDY_GROUP = Column.of("Autor (Studiengruppe)",
+			t -> t.getAuthor().getStudyGroup(), String.class);
+	public static final Column<BachelorThesis, String> TOPIC = Column.of("Thema", t -> t.getTopic(), String.class);
+	public static final Column<BachelorThesis, String> FIRST_REVIEWER = Column.of("Erstgutachter",
+			t -> t.getFirstReview().getReviewer().getName(), String.class);
+	public static final Column<BachelorThesis, String> SECOND_REVIEWER = Column.of("Zweitgutachter",
+			t -> t.getSecondReview().map(Review::getReviewer).map(Reviewer::getName).orElse("-"), String.class);
 
 	private static final long serialVersionUID = 1L;
 
-	private List<BachelorThesis> thesisList;
 	private Model model;
-	private Optional<Reviewer> selectedReviewer;
 
-	/**
-	 * Creates a TableModel of the bachelorThesis-list
-	 * 
-	 * @param thesisList Needs the list of bachelorThesis to be shown
-	 */
-	public ThesesOverviewTableModel(Model model, Optional<Reviewer> selectedReviewer) {
+	public ThesesOverviewTableModel(List<Column<BachelorThesis, ?>> columns, List<Predicate<BachelorThesis>> filters,
+			Model model) {
+		super(columns, filters);
 		this.model = model;
-		this.selectedReviewer = selectedReviewer;
-		this.thesisList = model.getThesisMissingSecReview();
+	}
+
+	public ThesesOverviewTableModel(Model model) {
+		this(List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP, TOPIC, FIRST_REVIEWER, SECOND_REVIEWER), Collections.emptyList(),
+				model);
 	}
 
 	@Override
-	public int getRowCount() {
-		return thesisList.size();
-	}
-
-	@Override
-	public int getColumnCount() {
-		return 3;
-	}
-
-	@Override
-	public String getColumnName(int columnIndex) {
-		switch (columnIndex) {
-		case 0:
-			return "Autor";
-		case 1:
-			return "Thema";
-		case 2:
-			return "Erstgutachter";
-		default:
-			return null;
-		}
-	}
-
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		BachelorThesis thesis = getThesisByIndex(rowIndex);
-		switch (columnIndex) {
-		case 0:
-			return thesis.getAuthor().getName();
-		case 1:
-			return thesis.getTopic();
-		case 2:
-			return thesis.getFirstReview().getReviewer().getName();
-		default:
-			return null;
-		}
-	}
-
-	public void getNewData() {
-		// TODO warum der Parameter?
-		// selectedReviewer.map(reviewer -> reviewer.getSecReviewedTheses()
-		// TODO filer afterwards
-		this.thesisList = model.getThesisMissingSecReview();
-	}
-
-	public BachelorThesis getThesisByIndex(int rowIndex) {
-		return this.thesisList.get(rowIndex);
-	}
-
-	public void setSelectedReviewer(Optional<Reviewer> selectedReviewer) {
-		this.selectedReviewer = selectedReviewer;
+	protected Collection<BachelorThesis> getUnfilteredData() {
+		return model.getTheses();
 	}
 
 }
