@@ -9,7 +9,7 @@ import java.beans.PropertyChangeSupport;
  */
 public class Author {
 	// references
-	private PropertyChangeSupport propertyChangeSupport;
+	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// descriptors
 	public static final String NAME = "name";

@@ -7,7 +7,7 @@ import model.ChangeableProperties;
 import model.enums.ReviewType;
 
 public abstract class Review implements ChangeableProperties {
-	protected PropertyChangeSupport propertyChangeSupport;
+	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// descriptors
 	public static final String REVIEWER = "reviewer";
@@ -15,8 +15,8 @@ public abstract class Review implements ChangeableProperties {
 	public static final String BACHELOR_THESIS = "bachelorThesis";
 
 	// data
-	protected Reviewer reviewer;
-	protected BachelorThesis bachelorThesis;
+	protected final Reviewer reviewer;
+	protected final BachelorThesis bachelorThesis;
 
 	protected Review(Reviewer reviewer, BachelorThesis bachelorThesis) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);

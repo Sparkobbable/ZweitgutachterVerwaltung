@@ -29,7 +29,7 @@ public class SecondReview extends Review {
 	 * @param bachelorThesis
 	 */
 	public SecondReview(Reviewer reviewer, BachelorThesis bachelorThesis) {
-		this(reviewer, bachelorThesis, ReviewStatus.APPROVED);
+		this(reviewer, bachelorThesis, ReviewStatus.REQUESTED);
 	}
 
 	public void setStatus(ReviewStatus status) {
@@ -47,6 +47,9 @@ public class SecondReview extends Review {
 		return ReviewType.SECOND_REVIEW;
 	}
 
+	/**
+	 * sets the {@link #status} to APPROVED
+	 */
 	public void approve() {
 		this.setStatus(ReviewStatus.APPROVED);
 	}

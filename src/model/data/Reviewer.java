@@ -14,7 +14,7 @@ import model.enums.ReviewType;
 
 public class Reviewer implements ChangeableProperties {
 
-	private PropertyChangeSupport propertyChangeSupport;
+	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors
 	public static final String NAME = "name";
@@ -26,13 +26,13 @@ public class Reviewer implements ChangeableProperties {
 
 	// Data
 	private String name;
-	private int maxSupervisedThesis;
-	private float occupation;
-	private ArrayList<FirstReview> firstReviews;
-	private ArrayList<SecondReview> secondReviews;
-
 	private String email;
 	private String comment;
+	private int maxSupervisedThesis;
+	private float occupation;
+
+	private List<FirstReview> firstReviews;
+	private List<SecondReview> secondReviews;
 
 	/**
 	 * Creates a Reviewer for BachelorThesis
@@ -64,6 +64,34 @@ public class Reviewer implements ChangeableProperties {
 		return this.comment;
 	}
 
+	public List<Review> getSupervisedTheses() {
+		return Stream.concat(this.firstReviews.stream(), this.secondReviews.stream()).collect(Collectors.toList());
+	}
+
+	public int getSupervisedThesesSize() {
+		return this.firstReviews.size() + this.secondReviews.size();
+	}
+
+	public float getOccupation() {
+		return occupation;
+	}
+
+	/**
+	 * @return all bachelor theses that are second-reviewed by this reviewer
+	 */
+	public List<SecondReview> getSecondReviews() {
+		return this.secondReviews;
+	}
+
+	/**
+	 * 
+	 * @return all bachelor theses that are first-reviewed by this reviewer
+	 * 
+	 */
+	public List<FirstReview> getFirstReviews() {
+		return this.firstReviews;
+	}
+
 	public void setName(String name) {
 		String old = this.name;
 		this.name = name;
@@ -90,7 +118,55 @@ public class Reviewer implements ChangeableProperties {
 		this.propertyChangeSupport.firePropertyChange(MAX_SUPERVISED_THESES, old, maxSupervisedThesis);
 	}
 
-	public void addReview(Review review, CascadeMode cascadeMode) {
+	/**
+	 * Adds a bachelorThesis to this Reviewer according to the given ReviewType.
+	 * 
+	 * @param bachelorThesis
+	 * @param reviewType
+	 */
+	public void addBachelorThesis(BachelorThesis bachelorThesis, ReviewType reviewType) {
+		if (reviewType == ReviewType.FIRST_REVIEW) {
+			this.addFirstReviewerReview(new FirstReview(this, bachelorThesis), CascadeMode.CASCADE);
+		} else if (reviewType == ReviewType.SECOND_REVIEW) {
+			this.addSecondReviewerReview(new SecondReview(this, bachelorThesis), CascadeMode.CASCADE);
+		} else {
+			throw new IllegalArgumentException(String.format(
+					"ReviewType must be one of FIRST_REVIEW or SECOND_REVIEW, but was %s. Review cannot be added to Reviewer.",
+					reviewType));
+		}
+	}
+
+	/**
+	 * Deletes a collection of reviews.
+	 * 
+	 * @param reviews
+	 */
+	public void deleteReviews(Collection<Review> reviews) {
+		reviews.forEach(this::deleteReview);
+	}
+
+	/**
+	 * Delete a review from this reviewer.
+	 * 
+	 * @param review
+	 */
+	public void deleteReview(Review review) {
+		if (review.getReviewType() == ReviewType.FIRST_REVIEW) {
+			this.deleteFirstReview((FirstReview) review);
+		} else if (review.getReviewType() == ReviewType.SECOND_REVIEW) {
+			this.deleteSecondReview((SecondReview) review);
+		}
+	}
+
+	/**
+	 * Add a Review to this Reviewer. If the given {@link CascadeMode} is set to
+	 * CASCADE, also adds the review to the BachelorThesis referenced within the
+	 * Review.
+	 * 
+	 * @param review
+	 * @param cascadeMode
+	 */
+	void addReview(Review review, CascadeMode cascadeMode) {
 		if (review.getReviewType() == ReviewType.FIRST_REVIEW) {
 			this.addFirstReviewerReview((FirstReview) review, cascadeMode);
 		} else if (review.getReviewType() == ReviewType.SECOND_REVIEW) {
@@ -102,19 +178,17 @@ public class Reviewer implements ChangeableProperties {
 		}
 	}
 
-	public void addBachelorThesis(BachelorThesis bachelorThesis, ReviewType reviewType) {
-		if (reviewType == ReviewType.FIRST_REVIEW) {
-			this.addReview(new FirstReview(this, bachelorThesis), CascadeMode.CASCADE);
-		} else if (reviewType == ReviewType.SECOND_REVIEW) {
-			this.addReview(new SecondReview(this, bachelorThesis), CascadeMode.CASCADE);
-		} else {
-			throw new IllegalArgumentException(String.format(
-					"ReviewType must be one of FIRST_REVIEW or SECOND_REVIEW, but was %s. Review cannot be added to Reviewer.",
-					reviewType));
-		}
-	}
-
-	public void addFirstReviewerReview(FirstReview review, CascadeMode cascadeMode) {
+	/**
+	 * Add a FirstReview to this Reviewer. If the given CascadeMode is set to
+	 * CASCADE, also adds the review to the BachelorThesis referenced within
+	 * theReview.
+	 * 
+	 * @see #addReview(Review, CascadeMode)
+	 * 
+	 * @param review
+	 * @param cascadeMode
+	 */
+	void addFirstReviewerReview(FirstReview review, CascadeMode cascadeMode) {
 		ArrayList<Review> old = new ArrayList<>(this.firstReviews);
 		this.firstReviews.add(review);
 		this.updateOppucation();
@@ -124,25 +198,23 @@ public class Reviewer implements ChangeableProperties {
 		}
 	}
 
-	public void addSecondReviewerReview(SecondReview review, CascadeMode cascadeMode) {
-		ArrayList<Review> old = new ArrayList<>(this.firstReviews);
+	/**
+	 * Add a SecondReview to this Reviewer. If the given CascadeMode is set to
+	 * CASCADE, also adds the review to the BachelorThesis referenced within
+	 * theReview.
+	 * 
+	 * @see #addReview(Review, CascadeMode)
+	 * 
+	 * @param review
+	 * @param cascadeMode
+	 */
+	void addSecondReviewerReview(SecondReview review, CascadeMode cascadeMode) {
+		ArrayList<Review> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.add(review);
 		this.updateOppucation();
-		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.firstReviews);
+		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
 		if (cascadeMode == CascadeMode.CASCADE) {
 			review.getBachelorThesis().setSecondReview(review, CascadeMode.STOP);
-		}
-	}
-
-	public void deleteReviews(Collection<Review> reviews) {
-		reviews.forEach(this::deleteReview);
-	}
-
-	public void deleteReview(Review review) {
-		if (review.getReviewType() == ReviewType.FIRST_REVIEW) {
-			this.deleteFirstReview((FirstReview) review);
-		} else if (review.getReviewType() == ReviewType.SECOND_REVIEW) {
-			this.deleteSecondReview((SecondReview) review);
 		}
 	}
 
@@ -158,34 +230,13 @@ public class Reviewer implements ChangeableProperties {
 		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEWS, old, this.secondReviews);
 	}
 
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
-		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
-	}
-
-	public float getOccupation() {
-		return occupation;
-	}
-
-	/**
-	 * Searches for all Bachelortheses that are second-reviewed by this reviewer
-	 * 
-	 * @return List of Bachelortheses with second review
-	 */
-	public List<SecondReview> getSecondReviews() {
-		return this.secondReviews;
-	}
-
 	private void updateOppucation() {
 		this.occupation = (float) (this.firstReviews.size() + this.secondReviews.size()) / this.maxSupervisedThesis;
 	}
 
-	public List<Review> getSupervisedTheses() {
-		return Stream.concat(this.firstReviews.stream(), this.secondReviews.stream()).collect(Collectors.toList());
-	}
-
-	public int getSupervisedThesesSize() {
-		return this.firstReviews.size() + this.secondReviews.size();
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 	}
 
 }

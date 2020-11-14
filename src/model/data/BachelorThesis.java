@@ -6,20 +6,19 @@ import java.util.Optional;
 
 import model.ChangeableProperties;
 import model.enums.CascadeMode;
-import model.enums.ReviewStatus;
 
 /**
  * stores information about a BachelorThesis
  * 
  */
-public class BachelorThesis implements ChangeableProperties{
-	private PropertyChangeSupport propertyChangeSupport;
-
+public class BachelorThesis implements ChangeableProperties {
 	// Descriptors passed to PropertyChangedEvents
 	public static final String TOPIC = "topic";
 	public static final String AUTHOR = "author";
 	public static final String FIRST_REVIEW = "firstReview";
 	public static final String SECOND_REVIEW = "secondReview";
+
+	protected final PropertyChangeSupport propertyChangeSupport;
 
 	private String topic;
 	private Author author;
@@ -36,7 +35,7 @@ public class BachelorThesis implements ChangeableProperties{
 	 */
 	public BachelorThesis(String topic, Author author, Reviewer firstReviewer) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.firstReview = new FirstReview(firstReviewer, this);
+		this.setFirstReview(new FirstReview(firstReviewer, this), CascadeMode.CASCADE);
 		this.secondReview = Optional.empty();
 		this.topic = topic;
 		this.author = author;
@@ -71,7 +70,25 @@ public class BachelorThesis implements ChangeableProperties{
 		this.propertyChangeSupport.firePropertyChange(AUTHOR, old, this.author);
 	}
 
-	public void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
+	/**
+	 * Creates a new SecondReview instance and adds it to this thesis as well as the
+	 * referenced Reviewer.
+	 * 
+	 * @param reviewer
+	 */
+	public void setSecondReviewer(Reviewer reviewer) {
+		this.setSecondReview(new SecondReview(reviewer, this), CascadeMode.CASCADE);
+	}
+
+	/**
+	 * Sets the secondReview. If the {@link CascadeMode} is set to CASCADE, the
+	 * thesis is added to the reviewer referenced in the given review. Notifies
+	 * observers.
+	 * 
+	 * @param secondReview
+	 * @param cascadeMode
+	 */
+	void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
 		Optional<SecondReview> old = this.secondReview;
 		this.secondReview = Optional.of(secondReview);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);
@@ -79,23 +96,22 @@ public class BachelorThesis implements ChangeableProperties{
 			secondReview.getReviewer().addSecondReviewerReview(secondReview, CascadeMode.STOP);
 		}
 	}
-	
-	public void setFirstReview(FirstReview review, CascadeMode cascadeMode) {
+
+	/**
+	 * Sets the secondReview. If the {@link CascadeMode} is set to CASCADE, the
+	 * thesis is added to the reviewer referenced in the given review. Notifies
+	 * observers.
+	 * 
+	 * @param review
+	 * @param cascadeMode
+	 */
+	void setFirstReview(FirstReview review, CascadeMode cascadeMode) {
 		FirstReview old = this.firstReview;
 		this.firstReview = review;
 		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.secondReview);
 		if (cascadeMode == CascadeMode.CASCADE) {
 			review.getReviewer().addFirstReviewerReview(review, CascadeMode.STOP);
 		}
-	}
-	
-
-	public void setSecondReviewer(Reviewer secondReviewer, CascadeMode cascadeMode) {
-		this.setSecondReview(new SecondReview(secondReviewer, this, ReviewStatus.REQUESTED), cascadeMode);
-	}
-
-	public void setSecondReviewer(Reviewer reviewer) {
-		this.setSecondReviewer(reviewer, CascadeMode.CASCADE);
 	}
 
 	@Override
