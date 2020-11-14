@@ -4,9 +4,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import model.ChangeableProperties;
+import model.enums.ReviewType;
 
-public class Review implements ChangeableProperties {
-	protected PropertyChangeSupport propertyChangeSupport;
+public abstract class Review implements ChangeableProperties {
+	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// descriptors
 	public static final String REVIEWER = "reviewer";
@@ -14,9 +15,8 @@ public class Review implements ChangeableProperties {
 	public static final String BACHELOR_THESIS = "bachelorThesis";
 
 	// data
-	protected Reviewer reviewer;
-	protected boolean firstReview;
-	protected BachelorThesis bachelorThesis;
+	protected final Reviewer reviewer;
+	protected final BachelorThesis bachelorThesis;
 
 	protected Review(Reviewer reviewer, BachelorThesis bachelorThesis) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
@@ -36,4 +36,6 @@ public class Review implements ChangeableProperties {
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 	}
+	
+	public abstract ReviewType getReviewType();
 }

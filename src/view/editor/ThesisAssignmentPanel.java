@@ -2,8 +2,11 @@ package view.editor;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -11,6 +14,7 @@ import javax.swing.JTable;
 
 import model.EventSource;
 import model.Model;
+import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
@@ -40,8 +44,8 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 		this.model = model;
 		this.selectedReviewer = model.getSelectedReviewer();
 
-		addObservables(model);
-		model.getSelectedReviewer().ifPresent(reviewer -> addObservables(reviewer));
+		this.observe(model);
+		model.getSelectedReviewer().ifPresent(this::observe);
 
 		this.setBackground(Color.DARK_GRAY); // TODO only for component identification, remove before launch
 		this.setLayout(new GridLayout(4, 1));
@@ -54,11 +58,12 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.addThesis, () -> getThesis()));
+		return List.of(new ButtonEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.addThesis, () -> getSelectedTheses()));
 	}
 
-	private int[] getThesis() {
-		return this.thesisTable.getSelectedRows();
+	private List<BachelorThesis> getSelectedTheses() {
+		return IntStream.of(this.thesisTable.getSelectedRows()).map(this.thesisTable::convertRowIndexToModel)
+				.mapToObj(this.thesesTableModel::getThesisByIndex).collect(Collectors.toList());
 	}
 
 	private void createUIElements() {
@@ -82,18 +87,20 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 	private void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
-		this.onPropertyChange(Reviewer.SUPERVISED_THESES, (evt) -> updateThesesList());
+		this.onPropertyChange(Reviewer.SECOND_REVIEWS,
+				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.FIRST_REVIEWS,
+				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
 	}
 
-	private void updateThesesList() {
+	private void updateThesesList(ArrayList<BachelorThesis> updatedThesisList) {
 		this.thesesTableModel.getNewData();
 		this.thesesTableModel.fireTableDataChanged();
-		this.repaint();	
+		this.repaint();
 	}
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
 		this.selectedReviewer = selectedReviewer;
-		this.thesesTableModel.setSelectedReviewer(selectedReviewer);
 		this.addThesis.setText(this.createButtonText());
 		this.repaint();
 	}

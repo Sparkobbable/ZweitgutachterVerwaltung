@@ -12,11 +12,11 @@ import model.data.Reviewer;
 public class ThesesOverviewTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private List<BachelorThesis> thesisList;
 	private Model model;
 	private Optional<Reviewer> selectedReviewer;
-	
+
 	/**
 	 * Creates a TableModel of the bachelorThesis-list
 	 * 
@@ -25,9 +25,9 @@ public class ThesesOverviewTableModel extends AbstractTableModel {
 	public ThesesOverviewTableModel(Model model, Optional<Reviewer> selectedReviewer) {
 		this.model = model;
 		this.selectedReviewer = selectedReviewer;
-		this.thesisList = model.getThesisMissingSecReview(selectedReviewer.map(reviewer -> reviewer.getSecReviewedTheses()));
+		this.thesisList = model.getThesisMissingSecReview();
 	}
-	
+
 	@Override
 	public int getRowCount() {
 		return thesisList.size();
@@ -41,34 +41,41 @@ public class ThesesOverviewTableModel extends AbstractTableModel {
 	@Override
 	public String getColumnName(int columnIndex) {
 		switch (columnIndex) {
-			case 0: 
-				return "Autor";
-			case 1: 
-				return "Thema";
-			case 2: 
-				return "Erstgutachter";
-			default:
-				return null;
+		case 0:
+			return "Autor";
+		case 1:
+			return "Thema";
+		case 2:
+			return "Erstgutachter";
+		default:
+			return null;
 		}
 	}
-	
+
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		BachelorThesis thesis = this.thesisList.get(rowIndex);
+		BachelorThesis thesis = getThesisByIndex(rowIndex);
 		switch (columnIndex) {
-			case 0: 
-				return thesis.getAuthor().getName();
-			case 1: 
-				return thesis.getTopic();
-			case 2: 
-				return thesis.getFirstReview().getReviewer().getName();
-			default:
-				return null;
+		case 0:
+			return thesis.getAuthor().getName();
+		case 1:
+			return thesis.getTopic();
+		case 2:
+			return thesis.getFirstReview().getReviewer().getName();
+		default:
+			return null;
 		}
 	}
 
 	public void getNewData() {
-		this.thesisList = model.getThesisMissingSecReview(selectedReviewer.map(reviewer -> reviewer.getSecReviewedTheses()));
+		// TODO warum der Parameter?
+		// selectedReviewer.map(reviewer -> reviewer.getSecReviewedTheses()
+		// TODO filer afterwards
+		this.thesisList = model.getThesisMissingSecReview();
+	}
+
+	public BachelorThesis getThesisByIndex(int rowIndex) {
+		return this.thesisList.get(rowIndex);
 	}
 
 	public void setSelectedReviewer(Optional<Reviewer> selectedReviewer) {

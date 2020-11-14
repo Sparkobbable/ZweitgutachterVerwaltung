@@ -3,6 +3,8 @@ package view.editor;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,6 +14,7 @@ import javax.swing.JTextField;
 
 import model.EventSource;
 import model.Model;
+import model.data.Review;
 import model.data.Reviewer;
 import model.data.SecondReview;
 import model.enums.EventId;
@@ -21,7 +24,8 @@ import view.tableModels.SupervisedThesisTableModel;
 
 public class ReviewerEditorPanel extends DefaultViewPanel {
 	private static final long serialVersionUID = 1L;
-	private Optional<Reviewer> optReviewer;
+	private Optional<Reviewer> selectedReviewer;
+	private Optional<Reviewer> originalReviewer;
 	private Model model;
 
 	private SupervisedThesisTableModel supervisedThesisTableModel;
@@ -52,7 +56,7 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 	public ReviewerEditorPanel(Model model) {
 		super("Dozenteneditor");
 		this.model = model;
-		
+
 		this.nameField = new JTextField();
 		this.maxSupervised = new JTextField();
 		this.email = new JTextField();
@@ -62,8 +66,8 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		this.emailLabel = new JLabel("Email: ");
 		this.commentLabel = new JLabel("Bemerkung: ");
 		this.supervisedLabel = new JLabel("Betreute Bachelorarbeiten: ");
-		
-		this.optReviewer = Optional.empty();
+
+		this.selectedReviewer = this.model.getSelectedReviewer();
 
 		this.setLayout(new GridLayout(7, 2));
 
@@ -71,9 +75,11 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		this.addUIElements();
 		this.registerEventSources();
 		this.initializePropertyChangeConsumers();
-		this.addObservables(this.model);
-		this.optReviewer.ifPresent(reviewer -> this.addObservables(reviewer));
-		this.optReviewer.ifPresent(reviewer -> reviewer.getSecReviewedTheses().forEach(thesis -> thesis.getSecondReview().ifPresent(review -> addObservables(review))));
+		this.observe(this.model);
+
+		// observe reviewer and the theses where they are second reviewers
+		this.originalReviewer = this.model.getSelectedReviewer();
+		this.selectedReviewer.ifPresent(this::observeReviewer);
 	}
 
 	private void createUIElements() {
@@ -82,7 +88,7 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		this.deleteThesis = new JButton("Bachelorarbeit löschen");
 		this.approveSecReview = new JButton("Zweitgutachten bestätigen");
 
-		this.supervisedThesisTableModel = new SupervisedThesisTableModel(this.optReviewer);
+		this.supervisedThesisTableModel = new SupervisedThesisTableModel(this.selectedReviewer);
 		this.supervisedThesisTable = new JTable(supervisedThesisTableModel);
 		this.supervisedThesisTable.setFillsViewportHeight(true);
 		// TODO observe sorting behavior when bachelor thesis count >= 10
@@ -99,10 +105,10 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 		this.add(this.maxSupervised);
 		this.add(this.emailLabel);
 		this.emailLabel.setLabelFor(this.email);
-		this.add(this.email);					// TODO Supply mockdata
+		this.add(this.email); // TODO Supply mockdata
 		this.add(this.commentLabel);
 		this.commentLabel.setLabelFor(this.comment);
-		this.add(this.comment);					// and for this
+		this.add(this.comment); // and for this
 		this.add(this.supervisedLabel);
 		this.supervisedLabel.setLabelFor(this.supervisedThesisPane);
 		this.add(this.supervisedThesisPane);
@@ -114,22 +120,27 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getReviewer()),
-				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis, () -> getReviewer()),
-				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getTheses()),
-				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getTheses()));
+		return List.of(
+				new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getUpdatedReviewer(),
+						() -> getOriginalReviewer()),
+				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis),
+				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getSelectedReviews()),
+				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getSelectedReviews()));
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
-		this.onPropertyChange(Reviewer.SUPERVISED_THESES, (evt) -> setObserversForSecTheses());
+		this.onPropertyChange(Reviewer.SECOND_REVIEWS,
+				(evt) -> updateObserversForSecondReviews((List<Review>) evt.getOldValue(),
+						(List<Review>) evt.getNewValue()));
 		this.onPropertyChange(SecondReview.STATUS, (evt) -> updateThesisTable());
 	}
-	
-	private void setObserversForSecTheses() {
-		this.optReviewer.ifPresent(reviewer -> reviewer.getSecReviewedTheses().forEach(thesis -> thesis.getSecondReview().ifPresent(review -> addObservables(review))));
+
+	private void updateObserversForSecondReviews(List<Review> oldReviews, List<Review> newReviews) {
+		// TODO remove observers
+		this.observe(newReviews);
 	}
 
 	private void updateThesisTable() {
@@ -137,38 +148,50 @@ public class ReviewerEditorPanel extends DefaultViewPanel {
 	}
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
-		this.optReviewer = selectedReviewer;
-		this.optReviewer.ifPresent(this::setReviewerFields);
-		this.supervisedThesisTableModel.setSelectedReviewer(optReviewer);
-		this.optReviewer.ifPresent(reviewer -> addObservables(reviewer));
-		this.supervisedThesisTableModel.fireTableDataChanged();
+		this.selectedReviewer = selectedReviewer;
+
+		// observe reviewer and the theses where they are second reviewers
+		if (this.selectedReviewer.isPresent()) {
+			Reviewer reviewer = this.selectedReviewer.get();
+			this.updateReviewerFields(reviewer);
+			this.observeReviewer(reviewer);
+			this.supervisedThesisTableModel.setSelectedReviewer(this.selectedReviewer);
+			this.supervisedThesisTableModel.fireTableDataChanged();
+
+		}
+
 		this.repaint();
 	}
 
-	private void setReviewerFields(Reviewer reviewer) {
+	protected void observeReviewer(Reviewer reviewer) {
+		this.observe(reviewer);
+		this.observe(reviewer.getSecondReviews().stream().map(Review::getBachelorThesis).collect(Collectors.toSet()));
+	}
+
+	private void updateReviewerFields(Reviewer reviewer) {
 		this.nameField.setText(reviewer.getName());
 		this.maxSupervised.setText(String.valueOf(reviewer.getMaxSupervisedThesis()));
 		this.email.setText(reviewer.getEmail());
 		this.comment.setText(reviewer.getComment());
 	}
 
-	private Reviewer getReviewer() {
-		this.optReviewer.get().setName(this.getNameFieldText());
-		this.optReviewer.get().setMaxSupervisedThesis(Integer.valueOf(this.maxSupervised.getText()));
-		this.optReviewer.get().setEmail(this.email.getText());
-		this.optReviewer.get().setComment(this.comment.getText());
-		return optReviewer.get();
+	private Reviewer getUpdatedReviewer() {
+		// TODO wont work for theses
+		return new Reviewer(this.nameField.getText(), Integer.valueOf(this.maxSupervised.getText()),
+				this.email.getText(), this.comment.getText());
 	}
 
-	private String getNameFieldText() {
-		return this.nameField.getText();
+	private Optional<Reviewer> getOriginalReviewer() {
+		return this.originalReviewer;
 	}
 
-	private int[] getTheses() {
-		return this.supervisedThesisTable.getSelectedRows();
+	private List<Review> getSelectedReviews() {
+		return IntStream.of(this.supervisedThesisTable.getSelectedRows())
+				.map(this.supervisedThesisTable::convertRowIndexToModel)
+				.mapToObj(this.supervisedThesisTableModel::getReviewerByIndex).collect(Collectors.toList());
 	}
-	
+
 	public boolean validateFields() {
-        return !(this.getNameFieldText().isBlank() || this.maxSupervised.getText().isBlank());
-    }
+		return !(this.nameField.getText().isBlank() || this.maxSupervised.getText().isBlank());
+	}
 }

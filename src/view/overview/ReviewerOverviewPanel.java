@@ -22,7 +22,7 @@ public class ReviewerOverviewPanel extends OverviewPanel {
 		this.addUIElements();
 		this.registerEventSources();
 		this.initializePropertyChangeConsumers();
-		this.addObservables(this.model);
+		this.observe(this.model);
 	}
 
 	protected ReviewerOverviewTableModel createTableModel() {

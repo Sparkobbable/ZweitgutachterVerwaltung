@@ -53,7 +53,7 @@ public class ReviewerOverviewTableModel extends AbstractTableModel {
 		case REVIEWER_COLUMN:
 			return reviewer.getName();
 		case 1:
-			return reviewer.getSupervisedThesis().size();
+			return reviewer.getSupervisedThesesSize();
 		case 2:
 			return (int) (reviewer.getOccupation() * 100);
 		default:

@@ -2,26 +2,22 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 import controller.Controller;
 import model.Model;
 import model.data.Author;
 import model.data.BachelorThesis;
-import model.data.FirstReview;
 import model.data.Reviewer;
 import view.View;
 
 public class Main {
 
-		public static void main(String[] args) {
-			Model data = mockReviewerList();
-			View view = new View(data);
-			new Controller(data, view);
-			view.setVisible();
-		}
-
+	public static void main(String[] args) {
+		Model data = mockData();
+		View view = new View(data);
+		new Controller(data, view);
+		view.setVisible();
+	}
 
 	/**
 	 * Creates a sample list of reviewers, bachelor theses, authors and reviews
@@ -30,10 +26,7 @@ public class Main {
 	 * TODO remove this before deploying to prod -> why? testdata would be cool for presentation
 	 * TODO put this back into Controller when this gets a Model of all Data
 	 */
-	private static Model mockReviewerList() {
-		List<Reviewer> reviewerList = new ArrayList<>();
-		String[] firstname = {"Fynn", "Luca", "Paul", "Lasse", "Nils", "Ben", "Sören", "Alexander", "Sven", "Finn", "Oliver", "Jan", "Thomas", "Elias", "Noah", "Lukas", "Johannes", "Levin", "Peer", "Sebastian", "Emma", "Lina", "Anna", "Marie", "Johanna", "Ella", "Charlotte", "Hanna", "Laura", "Sophie", "Pauline", "Luise", "Eva", "Katharina"};
-		String[] surname = {"Müller", "Schmidt", "Schneider", "Fischer", "Meyer", "Weber", "Hofmann", "Wagner", "Becker", "Schulz", "Koch", "Klein", "Richter", "Schröder", "Lange", "Schmitt", "Krüger", "Schmitz", "Wolf"};
+	private static Model mockData() {
 		String[] studyGroup = {"WI 60/19", "WI 61/19", "IG 58/19", "BW 52/19", "WI 43/18", "WI 42/17", "IG 68/20", "IG 67/20", "WI 63/20"};
 		String[] topic = {"Simulation von Elektronenbahnen in Perkeo 2",
 				"Marketingkonzeption für Gastronomiebetriebe unter besonderer Betrachtung der Kommunikationspolitik",
@@ -62,32 +55,50 @@ public class Main {
 				"OneE.ON als Konzept zur strategischen Unternehmensführung: Analyse und Handlungsempfehlungen für die E.ON Westfalen Weser AG",
 				"Aufbau einer Vertriebskooperation in Kanada am Beispiel des Vertriebszweiges ProVita der ORNAMIN Kunststoffwerke W. Zschetzsche GmbH & Co. KG",
 				"Analyse des Projektes E.ON Managed Print Services und Entwicklung von Handlungsempfehlungen für zukünftige Outsourcingaktivitäten"};
-		for (int i = 0; i < 100; i++) {
-			String name = firstname[(int)(Math.random() * firstname.length)] + " " + surname[(int)(Math.random() * surname.length)];
-			Reviewer reviewer = new Reviewer(name);
-			reviewer.setMaxSupervisedThesis(new Random().nextInt(10) + 1);
-			reviewerList.add(reviewer);
+		String[] comment = {"", "Hallo", "Den mag ich besonders", "Der ist immer zu spät"};
+
+		Author[] authors = new Author[30];
+		for (int i = 0; i < authors.length; i++) {
+			authors[i] = new Author(generateName(), randomFrom(studyGroup));
 		}
-		for(int i = 0; i < topic.length; i++) {
-			String name = firstname[(int)(Math.random() * firstname.length)] + " " + surname[(int)(Math.random() * surname.length)];
-			String studygroup = studyGroup[(int)(Math.random() * studyGroup.length)];
-			Author author = new Author(name, studygroup);
-			
-			Reviewer r1 = reviewerList.get((int)(Math.random() * reviewerList.size()));
-			Reviewer r2 = reviewerList.get((int)(Math.random() * reviewerList.size()));
-			while(r1.getName().equals(r2.getName())) {
-				r2 = reviewerList.get((int)(Math.random() * reviewerList.size()));
+		Reviewer[] reviewers = new Reviewer[20];
+		for (int i = 0; i < reviewers.length; i++) {
+			String firstName = randomFrom(firstname);
+			String lastName = randomFrom(surname);
+			reviewers[i] = new Reviewer(String.format("%s, %s", lastName, firstName), reviewers.length, String.format("%s.%s@hsw.de", firstName, lastName), randomFrom(comment));
+		}
+		
+		BachelorThesis[] bts = new BachelorThesis[topic.length];
+		for (int i = 0; i < bts.length; i++) {
+			bts[i] = new BachelorThesis(topic[i], randomFrom(authors), randomFrom(reviewers));
+		}
+		
+		for (BachelorThesis bt : bts) {
+			if (Math.random() < 0.5) {
+				continue;
 			}
-			BachelorThesis thesis = null;
-			thesis = new BachelorThesis(topic[i], author, new FirstReview(r1, thesis), Optional.empty());
-			//thesis.setSecondReview(new Review(r2, false, ReviewStatus.REQUESTED, thesis));
-			//Removed second review, program would otherwise not be testable.
-			r1.addBachelorThesis(thesis);
-			r2.addBachelorThesis(thesis);
+			Reviewer r2 = randomFrom(reviewers);
+			if (r2 != bt.getFirstReview().getReviewer()) {
+				bt.setSecondReviewer(r2);
+			}
 			
-			r1.setMaxSupervisedThesis(r1.getMaxSupervisedThesis() + 1);
-			r2.setMaxSupervisedThesis(r2.getMaxSupervisedThesis() + 1);
 		}
-		return new Model(reviewerList);
+		return new Model(List.of(bts));
+	}
+
+	private static String[] firstname = { "Fynn", "Luca", "Paul", "Lasse", "Nils", "Ben", "Sören", "Alexander", "Sven",
+			"Finn", "Oliver", "Jan", "Thomas", "Elias", "Noah", "Lukas", "Johannes", "Levin", "Peer", "Sebastian",
+			"Emma", "Lina", "Anna", "Marie", "Johanna", "Ella", "Charlotte", "Hanna", "Laura", "Sophie", "Pauline",
+			"Luise", "Eva", "Katharina" };
+	private static String[] surname = { "Müller", "Schmidt", "Schneider", "Fischer", "Meyer", "Weber", "Hofmann",
+			"Wagner", "Becker", "Schulz", "Koch", "Klein", "Richter", "Schröder", "Lange", "Schmitt", "Krüger",
+			"Schmitz", "Wolf" };
+
+	private static String generateName() {
+		return randomFrom(surname) + ", " + randomFrom(firstname);
+	}
+
+	private static <T> T randomFrom(T[] arr) {
+		return arr[(int) (Math.random() * arr.length)];
 	}
 }

@@ -38,7 +38,7 @@ public class CollaborationOptionsPanel extends DefaultViewPanel {
 		this.addUIElements();
 		this.registerEventSources();
 		this.initializedPropertyChangeConsumers();
-		this.addObservables(this.model);
+		this.observe(this.model);
 	}
 
 	private void createUIElements() {
@@ -73,13 +73,13 @@ public class CollaborationOptionsPanel extends DefaultViewPanel {
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
 		this.optReviewer = selectedReviewer;
-		this.optReviewer.ifPresent(this::setReviewerField);
-		this.optReviewer.ifPresent(reviewer -> addObservables(reviewer));
+		if (this.optReviewer.isPresent()) {
+			Reviewer reviewer = this.optReviewer.get();
+			this.nameField.setText(reviewer.getName());
+			this.observe(reviewer);
+		}
 		this.repaint();
 	}
 
-	private void setReviewerField(Reviewer reviewer) {
-		this.nameField.setText(reviewer.getName());
-	}
 
 }

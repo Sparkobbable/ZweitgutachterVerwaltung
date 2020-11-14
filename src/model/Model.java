@@ -1,14 +1,16 @@
 package model;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 import model.data.BachelorThesis;
+import model.data.Review;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 
@@ -16,113 +18,219 @@ import model.enums.ApplicationState;
  * Data store for all reviewers
  * <p>
  */
-public class Model implements ChangeableProperties{
-
-	private PropertyChangeSupport propertyChangeSupport;
+public class Model implements ChangeableProperties, PropertyChangeListener {
 
 	public static final String APPLICATION_STATE = "applicationState";
-
 	public static final String SELECTED_REVIEWER = "selectedReviewer";
-
 	public static final String REVIEWERS = "reviewers";
+	public static final String THESES = "theses";
+
+	protected final PropertyChangeSupport propertyChangeSupport;
+
+	private List<BachelorThesis> theses;
 	private List<Reviewer> reviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
 
-	public Model() {
-		this(new ArrayList<>());
+	private PropertyChangeManager propertyChangeManager;
+
+	public Model(List<BachelorThesis> theses, List<Reviewer> reviewers) {
+		this();
+		theses.forEach(this::addThesis);
+		reviewers.forEach(this::addReviewer);
 	}
 
-	public Model(List<Reviewer> reviewers) {
-		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.reviewers = reviewers;
-		this.selectedReviewer = Optional.empty();
+	public Model(List<BachelorThesis> theses) {
+		this();
+		theses.forEach(this::addThesis);
 	}
 
 	/**
-	 * Finds all bachelorThesis without a second review
-	 * 
-	 * @return ArrayList of the found bachelorThesis
+	 * Creates a new Model without any theses or reviewers.
 	 */
-	public ArrayList<BachelorThesis> getThesisMissingSecReview(Optional<List<BachelorThesis>> excludedTheses) {
-		ArrayList<BachelorThesis> thesisList = new ArrayList<>();
-		for (Reviewer reviewer : this.getReviewers()) {
-			for (BachelorThesis thesis : reviewer.getSupervisedThesis()) {
-				if (thesis.getSecondReview().isEmpty()) {
-					thesisList.add(thesis);
-				}
-			}
-		}
-		excludedTheses.ifPresent(excludeList -> thesisList.removeAll(excludeList));
-		return thesisList;
+	public Model() {
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		this.propertyChangeManager = new PropertyChangeManager();
+		this.selectedReviewer = Optional.empty();
+		this.theses = new ArrayList<>();
+		this.reviewers = new ArrayList<>();
+
+		this.initializePropertyChangeHandlers();
+
 	}
 
-	public Reviewer findReviewerByName(String name) {
-		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny().orElse(null);
+	/**
+	 * Returns a reviewer with the given name, if any exist.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public Optional<Reviewer> findReviewerByName(String name) {
+		return this.reviewers.stream().filter(reviewers -> reviewers.getName().equals(name)).findAny();
 	}
 
+	/**
+	 * @return The current State of the Application
+	 */
 	public ApplicationState getApplicationState() {
 		return applicationState;
 	}
 
+	/**
+	 * @return The selected Reviewer, if any exist
+	 */
 	public Optional<Reviewer> getSelectedReviewer() {
 		return selectedReviewer;
 	}
 
-	public List<Reviewer> getReviewers() {
-		return reviewers;
-	}
-
+	/**
+	 * Set the ApplicationState and notify any observers
+	 * 
+	 * @param applicationState
+	 */
 	public void setApplicationState(ApplicationState applicationState) {
 		ApplicationState old = this.applicationState;
 		this.applicationState = applicationState;
 		this.propertyChangeSupport.firePropertyChange(APPLICATION_STATE, old, this.applicationState);
 	}
 
+	/**
+	 * Set the selected Reviewer and notify any observers
+	 * 
+	 * @param selectedReviewer
+	 */
 	public void setSelectedReviewer(Reviewer selectedReviewer) {
 		Optional<Reviewer> old = this.selectedReviewer;
 		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
 		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
 	}
 
+	/**
+	 * Set the selected Reviewer by its index in the reviewers list
+	 * 
+	 * @param reviewerIndex
+	 */
 	public void setSelectedReviewer(int reviewerIndex) {
 		this.setSelectedReviewer(this.reviewers.get(reviewerIndex));
 	}
 
-	public void setReviewers(List<Reviewer> reviewers) {
-		List<Reviewer> old = this.reviewers;
-		this.reviewers = reviewers;
-		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, reviewers);
-	}
-
+	/**
+	 * Add a reviewer to the reviewers list if it is not already included therein.
+	 * If the reviewer references any theses not included in the theses list, those
+	 * are added there as well. Notify observers.
+	 * 
+	 * @param reviewer
+	 */
 	public void addReviewer(Reviewer reviewer) {
+		if (this.reviewers.contains(reviewer)) {
+			return;
+		}
+
 		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.add(reviewer);
+		reviewer.addPropertyChangeListener(this);
+		this.addThesesForReviewer(reviewer);
 		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
 	}
 
-	public void removeByIndex(int index) {
-		List<Reviewer> old = new ArrayList<>(this.reviewers);
-		this.reviewers.remove(index);
+	/**
+	 * Add a thesis to the theses list if it is not already included therein. If the
+	 * thesis references any reviewers not included in the reviewers list, those are
+	 * added there as well. Notify observers.
+	 * 
+	 * @param thesis
+	 */
+	public void addThesis(BachelorThesis thesis) {
+		if (this.theses.contains(thesis)) {
+			return;
+		}
+		List<BachelorThesis> old = new ArrayList<>(this.theses);
+		this.theses.add(thesis);
+		thesis.addPropertyChangeListener(this);
+		this.addReviewersForThesis(thesis);
 		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
 	}
 
-	public void removeByIndices(int[] indices) {
-		List<Reviewer> old = new ArrayList<>(this.reviewers);
-		IntStream.of(indices).mapToObj(Integer::valueOf).sorted(Comparator.reverseOrder()).mapToInt(Integer::intValue)
-				.forEach(this.reviewers::remove);
-		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	/**
+	 * @return A read-only view of the reviewer list
+	 */
+	public List<Reviewer> getReviewers() {
+		return Collections.unmodifiableList(this.reviewers);
+	}
 
+	/**
+	 * @return A read-only view of the theses list
+	 */
+	public List<BachelorThesis> getTheses() {
+		return Collections.unmodifiableList(this.theses);
+	}
+
+	/**
+	 * 
+	 * @return A list of theses with a missing second Reviewer.
+	 */
+	public List<BachelorThesis> getThesisMissingSecReview() {
+		return this.getTheses().stream().filter(thesis -> thesis.getSecondReview().isEmpty())
+				.collect(Collectors.toList());
+	}
+
+	public void updateReviewer(Reviewer reviewer, Reviewer newReviewer) {
+		this.reviewers.set(this.reviewers.indexOf(reviewer), newReviewer); // TODO hacky, waits for command pattern
 	}
 
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
-		this.reviewers.forEach(reviewer -> reviewer.addPropertyChangeListener(propertyChangeListener));
 	}
 
-	public ArrayList<BachelorThesis> getThesisMissingSecReview() {
-		return getThesisMissingSecReview(Optional.empty());
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		this.propertyChangeManager.propertyChange(evt);
+	}
+
+	/**
+	 * Defines the methods that should be called when an observed property is
+	 * changed
+	 */
+	@SuppressWarnings("unchecked")
+	private void initializePropertyChangeHandlers() {
+		this.propertyChangeManager.onPropertyChange(Reviewer.FIRST_REVIEWS,
+				(evt) -> addThesesFromReviews((List<Review>) evt.getNewValue()));
+		this.propertyChangeManager.onPropertyChange(Reviewer.SECOND_REVIEWS,
+				(evt) -> addThesesFromReviews((List<Review>) evt.getNewValue()));
+		this.propertyChangeManager.onPropertyChange(BachelorThesis.FIRST_REVIEW,
+				(evt) -> addReviewer(((Review) evt.getNewValue()).getReviewer()));
+		this.propertyChangeManager.onPropertyChange(BachelorThesis.SECOND_REVIEW,
+				(evt) -> ((Optional<Review>) evt.getNewValue()).map(Review::getReviewer).ifPresent(this::addReviewer));
+	}
+
+	/**
+	 * Adds all theses from a list of reviews
+	 * 
+	 * @see #addThesis(BachelorThesis)
+	 * @param reviews
+	 */
+	private void addThesesFromReviews(List<Review> reviews) {
+		reviews.stream().map(Review::getBachelorThesis).forEach(this::addThesis);
+	}
+
+	/**
+	 * Add all reviewers referenced by the given thesis to the reviewers list
+	 * 
+	 * @param thesis
+	 */
+	private void addReviewersForThesis(BachelorThesis thesis) {
+		this.addReviewer(thesis.getFirstReview().getReviewer());
+		thesis.getSecondReview().ifPresent(secondReview -> this.addReviewer(secondReview.getReviewer()));
+	}
+
+	/**
+	 * Add all theses referenced by the given reviewer to the theses list
+	 * 
+	 * @param reviewer
+	 */
+	private void addThesesForReviewer(Reviewer reviewer) {
+		reviewer.getSupervisedTheses().stream().map(Review::getBachelorThesis).forEach(this::addThesis);
 	}
 
 }

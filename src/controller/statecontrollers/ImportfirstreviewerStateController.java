@@ -40,16 +40,16 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			String path = chooser.getSelectedFile().getAbsolutePath();
 			
-			JSONController json = new JSONController(path);
+//			JSONController json = new JSONController(path);
 			/*@Leonie die Änderung musste ich machen, weil ich im JsonController was ändern müsste.
 			 * Bin mir aber nicht ganz sicher, ob dich das wirklich betrifft, wenn du fertig bist.
 			 */
-			try {
-				ArrayList<Reviewer> reviewers = json.loadReviewers();
-				this.model.setReviewers(reviewers);
-			} catch(Exception e) {
-				this.view.alert("Es ist ein Fehler beim Laden der Erstgutachter aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
-			}
+//			try {
+//				ArrayList<Reviewer> reviewers = json.loadReviewers();
+//				this.model.setReviewers(reviewers);
+//			} catch(Exception e) {
+//				this.view.alert("Es ist ein Fehler beim Laden der Erstgutachter aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
+//			}
 		}
 	
 	}

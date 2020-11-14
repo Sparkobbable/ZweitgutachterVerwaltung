@@ -24,7 +24,7 @@ public class ThesesOverviewPanel extends OverviewPanel {
 		super(model, "Bachelorthesis-Übersicht");
 		this.actionPanel = new ThesesOverviewActionPanel(() -> getSelectedRowIndex());
 
-		addObservables(model);
+		this.observe(this.model);
 
 		this.setLayout(new BorderLayout());
 
