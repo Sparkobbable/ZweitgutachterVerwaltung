@@ -78,4 +78,8 @@ public class ThesesOverviewTableModel extends AbstractTableModel {
 		return this.thesisList.get(rowIndex);
 	}
 
+	public void setSelectedReviewer(Optional<Reviewer> selectedReviewer) {
+		this.selectedReviewer = selectedReviewer;
+	}
+
 }

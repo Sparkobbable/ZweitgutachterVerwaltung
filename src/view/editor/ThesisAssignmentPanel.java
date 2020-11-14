@@ -89,6 +89,8 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
 		this.onPropertyChange(Reviewer.SECOND_REVIEWS,
 				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.FIRST_REVIEWS,
+				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
 	}
 
 	private void updateThesesList(ArrayList<BachelorThesis> updatedThesisList) {
