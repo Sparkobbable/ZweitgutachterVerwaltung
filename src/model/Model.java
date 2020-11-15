@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import model.data.Author;
 import model.data.BachelorThesis;
 import model.data.Review;
 import model.data.Reviewer;
@@ -163,6 +164,28 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 */
 	public List<BachelorThesis> getTheses() {
 		return Collections.unmodifiableList(this.theses);
+	}
+	
+	/**
+	 * Search a thesis for the given attributes. If not already existing, 
+	 * create a new one
+	 * 
+	 * @param topic topic attribute of the thesis
+	 * @param author author attribute of the thesis
+	 * @param firstreviewer firstreviewer of the thesis
+	 * @return BachelorThesis that is linked within the model
+	 */
+	public BachelorThesis findThesis(String topic, Author author, Reviewer firstreviewer) {
+		for(BachelorThesis thesis : this.getTheses()) {
+			if(thesis.getTopic().equals(topic) &&
+					thesis.getAuthor().equals(author) &&
+					thesis.getFirstReview().getReviewer().equals(firstreviewer)) {
+				return thesis;
+			}
+		}
+		BachelorThesis thesis = new BachelorThesis(topic, author, firstreviewer);
+		this.addThesis(thesis);
+		return thesis;
 	}
 
 	/**
