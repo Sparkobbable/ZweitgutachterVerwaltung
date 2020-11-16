@@ -15,13 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import model.enums.ViewId;
+import util.Log;
+import view.panelstructure.AbstractViewPanel;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel mainContainer;
-	private Map<ViewId, AbstractView> availableViews; // TODO can/shall we remove this?
+	private Map<Integer, AbstractViewPanel> availableViews; // TODO can/shall we remove this?
 	private CardLayout cardLayout;
 
 	static {
@@ -33,7 +34,7 @@ public class MainWindow extends JFrame {
 		this.cardLayout = new CardLayout();
 		this.availableViews = new HashMap<>();
 		this.mainContainer.setLayout(cardLayout);
-		
+
 		this.setSize(800, 800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
@@ -52,7 +53,7 @@ public class MainWindow extends JFrame {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
 
 	/**
@@ -78,11 +79,11 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param viewId Id of the view that shall be shown.
 	 */
-	public void switchToView(ViewId viewId) {
+	public void switchToView(Integer viewId) {
 		if (!this.availableViews.containsKey(viewId)) {
 			throw new IllegalArgumentException(String.format("View %s not registered for this window.", viewId));
 		}
-		cardLayout.show(mainContainer, viewId.name());
+		cardLayout.show(mainContainer, viewId.toString());
 	}
 
 	/**
@@ -92,13 +93,14 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @param view View to be registered.
 	 */
-	public void registerView(AbstractView view) {
+	public void registerView(AbstractViewPanel view) {
 		if (this.availableViews.containsKey(view.getViewId())) {
-			throw new IllegalArgumentException(
-					String.format("A View with id %s is already registered for this window.", view.getViewId()));
+			Log.info(this, "View %s is already registered in MainWindow. It will not be registered again.", view);
+		} else {
+			Log.info(this, "Registering view %s.", view);
+			this.availableViews.put(view.getViewId(), view);
+			this.mainContainer.add(view, view.getViewId().toString());
 		}
-		Logger.getLogger(MainWindow.class.getName()).info(String.format("Registering view %s", view.getViewId()));
-		this.availableViews.put(view.getViewId(), view);
-		this.mainContainer.add(view, view.getViewId().name());
+
 	}
 }

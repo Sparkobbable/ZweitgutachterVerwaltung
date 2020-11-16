@@ -2,7 +2,6 @@ package view.tableModels;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 
 import javax.swing.JProgressBar;
 import javax.swing.JTable;

@@ -9,7 +9,7 @@ import java.beans.PropertyChangeSupport;
  */
 public class Author {
 	// references
-	private PropertyChangeSupport propertyChangeSupport;
+	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// descriptors
 	public static final String NAME = "name";
@@ -22,22 +22,12 @@ public class Author {
 	/**
 	 * Creates an Author of a BachelorThesis
 	 * 
-	 * @param name       Name of the Author
-	 * @param studyGroup StudyGroup of the Author
-	 */
-	public Author(String name, String studyGroup) {
-		this(name);
-		this.studyGroup = studyGroup;
-	}
-
-	/**
-	 * Creates an Author of a BachelorThesis
-	 * 
 	 * @param name Name of the Author
 	 */
-	public Author(String name) {
+	public Author(String name, String studyGroup) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.name = name;
+		this.studyGroup = studyGroup;
 	}
 
 	public String getName() {

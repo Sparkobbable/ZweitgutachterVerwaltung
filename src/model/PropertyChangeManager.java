@@ -35,7 +35,6 @@ public class PropertyChangeManager implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("Source: " + evt.getSource());
 		this.propertyChangeHandlers.computeIfAbsent(evt.getPropertyName(), k -> new ArrayList<>()).stream()
 				.filter(propertyChangeHandler -> propertyChangeHandler.getSource() != null)
 				.filter(propertyChangeHandler -> propertyChangeHandler.getSource() == ANY
@@ -74,7 +73,6 @@ public class PropertyChangeManager implements PropertyChangeListener {
 		}
 
 		public Object getSource() {
-			System.out.println("Expected: " + source.get());
 			return source.get();
 		}
 

@@ -10,20 +10,29 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
+
 import view.eventsources.ButtonEventSource;
+
 import view.eventsources.ChooserEventSource;
 
-public class ImportfirstrewierPanel extends AbstractView {
+import view.panelstructure.DefaultViewPanel;
+
+
+public class ImportfirstrewierPanel extends DefaultViewPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JFileChooser chooseImport;
 	private AbstractView buttons;
 
-	public ImportfirstrewierPanel(ViewId viewId) {
-		super(viewId, "FirstReviewer Import");
-		this.chooseImport = new JFileChooser();
-		this.buttons = new ImportfirstrewierButtonPanel(ViewId.IMPORT_BUTTON);
+
+	public ImportfirstrewierPanel() {
+		super("FirstReviewer Import");
+		this.setBackground(Color.orange);
+this.chooseImport = new JFileChooser();
+		this.buttons = new ImportfirstrewierButtonPanel();
+
+	
+
 		this.registerEventSources();
 
 		this.init();

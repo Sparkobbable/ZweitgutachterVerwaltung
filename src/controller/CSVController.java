@@ -47,45 +47,5 @@ public ArrayList<Reviewer> loadcsvImport() throws Exception {
 	return new ArrayList<Reviewer>();
 }
 
-/**
- * Erstelle aus dem Json Value alle Objekte
- * @param value - Jsonvalue from the Json file
- * @return ArrayList including all objects from the Json file
- */
-private ArrayList<Reviewer> createObjects(JsonArray reviewers) {
-	ArrayList<Reviewer> result = new ArrayList<Reviewer>();
-	for(JsonValue set : reviewers)
-	{
-		JsonObject jReviewer = set.asJsonObject();
-		
-		Reviewer reviewer = new Reviewer(jReviewer.getString("name"));
-		for(JsonValue supervised : jReviewer.getJsonArray("supervised")) {
-			JsonObject jThesis = supervised.asJsonObject();
-			
-			JsonObject jAuthor = jThesis.getJsonObject("author");
-			Author author = new Author(jAuthor.getString("name"), jAuthor.getString("studyGroup"));
-			
-			BachelorThesis thesis = new BachelorThesis(jThesis.getString("topic"), author);
-			
-			try {
-				JsonObject jFirstReview = jThesis.getJsonObject("firstReview");
-				Review firstReview = new Review(reviewer, true, ReviewStatus.valueOf(jFirstReview.getString("status")), thesis);
-				thesis.setFirstReview(firstReview);
-			} catch(NullPointerException e) {
-				
-			}
-			
-			try {
-				JsonObject jSecondReview = jThesis.getJsonObject("secondReview");
-				Review secondReview = new Review(reviewer, false, ReviewStatus.valueOf(jSecondReview.getString("status")), thesis);
-				thesis.setSecondReview(secondReview);
-			} catch(NullPointerException e) {
-				
-			}
-			reviewer.addBachelorThesis(thesis);
-		}
-		result.add(reviewer);
-	}
-	return result;
-}
+
 }

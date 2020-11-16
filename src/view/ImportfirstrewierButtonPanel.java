@@ -7,7 +7,7 @@ import javax.swing.JButton;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.ViewId;
+
 import view.eventsources.ButtonEventSource;
 
 public class ImportfirstrewierButtonPanel extends AbstractView {
@@ -17,8 +17,8 @@ private static final long serialVersionUID = 1L;
 	private JButton loadImport;
 	
 
-	public ImportfirstrewierButtonPanel(ViewId viewId) {
-		super(viewId, "Options");
+	public ImportfirstrewierButtonPanel() {
+		super( "Options");
 		
 		this.loadImport = new JButton("FirstReviewer Import");
 			this.registerEventSources();

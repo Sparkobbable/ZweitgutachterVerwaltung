@@ -35,7 +35,7 @@ public interface EventSource {
 	public default void validateEventId(EventId eventId) {
 		if (!this.canOmit(eventId)) {
 			throw new IllegalArgumentException(String.format(
-					"The EventSource will never omit Events with eventId %s. EventHandler could not be added to.",
+					"The EventSource will never omit Events with eventId %s. EventHandler could not be added to %s.",
 					eventId, this));
 		}
 	}
