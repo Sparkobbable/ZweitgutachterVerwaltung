@@ -43,10 +43,12 @@ public class StateChooserStateController extends AbstractStateController {
 		if(file.exists()) {
 			JSONController json = new JSONController(filepath, this.model);
 			try {
+				this.model.clear();
 				json.loadReviewers();
 				this.view.alert("Der Systemstatus wurde [NICHT] erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
 			} catch(Exception e) {
 				this.view.alert("Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
 			}
 		} else {
 			this.view.alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);

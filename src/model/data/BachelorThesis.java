@@ -35,10 +35,10 @@ public class BachelorThesis implements ChangeableProperties {
 	 */
 	public BachelorThesis(String topic, Author author, Reviewer firstReviewer) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.setFirstReview(new FirstReview(firstReviewer, this), CascadeMode.CASCADE);
 		this.secondReview = Optional.empty();
 		this.topic = topic;
 		this.author = author;
+		this.setFirstReview(new FirstReview(firstReviewer, this), CascadeMode.CASCADE);
 	}
 
 	public String getTopic() {
@@ -108,7 +108,7 @@ public class BachelorThesis implements ChangeableProperties {
 	void setFirstReview(FirstReview review, CascadeMode cascadeMode) {
 		FirstReview old = this.firstReview;
 		this.firstReview = review;
-		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.secondReview);
+		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.firstReview);
 		if (cascadeMode == CascadeMode.CASCADE) {
 			review.getReviewer().addFirstReviewerReview(review, CascadeMode.STOP);
 		}

@@ -165,21 +165,20 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	public List<BachelorThesis> getTheses() {
 		return Collections.unmodifiableList(this.theses);
 	}
-	
+
 	/**
-	 * Search a thesis for the given attributes. If not already existing, 
-	 * create a new one
+	 * Search a thesis for the given attributes. If not already existing, create a
+	 * new one
 	 * 
-	 * @param topic topic attribute of the thesis
-	 * @param author author attribute of the thesis
+	 * @param topic         topic attribute of the thesis
+	 * @param author        author attribute of the thesis
 	 * @param firstreviewer firstreviewer of the thesis
 	 * @return BachelorThesis that is linked within the model
 	 */
 	public BachelorThesis findThesis(String topic, Author author, Reviewer firstreviewer) {
-		for(BachelorThesis thesis : this.getTheses()) {
-			if(thesis.getTopic().equals(topic) &&
-					thesis.getAuthor().equals(author) &&
-					thesis.getFirstReview().getReviewer().equals(firstreviewer)) {
+		for (BachelorThesis thesis : this.getTheses()) {
+			if (thesis.getTopic().equals(topic) && thesis.getAuthor().equals(author)
+					&& thesis.getFirstReview().getReviewer().equals(firstreviewer)) {
 				return thesis;
 			}
 		}
@@ -254,6 +253,20 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 */
 	private void addThesesForReviewer(Reviewer reviewer) {
 		reviewer.getAllReviews().stream().map(Review::getBachelorThesis).forEach(this::addThesis);
+	}
+
+	private void clearReviewers() {
+		List<Reviewer> old = this.reviewers;
+		this.reviewers = new ArrayList<>();
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+
+	}
+
+	public void clear() {
+		this.clearReviewers();
+		this.theses = new ArrayList<>();
+		this.setSelectedReviewer(null);
+		this.setApplicationState(null);
 	}
 
 }
