@@ -64,7 +64,7 @@ public abstract class OverviewPanel<T> extends DefaultViewPanel {
 	}
 
 	protected void updateTableModel() {
-		this.tableModel.fireTableDataChanged();
+		this.tableModel.updateData();
 		this.repaint();
 	}
 

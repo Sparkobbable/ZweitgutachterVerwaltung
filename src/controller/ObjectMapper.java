@@ -31,7 +31,7 @@ public class ObjectMapper {
 	 * 
 	 * @param value - Jsonvalue from the Json file
 	 */
-	public void createObjectsFromJson(JsonArray reviewers) {
+	public void createObjectsFromJson(JsonArray reviewers, JsonArray bachelorTheses) {
 		for (JsonValue set : reviewers) {
 			JsonObject jReviewer = set.asJsonObject();
 
@@ -40,39 +40,28 @@ public class ObjectMapper {
 			this.model.addReviewer(reviewer);
 		}
 		
-		for (JsonValue set : reviewers) {
-			JsonObject jReviewer = set.asJsonObject();
-			Reviewer reviewer = this.model.findReviewerByName(jReviewer.getString("name")).orElseThrow();
-			for (JsonValue firstReview : jReviewer.getJsonArray("firstReviews")) {
-				JsonObject jfR = firstReview.asJsonObject();
-				JsonObject jThesis = jfR.getJsonObject("bachelorThesis");
-				JsonObject jAuthor = jThesis.getJsonObject("author");
+		for (JsonValue set : bachelorTheses) {
+			JsonObject jThesis = set.asJsonObject();
+			JsonObject jAuthor = jThesis.getJsonObject("author");
 
-				Author author = new Author(jAuthor.getString("name"), jAuthor.getString("studyGroup"));
-				BachelorThesis thesis = this.model.findThesis(jThesis.getString("topic"), author, reviewer);
-				reviewer.addBachelorThesis(thesis, ReviewType.FIRST_REVIEW);
-			}
-			for (JsonValue secondReview : jReviewer.getJsonArray("secondReviews")) {
-				JsonObject jsR = secondReview.asJsonObject();
-				JsonObject jThesis = jsR.getJsonObject("bachelorThesis");
-				JsonObject jAuthor = jThesis.getJsonObject("author");
-
-				Author author = new Author(jAuthor.getString("name"), jAuthor.getString("studyGroup"));
-				Optional<Reviewer> firstReviewer = this.model.findReviewerByName(jThesis.getString("firstReviewer"));
-				if (firstReviewer.isEmpty()) {
-					throw new IllegalArgumentException("Missing firstReviewer in secondReview");
-				}
-				BachelorThesis thesis = this.model.findThesis(jThesis.getString("topic"), author, firstReviewer.get());
-				thesis.setSecondReviewer(reviewer);
-				reviewer.addBachelorThesis(thesis, ReviewType.SECOND_REVIEW);
+			Author author = new Author(jAuthor.getString("name"), jAuthor.getString("studyGroup"));
+			Reviewer firstReviewer = this.model.findReviewerByName(jThesis.getString("firstReviewer")).orElseThrow();
+			BachelorThesis newThesis = new BachelorThesis(jThesis.getString("topic"), author, firstReviewer);
+			try {
+				this.model.findReviewerByName(jThesis.getString("secondReviewer")).ifPresent(secondReviewer -> newThesis.setSecondReviewer(secondReviewer));
+				this.model.addThesis(newThesis);
+			} catch(NullPointerException e) {
+				
 			}
 		}
+		
 	}
 
-	public JsonObject createJsonFromObject(List<Reviewer> list) {
+	public JsonObject createJsonFromObject() {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		JsonArrayBuilder reviewers = Json.createArrayBuilder();
-		for (Reviewer r : list) {
+		List<Reviewer> reviewerlist = this.model.getReviewers();
+		for (Reviewer r : reviewerlist) {
 			JsonObjectBuilder reviewerbuilder = Json.createObjectBuilder();
 			reviewerbuilder.add("name", r.getName());
 			reviewerbuilder.add("email", r.getEmail());
@@ -80,48 +69,27 @@ public class ObjectMapper {
 			reviewerbuilder.add("maxSupervisedThesis", r.getMaxSupervisedThesis());
 			reviewerbuilder.add("occupation", r.getOccupation());
 
-			JsonArrayBuilder firstReviews = Json.createArrayBuilder();
-			for (FirstReview fR : r.getFirstReviews()) {
-				JsonObjectBuilder firstReviewBuilder = Json.createObjectBuilder();
-				firstReviewBuilder.add("reviewer", fR.getReviewer().getName());
-
-				JsonObjectBuilder thesisBuilder = Json.createObjectBuilder();
-				thesisBuilder.add("topic", fR.getBachelorThesis().getTopic());
-
-				JsonObjectBuilder authorBuilder = Json.createObjectBuilder();
-				authorBuilder.add("name", fR.getBachelorThesis().getAuthor().getName());
-				authorBuilder.add("studyGroup", fR.getBachelorThesis().getAuthor().getStudyGroup());
-				thesisBuilder.add("author", authorBuilder);
-				thesisBuilder.add("firstReviewer", fR.getReviewer().getName());
-				fR.getBachelorThesis().getSecondReview()
-						.ifPresent(sR -> thesisBuilder.add("secondReviewer", sR.getReviewer().getName()));
-				firstReviewBuilder.add("bachelorThesis", thesisBuilder);
-				firstReviews.add(firstReviewBuilder);
-			}
-			reviewerbuilder.add("firstReviews", firstReviews);
-
-			JsonArrayBuilder secondReviews = Json.createArrayBuilder();
-			for (SecondReview sR : r.getSecondReviews()) {
-				JsonObjectBuilder secondReviewBuilder = Json.createObjectBuilder();
-				secondReviewBuilder.add("reviewer", sR.getReviewer().getName());
-
-				JsonObjectBuilder thesisBuilder = Json.createObjectBuilder();
-				thesisBuilder.add("topic", sR.getBachelorThesis().getTopic());
-
-				JsonObjectBuilder authorBuilder = Json.createObjectBuilder();
-				authorBuilder.add("name", sR.getBachelorThesis().getAuthor().getName());
-				authorBuilder.add("studyGroup", sR.getBachelorThesis().getAuthor().getStudyGroup());
-
-				thesisBuilder.add("author", authorBuilder);
-				thesisBuilder.add("firstReviewer", sR.getBachelorThesis().getFirstReview().getReviewer().getName());
-				thesisBuilder.add("secondReviewer", sR.getReviewer().getName());
-				secondReviewBuilder.add("bachelorThesis", thesisBuilder);
-				secondReviews.add(secondReviewBuilder);
-			}
-			reviewerbuilder.add("secondReviews", secondReviews);
 			reviewers.add(reviewerbuilder);
 		}
 		builder.add("reviewers", reviewers);
+		
+		JsonArrayBuilder theses = Json.createArrayBuilder();
+		List<BachelorThesis> thesislist = this.model.getTheses();
+		for(BachelorThesis thesis : thesislist) {
+			JsonObjectBuilder thesisBuilder = Json.createObjectBuilder();
+			thesisBuilder.add("topic", thesis.getTopic());
+			
+			JsonObjectBuilder authorBuilder = Json.createObjectBuilder();
+			authorBuilder.add("name", thesis.getAuthor().getName());
+			authorBuilder.add("studyGroup", thesis.getAuthor().getStudyGroup());
+			thesisBuilder.add("author", authorBuilder);
+			
+			thesisBuilder.add("firstReviewer", thesis.getFirstReview().getReviewer().getName());
+			thesis.getSecondReview().ifPresent(review -> thesisBuilder.add("secondReviewer", review.getReviewer().getName()));
+			thesis.getSecondReview().ifPresent(review -> thesisBuilder.add("secondReviewStatus", review.getStatus().toString()));
+			theses.add(thesisBuilder);
+		}
+		builder.add("bachelorTheses", theses);
 		return builder.build();
 	}
 }

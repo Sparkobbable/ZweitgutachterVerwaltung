@@ -175,15 +175,14 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * @param firstreviewer firstreviewer of the thesis
 	 * @return BachelorThesis that is linked within the model
 	 */
-	public BachelorThesis findThesis(String topic, Author author, Reviewer firstreviewer) {
+	public Optional<BachelorThesis> findThesis(String topic, Author author, Reviewer firstreviewer) {
 		for (BachelorThesis thesis : this.getTheses()) {
 			if (thesis.getTopic().equals(topic) && thesis.getAuthor().equals(author)
 					&& thesis.getFirstReview().getReviewer().equals(firstreviewer)) {
-				return thesis;
+				return Optional.of(thesis);
 			}
 		}
-		BachelorThesis thesis = new BachelorThesis(topic, author, firstreviewer);
-		return thesis;
+		return Optional.empty();
 	}
 
 	/**
