@@ -65,7 +65,7 @@ public class Main {
 		for (int i = 0; i < reviewers.length; i++) {
 			String firstName = randomFrom(firstname);
 			String lastName = randomFrom(surname);
-			reviewers[i] = new Reviewer(String.format("%s, %s", lastName, firstName), reviewers.length, String.format("%s.%s@hsw.de", firstName, lastName), randomFrom(comment));
+			reviewers[i] = new Reviewer(String.format("%s, %s", lastName, firstName), 10, String.format("%s.%s@hsw.de", firstName, lastName), randomFrom(comment));
 		}
 		
 		BachelorThesis[] bts = new BachelorThesis[topic.length];

@@ -5,7 +5,11 @@ import java.util.logging.Logger;
 public class Log {
 
 	public static void warning(Object source, String msg, Object... args) {
-		Log.getLogger(source).warning(String.format(msg, args));
+		warning(source, String.format(msg, args));
+	}
+
+	public static void warning(Object source, String msg) {
+		Log.getLogger(source).warning(msg);
 	}
 	
 	public static void info(Object source, String msg, Object... args) {

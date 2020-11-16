@@ -23,7 +23,8 @@ public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
-		this.initializePropertyChangeConsumers();
+		
+		this.onPropertyChange(Model.REVIEWERS, (evt) -> updateTableModel());
 		this.observe(this.model);
 
 		this.tableModel.updateData();

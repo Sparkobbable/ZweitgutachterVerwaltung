@@ -3,11 +3,10 @@ package controller.statecontrollers;
 import static model.enums.EventId.EDIT;
 import static model.enums.EventId.NEW;
 
-import java.util.logging.Logger;
-
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import util.Log;
 import view.View;
 
 /**
@@ -34,16 +33,14 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	private void switchToState(ApplicationState applicationState, int[] indices) {
 		// check that one and only one row is selected
 		if (indices.length != 1) {
-			Logger.getLogger(ReviewerOverviewStateController.class.getName())
-					.warning(String.format("Only one reviewer can be edited at a time. "));
+			Log.warning(this.getClass().getName(), "Only one reviewer can be edited at a time. ");
 			return;
 		}
 		// indices contains only one element
 		Integer index = indices[0];
 		
-		Logger.getLogger(ReviewerOverviewStateController.class.getName())
-				.info(String.format("Starting editmode on reviewer %s", index));
 		model.setSelectedReviewer(index);
+		Log.info(this.getClass().getName(), "Starting editmode on reviewer %s", model.getSelectedReviewer().get().getName());
 		switchState(applicationState);
 	}
 }

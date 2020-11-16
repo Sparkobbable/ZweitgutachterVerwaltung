@@ -119,4 +119,9 @@ public class BachelorThesis implements ChangeableProperties {
 		this.propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+
 }

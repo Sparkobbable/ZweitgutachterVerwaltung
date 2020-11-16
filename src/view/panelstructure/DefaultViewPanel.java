@@ -107,6 +107,10 @@ public abstract class DefaultViewPanel extends AbstractViewPanel {
 		observable.addPropertyChangeListener(this);
 	}
 
+	protected void stopObserving(ChangeableProperties observable) {
+		observable.removePropertyChangeListener(this);
+	}
+
 	/**
 	 * Adds the current view as an observer to the specified observable values.
 	 * 
@@ -114,6 +118,15 @@ public abstract class DefaultViewPanel extends AbstractViewPanel {
 	 */
 	protected void observe(Collection<? extends ChangeableProperties> observables) {
 		observables.forEach(this::observe);
+	}
+
+	/**
+	 * Removes the current view as an observer from the specified observable values.
+	 * 
+	 * @param observables Needs the values to observer
+	 */
+	protected void stopObserving(Collection<? extends ChangeableProperties> observables) {
+		observables.forEach(this::stopObserving);
 	}
 	/*
 	 * -----------------------------------------------------------------------------
