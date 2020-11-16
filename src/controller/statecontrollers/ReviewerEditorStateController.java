@@ -7,8 +7,6 @@ import static model.enums.EventId.SAVE_REVIEWER;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
 
 import model.Model;

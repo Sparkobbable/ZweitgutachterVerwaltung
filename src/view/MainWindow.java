@@ -51,7 +51,6 @@ public class MainWindow extends JFrame {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	/**

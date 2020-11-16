@@ -2,22 +2,13 @@ package controller.statecontrollers;
 
 import static model.enums.EventId.ADD_THESIS_TO_REVIEWER;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import javax.swing.JOptionPane;
 
 import model.Model;
 import model.data.BachelorThesis;
 import model.data.Reviewer;
-import model.data.SecondReview;
 import model.enums.ApplicationState;
-import model.enums.ReviewStatus;
 import model.enums.ReviewType;
 import view.View;
 

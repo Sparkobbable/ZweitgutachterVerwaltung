@@ -4,16 +4,10 @@ import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.function.Supplier;
-
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import controller.CSVController;
 import controller.JSONController;
 import model.Model;
-import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;

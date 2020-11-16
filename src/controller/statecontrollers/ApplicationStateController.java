@@ -3,9 +3,6 @@ package controller.statecontrollers;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
-import java.util.logging.Logger;
-
-import controller.Controller;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
