@@ -67,7 +67,7 @@ public class StateChooserStateController extends AbstractStateController {
 			int result = this.view.alert("Die Datei exisiert bereits. \n Wollen Sie diese überschreiben?", JOptionPane.QUESTION_MESSAGE);
 			if(result == JOptionPane.YES_OPTION) {
 				JSONController json = new JSONController(filepath, this.model);
-				json.saveReviewers(model.getReviewers());
+				json.saveReviewers();
 				this.view.alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				this.view.alert("Speichern des Systemzustands wurde abgebrochen", JOptionPane.INFORMATION_MESSAGE);

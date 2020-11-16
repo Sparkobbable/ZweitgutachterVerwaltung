@@ -37,11 +37,11 @@ public class JSONController {
 	 * Saves all reviewers including every other Object from the current model in a Json file.
 	 * @param list ArrayList of current reviewers in the system.
 	 */
-	public void saveReviewers(List<Reviewer> list) {
+	public void saveReviewers() {
 		try {
 			FileWriter fw = new FileWriter(filename);
 			JsonWriter jsonWriter = Json.createWriter(fw);
-			jsonWriter.writeObject(mapper.createJsonFromObject(list));
+			jsonWriter.writeObject(mapper.createJsonFromObject());
 			jsonWriter.close();
 			fw.close();
 		} catch (IOException e) {
@@ -67,7 +67,7 @@ public class JSONController {
 			
 			if(value.getValueType() == ValueType.OBJECT) {
 				JsonObject object = (JsonObject) value;
-				mapper.createObjectsFromJson(object.getJsonArray("reviewers"));
+				mapper.createObjectsFromJson(object.getJsonArray("reviewers"), object.getJsonArray("bachelorTheses"));
 			} else {
 				throw new Exception("Die geladene Json Datei beinhaltet keinen Systemstatus");
 			}
