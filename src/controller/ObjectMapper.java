@@ -85,7 +85,7 @@ public class ObjectMapper {
 				
 				JsonObjectBuilder authorBuilder = Json.createObjectBuilder();
 				authorBuilder.add("name", fR.getBachelorThesis().getAuthor().getName());
-				authorBuilder.add("studyGroupe", fR.getBachelorThesis().getAuthor().getStudyGroup());
+				authorBuilder.add("studyGroup", fR.getBachelorThesis().getAuthor().getStudyGroup());
 				
 				thesisBuilder.add("author", authorBuilder);
 				thesisBuilder.add("firstReviewer", fR.getReviewer().getName());

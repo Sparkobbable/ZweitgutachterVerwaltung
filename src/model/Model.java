@@ -184,7 +184,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 			}
 		}
 		BachelorThesis thesis = new BachelorThesis(topic, author, firstreviewer);
-		this.addThesis(thesis);
 		return thesis;
 	}
 
