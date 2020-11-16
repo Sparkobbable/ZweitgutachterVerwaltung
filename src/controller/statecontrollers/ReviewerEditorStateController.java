@@ -17,6 +17,7 @@ import model.data.Reviewer;
 import model.data.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewType;
+import util.Log;
 import view.View;
 import view.editor.ReviewerEditorPanel;
 
@@ -73,8 +74,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		if (!validate()) {
 			return;
 		}
-		Logger.getLogger(ReviewerEditorStateController.class.getName())
-				.info(String.format("Saving edited Reviewer %s.", newReviewer.getName()));
+		Log.info(this.getClass().getName(), "Saving edited Reviewer %s.", newReviewer.getName());
 		if (originalReviewer.isPresent()) {
 			model.updateReviewer(originalReviewer.get(), newReviewer);
 		} else {
