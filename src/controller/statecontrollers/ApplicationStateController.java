@@ -9,6 +9,7 @@ import controller.Controller;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import util.Log;
 import view.View;
 
 /**
@@ -62,8 +63,7 @@ public class ApplicationStateController {
 	 * @param state The new ApplicationState
 	 */
 	public void switchState(ApplicationState applicationState) {
-		Logger.getLogger(Controller.class.getName())
-				.info(String.format("Switched to ApplicationState: %s", applicationState));
+		Log.info(this.getClass().getName(), "Switched to ApplicationState: %s", applicationState.name());
 		this.model.setApplicationState(applicationState);
 
 		if (this.visitedStates.empty() || !this.visitedStates.peek().equals(applicationState)) {

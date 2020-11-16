@@ -65,8 +65,7 @@ public class MainWindow extends JFrame {
 		try {
 			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			UIManager.setLookAndFeel(systemLookAndFeelClassName);
-			Logger.getLogger(MainWindow.class.getName())
-					.info(String.format("Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName));
+			Log.info(MainWindow.class.getName(), "Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
