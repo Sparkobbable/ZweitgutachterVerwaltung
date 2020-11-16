@@ -267,4 +267,9 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.setSelectedReviewer(null);
 	}
 
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		this.propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+	}
+
 }

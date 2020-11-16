@@ -239,6 +239,11 @@ public class Reviewer implements ChangeableProperties {
 		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 	}
 
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+
 	/**
 	 * 
 	 * @param thesis
@@ -247,6 +252,12 @@ public class Reviewer implements ChangeableProperties {
 	 */
 	public boolean reviewsThesis(BachelorThesis thesis) {
 		return this.getAllReviews().stream().map(Review::getBachelorThesis).anyMatch(t -> t == thesis);
+	}
+
+	@Override
+	public String toString() {
+		return this.name;
+
 	}
 
 }

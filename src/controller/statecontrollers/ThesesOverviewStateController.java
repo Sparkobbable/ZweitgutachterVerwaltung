@@ -1,8 +1,9 @@
 package controller.statecontrollers;
 
-import static model.enums.EventId.EDIT;
+import static model.enums.EventId.SELECT;
 
 import model.Model;
+import model.data.Reviewer;
 import model.enums.ApplicationState;
 import util.Log;
 import view.View;
@@ -20,20 +21,18 @@ public class ThesesOverviewStateController extends AbstractStateController {
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EDIT, (params) -> switchToEdit((int[]) params[0].get()));
+		this.registerEvent(SELECT, (params) -> addSecondReviewer((int[]) params[0].get(), (Reviewer) params[1].get()));
 	}
 
-	private void switchToEdit(int[] indices) {
+	private void addSecondReviewer(int[] indices, Reviewer reviewer) {
 		// check that one and only one row is selected
 		if (indices.length != 1) {
 			Log.warning(this, "Only one thesis can be edited at a time.");
 			return;
 		}
 		// indices contains only one element
-		Integer index = indices[0];
-		
-		Log.info(this, "Starting reviewer assignment on thesis %s", index);
-		model.setSelectedReviewer(index);
-		switchState(ApplicationState.HOME);
+		int index = indices[0];
+
+		this.model.getTheses().get(index).setSecondReviewer(reviewer);
 	}
 }

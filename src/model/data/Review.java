@@ -36,6 +36,11 @@ public abstract class Review implements ChangeableProperties {
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 	}
-	
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+
 	public abstract ReviewType getReviewType();
 }

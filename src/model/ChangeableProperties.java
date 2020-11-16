@@ -12,4 +12,12 @@ public interface ChangeableProperties {
 	 * @param propertyChangeListener
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener);
+
+	/**
+	 * Removes a propertyChangeListener from this Object 
+	 * 	 * 
+	 * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
+	 * @param propertyChangeListener
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener);
 }
