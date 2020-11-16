@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -65,8 +63,7 @@ public class MainWindow extends JFrame {
 		try {
 			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			UIManager.setLookAndFeel(systemLookAndFeelClassName);
-			Logger.getLogger(MainWindow.class.getName())
-					.info(String.format("Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName));
+			Log.info(MainWindow.class.getName(), "Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -95,9 +92,9 @@ public class MainWindow extends JFrame {
 	 */
 	public void registerView(AbstractViewPanel view) {
 		if (this.availableViews.containsKey(view.getViewId())) {
-			Log.info(this, "View %s is already registered in MainWindow. It will not be registered again.", view);
+			Log.info(this.getClass().getName(), "View %s is already registered in MainWindow. It will not be registered again.", view.getClass().getName());
 		} else {
-			Log.info(this, "Registering view %s.", view);
+			Log.info(this.getClass().getName(), "Registering view %s.", view.getClass().getName());
 			this.availableViews.put(view.getViewId(), view);
 			this.mainContainer.add(view, view.getViewId().toString());
 		}

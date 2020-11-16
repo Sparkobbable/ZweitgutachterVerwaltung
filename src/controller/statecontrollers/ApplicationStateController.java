@@ -9,6 +9,7 @@ import controller.Controller;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import util.Log;
 import view.View;
 
 /**
@@ -34,8 +35,7 @@ public class ApplicationStateController {
 	public ApplicationStateController(Model model, View view) {
 		this.view = view;
 		this.model = model;
-		visitedStates = new Stack<>();
-		
+		visitedStates = new Stack<>();	
 		stateControllers = new HashSet<>();
 		stateControllers.add(new HomeStateController(view, this, model));
 		stateControllers.add(new ReviewerOverviewStateController(view, this, model));
@@ -47,6 +47,7 @@ public class ApplicationStateController {
 		stateControllers.add(new CollaborationOverviewPieChartStateController(view, this, model));
 
 		this.view.addEventHandler(EventId.BACK, (params) -> switchToLastVisitedState());
+
 	}
 
 	/**
@@ -62,9 +63,9 @@ public class ApplicationStateController {
 	 * @param state The new ApplicationState
 	 */
 	public void switchState(ApplicationState applicationState) {
-		Logger.getLogger(Controller.class.getName())
-				.info(String.format("Switched to ApplicationState: %s", applicationState));
+		Log.info(this.getClass().getName(), "Switched to ApplicationState: %s", applicationState.name());
 		this.model.setApplicationState(applicationState);
+
 
 		if (this.visitedStates.empty() || !this.visitedStates.peek().equals(applicationState)) {
 			this.visitedStates.push(applicationState);
