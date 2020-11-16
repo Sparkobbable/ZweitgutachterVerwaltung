@@ -32,7 +32,6 @@ public class ObjectMapper {
 	 * @param value - Jsonvalue from the Json file
 	 */
 	public void createObjectsFromJson(JsonArray reviewers) {
-		System.out.println(this.model.getReviewers());
 		for (JsonValue set : reviewers) {
 			JsonObject jReviewer = set.asJsonObject();
 
@@ -40,7 +39,6 @@ public class ObjectMapper {
 					jReviewer.getString("email"), jReviewer.getString("comment"));
 			this.model.addReviewer(reviewer);
 		}
-		System.out.println(this.model.getReviewers());
 		
 		for (JsonValue set : reviewers) {
 			JsonObject jReviewer = set.asJsonObject();
@@ -68,7 +66,6 @@ public class ObjectMapper {
 				thesis.setSecondReviewer(reviewer);
 				reviewer.addBachelorThesis(thesis, ReviewType.SECOND_REVIEW);
 			}
-			this.model.addReviewer(reviewer);
 		}
 	}
 
@@ -94,7 +91,6 @@ public class ObjectMapper {
 				JsonObjectBuilder authorBuilder = Json.createObjectBuilder();
 				authorBuilder.add("name", fR.getBachelorThesis().getAuthor().getName());
 				authorBuilder.add("studyGroup", fR.getBachelorThesis().getAuthor().getStudyGroup());
-
 				thesisBuilder.add("author", authorBuilder);
 				thesisBuilder.add("firstReviewer", fR.getReviewer().getName());
 				fR.getBachelorThesis().getSecondReview()

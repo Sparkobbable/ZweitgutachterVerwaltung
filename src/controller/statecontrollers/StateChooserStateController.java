@@ -47,6 +47,7 @@ public class StateChooserStateController extends AbstractStateController {
 				json.loadReviewers();
 				this.view.alert("Der Systemstatus wurde [NICHT] erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
 			} catch(Exception e) {
+				e.printStackTrace();
 				this.view.alert("Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}

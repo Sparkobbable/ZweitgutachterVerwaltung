@@ -183,7 +183,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 			}
 		}
 		BachelorThesis thesis = new BachelorThesis(topic, author, firstreviewer);
-		this.addThesis(thesis);
 		return thesis;
 	}
 
@@ -266,7 +265,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.clearReviewers();
 		this.theses = new ArrayList<>();
 		this.setSelectedReviewer(null);
-		this.setApplicationState(null);
 	}
 
 }
