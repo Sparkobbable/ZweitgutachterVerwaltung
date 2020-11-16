@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 
 import model.EventSource;
 import model.enums.EventId;
-import model.enums.PresentationMode;
 import view.eventsources.ComboBoxEventSource;
 import view.panelstructure.DefaultViewPanel;
 
@@ -36,7 +35,6 @@ public class CollaborationComboBoxPanel extends DefaultViewPanel {
 	private void createUIElements(String headline, String[] options) {
 		this.headline = new JLabel("Darstellung");
 		this.choosePresentationMode = new JComboBox<>(options);
-		this.choosePresentationMode.setSelectedItem(options[0]);
 	}
 	
 	private void addUIElements() {
@@ -49,7 +47,7 @@ public class CollaborationComboBoxPanel extends DefaultViewPanel {
 		return List.of(new ComboBoxEventSource(this.eventId, choosePresentationMode, () -> getPresentationMode()));
 	}
 	
-	private PresentationMode getPresentationMode() {
-		return PresentationMode.of((String) this.choosePresentationMode.getSelectedItem()).orElseThrow(() -> new IllegalArgumentException());
+	private String getPresentationMode() {
+			return this.choosePresentationMode.getSelectedItem().toString();
 	}
 }

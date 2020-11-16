@@ -1,9 +1,11 @@
 package controller.statecontrollers;
 
+import java.util.ArrayList;
+
 import model.Model;
+import model.data.Reviewer;
 import model.enums.ApplicationState;
-import model.enums.EventId;
-import model.enums.PresentationMode;
+import model.enums.ReviewType;
 import view.View;
 
 public abstract class AbstractCollaborationOverviewStateController extends AbstractStateController {
@@ -12,20 +14,37 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 			ApplicationStateController applicationStateController, Model model) {
 		super(applicationState, view, applicationStateController, model);
 	}
-
-	@Override
-	protected void registerEvents() {
-		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
-				(params) -> switchPresentation((PresentationMode) params[0].get()));
+	
+	protected ArrayList<Reviewer> setCollaborationFirstReviewers() {
+		ArrayList<Reviewer> result = new ArrayList<>();
+		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getAllReviews().stream()
+				.filter(review -> review.getReviewType().equals(ReviewType.SECOND_REVIEW))
+				.forEach(review -> result.add(review.getBachelorThesis().getFirstReview().getReviewer())));
+		System.out.println("Reviewers:" + result.toString());
+		return result;
 	}
-
-	private void switchPresentation(PresentationMode params) {
-
-		if (params == PresentationMode.PIECHART) {
-			switchState(ApplicationState.COLLABORATION_PIECHART);
-		}
-		if (params == PresentationMode.TABLE) {
-			switchState(ApplicationState.COLLABORATION_TABLE);
-		}
+	
+	protected ArrayList<Reviewer> setCollaborationSecondReviewers() {
+		ArrayList<Reviewer> result = new ArrayList<>();
+		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getAllReviews().stream()
+				.filter(review -> review.getReviewType().equals(ReviewType.FIRST_REVIEW))
+				.forEach(review -> review.getBachelorThesis().getSecondReview()
+				.ifPresent(secondreview -> result.add(secondreview.getReviewer()))));
+		System.out.println("Reviewers:" + result.toString());
+		return result;
+	}
+	
+	protected ArrayList<Reviewer> setCollaborationAllReviewers() {
+		ArrayList<Reviewer> result = new ArrayList<>();
+		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getAllReviews().stream()
+				.filter(review -> review.getReviewType().equals(ReviewType.SECOND_REVIEW))
+				.forEach(review -> result.add(review.getBachelorThesis().getFirstReview().getReviewer())));
+		
+		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getAllReviews().stream()
+				.filter(review -> review.getReviewType().equals(ReviewType.FIRST_REVIEW))
+				.forEach(review -> review.getBachelorThesis().getSecondReview()
+				.ifPresent(secondreview -> result.add(secondreview.getReviewer()))));
+		System.out.println("Reviewers:" + result.toString());
+		return result;
 	}
 }
