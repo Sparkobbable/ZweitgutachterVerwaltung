@@ -1,12 +1,16 @@
 package controller.statecontrollers;
 
 import static model.enums.EventId.EDIT;
+import static model.enums.EventId.SHOW_COLLABORATION;
+
+import java.util.ArrayList;
+
+import static model.enums.EventId.SEARCH_OVERVIEW_REVIEWER;
 import static model.enums.EventId.NEW;
 
 import model.Model;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
-import model.enums.EventId;
 import util.Log;
 import view.View;
 
@@ -25,11 +29,18 @@ public class ReviewerOverviewStateController extends AbstractStateController<Rev
 	protected void registerEvents() {
 		this.registerEvent(EDIT, (params) -> this.switchToState(ApplicationState.REVIEWER_EDITOR, (int[]) params[0].get()));
 //		this.registerEvent(DELETE, (params) -> this.deleteEntries((int[]) params[0].get())); // TODO Remove delete
-		this.registerEvent(EventId.SHOW_COLLABORATION, (params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (int[]) params[0].get()));
-																						// refreshed
+		this.registerEvent(SHOW_COLLABORATION, (params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (int[]) params[0].get()));
+		this.registerEvent(SEARCH_OVERVIEW_REVIEWER, (params) -> this.onReviewerSearch((String) params[0].get()));
 		this.registerEvent(NEW, (params) -> switchState(ApplicationState.REVIEWER_EDITOR));
 	}
 
+
+	@SuppressWarnings("unchecked")
+	private void onReviewerSearch(String searchText) {
+		ArrayList<Reviewer> copyList = new ArrayList<Reviewer>(this.model.getReviewers());
+		this.model.clearDisplayedReviewers();
+		this.model.addDisplayedReviewers((ArrayList<Reviewer>) searchController.handleSearch(copyList, searchText));
+	}
 
 	private void switchToState(ApplicationState applicationState, int[] indices) {
 		// check that one and only one row is selected

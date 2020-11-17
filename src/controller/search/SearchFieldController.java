@@ -8,6 +8,7 @@ import model.data.FirstReview;
 import model.data.Review;
 import model.data.Reviewer;
 import model.data.SecondReview;
+import util.Log;
 
 public class SearchFieldController<E> {
 	
@@ -22,6 +23,7 @@ public class SearchFieldController<E> {
 		if (Objects.isNull(searchText) || searchText.isBlank()) {
 			return searchList;
 		}
+		Log.info(this.getClass().getName(), "Searching for: %S", searchText);
 		searchText = searchText.toLowerCase();
 		Class<?> clazz = searchList.get(0).getClass();
 		if (Reviewer.class.equals(clazz)) {
@@ -31,6 +33,7 @@ public class SearchFieldController<E> {
 		} else if (FirstReview.class.equals(clazz) || SecondReview.class.equals(clazz)) {
 			return new ReviewSearch().search((ArrayList<Review>) searchList, searchText);
 		}
+		//Other searches are possible but need to be implemented by creating a new subclass of AbstractSearch
 		return null;
 	}
 	

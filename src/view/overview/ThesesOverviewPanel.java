@@ -3,8 +3,11 @@ package view.overview;
 import java.awt.BorderLayout;
 import java.util.List;
 
+import model.EventSource;
 import model.Model;
 import model.data.BachelorThesis;
+import model.enums.EventId;
+import view.eventsources.SearchFieldEventSource;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.ThesesOverviewTableModel;
 
@@ -32,6 +35,7 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 		this.onPropertyChange(Model.THESES, (evt) -> updateTheses((List<BachelorThesis>) evt.getOldValue(),
 				(List<BachelorThesis>) evt.getNewValue()));
 		this.onPropertyChange(BachelorThesis.SECOND_REVIEW, (evt) -> updateTableModel());
+		this.onPropertyChange(Model.DISPLAYED_THESES, (evt) -> updateTableModel());
 
 		this.createUIElements();
 		this.addUIElements();
@@ -45,6 +49,13 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 		this.updateTableModel();
 	}
 
+	@Override
+	protected List<EventSource> getEventSources() {
+		List<EventSource> eventSources = super.getEventSources();
+		eventSources.add(new SearchFieldEventSource(EventId.SEARCH_OVERVIEW_THESES, this.searchField));
+		return eventSources;
+	}
+	
 	@Override
 	protected AbstractDataTableModel<BachelorThesis> createTableModel() {
 		return new ThesesOverviewTableModel(model);

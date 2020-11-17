@@ -36,7 +36,7 @@ public class ThesisAssignmentStateController extends AbstractStateController<Bac
 	@SuppressWarnings("unchecked")
 	private void onThesisSearch(String searchText) {
 		ArrayList<BachelorThesis> copyList = new ArrayList<BachelorThesis>(this.model.getTheses());
-		this.model.clearDisplayedThesis();
+		this.model.clearDisplayedTheses();
 		this.model.addDisplayedTheses((ArrayList<BachelorThesis>) searchController.handleSearch(copyList, searchText));
 	}
 

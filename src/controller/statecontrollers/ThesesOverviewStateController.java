@@ -1,6 +1,10 @@
 package controller.statecontrollers;
 
 import static model.enums.EventId.SELECT;
+import static model.enums.EventId.SEARCH_OVERVIEW_THESES;
+
+import java.util.ArrayList;
+
 
 import model.Model;
 import model.data.BachelorThesis;
@@ -23,6 +27,14 @@ public class ThesesOverviewStateController extends AbstractStateController<Bache
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(SELECT, (params) -> addSecondReviewer((int[]) params[0].get(), (Reviewer) params[1].get()));
+		this.registerEvent(SEARCH_OVERVIEW_THESES, (params) -> this.onThesisSearch((String) params[0].get()));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void onThesisSearch(String searchText) {
+		ArrayList<BachelorThesis> copyList = new ArrayList<BachelorThesis>(this.model.getTheses());
+		this.model.clearDisplayedTheses();
+		this.model.addDisplayedTheses((ArrayList<BachelorThesis>) searchController.handleSearch(copyList, searchText));
 	}
 
 	private void addSecondReviewer(int[] indices, Reviewer reviewer) {
@@ -34,6 +46,6 @@ public class ThesesOverviewStateController extends AbstractStateController<Bache
 		// indices contains only one element
 		int index = indices[0];
 
-		this.model.getTheses().get(index).setSecondReviewer(reviewer);
+		this.model.getDisplayedTheses().get(index).setSecondReviewer(reviewer);
 	}
 }

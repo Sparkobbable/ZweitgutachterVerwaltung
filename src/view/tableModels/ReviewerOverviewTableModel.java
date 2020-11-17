@@ -30,7 +30,7 @@ public class ReviewerOverviewTableModel extends AbstractDataTableModel<Reviewer>
 
 	@Override
 	protected Collection<Reviewer> getUnfilteredData() {
-		return model.getReviewers();
+		return model.getDisplayedReviewers();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -112,7 +113,14 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
 		this.onPropertyChange(Reviewer.FIRST_REVIEWS,
 				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
-		this.onPropertyChange(Model.DISPLAYED_THESES, (evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
+		this.onPropertyChange(Model.DISPLAYED_THESES, (evt) -> updateSearchedThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
+	}
+
+	private void updateSearchedThesesList(ArrayList<BachelorThesis> newValue) {
+		if (Objects.isNull(this.selectedReviewer)) {
+			return;
+		}
+		updateThesesList(newValue);
 	}
 
 	private void updateThesesList(ArrayList<BachelorThesis> updatedThesisList) {
@@ -127,6 +135,8 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 			this.addThesis.setText(this.createButtonText());
 			this.thesesTableModel.updateData();
 			this.repaint();
+		} else {
+			this.selectedReviewer = null;
 		}
 	}
 

@@ -1,6 +1,7 @@
 package view.overview;
 
 import java.awt.BorderLayout;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -13,6 +14,7 @@ import model.enums.EventId;
 import view.eventsources.TableClickEventSource;
 import view.panelstructure.DefaultViewPanel;
 import view.tableModels.AbstractDataTableModel;
+import view.widgets.SearchField;
 
 public abstract class OverviewPanel<T> extends DefaultViewPanel {
 
@@ -25,6 +27,7 @@ public abstract class OverviewPanel<T> extends DefaultViewPanel {
 	protected JTable table;
 	protected JScrollPane tableScrollPane;
 	protected OverviewActionPanel actionPanel;
+	protected SearchField searchField;
 
 	public OverviewPanel(Model model, String title) {
 		super(title);
@@ -36,11 +39,14 @@ public abstract class OverviewPanel<T> extends DefaultViewPanel {
 	protected abstract AbstractDataTableModel<T> createTableModel();
 
 	protected void addUIElements() {
+		this.add(this.searchField, BorderLayout.PAGE_START);
 		this.add(this.tableScrollPane, BorderLayout.CENTER);
 		this.add(this.actionPanel, BorderLayout.PAGE_END);
 	}
 
 	protected void createUIElements() {
+		this.searchField = new SearchField();
+		
 		this.tableModel = createTableModel();
 		this.table = new JTable(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
@@ -60,7 +66,7 @@ public abstract class OverviewPanel<T> extends DefaultViewPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(this.actionPanel, new TableClickEventSource(EventId.EDIT, this.table, () -> getSelectedRowIndex()));
+		return new LinkedList<EventSource>(List.of(this.actionPanel, new TableClickEventSource(EventId.EDIT, this.table, () -> getSelectedRowIndex())));
 	}
 
 	protected void updateTableModel() {

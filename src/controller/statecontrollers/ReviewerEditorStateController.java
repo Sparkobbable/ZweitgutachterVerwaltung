@@ -78,6 +78,7 @@ public class ReviewerEditorStateController extends AbstractStateController<Revie
 		} else {
 			model.addReviewer(newReviewer);
 		}
+		this.model.clearSelectedReviewer();
 		switchToLastVisitedState();
 	}
 
