@@ -39,7 +39,7 @@ public class ThesesOverviewTableModel extends AbstractDataTableModel<BachelorThe
 
 	@Override
 	protected Collection<BachelorThesis> getUnfilteredData() {
-		return model.getTheses();
+		return model.getDisplayedTheses();
 	}
 
 }

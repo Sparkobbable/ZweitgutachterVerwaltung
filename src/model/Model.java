@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import model.enums.ApplicationState;
  */
 public class Model implements ChangeableProperties, PropertyChangeListener {
 
+	public static final String DISPLAYED_THESES = "displayedTheses";
 	public static final String APPLICATION_STATE = "applicationState";
 	public static final String SELECTED_REVIEWER = "selectedReviewer";
 	public static final String REVIEWERS = "reviewers";
@@ -29,6 +31,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	private List<BachelorThesis> theses;
+	private List<BachelorThesis> displayedTheses;
 	private List<Reviewer> reviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -36,14 +39,15 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	private PropertyChangeManager propertyChangeManager;
 
 	public Model(List<BachelorThesis> theses, List<Reviewer> reviewers) {
-		this();
-		theses.forEach(this::addThesis);
+		this(theses);
 		reviewers.forEach(this::addReviewer);
+		
 	}
 
 	public Model(List<BachelorThesis> theses) {
 		this();
 		theses.forEach(this::addThesis);
+		this.displayedTheses.addAll(this.theses);
 	}
 
 	/**
@@ -54,6 +58,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.propertyChangeManager = new PropertyChangeManager();
 		this.selectedReviewer = Optional.empty();
 		this.theses = new ArrayList<>();
+		this.displayedTheses = new ArrayList<>();
 		this.reviewers = new ArrayList<>();
 
 		this.initializePropertyChangeHandlers();
@@ -166,6 +171,14 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		return Collections.unmodifiableList(this.theses);
 	}
 
+	public List<BachelorThesis> getDisplayedTheses() {
+		return displayedTheses;
+	}
+
+	public void setDisplayedTheses(List<BachelorThesis> displayedTheses) {
+		this.displayedTheses = displayedTheses;
+	}
+
 	/**
 	 * Search a thesis for the given attributes. If not already existing, create a
 	 * new one
@@ -263,12 +276,25 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	public void clear() {
 		this.clearReviewers();
 		this.theses = new ArrayList<>();
+		this.displayedTheses = new ArrayList<>();
 		this.setSelectedReviewer(null);
 	}
 
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+	}
+
+	public void addDisplayedTheses(Collection<BachelorThesis> theses) {
+		ArrayList<BachelorThesis> old = new ArrayList<BachelorThesis>(this.displayedTheses);
+		this.displayedTheses.addAll(theses);
+		this.propertyChangeSupport.firePropertyChange(DISPLAYED_THESES, old, this.displayedTheses);
+	}
+
+	public void clearDisplayedThesis() {
+		ArrayList<BachelorThesis> old = new ArrayList<BachelorThesis>(this.displayedTheses);
+		this.displayedTheses.clear();
+		this.propertyChangeSupport.firePropertyChange(DISPLAYED_THESES, old, this.displayedTheses);
 	}
 
 }

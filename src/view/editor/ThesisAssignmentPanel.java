@@ -20,22 +20,29 @@ import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
+import view.eventsources.SearchFieldEventSource;
 import view.panelstructure.DefaultViewPanel;
 import view.tableModels.AbstractTableModel.Column;
+import view.widgets.SearchField;
 import view.tableModels.ThesesOverviewTableModel;
 
 public class ThesisAssignmentPanel extends DefaultViewPanel {
 
+	//Constants
 	private static final long serialVersionUID = 1L;
 	private static final List<Column<BachelorThesis, ?>> THESES_TABLE_COLUMNS = List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP,
 			TOPIC, FIRST_REVIEWER);
+	
+	//Data
 	private Reviewer selectedReviewer;
 	private Model model;
 
+	//UI-Elements
 	private JTable thesisTable;
 	private JScrollPane thesisScrollPane;
 	private JButton addThesis;
 	private ThesesOverviewTableModel thesesTableModel;
+	private SearchField searchField;
 
 	/**
 	 * Creates a view containing a table presenting the bachelorThesis without a
@@ -64,7 +71,8 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List
-				.of(new ButtonEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.addThesis, () -> getSelectedTheses()));
+				.of(new ButtonEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.addThesis, () -> getSelectedTheses()),
+					new SearchFieldEventSource(EventId.SEARCH_THESIS, this.searchField));
 	}
 
 	private List<BachelorThesis> getSelectedTheses() {
@@ -79,6 +87,7 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 		this.thesisTable.setAutoCreateRowSorter(true);
 		this.thesisScrollPane = new JScrollPane(this.thesisTable);
 		this.addThesis = new JButton();
+		this.searchField = new SearchField();
 	}
 
 	private List<Predicate<BachelorThesis>> getThesisTableFilters() {
@@ -90,6 +99,7 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 	}
 
 	private void addUIElements() {
+		this.add(this.searchField);
 		this.add(this.thesisScrollPane);
 		this.add(this.addThesis);
 	}
@@ -102,6 +112,7 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
 		this.onPropertyChange(Reviewer.FIRST_REVIEWS,
 				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
+		this.onPropertyChange(Model.DISPLAYED_THESES, (evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
 	}
 
 	private void updateThesesList(ArrayList<BachelorThesis> updatedThesisList) {

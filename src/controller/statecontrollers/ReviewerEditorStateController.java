@@ -23,7 +23,7 @@ import view.editor.ReviewerEditorPanel;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_EDITOR}
  */
-public class ReviewerEditorStateController extends AbstractStateController {
+public class ReviewerEditorStateController extends AbstractStateController<Review> {
 
 	public ReviewerEditorStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {

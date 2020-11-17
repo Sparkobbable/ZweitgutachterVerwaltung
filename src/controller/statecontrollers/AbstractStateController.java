@@ -1,5 +1,6 @@
 package controller.statecontrollers;
 
+import controller.search.SearchFieldController;
 import model.Action;
 import model.Model;
 import model.enums.ApplicationState;
@@ -9,13 +10,14 @@ import view.View;
 /**
  * Controls the Application in a given ApplicationState
  */
-public abstract class AbstractStateController {
+public abstract class AbstractStateController<E> {
 
 	// referenced objects
 	protected View view;
 	private ApplicationStateController applicationStateController;
 	protected Model model;
-
+	protected SearchFieldController<E> searchController = new SearchFieldController<E>();
+	
 	/**
 	 * The ApplicationState that this StateController is Responsible for
 	 */

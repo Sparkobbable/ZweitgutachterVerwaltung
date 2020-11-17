@@ -3,6 +3,7 @@ package controller.statecontrollers;
 import static model.enums.EventId.SELECT;
 
 import model.Model;
+import model.data.BachelorThesis;
 import model.data.Reviewer;
 import model.enums.ApplicationState;
 import util.Log;
@@ -12,7 +13,7 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_OVERVIEW}
  */
-public class ThesesOverviewStateController extends AbstractStateController {
+public class ThesesOverviewStateController extends AbstractStateController<BachelorThesis> {
 
 	public ThesesOverviewStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {

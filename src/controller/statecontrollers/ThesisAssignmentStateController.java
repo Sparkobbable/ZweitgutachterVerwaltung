@@ -1,7 +1,10 @@
 package controller.statecontrollers;
 
 import static model.enums.EventId.ADD_THESIS_TO_REVIEWER;
+import static model.enums.EventId.SEARCH_THESIS;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -16,7 +19,7 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#THESIS_ASSIGNMENT}
  */
-public class ThesisAssignmentStateController extends AbstractStateController {
+public class ThesisAssignmentStateController extends AbstractStateController<BachelorThesis> {
 
 	public ThesisAssignmentStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {
@@ -27,6 +30,14 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(ADD_THESIS_TO_REVIEWER, (params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
+		this.registerEvent(SEARCH_THESIS, (params) -> this.onThesisSearch((String) params[0].get()));
+	}
+
+	@SuppressWarnings("unchecked")
+	private void onThesisSearch(String searchText) {
+		ArrayList<BachelorThesis> copyList = new ArrayList<BachelorThesis>(this.model.getTheses());
+		this.model.clearDisplayedThesis();
+		this.model.addDisplayedTheses((ArrayList<BachelorThesis>) searchController.handleSearch(copyList, searchText));
 	}
 
 	private void addSecondReviewThesis(List<BachelorThesis> bachelorThesesToAdd) {

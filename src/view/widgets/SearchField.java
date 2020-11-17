@@ -1,6 +1,7 @@
 package view.widgets;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
@@ -31,14 +32,13 @@ public class SearchField extends JPanel {
 		this.searchField = new JTextField();
 		this.searchButton = new JButton(getSearchIcon());
 		
-		this.setLayout(new FlowLayout());
+		this.setLayout(new GridLayout(1, 2));
 		
 		this.addUiElements();
 	}
 	
 	public void setSearchHandler(ActionListener actionListener, PropertyChangeListener propertyListener) {
 		this.searchButton.addActionListener(actionListener);
-		this.searchField.addPropertyChangeListener(propertyListener);
 	}
 
 	private void addUiElements() {
@@ -47,7 +47,7 @@ public class SearchField extends JPanel {
 	}
 
 	private ImageIcon getSearchIcon() {
-		URL resource = this.getClass().getResource("../resource/images/search.png");
+		URL resource = this.getClass().getResource("../resource/images/search3.png");
 		return new ImageIcon(resource);
 	}
 

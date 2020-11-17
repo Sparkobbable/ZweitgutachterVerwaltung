@@ -1,6 +1,7 @@
 package controller.search;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import model.data.BachelorThesis;
 import model.data.FirstReview;
@@ -18,6 +19,9 @@ public class SearchFieldController<E> {
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<?> handleSearch(ArrayList<E> searchList, String searchText) {
+		if (Objects.isNull(searchText) || searchText.isBlank()) {
+			return searchList;
+		}
 		searchText = searchText.toLowerCase();
 		Class<?> clazz = searchList.get(0).getClass();
 		if (Reviewer.class.equals(clazz)) {

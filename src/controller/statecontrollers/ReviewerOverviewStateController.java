@@ -4,6 +4,7 @@ import static model.enums.EventId.EDIT;
 import static model.enums.EventId.NEW;
 
 import model.Model;
+import model.data.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import util.Log;
@@ -13,7 +14,7 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_OVERVIEW}
  */
-public class ReviewerOverviewStateController extends AbstractStateController {
+public class ReviewerOverviewStateController extends AbstractStateController<Reviewer> {
 
 	public ReviewerOverviewStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {
