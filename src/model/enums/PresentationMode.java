@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 public enum PresentationMode {
 	TABLE("Tabelle"), PIECHART("Tortendiagramm");
 	
+	
 	private String label;
 	
 	private PresentationMode(String label) {

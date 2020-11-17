@@ -16,6 +16,7 @@ import model.data.BachelorThesis;
 import model.data.FirstReview;
 import model.data.Reviewer;
 import model.data.SecondReview;
+import model.enums.ReviewStatus;
 import model.enums.ReviewType;
 
 public class ObjectMapper {
@@ -49,10 +50,11 @@ public class ObjectMapper {
 			BachelorThesis newThesis = new BachelorThesis(jThesis.getString("topic"), author, firstReviewer);
 			try {
 				this.model.findReviewerByName(jThesis.getString("secondReviewer")).ifPresent(secondReviewer -> newThesis.setSecondReviewer(secondReviewer));
-				this.model.addThesis(newThesis);
+				newThesis.getSecondReview().ifPresent(review -> review.setStatus(ReviewStatus.valueOf(jThesis.getString("secondReviewStatus"))));
 			} catch(NullPointerException e) {
 				
 			}
+			this.model.addThesis(newThesis);
 		}
 		
 	}

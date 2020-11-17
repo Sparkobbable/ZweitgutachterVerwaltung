@@ -1,6 +1,9 @@
 package view.collaboration;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -8,38 +11,65 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
 import model.EventSource;
+import model.Model;
+import model.PropertyChangeManager;
+import model.data.BachelorThesis;
+import model.data.Review;
+import model.data.Reviewer;
 import view.panelstructure.DefaultViewPanel;
 
 public class PieChart extends DefaultViewPanel{
 
-	private DefaultPieDataset dataset;
+	private Model model;
+	
+	private Optional<DefaultPieDataset> dataset;
 	private JFreeChart chart;
 	private ChartPanel panel;
 	
-	public PieChart() {
+	private PropertyChangeManager propertyChangeManager;
+	
+	public PieChart(Model model) {
 		super("");
-		this.dataset = new DefaultPieDataset();
+		this.model = model;
+		this.dataset = Optional.empty();
+		this.propertyChangeManager = new PropertyChangeManager();
 		
-		this.createDataset();
+		this.initializePropertyChangeHandlers();
 		this.createUIElements();
+		this.observe(this.model);
 	}
 	
 	private void createDataset() {
-		this.dataset.setValue( "IPhone 5s" , new Double( 20 ) );  
-	    this.dataset.setValue( "SamSung Grand" , new Double( 20 ) );   
-	    this.dataset.setValue( "MotoG" , new Double( 40 ) );    
-	    this.dataset.setValue( "Nokia Lumia" , new Double( 10 ) );  
+		this.dataset = Optional.of(new DefaultPieDataset());
+		HashMap<Reviewer, Double> reviewers = this.model.getCollaboratingReviewers();
+		for(Entry<Reviewer, Double>reviewer : reviewers.entrySet()) {
+			System.out.println("View PieChart");
+			this.dataset.get().setValue(reviewer.getKey().getName(), reviewer.getValue());
+		} 
+		createUIElements();
 	}
 	
 	private void createUIElements() {
-		this.chart = ChartFactory.createPieChart("Zusammenarbeit mit Gutachtern", this.dataset, true, true, false);
-		this.panel = new ChartPanel(chart);
-		this.add(this.panel);
+		if(this.dataset.isPresent()) {
+			this.chart = ChartFactory.createPieChart("Zusammenarbeit mit Gutachtern", this.dataset.get(), true, true, false);
+			this.panel = new ChartPanel(chart);
+			this.add(this.panel);
+		}
 	}
 
 	@Override
 	protected List<EventSource> getEventSources() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Defines the methods that should be called when an observed property is
+	 * changed
+	 */
+	@SuppressWarnings("unchecked")
+	private void initializePropertyChangeHandlers() {
+		this.propertyChangeManager.onPropertyChange(Model.COLLABORATING_REVIEWERS, 
+				(evt) -> createDataset());
 	}
 }

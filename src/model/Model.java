@@ -6,6 +6,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	public static final String DISPLAYED_THESES = "displayedTheses";
 	public static final String APPLICATION_STATE = "applicationState";
 	public static final String SELECTED_REVIEWER = "selectedReviewer";
+	public static final String COLLABORATING_REVIEWERS = "collaboratingReviewers";
 	public static final String REVIEWERS = "reviewers";
 	public static final String THESES = "theses";
 
@@ -33,6 +35,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	private List<BachelorThesis> theses;
 	private List<BachelorThesis> displayedTheses;
 	private List<Reviewer> reviewers;
+	private HashMap<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
 
@@ -57,6 +60,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.propertyChangeManager = new PropertyChangeManager();
 		this.selectedReviewer = Optional.empty();
+		this.collaboratingReviewers = new HashMap<Reviewer, Double>();
 		this.theses = new ArrayList<>();
 		this.displayedTheses = new ArrayList<>();
 		this.reviewers = new ArrayList<>();
@@ -118,6 +122,26 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 */
 	public void setSelectedReviewer(int reviewerIndex) {
 		this.setSelectedReviewer(this.reviewers.get(reviewerIndex));
+	}
+	
+	/**
+	 * Set the collaborating Reviewers for the selected Reviewer and notify any observers
+	 * 
+	 * @param list
+	 */
+	public void setCollaboratingReviewers(HashMap<Reviewer, Double> list) {
+		HashMap<Reviewer, Double> old = this.collaboratingReviewers;
+		this.collaboratingReviewers = list;
+		this.propertyChangeSupport.firePropertyChange(COLLABORATING_REVIEWERS, old, this.collaboratingReviewers);
+	}
+	
+	/**
+	 * Return a list of all collaborating Reviewers for the selected Reviewer
+	 * 
+	 * @return List<Reviewer>
+	 */
+	public HashMap<Reviewer, Double> getCollaboratingReviewers() {
+		return this.collaboratingReviewers;
 	}
 
 	/**

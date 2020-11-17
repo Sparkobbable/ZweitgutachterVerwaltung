@@ -26,7 +26,6 @@ public class CollaborationPanel extends DefaultViewPanel {
 	public CollaborationPanel(Model model) {
 		super("Zusammenarbeit anzeigen");
 		this.model = model;
-		this.selectedPresentationMode = PresentationMode.TABLE;
 
 		this.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
@@ -41,7 +40,7 @@ public class CollaborationPanel extends DefaultViewPanel {
 
 	private void createUIElements() {
 		this.options = new CollaborationOptionsPanel(this.model);
-		this.chart = new PieChart();
+		this.chart = new PieChart(this.model);
 	}
 
 	private void addUIElements() {
