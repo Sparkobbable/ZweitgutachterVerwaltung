@@ -1,6 +1,8 @@
 package view.editor;
 
 import static view.tableModels.ThesesOverviewTableModel.*;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -57,8 +59,8 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 		this.model = model;
 		this.observe(model);
 
-		this.setBackground(Color.DARK_GRAY); // TODO only for component identification, remove before launch
-		this.setLayout(new GridLayout(4, 1));
+		this.setBackground(Color.GRAY); // TODO only for component identification, remove before launch
+		this.setLayout(new BorderLayout(10,10));
 
 		this.createUIElements();
 		this.addUIElements();
@@ -100,9 +102,9 @@ public class ThesisAssignmentPanel extends DefaultViewPanel {
 	}
 
 	private void addUIElements() {
-		this.add(this.searchField);
-		this.add(this.thesisScrollPane);
-		this.add(this.addThesis);
+		this.add(this.searchField, BorderLayout.PAGE_START);
+		this.add(this.thesisScrollPane, BorderLayout.CENTER);
+		this.add(this.addThesis, BorderLayout.PAGE_END);
 	}
 
 	@SuppressWarnings("unchecked")

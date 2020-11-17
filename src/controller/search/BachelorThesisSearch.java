@@ -11,7 +11,8 @@ public class BachelorThesisSearch extends AbstractSearch<BachelorThesis> {
 	@Override
 	protected ArrayList<BachelorThesis> search(ArrayList<BachelorThesis> searchList, String searchText) {
 		List<BachelorThesis> collect = searchList.stream().filter(thesis -> (thesis.getTopic().toLowerCase().contains(searchText))
-				|| (thesis.getAuthor().getName().toLowerCase().contains(searchText))).collect(Collectors.toList());
+				|| (thesis.getAuthor().getName().toLowerCase().contains(searchText))
+				|| (thesis.getFirstReview().getReviewer().getName().toLowerCase().contains(searchText))).collect(Collectors.toList());
 		searchList.clear();
 		searchList.addAll(collect);
 		return searchList;

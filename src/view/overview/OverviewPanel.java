@@ -32,7 +32,7 @@ public abstract class OverviewPanel<T> extends DefaultViewPanel {
 	public OverviewPanel(Model model, String title) {
 		super(title);
 		this.model = model;
-		this.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout(10,10));
 
 	}
 
