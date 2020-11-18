@@ -227,7 +227,7 @@ public class Reviewer implements ChangeableProperties {
 	private void deleteSecondReview(SecondReview review) {
 		ArrayList<SecondReview> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.remove(review);
-		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEWS, old, this.secondReviews);
+		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
 	}
 
 	private void updateOppucation() {
@@ -247,6 +247,17 @@ public class Reviewer implements ChangeableProperties {
 	 */
 	public boolean reviewsThesis(BachelorThesis thesis) {
 		return this.getAllReviews().stream().map(Review::getBachelorThesis).anyMatch(t -> t == thesis);
+	}
+
+	/**
+	 * 
+	 * @param bachelorThesis
+	 * @param reviewType
+	 */
+	public void removeSecondReviewBachelorThesis(BachelorThesis bachelorThesis) {
+		this.getSecondReviews().stream().filter(r -> r.getBachelorThesis() == bachelorThesis).findAny()
+				.ifPresent(this::deleteReview);
+
 	}
 
 }

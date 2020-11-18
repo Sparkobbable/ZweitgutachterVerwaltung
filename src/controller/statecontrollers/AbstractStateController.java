@@ -1,5 +1,6 @@
 package controller.statecontrollers;
 
+import controller.UndoRedo.CommandExecutionController;
 import model.Action;
 import model.Model;
 import model.enums.ApplicationState;
@@ -15,7 +16,8 @@ public abstract class AbstractStateController {
 	protected View view;
 	private ApplicationStateController applicationStateController;
 	protected Model model;
-
+	protected CommandExecutionController commandExecutionController;
+	
 	/**
 	 * The ApplicationState that this StateController is Responsible for
 	 */
@@ -35,6 +37,7 @@ public abstract class AbstractStateController {
 		this.view = view;
 		this.applicationStateController = applicationStateController;
 		this.model = model;
+		this.commandExecutionController = applicationStateController.getCommandExecutionController();
 
 		this.registerEvents();
 	}

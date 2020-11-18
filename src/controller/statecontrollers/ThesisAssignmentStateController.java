@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import javax.swing.JOptionPane;
 
+import controller.UndoRedo.AddBachelorThesisCommand;
 import model.Model;
 import model.data.BachelorThesis;
 import model.data.Reviewer;
@@ -35,7 +36,8 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(ADD_THESIS_TO_REVIEWER, (params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
+		this.registerEvent(ADD_THESIS_TO_REVIEWER,
+				(params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
 	}
 
 	private void addSecondReviewThesis(List<BachelorThesis> bachelorThesesToAdd) {
@@ -49,7 +51,8 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 			return;
 
 		}
-		bachelorThesesToAdd.forEach(bachelorThesis -> reviewer.addBachelorThesis(bachelorThesis, ReviewType.SECOND_REVIEW));
+		bachelorThesesToAdd.forEach(bachelorThesis -> this.commandExecutionController
+				.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis)));
 		switchToLastVisitedState();
 	}
 }

@@ -90,9 +90,9 @@ public class BachelorThesis implements ChangeableProperties {
 	 */
 	void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
 		Optional<SecondReview> old = this.secondReview;
-		this.secondReview = Optional.of(secondReview);
+		this.secondReview = Optional.ofNullable(secondReview);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);
-		if (cascadeMode == CascadeMode.CASCADE) {
+		if (cascadeMode == CascadeMode.CASCADE && this.secondReview.isPresent()) {
 			secondReview.getReviewer().addSecondReviewerReview(secondReview, CascadeMode.STOP);
 		}
 	}
@@ -117,6 +117,10 @@ public class BachelorThesis implements ChangeableProperties {
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		this.propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	public void setSecondReview(Optional<SecondReview> review) {
+		this.setSecondReview(review.orElse(null), CascadeMode.CASCADE);
 	}
 
 }
