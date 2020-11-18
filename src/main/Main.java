@@ -5,9 +5,9 @@ import java.util.List;
 
 import controller.Controller;
 import model.Model;
-import model.data.Author;
-import model.data.BachelorThesis;
-import model.data.Reviewer;
+import model.domain.Author;
+import model.domain.BachelorThesis;
+import model.domain.Reviewer;
 import view.View;
 
 public class Main {

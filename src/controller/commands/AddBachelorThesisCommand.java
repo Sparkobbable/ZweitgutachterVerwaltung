@@ -2,9 +2,9 @@ package controller.commands;
 
 import java.util.Optional;
 
-import model.data.BachelorThesis;
-import model.data.Reviewer;
-import model.data.SecondReview;
+import model.domain.BachelorThesis;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.ReviewType;
 
 public class AddBachelorThesisCommand implements Command {

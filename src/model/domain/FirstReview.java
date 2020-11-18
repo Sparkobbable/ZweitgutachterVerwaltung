@@ -1,4 +1,4 @@
-package model.data;
+package model.domain;
 
 import model.enums.ReviewType;
 

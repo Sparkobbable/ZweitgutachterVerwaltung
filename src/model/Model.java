@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import model.data.Author;
-import model.data.BachelorThesis;
-import model.data.Review;
-import model.data.Reviewer;
+import controller.propertychangelistener.ChangeableProperties;
+import controller.propertychangelistener.PropertyChangeManager;
+import model.domain.Author;
+import model.domain.BachelorThesis;
+import model.domain.Review;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 
 /**

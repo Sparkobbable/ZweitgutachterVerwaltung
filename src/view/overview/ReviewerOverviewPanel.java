@@ -2,9 +2,9 @@ package view.overview;
 
 import java.util.List;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.SearchFieldEventSource;
 import view.tableModels.AbstractDataTableModel;

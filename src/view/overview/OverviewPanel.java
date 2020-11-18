@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
 import model.enums.EventId;
 import view.eventsources.TableClickEventSource;

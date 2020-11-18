@@ -1,4 +1,4 @@
-package model;
+package controller.propertychangelistener;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

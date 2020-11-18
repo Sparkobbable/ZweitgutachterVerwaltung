@@ -5,9 +5,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.enums.EventId;
-
 import view.eventsources.ButtonEventSource;
 
 public class ImportfirstrewierButtonPanel extends AbstractView {

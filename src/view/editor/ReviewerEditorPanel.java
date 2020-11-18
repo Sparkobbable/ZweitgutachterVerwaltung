@@ -12,11 +12,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
-import model.data.Review;
-import model.data.Reviewer;
-import model.data.SecondReview;
+import model.domain.Review;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.panelstructure.DefaultPanel;

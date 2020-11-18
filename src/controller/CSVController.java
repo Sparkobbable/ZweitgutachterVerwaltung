@@ -13,10 +13,10 @@ import javax.json.JsonStructure;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 
-import model.data.Author;
-import model.data.BachelorThesis;
-import model.data.Review;
-import model.data.Reviewer;
+import model.domain.Author;
+import model.domain.BachelorThesis;
+import model.domain.Review;
+import model.domain.Reviewer;
 import model.enums.ReviewStatus;
 
 public class CSVController {

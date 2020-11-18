@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.data.SecondReview;
+import model.domain.SecondReview;
 import model.enums.ReviewStatus;
 
 public class ReviewTypeChangeCommand implements Command {

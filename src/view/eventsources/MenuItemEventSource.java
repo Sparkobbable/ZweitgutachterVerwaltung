@@ -2,7 +2,8 @@ package view.eventsources;
 
 import javax.swing.JMenuItem;
 
-import model.Action;
+import controller.events.Action;
+import controller.events.SingleEventSource;
 import model.enums.EventId;
 
 public class MenuItemEventSource extends SingleEventSource {

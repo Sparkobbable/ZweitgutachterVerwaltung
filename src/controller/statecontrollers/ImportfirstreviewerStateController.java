@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import controller.CSVController;
 import controller.JSONController;
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import view.View;

@@ -3,9 +3,9 @@ package view;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 
-import model.Action;
-import model.EventSource;
-import model.data.CompositeEventSource;
+import controller.events.Action;
+import controller.events.CompositeEventSource;
+import controller.events.EventSource;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 

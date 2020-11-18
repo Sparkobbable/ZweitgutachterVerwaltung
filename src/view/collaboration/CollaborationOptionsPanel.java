@@ -7,9 +7,9 @@ import java.util.Optional;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 import model.enums.EventId;
 import view.panelstructure.AbstractViewPanel;
 import view.panelstructure.DefaultPanel;

@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
 import model.enums.PresentationMode;
 import view.ViewState;

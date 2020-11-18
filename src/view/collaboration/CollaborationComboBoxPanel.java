@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.enums.EventId;
 import view.eventsources.ComboBoxEventSource;
 import view.panelstructure.DefaultPanel;

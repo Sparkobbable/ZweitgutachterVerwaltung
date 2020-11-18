@@ -4,7 +4,8 @@ import java.util.function.Supplier;
 
 import javax.swing.JButton;
 
-import model.Action;
+import controller.events.Action;
+import controller.events.SingleEventSource;
 import model.enums.EventId;
 
 /**

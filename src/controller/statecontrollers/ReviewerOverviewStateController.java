@@ -9,7 +9,7 @@ import static model.enums.EventId.SEARCH_OVERVIEW_REVIEWER;
 import static model.enums.EventId.NEW;
 
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import util.Log;
 import view.View;

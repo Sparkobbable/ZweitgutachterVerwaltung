@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 

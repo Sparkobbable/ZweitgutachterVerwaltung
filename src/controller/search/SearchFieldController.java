@@ -3,11 +3,11 @@ package controller.search;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import model.data.BachelorThesis;
-import model.data.FirstReview;
-import model.data.Review;
-import model.data.Reviewer;
-import model.data.SecondReview;
+import model.domain.BachelorThesis;
+import model.domain.FirstReview;
+import model.domain.Review;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
 import util.Log;
 
 public class SearchFieldController<E> {

@@ -1,8 +1,8 @@
 package controller.statecontrollers;
 
 import controller.commands.CommandInvoker;
+import controller.events.Action;
 import controller.search.SearchFieldController;
-import model.Action;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;

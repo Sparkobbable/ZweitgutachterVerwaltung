@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 
 import controller.commands.ReviewTypeChangeCommand;
 import model.Model;
-import model.data.Review;
-import model.data.Reviewer;
-import model.data.SecondReview;
+import model.domain.Review;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;
 import model.enums.ReviewType;

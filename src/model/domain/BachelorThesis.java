@@ -1,10 +1,10 @@
-package model.data;
+package model.domain;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Optional;
 
-import model.ChangeableProperties;
+import controller.propertychangelistener.ChangeableProperties;
 import model.enums.CascadeMode;
 
 /**

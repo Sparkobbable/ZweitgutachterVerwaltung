@@ -16,7 +16,7 @@ import javax.json.JsonWriter;
 import java.util.List;
 
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 
 
 public class JSONController {

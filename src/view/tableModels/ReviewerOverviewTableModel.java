@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 
 public class ReviewerOverviewTableModel extends AbstractDataTableModel<Reviewer> {
 

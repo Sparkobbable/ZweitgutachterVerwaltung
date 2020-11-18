@@ -3,9 +3,9 @@ package view.overview;
 import java.awt.BorderLayout;
 import java.util.List;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
-import model.data.BachelorThesis;
+import model.domain.BachelorThesis;
 import model.enums.EventId;
 import view.eventsources.SearchFieldEventSource;
 import view.tableModels.AbstractDataTableModel;

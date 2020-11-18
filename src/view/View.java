@@ -3,11 +3,11 @@ package view;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.Action;
-import model.EventSource;
+import controller.events.Action;
+import controller.events.CompositeEventSource;
+import controller.events.EventSource;
+import controller.propertychangelistener.PropertyChangeManager;
 import model.Model;
-import model.PropertyChangeManager;
-import model.data.CompositeEventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import view.collaboration.CollaborationPanel;

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 
 import model.Model;
-import model.data.BachelorThesis;
-import model.data.Reviewer;
+import model.domain.BachelorThesis;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import util.Log;
 import view.View;

@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import model.EventSource;
+import controller.events.EventSource;
 import view.MainWindow;
 import view.ViewState;
 

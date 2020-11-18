@@ -11,11 +11,11 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 import model.Model;
-import model.data.Author;
-import model.data.BachelorThesis;
-import model.data.FirstReview;
-import model.data.Reviewer;
-import model.data.SecondReview;
+import model.domain.Author;
+import model.domain.BachelorThesis;
+import model.domain.FirstReview;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.ReviewStatus;
 import model.enums.ReviewType;
 

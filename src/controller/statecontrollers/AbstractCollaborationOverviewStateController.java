@@ -3,7 +3,7 @@ package controller.statecontrollers;
 import java.util.ArrayList;
 
 import model.Model;
-import model.data.Reviewer;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.ReviewType;
 import view.View;

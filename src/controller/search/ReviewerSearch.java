@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import model.data.Reviewer;
+import model.domain.Reviewer;
 
 public class ReviewerSearch extends AbstractSearch<Reviewer> {
 

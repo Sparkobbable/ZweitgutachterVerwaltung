@@ -3,7 +3,7 @@ package view.panelstructure;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 
-import model.Action;
+import controller.events.Action;
 import model.enums.EventId;
 import view.ViewState;
 

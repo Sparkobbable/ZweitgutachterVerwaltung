@@ -17,10 +17,10 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.Model;
-import model.data.BachelorThesis;
-import model.data.Reviewer;
+import model.domain.BachelorThesis;
+import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.eventsources.SearchFieldEventSource;

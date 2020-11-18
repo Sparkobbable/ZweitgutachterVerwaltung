@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import model.Model;
-import model.data.BachelorThesis;
-import model.data.Review;
-import model.data.Reviewer;
+import model.domain.BachelorThesis;
+import model.domain.Review;
+import model.domain.Reviewer;
 
 public class ThesesOverviewTableModel extends AbstractDataTableModel<BachelorThesis> {
 

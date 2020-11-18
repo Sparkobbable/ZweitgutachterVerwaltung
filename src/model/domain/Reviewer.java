@@ -1,4 +1,4 @@
-package model.data;
+package model.domain;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import model.ChangeableProperties;
+import controller.propertychangelistener.ChangeableProperties;
 import model.enums.CascadeMode;
 import model.enums.ReviewType;
 

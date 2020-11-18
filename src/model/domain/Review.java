@@ -1,9 +1,9 @@
-package model.data;
+package model.domain;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import model.ChangeableProperties;
+import controller.propertychangelistener.ChangeableProperties;
 import model.enums.ReviewType;
 
 public abstract class Review implements ChangeableProperties {

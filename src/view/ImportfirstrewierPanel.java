@@ -8,9 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import model.EventSource;
+import controller.events.EventSource;
 import model.enums.EventId;
-
 import view.eventsources.ButtonEventSource;
 
 import view.eventsources.ChooserEventSource;

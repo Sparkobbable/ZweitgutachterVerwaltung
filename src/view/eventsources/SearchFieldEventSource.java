@@ -1,6 +1,7 @@
 package view.eventsources;
 
-import model.Action;
+import controller.events.Action;
+import controller.events.SingleEventSource;
 import model.enums.EventId;
 import view.widgets.SearchField;
 

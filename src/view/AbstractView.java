@@ -13,11 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import model.Action;
-import model.ChangeableProperties;
-import model.EventSource;
-import model.PropertyChangeManager;
-import model.data.CompositeEventSource;
+import controller.events.Action;
+import controller.events.CompositeEventSource;
+import controller.events.EventSource;
+import controller.propertychangelistener.ChangeableProperties;
+import controller.propertychangelistener.PropertyChangeManager;
 import model.enums.EventId;
 
 /**

@@ -1,4 +1,4 @@
-package model;
+package controller.events;
 
 import java.util.function.Supplier;
 

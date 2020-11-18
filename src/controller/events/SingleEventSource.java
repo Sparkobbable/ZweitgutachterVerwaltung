@@ -1,9 +1,7 @@
-package view.eventsources;
+package controller.events;
 
 import java.util.function.Supplier;
 
-import model.Action;
-import model.EventSource;
 import model.enums.EventId;
 
 /**

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import model.data.BachelorThesis;
+import model.domain.BachelorThesis;
 
 public class BachelorThesisSearch extends AbstractSearch<BachelorThesis> {
 

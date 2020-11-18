@@ -1,10 +1,8 @@
-package model.data;
+package controller.events;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-import model.Action;
-import model.EventSource;
 import model.enums.EventId;
 
 public class CompositeEventSource implements EventSource {

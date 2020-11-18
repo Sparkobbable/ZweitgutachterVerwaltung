@@ -10,12 +10,12 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
-import model.EventSource;
+import controller.events.EventSource;
+import controller.propertychangelistener.PropertyChangeManager;
 import model.Model;
-import model.PropertyChangeManager;
-import model.data.BachelorThesis;
-import model.data.Review;
-import model.data.Reviewer;
+import model.domain.BachelorThesis;
+import model.domain.Review;
+import model.domain.Reviewer;
 import view.panelstructure.DefaultPanel;
 
 public class PieChart extends DefaultPanel{

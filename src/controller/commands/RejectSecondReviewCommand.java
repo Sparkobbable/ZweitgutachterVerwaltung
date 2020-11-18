@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.data.Review;
+import model.domain.Review;
 
 public class RejectSecondReviewCommand implements Command {
 

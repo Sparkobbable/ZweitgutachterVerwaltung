@@ -10,8 +10,8 @@ import javax.swing.JOptionPane;
 
 import controller.commands.AddBachelorThesisCommand;
 import model.Model;
-import model.data.BachelorThesis;
-import model.data.Reviewer;
+import model.domain.BachelorThesis;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.ReviewType;
 import view.View;

@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import model.data.Review;
-import model.data.Reviewer;
-import model.data.SecondReview;
+import model.domain.Review;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.ReviewType;
 
 public class SupervisedThesisTableModel extends AbstractDataTableModel<Review> {
