@@ -25,6 +25,8 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 		designButton(this.back);
 		designButton(this.undo);
 		designButton(this.redo);
+		undo.setEnabled(false);
+		redo.setEnabled(false);
 		this.add(back);
 		this.add(undo);
 		this.add(redo);
