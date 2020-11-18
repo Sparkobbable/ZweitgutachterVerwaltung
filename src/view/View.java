@@ -133,4 +133,14 @@ public class View implements EventSource {
 		this.viewsByApplicationStates.get(state).addEventHandler(eventId, action);
 		;
 	}
+
+	public void setUndoable(boolean b) {
+		this.menuHandler.setUndoable(b);
+	}
+
+	public void setRedoable(boolean b) {
+		this.menuHandler.setRedoable(b);
+		// TODO Auto-generated method stub
+
+	}
 }

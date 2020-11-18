@@ -14,22 +14,35 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	private static final long serialVersionUID = 1L;
 	private CompositeEventSource eventSourceHandler;
 	private JButton back;
+	private JButton undo;
+	private JButton redo;
 
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
 		this.back = new JButton("Zurück");
-		this.back.setOpaque(true);
-		this.back.setContentAreaFilled(false);
-		this.back.setBorderPainted(false);
-		this.back.setFocusable(false);
+		this.undo = new JButton("Rückgängig");
+		this.redo = new JButton("Wiederherstellen");
+		designButton(this.back);
+		designButton(this.undo);
+		designButton(this.redo);
 		this.add(back);
+		this.add(undo);
+		this.add(redo);
 
 		this.registerEventSources();
 	}
 
+	private void designButton(JButton button) {
+		button.setOpaque(true);
+		button.setContentAreaFilled(false);
+		button.setBorderPainted(false);
+		button.setFocusable(false);
+	}
+
 	protected void registerEventSources() {
 		this.eventSourceHandler.register(new ButtonEventSource(EventId.BACK, back));
-
+		this.eventSourceHandler.register(new ButtonEventSource(EventId.UNDO, undo));
+		this.eventSourceHandler.register(new ButtonEventSource(EventId.REDO, redo));
 	}
 
 	/*
@@ -46,5 +59,13 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	@Override
 	public boolean canOmit(EventId eventId) {
 		return this.eventSourceHandler.canOmit(eventId);
+	}
+
+	public void setUndoable(boolean b) {
+		this.undo.setEnabled(b);
+	}
+
+	public void setRedoable(boolean b) {
+		this.redo.setEnabled(b);
 	}
 }

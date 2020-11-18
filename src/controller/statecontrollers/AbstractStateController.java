@@ -1,5 +1,6 @@
 package controller.statecontrollers;
 
+import controller.UndoRedo.CommandExecutionController;
 import controller.search.SearchFieldController;
 import model.Action;
 import model.Model;
@@ -16,8 +17,11 @@ public abstract class AbstractStateController<E> {
 	protected View view;
 	private ApplicationStateController applicationStateController;
 	protected Model model;
+
 	protected SearchFieldController<E> searchController = new SearchFieldController<E>();
-	
+
+	protected CommandExecutionController commandExecutionController;
+
 	/**
 	 * The ApplicationState that this StateController is Responsible for
 	 */
@@ -37,6 +41,7 @@ public abstract class AbstractStateController<E> {
 		this.view = view;
 		this.applicationStateController = applicationStateController;
 		this.model = model;
+		this.commandExecutionController = applicationStateController.getCommandExecutionController();
 
 		this.registerEvents();
 	}

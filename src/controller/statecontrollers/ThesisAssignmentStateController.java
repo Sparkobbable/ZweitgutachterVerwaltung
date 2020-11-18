@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.swing.JOptionPane;
 
+import controller.UndoRedo.AddBachelorThesisCommand;
 import model.Model;
 import model.data.BachelorThesis;
 import model.data.Reviewer;
@@ -29,7 +30,8 @@ public class ThesisAssignmentStateController extends AbstractStateController<Bac
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(ADD_THESIS_TO_REVIEWER, (params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
+		this.registerEvent(ADD_THESIS_TO_REVIEWER,
+				(params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
 		this.registerEvent(SEARCH_THESIS, (params) -> this.onThesisSearch((String) params[0].get()));
 	}
 
@@ -38,6 +40,8 @@ public class ThesisAssignmentStateController extends AbstractStateController<Bac
 		ArrayList<BachelorThesis> copyList = new ArrayList<BachelorThesis>(this.model.getTheses());
 		this.model.clearDisplayedTheses();
 		this.model.addDisplayedTheses((ArrayList<BachelorThesis>) searchController.handleSearch(copyList, searchText));
+		this.registerEvent(ADD_THESIS_TO_REVIEWER,
+				(params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
 	}
 
 	private void addSecondReviewThesis(List<BachelorThesis> bachelorThesesToAdd) {
@@ -51,7 +55,8 @@ public class ThesisAssignmentStateController extends AbstractStateController<Bac
 			return;
 
 		}
-		bachelorThesesToAdd.forEach(bachelorThesis -> reviewer.addBachelorThesis(bachelorThesis, ReviewType.SECOND_REVIEW));
+		bachelorThesesToAdd.forEach(bachelorThesis -> this.commandExecutionController
+				.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis)));
 		switchToLastVisitedState();
 	}
 }

@@ -45,9 +45,11 @@ public class ReviewerEditorStateController extends AbstractStateController<Revie
 			throw new IllegalStateException("Selected reviewer must not be empty");
 		}
 		reviews.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
-				.map(review -> (SecondReview) review).forEach(SecondReview::approve);
+				.map(review -> (SecondReview) review).forEach(this::approve);
 	}
-
+private void approve(SecondReview review) {
+	
+}
 	private void deleteThesis(Collection<Review> reviews) {
 		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.deleteReviews(reviews));
 	}

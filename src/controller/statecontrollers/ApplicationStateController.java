@@ -3,6 +3,8 @@ package controller.statecontrollers;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
+
+import controller.UndoRedo.CommandExecutionController;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -28,11 +30,13 @@ public class ApplicationStateController {
 	 * Navigation stack which stores the visited ApplicationStates
 	 */
 	private Stack<ApplicationState> visitedStates;
+	private CommandExecutionController commandExecutionController;
 
 	public ApplicationStateController(Model model, View view) {
 		this.view = view;
 		this.model = model;
-		visitedStates = new Stack<>();	
+		this.commandExecutionController = new CommandExecutionController(this.view);
+		visitedStates = new Stack<>();
 		stateControllers = new HashSet<>();
 		stateControllers.add(new HomeStateController(view, this, model));
 		stateControllers.add(new ReviewerOverviewStateController(view, this, model));
@@ -63,7 +67,6 @@ public class ApplicationStateController {
 		Log.info(this.getClass().getName(), "Switched to ApplicationState: %s", applicationState.name());
 		this.model.setApplicationState(applicationState);
 
-
 		if (this.visitedStates.empty() || !this.visitedStates.peek().equals(applicationState)) {
 			this.visitedStates.push(applicationState);
 		}
@@ -86,5 +89,10 @@ public class ApplicationStateController {
 				return this.visitedStates.peek();
 			}
 		}
+	}
+
+	public CommandExecutionController getCommandExecutionController() {
+
+		return this.commandExecutionController;
 	}
 }
