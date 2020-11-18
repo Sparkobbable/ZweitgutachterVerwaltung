@@ -4,13 +4,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import controller.propertychangelistener.ChangeableProperties;
 import model.enums.CascadeMode;
-import model.enums.ReviewType;
 
 public class Reviewer implements ChangeableProperties {
 
@@ -89,7 +89,7 @@ public class Reviewer implements ChangeableProperties {
 	 * 
 	 */
 	public List<FirstReview> getFirstReviews() {
-		return this.firstReviews;
+		return Collections.unmodifiableList(this.firstReviews);
 	}
 
 	public void setName(String name) {
@@ -113,27 +113,19 @@ public class Reviewer implements ChangeableProperties {
 	public void setMaxSupervisedThesis(int maxSupervisedThesis) {
 		int old = this.maxSupervisedThesis;
 		this.maxSupervisedThesis = maxSupervisedThesis;
-		this.maxSupervisedThesis = maxSupervisedThesis;
 		this.updateOppucation();
 		this.propertyChangeSupport.firePropertyChange(MAX_SUPERVISED_THESES, old, maxSupervisedThesis);
 	}
 
 	/**
-	 * Adds a bachelorThesis to this Reviewer according to the given ReviewType.
+	 * Adds a bachelorThesis to this (Second-)Reviewer .
 	 * 
 	 * @param bachelorThesis
 	 * @param reviewType
 	 */
-	public void addBachelorThesis(BachelorThesis bachelorThesis, ReviewType reviewType) {
-		if (reviewType == ReviewType.FIRST_REVIEW) {
-			this.addFirstReviewerReview(new FirstReview(this, bachelorThesis), CascadeMode.CASCADE);
-		} else if (reviewType == ReviewType.SECOND_REVIEW) {
-			this.addSecondReviewerReview(new SecondReview(this, bachelorThesis), CascadeMode.CASCADE);
-		} else {
-			throw new IllegalArgumentException(String.format(
-					"ReviewType must be one of FIRST_REVIEW or SECOND_REVIEW, but was %s. Review cannot be added to Reviewer.",
-					reviewType));
-		}
+	//TODO remove a similar method exists already
+	public void addBachelorThesis(BachelorThesis bachelorThesis) {
+		this.addSecondReviewerReview(new SecondReview(this, bachelorThesis), CascadeMode.CASCADE);
 	}
 
 	/**
@@ -155,14 +147,11 @@ public class Reviewer implements ChangeableProperties {
 	 * @param review
 	 * @param cascadeMode
 	 */
-	void addFirstReviewerReview(FirstReview review, CascadeMode cascadeMode) {
+	void addFirstReviewerReview(FirstReview review) {
 		ArrayList<Review> old = new ArrayList<>(this.firstReviews);
 		this.firstReviews.add(review);
 		this.updateOppucation();
 		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEWS, old, this.firstReviews);
-		if (cascadeMode == CascadeMode.CASCADE) {
-			review.getBachelorThesis().setFirstReview(review, CascadeMode.STOP);
-		}
 	}
 
 	/**
@@ -183,12 +172,6 @@ public class Reviewer implements ChangeableProperties {
 		if (cascadeMode == CascadeMode.CASCADE) {
 			review.getBachelorThesis().setSecondReview(review, CascadeMode.STOP);
 		}
-	}
-
-	private void deleteFirstReview(FirstReview review) {
-		ArrayList<FirstReview> old = new ArrayList<>(this.firstReviews);
-		this.firstReviews.remove(review);
-		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEWS, old, this.firstReviews);
 	}
 
 	private void deleteSecondReview(SecondReview review) {

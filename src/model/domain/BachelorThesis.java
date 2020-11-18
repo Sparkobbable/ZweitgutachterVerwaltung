@@ -20,9 +20,10 @@ public class BachelorThesis implements ChangeableProperties {
 
 	protected final PropertyChangeSupport propertyChangeSupport;
 
-	private String topic;
-	private Author author;
-	private FirstReview firstReview;
+	private final String topic;
+	private final Author author;
+	private final FirstReview firstReview;
+	
 	private Optional<SecondReview> secondReview;
 
 	/**
@@ -38,7 +39,8 @@ public class BachelorThesis implements ChangeableProperties {
 		this.secondReview = Optional.empty();
 		this.topic = topic;
 		this.author = author;
-		this.setFirstReview(new FirstReview(firstReviewer, this), CascadeMode.CASCADE);
+		this.firstReview = new FirstReview(firstReviewer, this);
+		firstReviewer.addFirstReviewerReview(this.firstReview);
 	}
 
 	public String getTopic() {
@@ -55,19 +57,6 @@ public class BachelorThesis implements ChangeableProperties {
 
 	public Optional<SecondReview> getSecondReview() {
 		return secondReview;
-	}
-
-	public void setTopic(String topic) {
-		String old = this.topic;
-		this.topic = topic;
-		this.propertyChangeSupport.firePropertyChange(TOPIC, old, this.topic);
-
-	}
-
-	public void setAuthor(Author author) {
-		Author old = this.author;
-		this.author = author;
-		this.propertyChangeSupport.firePropertyChange(AUTHOR, old, this.author);
 	}
 
 	/**
@@ -94,23 +83,6 @@ public class BachelorThesis implements ChangeableProperties {
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);
 		if (cascadeMode == CascadeMode.CASCADE && this.secondReview.isPresent()) {
 			secondReview.getReviewer().addSecondReviewerReview(secondReview, CascadeMode.STOP);
-		}
-	}
-
-	/**
-	 * Sets the secondReview. If the {@link CascadeMode} is set to CASCADE, the
-	 * thesis is added to the reviewer referenced in the given review. Notifies
-	 * observers.
-	 * 
-	 * @param review
-	 * @param cascadeMode
-	 */
-	void setFirstReview(FirstReview review, CascadeMode cascadeMode) {
-		FirstReview old = this.firstReview;
-		this.firstReview = review;
-		this.propertyChangeSupport.firePropertyChange(FIRST_REVIEW, old, this.firstReview);
-		if (cascadeMode == CascadeMode.CASCADE) {
-			review.getReviewer().addFirstReviewerReview(review, CascadeMode.STOP);
 		}
 	}
 

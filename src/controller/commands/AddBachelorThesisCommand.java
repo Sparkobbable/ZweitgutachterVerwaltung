@@ -5,7 +5,6 @@ import java.util.Optional;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
-import model.enums.ReviewType;
 
 public class AddBachelorThesisCommand implements Command {
 
@@ -22,7 +21,7 @@ public class AddBachelorThesisCommand implements Command {
 
 	@Override
 	public void execute() {
-		reviewer.addBachelorThesis(bachelorThesis, ReviewType.SECOND_REVIEW);
+		reviewer.addBachelorThesis(bachelorThesis);
 	}
 
 	@Override
