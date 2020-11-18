@@ -16,9 +16,9 @@ import model.PropertyChangeManager;
 import model.data.BachelorThesis;
 import model.data.Review;
 import model.data.Reviewer;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 
-public class PieChart extends DefaultViewPanel{
+public class PieChart extends DefaultPanel{
 
 	private Model model;
 	

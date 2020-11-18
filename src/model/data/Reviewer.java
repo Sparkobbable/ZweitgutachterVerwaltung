@@ -137,45 +137,12 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * Deletes a collection of reviews.
+	 * Deletes a collection of SecondReviews.
 	 * 
 	 * @param reviews
 	 */
-	public void deleteReviews(Collection<Review> reviews) {
-		reviews.forEach(this::deleteReview);
-	}
-
-	/**
-	 * Delete a review from this reviewer.
-	 * 
-	 * @param review
-	 */
-	public void deleteReview(Review review) {
-		if (review.getReviewType() == ReviewType.FIRST_REVIEW) {
-			this.deleteFirstReview((FirstReview) review);
-		} else if (review.getReviewType() == ReviewType.SECOND_REVIEW) {
-			this.deleteSecondReview((SecondReview) review);
-		}
-	}
-
-	/**
-	 * Add a Review to this Reviewer. If the given {@link CascadeMode} is set to
-	 * CASCADE, also adds the review to the BachelorThesis referenced within the
-	 * Review.
-	 * 
-	 * @param review
-	 * @param cascadeMode
-	 */
-	void addReview(Review review, CascadeMode cascadeMode) {
-		if (review.getReviewType() == ReviewType.FIRST_REVIEW) {
-			this.addFirstReviewerReview((FirstReview) review, cascadeMode);
-		} else if (review.getReviewType() == ReviewType.SECOND_REVIEW) {
-			this.addSecondReviewerReview((SecondReview) review, cascadeMode);
-		} else {
-			throw new IllegalArgumentException(String.format(
-					"ReviewType must be one of FIRST_REVIEW or SECOND_REVIEW, but was %s. Review cannot be added to Reviewer.",
-					review.getReviewType()));
-		}
+	public void deleteSecondReviews(Collection<SecondReview> reviews) {
+		reviews.forEach(this::deleteSecondReview);
 	}
 
 	/**
@@ -266,7 +233,7 @@ public class Reviewer implements ChangeableProperties {
 	 */
 	public void removeSecondReviewBachelorThesis(BachelorThesis bachelorThesis) {
 		this.getSecondReviews().stream().filter(r -> r.getBachelorThesis() == bachelorThesis).findAny()
-				.ifPresent(this::deleteReview);
+				.ifPresent(this::deleteSecondReview);
 
 	}
 

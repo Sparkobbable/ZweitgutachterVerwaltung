@@ -19,10 +19,10 @@ import model.data.Reviewer;
 import model.data.SecondReview;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
-public class ReviewerEditorPanel extends DefaultViewPanel {
+public class ReviewerEditorPanel extends DefaultPanel {
 	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> selectedReviewer;
 	private Optional<Reviewer> originalReviewer;

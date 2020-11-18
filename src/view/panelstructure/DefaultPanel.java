@@ -25,7 +25,7 @@ import view.MainWindow;
  *
  */
 @SuppressWarnings("serial")
-public abstract class DefaultViewPanel extends AbstractViewPanel {
+public abstract class DefaultPanel extends AbstractViewPanel {
 
 	protected static final Border UNTITLED_BORDER = BorderFactory.createEtchedBorder();
 
@@ -42,7 +42,7 @@ public abstract class DefaultViewPanel extends AbstractViewPanel {
 	 * 
 	 * @param title Title of this view that will be shown on the UI
 	 */
-	public DefaultViewPanel(String title) {
+	public DefaultPanel(String title) {
 		super();
 		this.eventSourceHandler = new CompositeEventSource();
 		this.propertyChangeManager = new PropertyChangeManager();
@@ -68,7 +68,7 @@ public abstract class DefaultViewPanel extends AbstractViewPanel {
 
 	/**
 	 * All EventSources returned by this method will be registered in
-	 * {@link DefaultViewPanel#AbstractView(String)}
+	 * {@link DefaultPanel#AbstractView(String)}
 	 * 
 	 * @return A list of all EventSources that shall be registered
 	 */

@@ -9,9 +9,9 @@ import model.Model;
 import model.enums.PresentationMode;
 import view.ViewState;
 import view.panelstructure.AbstractViewPanel;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 
-public class CollaborationPanel extends DefaultViewPanel {
+public class CollaborationPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 

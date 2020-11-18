@@ -1,6 +1,6 @@
 package controller.statecontrollers;
 
-import controller.UndoRedo.CommandExecutionController;
+import controller.commands.CommandInvoker;
 import controller.search.SearchFieldController;
 import model.Action;
 import model.Model;
@@ -20,7 +20,7 @@ public abstract class AbstractStateController<E> {
 
 	protected SearchFieldController<E> searchController = new SearchFieldController<E>();
 
-	protected CommandExecutionController commandExecutionController;
+	protected CommandInvoker commandExecutionController;
 
 	/**
 	 * The ApplicationState that this StateController is Responsible for

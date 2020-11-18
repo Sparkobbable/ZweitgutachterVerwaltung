@@ -12,9 +12,9 @@ import model.Model;
 import model.data.Reviewer;
 import model.enums.EventId;
 import view.panelstructure.AbstractViewPanel;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 
-public class CollaborationOptionsPanel extends DefaultViewPanel {
+public class CollaborationOptionsPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 

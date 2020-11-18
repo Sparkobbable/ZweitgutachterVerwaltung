@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-import controller.UndoRedo.AddBachelorThesisCommand;
+import controller.commands.AddBachelorThesisCommand;
 import model.Model;
 import model.data.BachelorThesis;
 import model.data.Reviewer;

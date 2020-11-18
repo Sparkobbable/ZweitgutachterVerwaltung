@@ -15,10 +15,10 @@ import view.eventsources.ButtonEventSource;
 
 import view.eventsources.ChooserEventSource;
 
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 
 
-public class ImportfirstrewierPanel extends DefaultViewPanel {
+public class ImportfirstrewierPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JFileChooser chooseImport;

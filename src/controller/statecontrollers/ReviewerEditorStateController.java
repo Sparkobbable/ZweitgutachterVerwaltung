@@ -7,13 +7,16 @@ import static model.enums.EventId.SAVE_REVIEWER;
 
 import java.util.Collection;
 import java.util.Optional;
+
 import javax.swing.JOptionPane;
 
+import controller.commands.ReviewTypeChangeCommand;
 import model.Model;
 import model.data.Review;
 import model.data.Reviewer;
 import model.data.SecondReview;
 import model.enums.ApplicationState;
+import model.enums.ReviewStatus;
 import model.enums.ReviewType;
 import util.Log;
 import view.View;
@@ -36,22 +39,25 @@ public class ReviewerEditorStateController extends AbstractStateController<Revie
 		this.registerEvent(SAVE_REVIEWER,
 				(params) -> saveReviewer((Reviewer) params[0].get(), (Optional<Reviewer>) params[1].get()));
 		this.registerEvent(ADD_THESIS, (params) -> addThesis());
-		this.registerEvent(DELETE_THESIS, (params) -> deleteThesis((Collection<Review>) params[0].get()));
+		this.registerEvent(DELETE_THESIS, (params) -> deleteSecondReviews((Collection<SecondReview>) params[0].get()));
 		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));
 	}
 
 	private void approveReviews(Collection<SecondReview> reviews) {
+
 		if (this.model.getSelectedReviewer().isEmpty()) {
 			throw new IllegalStateException("Selected reviewer must not be empty");
 		}
 		reviews.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
 				.map(review -> (SecondReview) review).forEach(this::approve);
 	}
-private void approve(SecondReview review) {
-	
-}
-	private void deleteThesis(Collection<Review> reviews) {
-		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.deleteReviews(reviews));
+
+	private void approve(SecondReview review) {
+		this.commandExecutionController.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED));
+	}
+
+	private void deleteSecondReviews(Collection<SecondReview> reviews) {
+		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.deleteSecondReviews(reviews));
 	}
 
 	private void addThesis() {

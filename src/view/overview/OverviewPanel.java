@@ -12,11 +12,11 @@ import model.EventSource;
 import model.Model;
 import model.enums.EventId;
 import view.eventsources.TableClickEventSource;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.widgets.SearchField;
 
-public abstract class OverviewPanel<T> extends DefaultViewPanel {
+public abstract class OverviewPanel<T> extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 

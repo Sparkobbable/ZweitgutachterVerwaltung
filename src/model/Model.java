@@ -302,7 +302,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		List<Reviewer> old = this.reviewers;
 		this.reviewers = new ArrayList<>();
 		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
-
 	}
 
 	public void clear() {

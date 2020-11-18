@@ -10,9 +10,9 @@ import javax.swing.JLabel;
 import model.EventSource;
 import model.enums.EventId;
 import view.eventsources.ComboBoxEventSource;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 
-public class CollaborationComboBoxPanel extends DefaultViewPanel {
+public class CollaborationComboBoxPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 	

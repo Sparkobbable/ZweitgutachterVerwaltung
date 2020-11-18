@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import controller.UndoRedo.CommandExecutionController;
+import controller.commands.CommandInvoker;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -30,12 +30,12 @@ public class ApplicationStateController {
 	 * Navigation stack which stores the visited ApplicationStates
 	 */
 	private Stack<ApplicationState> visitedStates;
-	private CommandExecutionController commandExecutionController;
+	private CommandInvoker commandExecutionController;
 
 	public ApplicationStateController(Model model, View view) {
 		this.view = view;
 		this.model = model;
-		this.commandExecutionController = new CommandExecutionController(this.view);
+		this.commandExecutionController = new CommandInvoker(this.view);
 		visitedStates = new Stack<>();
 		stateControllers = new HashSet<>();
 		stateControllers.add(new HomeStateController(view, this, model));
@@ -91,7 +91,7 @@ public class ApplicationStateController {
 		}
 	}
 
-	public CommandExecutionController getCommandExecutionController() {
+	public CommandInvoker getCommandExecutionController() {
 
 		return this.commandExecutionController;
 	}

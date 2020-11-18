@@ -24,12 +24,12 @@ import model.data.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.eventsources.SearchFieldEventSource;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 import view.tableModels.AbstractTableModel.Column;
 import view.widgets.SearchField;
 import view.tableModels.ThesesOverviewTableModel;
 
-public class ThesisAssignmentPanel extends DefaultViewPanel {
+public class ThesisAssignmentPanel extends DefaultPanel {
 
 	//Constants
 	private static final long serialVersionUID = 1L;

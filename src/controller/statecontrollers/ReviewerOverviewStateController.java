@@ -27,13 +27,14 @@ public class ReviewerOverviewStateController extends AbstractStateController<Rev
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EDIT, (params) -> this.switchToState(ApplicationState.REVIEWER_EDITOR, (int[]) params[0].get()));
-//		this.registerEvent(DELETE, (params) -> this.deleteEntries((int[]) params[0].get())); // TODO Remove delete
-		this.registerEvent(SHOW_COLLABORATION, (params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (int[]) params[0].get()));
+		this.registerEvent(EDIT,
+				(params) -> this.switchToState(ApplicationState.REVIEWER_EDITOR, (int[]) params[0].get()));
+//		this.registerEvent(DELETE, (params) -> this.deleteEntries((int[]) params[0].get())); // TODO don't Remove delete
+		this.registerEvent(SHOW_COLLABORATION,
+				(params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (int[]) params[0].get()));
 		this.registerEvent(SEARCH_OVERVIEW_REVIEWER, (params) -> this.onReviewerSearch((String) params[0].get()));
 		this.registerEvent(NEW, (params) -> switchState(ApplicationState.REVIEWER_EDITOR));
 	}
-
 
 	@SuppressWarnings("unchecked")
 	private void onReviewerSearch(String searchText) {
@@ -50,9 +51,10 @@ public class ReviewerOverviewStateController extends AbstractStateController<Rev
 		}
 		// indices contains only one element
 		Integer index = indices[0];
-		
+
 		model.setSelectedReviewer(index);
-		Log.info(this.getClass().getName(), "Starting editmode on reviewer %s", model.getSelectedReviewer().get().getName());
+		Log.info(this.getClass().getName(), "Starting editmode on reviewer %s",
+				model.getSelectedReviewer().get().getName());
 		switchState(applicationState);
 	}
 }

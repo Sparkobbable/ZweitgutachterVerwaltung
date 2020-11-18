@@ -2,7 +2,6 @@ package view.overview;
 
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -36,6 +35,7 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel {
 		this.registerEventSources();
 
 		this.observe(model);
+		this.observe(model.getReviewers());
 		this.onPropertyChange(Model.REVIEWERS,
 				(evt) -> updateReviewers((List<Reviewer>) evt.getOldValue(), (List<Reviewer>) evt.getNewValue()));
 	}
@@ -45,16 +45,12 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel {
 		this.reviewers.removeAllItems();
 		this.addFilteredReviewers(newValue);
 		this.observe(newValue);
-		System.out.println("update");
 		this.repaint();
 	}
 
 	protected void addFilteredReviewers(List<Reviewer> newValue) {
 		newValue.stream().filter(r -> r.getTotalReviewCount() < r.getMaxSupervisedThesis())
 				.forEach(this.reviewers::addItem);
-		System.out.println(newValue.stream().filter(r -> r.getTotalReviewCount() < r.getMaxSupervisedThesis())
-				.collect(Collectors.toList()));
-		System.out.println(newValue);
 	}
 
 	private void createUIElements() {

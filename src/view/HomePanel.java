@@ -8,12 +8,12 @@ import javax.swing.JButton;
 import model.EventSource;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 
 /**
  * Basic home panel, allows navigating to different application sections
  */
-public class HomePanel extends DefaultViewPanel {
+public class HomePanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JButton showReviewers;

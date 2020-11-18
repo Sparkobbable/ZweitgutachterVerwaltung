@@ -11,9 +11,9 @@ import model.EventSource;
 import model.enums.EventId;
 import view.eventsources.ChooserEventSource;
 import view.panelstructure.AbstractViewPanel;
-import view.panelstructure.DefaultViewPanel;
+import view.panelstructure.DefaultPanel;
 
-public class StateChooserPanel extends DefaultViewPanel {
+public class StateChooserPanel extends DefaultPanel {
 
 	/**
 	 * 
