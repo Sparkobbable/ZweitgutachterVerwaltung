@@ -30,6 +30,8 @@ public class Reviewer implements ChangeableProperties {
 	private String comment;
 	private int maxSupervisedThesis;
 	private float occupation;
+	private float firstOccupation;
+	private float secOccupation;
 
 	private List<FirstReview> firstReviews;
 	private List<SecondReview> secondReviews;
@@ -182,6 +184,8 @@ public class Reviewer implements ChangeableProperties {
 
 	private void updateOppucation() {
 		this.occupation = (float) (this.firstReviews.size() + this.secondReviews.size()) / this.maxSupervisedThesis;
+		this.firstOccupation = (float) this.firstReviews.size() / this.maxSupervisedThesis;
+		this.secOccupation = (float) this.secondReviews.size() / this.maxSupervisedThesis;
 	}
 
 	@Override
@@ -218,6 +222,14 @@ public class Reviewer implements ChangeableProperties {
 		this.getSecondReviews().stream().filter(r -> r.getBachelorThesis() == bachelorThesis).findAny()
 				.ifPresent(this::deleteSecondReview);
 
+	}
+
+	public float getFirstOccupation() {
+		return this.firstOccupation;
+	}
+
+	public float getSecOccupation() {
+		return this.secOccupation;
 	}
 
 }

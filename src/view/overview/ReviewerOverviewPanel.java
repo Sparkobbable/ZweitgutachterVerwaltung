@@ -8,7 +8,7 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.SearchFieldEventSource;
 import view.tableModels.AbstractDataTableModel;
-import view.tableModels.ProgressRenderer;
+import view.tableModels.DividedProgressRenderer;
 import view.tableModels.ReviewerOverviewTableModel;
 
 public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
@@ -52,7 +52,7 @@ public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 	@Override
 	protected void createUIElements() {
 		super.createUIElements();
-		this.table.getColumnModel().getColumn(2).setCellRenderer(new ProgressRenderer());
+		this.table.getColumnModel().getColumn(2).setCellRenderer(new DividedProgressRenderer());
 	}
 
 }

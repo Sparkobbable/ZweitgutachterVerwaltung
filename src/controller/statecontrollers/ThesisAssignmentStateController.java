@@ -4,7 +4,6 @@ import static model.enums.EventId.ADD_THESIS_TO_REVIEWER;
 import static model.enums.EventId.SEARCH_THESIS;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -13,7 +12,6 @@ import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
-import model.enums.ReviewType;
 import view.View;
 
 /**

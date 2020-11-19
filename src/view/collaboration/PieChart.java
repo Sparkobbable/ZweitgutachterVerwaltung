@@ -67,7 +67,6 @@ public class PieChart extends DefaultPanel{
 	 * Defines the methods that should be called when an observed property is
 	 * changed
 	 */
-	@SuppressWarnings("unchecked")
 	private void initializePropertyChangeHandlers() {
 		this.propertyChangeManager.onPropertyChange(Model.COLLABORATING_REVIEWERS, 
 				(evt) -> createDataset());
