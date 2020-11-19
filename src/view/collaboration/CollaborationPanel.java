@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 
+import controller.events.CustomEventSource;
 import controller.events.EventSource;
 import model.Model;
+import model.enums.EventId;
 import model.enums.PresentationMode;
 import view.ViewState;
 import view.panelstructure.AbstractViewPanel;
@@ -22,11 +24,13 @@ public class CollaborationPanel extends DefaultPanel {
 
 	private AbstractViewPanel options;
 	private AbstractViewPanel chart;
+	
+	private CustomEventSource initializeEventSource;
 
 	public CollaborationPanel(Model model) {
 		super("Zusammenarbeit anzeigen");
 		this.model = model;
-
+		this.initializeEventSource = new CustomEventSource(EventId.INITIALIZE);
 		this.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
 
@@ -67,7 +71,7 @@ public class CollaborationPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(this.options);
+		return List.of(this.options, this.initializeEventSource);
 	}
 
 	@Override
@@ -84,5 +88,7 @@ public class CollaborationPanel extends DefaultPanel {
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");
 		}
+		
+		initializeEventSource.trigger();
 	}
 }

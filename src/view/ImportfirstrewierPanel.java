@@ -4,16 +4,13 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.events.EventSource;
 import model.enums.EventId;
-import view.eventsources.ButtonEventSource;
-
 import view.eventsources.ChooserEventSource;
-
+import view.panelstructure.AbstractViewPanel;
 import view.panelstructure.DefaultPanel;
 
 
@@ -21,7 +18,7 @@ public class ImportfirstrewierPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JFileChooser chooseImport;
-	private AbstractView buttons;
+	private AbstractViewPanel buttons;
 
 
 	public ImportfirstrewierPanel() {
