@@ -22,11 +22,8 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 				(params) -> this.switchPresentation((String) params[0].get()));
 		this.registerEvent(EventId.CHOOSE_DATA_FOR_COLLABORATION,
 				(params) -> switchData((String) params[0].get()));
-//		this.registerEvent(EventId.SHOW_COLLABORATION, 
-//				(params) -> initialize());
 	}
 	
-	@Override
 	protected void initialize() {
 		this.switchPresentation("Tabelle");
 		this.switchData("Nur Erstgutachter");

@@ -17,13 +17,13 @@ public class CollaborationPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String SELECTED_PRESENTATIONMODE = "selectedPresentationMode";
-
 	private Model model;
-	private PresentationMode selectedPresentationMode;
 
 	private AbstractViewPanel options;
 	private AbstractViewPanel chart;
+	
+	private PieChart pieChart;
+	private CollaborationTableModel table;
 	
 	private CustomEventSource initializeEventSource;
 
@@ -34,8 +34,6 @@ public class CollaborationPanel extends DefaultPanel {
 		this.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
 
-		this.onPropertyChange(SELECTED_PRESENTATIONMODE,
-				evt -> switchPresentationMode((PresentationMode) evt.getNewValue()));
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
@@ -43,30 +41,16 @@ public class CollaborationPanel extends DefaultPanel {
 	}
 
 	private void createUIElements() {
+		this.pieChart = new PieChart(this.model);
+		this.table = new CollaborationTableModel(this.model);
+		
 		this.options = new CollaborationOptionsPanel(this.model);
-		this.chart = new PieChart(this.model);
+		this.chart = this.table;
 	}
 
 	private void addUIElements() {
 		this.add(this.options, BorderLayout.PAGE_START);
 		this.add(this.chart, BorderLayout.CENTER);
-	}
-
-	public void setPresentationMode(PresentationMode presentationMode) {
-		this.selectedPresentationMode = presentationMode;
-	}
-
-	public PresentationMode getPresentationMode() {
-		return this.selectedPresentationMode;
-	}
-
-	// TODO rmv
-	private void switchPresentationMode(PresentationMode presentationMode) {
-		if (presentationMode == PresentationMode.TABLE) {
-			System.out.println("Wechsle zu Tabelle");
-		} else {
-			System.out.println("Wechsle zu Tortendiagramm");
-		}
 	}
 
 	@Override
@@ -78,12 +62,16 @@ public class CollaborationPanel extends DefaultPanel {
 	public void initializeState(ViewState viewState) {
 		switch (viewState) {
 		case TABLE:
-			this.setPresentationMode(PresentationMode.TABLE);
 			this.setBackground(Color.GREEN);
+			this.remove(chart);
+			this.chart = this.table;
+			this.add(chart);
 			break;
 		case PIECHART:
-			this.setPresentationMode(PresentationMode.PIECHART);
 			this.setBackground(Color.BLUE);
+			this.remove(chart);
+			this.chart = this.pieChart;
+			this.add(chart);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");

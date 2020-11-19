@@ -21,10 +21,15 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
 				(params) -> this.switchPresentation((String) params[0].get()));
 		this.registerEvent(EventId.CHOOSE_DATA_FOR_COLLABORATION,
-				(params) -> switchData((String) params[0].get()));
+				(params) -> this.switchData((String) params[0].get()));
 		this.registerEvent(EventId.INITIALIZE,
-				(params) -> System.out.println("Woww!!"));
+				(params) -> this.initialize());
 
+	}
+	
+	protected void initialize() {
+//		this.switchPresentation("Tabelle");
+		this.switchData("Nur Erstgutachter");
 	}
 	
 	private void switchPresentation(String params) {
