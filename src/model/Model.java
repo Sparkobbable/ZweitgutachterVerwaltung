@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	private List<BachelorThesis> displayedTheses;
 	private List<Reviewer> reviewers;
 	private List<Reviewer> displayedReviewers;
-	private HashMap<Reviewer, Double> collaboratingReviewers;
+	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
 
@@ -135,7 +136,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * @param list
 	 */
 	public void setCollaboratingReviewers(HashMap<Reviewer, Double> list) {
-		HashMap<Reviewer, Double> old = this.collaboratingReviewers;
+		Map<Reviewer, Double> old = this.collaboratingReviewers;
 		this.collaboratingReviewers = list;
 		this.propertyChangeSupport.firePropertyChange(COLLABORATING_REVIEWERS, old, this.collaboratingReviewers);
 	}
@@ -145,7 +146,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * 
 	 * @return List<Reviewer>
 	 */
-	public HashMap<Reviewer, Double> getCollaboratingReviewers() {
+	public Map<Reviewer, Double> getCollaboratingReviewers() {
 		return this.collaboratingReviewers;
 	}
 

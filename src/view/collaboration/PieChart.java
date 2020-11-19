@@ -1,7 +1,8 @@
 package view.collaboration;
 
-import java.util.HashMap;
+import java.awt.Color;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class PieChart extends DefaultPanel {
 		super("");
 		this.model = model;
 		this.dataset = Optional.empty();
-
+		this.setBackground(Color.PINK);
 		this.initializePropertyChangeHandlers();
 		this.createUIElements();
 		this.observe(this.model);
@@ -35,7 +36,7 @@ public class PieChart extends DefaultPanel {
 
 	private void createDataset() {
 		this.dataset = Optional.of(new DefaultPieDataset());
-		HashMap<Reviewer, Double> reviewers = this.model.getCollaboratingReviewers();
+		Map<Reviewer, Double> reviewers = this.model.getCollaboratingReviewers();
 		for (Entry<Reviewer, Double> reviewer : reviewers.entrySet()) {
 			this.dataset.get().setValue(reviewer.getKey().getName(), reviewer.getValue());
 		}
