@@ -81,5 +81,12 @@ public abstract class AbstractStateController<E> {
 	 * be called elsewhere.
 	 */
 	protected abstract void registerEvents();
+	
+	/**
+	 * This method may be overridden
+	 */
+	protected void initialize() {
+		
+	}
 
 }
