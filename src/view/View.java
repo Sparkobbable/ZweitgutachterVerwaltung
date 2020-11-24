@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,9 @@ public class View implements EventSource {
 	private MainWindow window;
 	private MenuBarHandler menuHandler;
 	private PropertyChangeManager propertyChangeManager;
+	
+	//Color palette
+	public static final Color button = new Color(62, 76, 84);
 
 	public View(Model model) {
 		this.model = model;
