@@ -3,6 +3,7 @@ package view.overview;
 import java.awt.FlowLayout;
 import java.util.function.Supplier;
 
+import view.View;
 import view.panelstructure.DefaultPanel;
 
 
@@ -16,6 +17,7 @@ public abstract class OverviewActionPanel extends DefaultPanel{
 		this.selectedRowIndexSupplier = selectedRowIndexSupplier;
 		this.setBorder(UNTITLED_BORDER);
 		this.setLayout(new FlowLayout()); // TODO Not quite sure which is the best layout
+		this.setBackground(View.background);
 	}
 
 }

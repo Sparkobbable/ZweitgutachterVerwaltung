@@ -15,6 +15,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
+import view.View;
 import view.panelstructure.DefaultPanel;
 
 public class PieChart extends DefaultPanel {
@@ -31,7 +32,7 @@ public class PieChart extends DefaultPanel {
 		this.dataset = new DefaultPieDataset();
 		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
-		this.setBackground(Color.PINK);
+		this.setBackground(View.background);
 		
 		this.createUIElements();
 	}
@@ -48,6 +49,7 @@ public class PieChart extends DefaultPanel {
 			this.chart = ChartFactory.createPieChart("Zusammenarbeit mit Gutachtern", this.dataset, true, true,
 					false);
 			this.panel = new ChartPanel(chart);
+			this.panel.setBackground(View.background);
 			this.add(this.panel);
 	}
 

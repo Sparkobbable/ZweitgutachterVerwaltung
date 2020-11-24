@@ -7,6 +7,7 @@ import controller.events.EventSource;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.enums.EventId;
+import view.View;
 import view.eventsources.SearchFieldEventSource;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.ThesesOverviewTableModel;
@@ -31,6 +32,7 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 		this.observe(this.model.getTheses());
 
 		this.setLayout(new BorderLayout());
+		this.setBackground(View.background);
 
 		this.onPropertyChange(Model.THESES, (evt) -> updateTheses((List<BachelorThesis>) evt.getOldValue(),
 				(List<BachelorThesis>) evt.getNewValue()));

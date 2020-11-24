@@ -17,6 +17,7 @@ import org.jfree.chart.ChartPanel;
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
+import view.View;
 import view.panelstructure.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.AbstractTableModel.Column;
@@ -36,7 +37,7 @@ public class CollaborationTableModel extends DefaultPanel {
 		
 		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
-		this.setBackground(Color.BLUE);
+		this.setBackground(View.background);
 		
 		this.createUIElements();
 	}

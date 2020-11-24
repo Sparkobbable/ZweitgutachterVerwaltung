@@ -11,6 +11,7 @@ import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.EventId;
+import view.View;
 import view.panelstructure.AbstractViewPanel;
 import view.panelstructure.DefaultPanel;
 
@@ -32,7 +33,7 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 		super("");
 		this.model = model;
 
-		this.setBackground(Color.GREEN);
+		this.setBackground(View.background);
 
 		this.createUIElements();
 		this.addUIElements();

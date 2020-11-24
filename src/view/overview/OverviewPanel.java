@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import controller.events.EventSource;
 import model.Model;
 import model.enums.EventId;
+import view.View;
 import view.eventsources.TableClickEventSource;
 import view.panelstructure.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
@@ -33,6 +34,7 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 		super(title);
 		this.model = model;
 		this.setLayout(new BorderLayout(10,10));
+		this.setBackground(View.background);
 
 	}
 

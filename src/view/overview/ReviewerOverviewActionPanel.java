@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import controller.events.EventSource;
 import model.enums.EventId;
+import view.View;
 import view.eventsources.ButtonEventSource;
 
 public class ReviewerOverviewActionPanel extends OverviewActionPanel {
@@ -28,6 +29,7 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
+		this.setBackground(View.background);
 	}
 
 	private void createUIElements() {

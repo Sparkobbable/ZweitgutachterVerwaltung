@@ -31,6 +31,7 @@ public class View implements EventSource {
 	
 	//Color palette
 	public static final Color button = new Color(62, 76, 84);
+	public static final Color background = new Color(36, 50, 63);
 
 	public View(Model model) {
 		this.model = model;

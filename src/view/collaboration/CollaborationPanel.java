@@ -9,6 +9,7 @@ import controller.events.EventSource;
 import model.Model;
 import model.enums.EventId;
 import model.enums.PresentationMode;
+import view.View;
 import view.ViewState;
 import view.panelstructure.AbstractViewPanel;
 import view.panelstructure.DefaultPanel;
@@ -31,7 +32,7 @@ public class CollaborationPanel extends DefaultPanel {
 		super("Zusammenarbeit anzeigen");
 		this.model = model;
 		this.initializeEventSource = new CustomEventSource(EventId.INITIALIZE);
-		this.setBackground(Color.DARK_GRAY);
+		this.setBackground(View.background);
 		this.setLayout(new BorderLayout());
 
 		this.createUIElements();
@@ -62,13 +63,11 @@ public class CollaborationPanel extends DefaultPanel {
 	public void initializeState(ViewState viewState) {
 		switch (viewState) {
 		case TABLE:
-			this.setBackground(Color.GREEN);
 			this.remove(chart);
 			this.chart = this.table;
 			this.add(chart);
 			break;
 		case PIECHART:
-			this.setBackground(Color.BLUE);
 			this.remove(chart);
 			this.chart = this.pieChart;
 			this.add(chart);

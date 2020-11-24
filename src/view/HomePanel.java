@@ -40,7 +40,7 @@ public class HomePanel extends DefaultPanel {
 
 	public HomePanel() { // Maybe add a contructor with standard id?
 		super("Home");
-		this.setBackground(new Color(36, 50, 63)); // TODO remove
+		this.setBackground(View.background); // TODO remove
 		this.setLayout(new GridBagLayout());
 
 		this.createUIElements();

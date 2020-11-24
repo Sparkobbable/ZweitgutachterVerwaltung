@@ -22,6 +22,7 @@ import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
+import view.View;
 import view.eventsources.ButtonEventSource;
 import view.eventsources.SearchFieldEventSource;
 import view.panelstructure.DefaultPanel;
@@ -59,7 +60,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 		this.model = model;
 		this.observe(model);
 
-		this.setBackground(Color.GRAY); // TODO only for component identification, remove before launch
+		this.setBackground(View.background); // TODO only for component identification, remove before launch
 		this.setLayout(new BorderLayout(10,10));
 
 		this.createUIElements();

@@ -18,6 +18,7 @@ import model.domain.Review;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.EventId;
+import view.View;
 import view.eventsources.ButtonEventSource;
 import view.panelstructure.DefaultPanel;
 import view.tableModels.SupervisedThesisTableModel;
@@ -70,6 +71,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.selectedReviewer = this.model.getSelectedReviewer();
 
 		this.setLayout(new GridLayout(7, 2));
+		this.setBackground(View.background);
 
 		this.createUIElements();
 		this.addUIElements();

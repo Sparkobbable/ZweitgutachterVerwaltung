@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import controller.events.EventSource;
 import model.enums.EventId;
+import view.View;
 import view.eventsources.ComboBoxEventSource;
 import view.panelstructure.DefaultPanel;
 
@@ -24,7 +25,7 @@ public class CollaborationComboBoxPanel extends DefaultPanel {
 		super("");
 		this.eventId = eventId;
 		
-		this.setBackground(Color.RED);
+		this.setBackground(View.background);
 		this.setLayout(new GridLayout(2,1));
 		
 		this.createUIElements(headline, options);
