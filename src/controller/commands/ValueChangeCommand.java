@@ -3,7 +3,7 @@ package controller.commands;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class ValueChangeCommand <O,V> implements Command{
+public class ValueChangeCommand <O,V> extends RevertableCommand{
 
 	
 	private O object;

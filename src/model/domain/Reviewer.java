@@ -166,7 +166,7 @@ public class Reviewer implements ChangeableProperties {
 	 * @param review
 	 * @param cascadeMode
 	 */
-	void addSecondReviewerReview(SecondReview review, CascadeMode cascadeMode) {
+	public void addSecondReviewerReview(SecondReview review, CascadeMode cascadeMode) {
 		ArrayList<Review> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.add(review);
 		this.updateOppucation();

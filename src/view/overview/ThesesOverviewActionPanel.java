@@ -8,11 +8,12 @@ import javax.swing.JComboBox;
 
 import controller.events.EventSource;
 import model.Model;
+import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 
-public class ThesesOverviewActionPanel extends OverviewActionPanel {
+public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesis> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,8 +28,8 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel {
 	 * @param id Unique ID from {@link ViewId}
 	 */
 	@SuppressWarnings("unchecked")
-	public ThesesOverviewActionPanel(Model model, Supplier<int[]> selectedRowIndexSupplier) {
-		super(selectedRowIndexSupplier);
+	public ThesesOverviewActionPanel(Model model, Supplier<List<BachelorThesis>> selectedElementsSupplier) {
+		super(selectedElementsSupplier);
 		this.model = model;
 		this.createUIElements();
 		this.addUIElements();
@@ -66,7 +67,7 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(ButtonEventSource.of(EventId.SELECT, this.select, this.selectedRowIndexSupplier,
+		return List.of(ButtonEventSource.of(EventId.SELECT, this.select, this.selectedElementsSupplier,
 				this.reviewers::getSelectedItem));
 	}
 

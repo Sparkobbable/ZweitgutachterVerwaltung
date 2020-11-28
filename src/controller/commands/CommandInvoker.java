@@ -20,23 +20,26 @@ public class CommandInvoker {
 	public void execute(Command command) {
 		System.out.println("Executing command " + command);
 		command.execute();
-		undoStack.push(command);
-		redoStack.clear();
+		this.undoStack.push(command);
+		this.redoStack.clear();
+		if (!command.isRevertible()) {
+			this.undoStack.clear();
+		}
 		updateView();
 	}
 
 	public void undo() {
 		Command command = undoStack.pop();
 		System.out.println("Reverting command " + command);
-		redoStack.push(command);
+		this.redoStack.push(command);
 		command.revert();
 		updateView();
 	}
 
 	public void redo() {
-		Command command = redoStack.pop();
+		Command command = this.redoStack.pop();
 		System.out.println("Re-executing command " + command);
-		undoStack.push(command);
+		this.undoStack.push(command);
 		command.execute();
 		updateView();
 	}

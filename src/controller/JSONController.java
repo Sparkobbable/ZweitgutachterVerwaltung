@@ -13,13 +13,11 @@ import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 import javax.json.JsonWriter;
 
-import java.util.List;
-
 import model.Model;
-import model.domain.Reviewer;
+import model.persistence.PersistenceHandler;
 
 
-public class JSONController {
+public class JSONController implements PersistenceHandler{
 
 	private String filename;
 	private ObjectMapper mapper;
@@ -37,7 +35,7 @@ public class JSONController {
 	 * Saves all reviewers including every other Object from the current model in a Json file.
 	 * @param list ArrayList of current reviewers in the system.
 	 */
-	public void saveReviewers() {
+	public void save() {
 		try {
 			FileWriter fw = new FileWriter(filename);
 			JsonWriter jsonWriter = Json.createWriter(fw);
@@ -54,7 +52,7 @@ public class JSONController {
 	 * 
 	 * @throws Exception when the loaded Json file is not in the correct format
 	 */
-	public void loadReviewers() throws Exception {
+	public void load() throws Exception {
 		FileReader fr;
 		JsonStructure struct;
 		try {

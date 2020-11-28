@@ -68,6 +68,14 @@ public class BachelorThesis implements ChangeableProperties {
 	public void setSecondReviewer(Reviewer reviewer) {
 		this.setSecondReview(new SecondReview(reviewer, this), CascadeMode.CASCADE);
 	}
+	
+	/**
+	 * Removes the secondReviewer reference from this reviewer
+	 * @param cascadeMode 
+	 */
+	public void deleteSecondReview(CascadeMode cascadeMode) {
+		this.setSecondReview(null, cascadeMode);
+	}
 
 	/**
 	 * Sets the secondReview. If the {@link CascadeMode} is set to CASCADE, the
@@ -77,7 +85,7 @@ public class BachelorThesis implements ChangeableProperties {
 	 * @param secondReview
 	 * @param cascadeMode
 	 */
-	void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
+	public void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
 		Optional<SecondReview> old = this.secondReview;
 		this.secondReview = Optional.ofNullable(secondReview);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);

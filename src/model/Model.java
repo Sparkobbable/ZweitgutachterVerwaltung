@@ -349,4 +349,20 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
 	}
 
+	public void deleteReviewer(Reviewer reviewer) {
+		if (!this.reviewers.contains(reviewer)) {
+			throw new IllegalStateException("Reviewer does not exist");
+		}
+		if (!reviewer.getFirstReviews().isEmpty()) {
+			throw new IllegalStateException("Reviewer with firstReviews cannot be deleted");
+		}
+		
+
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		this.reviewers.remove(reviewer);
+		this.displayedReviewers.remove(reviewer);
+		reviewer.removePropertyChangeListener(this);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	}
+
 }

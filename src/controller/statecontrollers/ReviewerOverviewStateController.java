@@ -1,13 +1,17 @@
 package controller.statecontrollers;
 
+import static model.enums.EventId.DELETE;
 import static model.enums.EventId.EDIT;
+import static model.enums.EventId.NEW;
+import static model.enums.EventId.SEARCH_OVERVIEW_REVIEWER;
 import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static model.enums.EventId.SEARCH_OVERVIEW_REVIEWER;
-import static model.enums.EventId.NEW;
-
+import controller.commands.BatchCommand;
+import controller.commands.Command;
+import controller.commands.DeleteReviewerCommand;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
@@ -25,15 +29,22 @@ public class ReviewerOverviewStateController extends AbstractStateController<Rev
 		super(ApplicationState.REVIEWER_OVERVIEW, view, applicationStateController, model);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(EDIT,
-				(params) -> this.switchToState(ApplicationState.REVIEWER_EDITOR, (int[]) params[0].get()));
-//		this.registerEvent(DELETE, (params) -> this.deleteEntries((int[]) params[0].get())); // TODO don't Remove delete
+				(params) -> this.switchToState(ApplicationState.REVIEWER_EDITOR, (List<Reviewer>) params[0].get()));
+		this.registerEvent(DELETE, (params) -> this.deleteReviewers((List<Reviewer>) params[0].get()));
 		this.registerEvent(SHOW_COLLABORATION,
-				(params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (int[]) params[0].get()));
+				(params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (List<Reviewer>) params[0].get()));
 		this.registerEvent(SEARCH_OVERVIEW_REVIEWER, (params) -> this.onReviewerSearch((String) params[0].get()));
 		this.registerEvent(NEW, (params) -> switchState(ApplicationState.REVIEWER_EDITOR));
+	}
+
+	private void deleteReviewers(List<Reviewer> reviewers) {
+		List<Command> deleteCommands = new ArrayList<>();
+		reviewers.forEach(r -> deleteCommands.add(new DeleteReviewerCommand(this.model, r)));
+		this.commandExecutionController.execute(new BatchCommand(deleteCommands));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,18 +54,16 @@ public class ReviewerOverviewStateController extends AbstractStateController<Rev
 		this.model.addDisplayedReviewers((ArrayList<Reviewer>) searchController.handleSearch(copyList, searchText));
 	}
 
-	private void switchToState(ApplicationState applicationState, int[] indices) {
+	private void switchToState(ApplicationState applicationState, List<Reviewer> selectedReviewers) {
 		// check that one and only one row is selected
-		if (indices.length != 1) {
+		if (selectedReviewers.size() != 1) {
 			Log.warning(this.getClass().getName(), "Only one reviewer can be edited at a time. ");
 			return;
 		}
-		// indices contains only one element
-		Integer index = indices[0];
+		Reviewer selectedReviewer = selectedReviewers.get(0);
 
-		model.setSelectedReviewer(index);
-		Log.info(this.getClass().getName(), "Starting editmode on reviewer %s",
-				model.getSelectedReviewer().get().getName());
+		this.model.setSelectedReviewer(selectedReviewer);
+		Log.info(this.getClass().getName(), "Starting editmode on reviewer %s", selectedReviewer.getName());
 		switchState(applicationState);
 	}
 }

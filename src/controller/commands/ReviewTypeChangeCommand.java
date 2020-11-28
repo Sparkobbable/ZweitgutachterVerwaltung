@@ -3,7 +3,7 @@ package controller.commands;
 import model.domain.SecondReview;
 import model.enums.ReviewStatus;
 
-public class ReviewTypeChangeCommand implements Command {
+public class ReviewTypeChangeCommand extends RevertableCommand {
 
 	private SecondReview review;
 	private ReviewStatus status;

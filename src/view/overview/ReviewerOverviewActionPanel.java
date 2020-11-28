@@ -6,11 +6,12 @@ import java.util.function.Supplier;
 import javax.swing.JButton;
 
 import controller.events.EventSource;
+import model.domain.Reviewer;
 import model.enums.EventId;
 import view.View;
 import view.eventsources.ButtonEventSource;
 
-public class ReviewerOverviewActionPanel extends OverviewActionPanel {
+public class ReviewerOverviewActionPanel extends OverviewActionPanel<Reviewer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +24,7 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel {
 	 * 
 	 * @param id Unique ID from {@link ViewId}
 	 */
-	public ReviewerOverviewActionPanel(Supplier<int[]> selectedRowIndexSupplier) {
+	public ReviewerOverviewActionPanel(Supplier<List<Reviewer>> selectedRowIndexSupplier) {
 		super(selectedRowIndexSupplier);
 
 		this.createUIElements();
@@ -48,10 +49,10 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(ButtonEventSource.of(EventId.EDIT, edit, selectedRowIndexSupplier),
-				ButtonEventSource.of(EventId.DELETE, delete, selectedRowIndexSupplier),
+		return List.of(ButtonEventSource.of(EventId.EDIT, edit, selectedElementsSupplier),
+				ButtonEventSource.of(EventId.DELETE, delete, selectedElementsSupplier),
 				ButtonEventSource.of(EventId.NEW, newReviewer),
-				ButtonEventSource.of(EventId.SHOW_COLLABORATION, showCollaboration, selectedRowIndexSupplier));
+				ButtonEventSource.of(EventId.SHOW_COLLABORATION, showCollaboration, selectedElementsSupplier));
 	}
 
 }

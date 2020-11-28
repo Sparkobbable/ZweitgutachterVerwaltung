@@ -1,11 +1,12 @@
 package controller.statecontrollers;
 
-import static model.enums.EventId.SELECT;
 import static model.enums.EventId.SEARCH_OVERVIEW_THESES;
+import static model.enums.EventId.SELECT;
 
 import java.util.ArrayList;
+import java.util.List;
 
-
+import controller.commands.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
@@ -26,7 +27,7 @@ public class ThesesOverviewStateController extends AbstractStateController<Bache
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(SELECT, (params) -> addSecondReviewer((int[]) params[0].get(), (Reviewer) params[1].get()));
+		this.registerEvent(SELECT, (params) -> addSecondReviewer((List<BachelorThesis>) params[0].get(), (Reviewer) params[1].get()));
 		this.registerEvent(SEARCH_OVERVIEW_THESES, (params) -> this.onThesisSearch((String) params[0].get()));
 	}
 	
@@ -37,15 +38,15 @@ public class ThesesOverviewStateController extends AbstractStateController<Bache
 		this.model.addDisplayedTheses((ArrayList<BachelorThesis>) searchController.handleSearch(copyList, searchText));
 	}
 
-	private void addSecondReviewer(int[] indices, Reviewer reviewer) {
+	private void addSecondReviewer(List<BachelorThesis> selectedTheses, Reviewer reviewer) {
 		// check that one and only one row is selected
-		if (indices.length != 1) {
+		if (selectedTheses.size() != 1) {
 			Log.warning(this, "Only one thesis can be edited at a time.");
 			return;
 		}
-		// indices contains only one element
-		int index = indices[0];
-
-		this.model.getDisplayedTheses().get(index).setSecondReviewer(reviewer);
+		// list contains only one element
+		BachelorThesis selectedThesis = selectedTheses.get(0);
+		
+		this.commandExecutionController.execute(new AddBachelorThesisCommand(reviewer, selectedThesis));
 	}
 }

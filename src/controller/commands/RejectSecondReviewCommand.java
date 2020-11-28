@@ -2,7 +2,7 @@ package controller.commands;
 
 import model.domain.Review;
 
-public class RejectSecondReviewCommand implements Command {
+public class RejectSecondReviewCommand extends RevertableCommand {
 
 	private Review review;
 	

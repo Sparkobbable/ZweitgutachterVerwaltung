@@ -11,6 +11,7 @@ import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import model.persistence.PersistenceHandler;
 import view.View;
 
 public class ImportfirstreviewerStateController extends AbstractStateController{
@@ -32,7 +33,7 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 		
 	}
 	/**
-	 * This Method handles the Event {@link EventId#LOAD_JSON} starting a JFileChooser and giving the chosen path to the {@link JSONController}
+	 * This Method handles the Event {@link EventId#LOAD_JSON} starting a JFileChooser and giving the chosen path to the {@link PersistenceHandler}
 	 * @param params
 	 */
 

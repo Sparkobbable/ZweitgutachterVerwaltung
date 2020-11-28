@@ -26,7 +26,7 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 	@SuppressWarnings("unchecked")
 	public ThesesOverviewPanel(Model model) {
 		super(model, "Bachelorthesis-Übersicht");
-		this.actionPanel = new ThesesOverviewActionPanel(this.model, () -> getSelectedRowIndex());
+		this.actionPanel = new ThesesOverviewActionPanel(this.model, () -> getSelectedElements());
 
 		this.observe(this.model);
 		this.observe(this.model.getTheses());
