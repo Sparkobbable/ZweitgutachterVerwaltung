@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import controller.events.EventSource;
+import controller.search.SearchStrategy;
 import model.Model;
 import model.enums.EventId;
 import view.View;
@@ -27,9 +28,10 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 	// UI-components
 	protected AbstractDataTableModel<T> tableModel;
 	protected OverviewActionPanel<T> actionPanel;
+	protected SearchField<T> searchField;
+
 	protected JTable table;
 	protected JScrollPane tableScrollPane;
-	protected SearchField searchField;
 
 	public OverviewPanel(Model model, String title) {
 		super(title);
@@ -48,7 +50,10 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 	}
 
 	protected void createUIElements() {
-		this.searchField = new SearchField();
+		this.searchField = new SearchField<>(this.createSearchStrategy(), (t) -> {
+			System.out.println(t);
+			updateTableModel();
+		});
 
 		this.tableModel = createTableModel();
 		this.table = new JTable(this.tableModel);
@@ -58,6 +63,8 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 		// TODO observe sorting behavior when bachelor thesis count >= 10
 		this.table.setAutoCreateRowSorter(true);
 	}
+
+	protected abstract SearchStrategy<T> createSearchStrategy();
 
 	protected int[] getSelectedRows() {
 		return this.table.getSelectedRows();

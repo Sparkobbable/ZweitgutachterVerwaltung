@@ -1,12 +1,15 @@
 package view.overview;
 
+import static view.tableModels.ReviewerOverviewTableModel.NAME;
+import static view.tableModels.ReviewerOverviewTableModel.OCCUPATION;
+import static view.tableModels.ReviewerOverviewTableModel.THESIS_COUNT;
+
 import java.util.List;
 
-import controller.events.EventSource;
+import controller.search.ReviewerSearchStrategy;
+import controller.search.SearchStrategy;
 import model.Model;
 import model.domain.Reviewer;
-import model.enums.EventId;
-import view.eventsources.SearchFieldEventSource;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.DividedProgressRenderer;
 import view.tableModels.ReviewerOverviewTableModel;
@@ -28,31 +31,31 @@ public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
-		
+
 		this.observe(this.model);
-		
+
 		this.onPropertyChange(Model.REVIEWERS, (evt) -> updateTableModel());
 		this.onPropertyChange(Model.DISPLAYED_REVIEWERS, (evt) -> updateTableModel());
-		
+
 		this.tableModel.updateData();
 
 	}
 
-	protected AbstractDataTableModel<Reviewer> createTableModel() {
-		return new ReviewerOverviewTableModel(model);
-	}
-
 	@Override
-	protected List<EventSource> getEventSources() {
-		List<EventSource> eventSources = super.getEventSources();
-		eventSources.add(new SearchFieldEventSource(EventId.SEARCH_OVERVIEW_REVIEWER, this.searchField));
-		return eventSources;
+	protected AbstractDataTableModel<Reviewer> createTableModel() {
+		return new ReviewerOverviewTableModel(List.of(NAME, THESIS_COUNT, OCCUPATION),
+				List.of(r -> this.searchField.matchesSearch(r)), model);
 	}
 
 	@Override
 	protected void createUIElements() {
 		super.createUIElements();
 		this.table.getColumnModel().getColumn(2).setCellRenderer(new DividedProgressRenderer());
+	}
+
+	@Override
+	protected SearchStrategy<Reviewer> createSearchStrategy() {
+		return new ReviewerSearchStrategy();
 	}
 
 }

@@ -1,11 +1,11 @@
 package view.editor;
 
-import static view.tableModels.ThesesOverviewTableModel.*;
+import static view.tableModels.ThesesOverviewTableModel.AUTHOR_NAME;
+import static view.tableModels.ThesesOverviewTableModel.AUTHOR_STUDY_GROUP;
+import static view.tableModels.ThesesOverviewTableModel.FIRST_REVIEWER;
+import static view.tableModels.ThesesOverviewTableModel.TOPIC;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,35 +18,35 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import controller.events.EventSource;
+import controller.search.BachelorThesisSearchStrategy;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.View;
 import view.eventsources.ButtonEventSource;
-import view.eventsources.SearchFieldEventSource;
 import view.panelstructure.DefaultPanel;
 import view.tableModels.AbstractTableModel.Column;
-import view.widgets.SearchField;
 import view.tableModels.ThesesOverviewTableModel;
+import view.widgets.SearchField;
 
 public class ThesisAssignmentPanel extends DefaultPanel {
 
-	//Constants
+	// Constants
 	private static final long serialVersionUID = 1L;
 	private static final List<Column<BachelorThesis, ?>> THESES_TABLE_COLUMNS = List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP,
 			TOPIC, FIRST_REVIEWER);
-	
-	//Data
+
+	// Data
 	private Reviewer selectedReviewer;
 	private Model model;
 
-	//UI-Elements
+	// UI-Elements
 	private JTable thesisTable;
 	private JScrollPane thesisScrollPane;
 	private JButton addThesis;
 	private ThesesOverviewTableModel thesesTableModel;
-	private SearchField searchField;
+	private SearchField<BachelorThesis> searchField;
 
 	/**
 	 * Creates a view containing a table presenting the bachelorThesis without a
@@ -61,7 +61,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 		this.observe(model);
 
 		this.setBackground(View.background); // TODO only for component identification, remove before launch
-		this.setLayout(new BorderLayout(10,10));
+		this.setLayout(new BorderLayout(10, 10));
 
 		this.createUIElements();
 		this.addUIElements();
@@ -75,8 +75,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 	@Override
 	protected List<EventSource> getEventSources() {
 		return List
-				.of(new ButtonEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.addThesis, () -> getSelectedTheses()),
-					new SearchFieldEventSource(EventId.SEARCH_THESIS, this.searchField));
+				.of(new ButtonEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.addThesis, () -> getSelectedTheses()));
 	}
 
 	private List<BachelorThesis> getSelectedTheses() {
@@ -91,11 +90,12 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 		this.thesisTable.setAutoCreateRowSorter(true);
 		this.thesisScrollPane = new JScrollPane(this.thesisTable);
 		this.addThesis = new JButton();
-		this.searchField = new SearchField();
+		this.searchField = new SearchField<>(new BachelorThesisSearchStrategy(), (t) -> this.updateThesesList());
 	}
 
 	private List<Predicate<BachelorThesis>> getThesisTableFilters() {
-		return List.of(t -> t.getSecondReview().isEmpty(), t -> !this.selectedReviewer.reviewsThesis(t));
+		return List.of(t -> t.getSecondReview().isEmpty(), t -> !this.selectedReviewer.reviewsThesis(t),
+				t -> this.searchField.matchesSearch(t));
 	}
 
 	protected String createButtonText() {
@@ -112,21 +112,15 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 	private void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
-		this.onPropertyChange(Reviewer.SECOND_REVIEWS,
-				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
-		this.onPropertyChange(Reviewer.FIRST_REVIEWS,
-				(evt) -> updateThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
-		this.onPropertyChange(Model.DISPLAYED_THESES, (evt) -> updateSearchedThesesList((ArrayList<BachelorThesis>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.SECOND_REVIEWS, (evt) -> updateThesesList());
+		this.onPropertyChange(Reviewer.FIRST_REVIEWS, (evt) -> updateThesesList());
+		this.onPropertyChange(Model.DISPLAYED_THESES, (evt) -> updateThesesList());
 	}
 
-	private void updateSearchedThesesList(ArrayList<BachelorThesis> newValue) {
+	private void updateThesesList() {
 		if (Objects.isNull(this.selectedReviewer)) {
 			return;
 		}
-		updateThesesList(newValue);
-	}
-
-	private void updateThesesList(ArrayList<BachelorThesis> updatedThesisList) {
 		this.thesesTableModel.updateData();
 		this.repaint();
 	}

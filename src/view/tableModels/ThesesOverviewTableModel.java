@@ -32,14 +32,9 @@ public class ThesesOverviewTableModel extends AbstractDataTableModel<BachelorThe
 		this.model = model;
 	}
 
-	public ThesesOverviewTableModel(Model model) {
-		this(List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP, TOPIC, FIRST_REVIEWER, SECOND_REVIEWER), Collections.emptyList(),
-				model);
-	}
-
 	@Override
 	protected Collection<BachelorThesis> getUnfilteredData() {
-		return model.getDisplayedTheses();
+		return model.getTheses();
 	}
 
 }

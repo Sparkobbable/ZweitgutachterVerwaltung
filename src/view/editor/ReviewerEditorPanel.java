@@ -1,6 +1,13 @@
 package view.editor;
 
+import static view.tableModels.SupervisedThesisTableModel.AUTHOR_NAME;
+import static view.tableModels.SupervisedThesisTableModel.AUTHOR_STUDY_GROUP;
+import static view.tableModels.SupervisedThesisTableModel.STATUS;
+import static view.tableModels.SupervisedThesisTableModel.TITLE;
+import static view.tableModels.SupervisedThesisTableModel.TYPE;
+
 import java.awt.GridLayout;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -90,7 +97,9 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.deleteThesis = new JButton("Bachelorarbeit löschen");
 		this.approveSecReview = new JButton("Zweitgutachten bestätigen");
 
-		this.supervisedThesisTableModel = new SupervisedThesisTableModel(this.selectedReviewer);
+		this.supervisedThesisTableModel = new SupervisedThesisTableModel(
+				List.of(TITLE, AUTHOR_NAME, AUTHOR_STUDY_GROUP, TYPE, STATUS), Collections.emptyList(),
+				this.selectedReviewer);
 		this.supervisedThesisTable = new JTable(supervisedThesisTableModel);
 		this.supervisedThesisTable.setFillsViewportHeight(true);
 		// TODO observe sorting behavior when bachelor thesis count >= 10

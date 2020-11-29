@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,9 +36,8 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	private List<BachelorThesis> theses;
-	private List<BachelorThesis> displayedTheses;
 	private List<Reviewer> reviewers;
-	private List<Reviewer> displayedReviewers;
+
 	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -49,13 +47,11 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	public Model(List<BachelorThesis> theses, List<Reviewer> reviewers) {
 		this(theses);
 		reviewers.forEach(this::addReviewer);
-		this.displayedReviewers.addAll(this.reviewers);
 	}
 
 	public Model(List<BachelorThesis> theses) {
 		this();
 		theses.forEach(this::addThesis);
-		this.displayedTheses.addAll(this.theses);
 	}
 
 	/**
@@ -67,9 +63,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.selectedReviewer = Optional.empty();
 		this.collaboratingReviewers = new HashMap<Reviewer, Double>();
 		this.theses = new ArrayList<>();
-		this.displayedTheses = new ArrayList<>();
 		this.reviewers = new ArrayList<>();
-		this.displayedReviewers = new ArrayList<>();
 
 		this.initializePropertyChangeHandlers();
 
@@ -122,16 +116,8 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	}
 
 	/**
-	 * Set the selected Reviewer by its index in the reviewers list
-	 * 
-	 * @param reviewerIndex
-	 */
-	public void setSelectedReviewer(int reviewerIndex) {
-		this.setSelectedReviewer(this.displayedReviewers.get(reviewerIndex));
-	}
-	
-	/**
-	 * Set the collaborating Reviewers for the selected Reviewer and notify any observers
+	 * Set the collaborating Reviewers for the selected Reviewer and notify any
+	 * observers
 	 * 
 	 * @param list
 	 */
@@ -140,7 +126,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.collaboratingReviewers = list;
 		this.propertyChangeSupport.firePropertyChange(COLLABORATING_REVIEWERS, old, this.collaboratingReviewers);
 	}
-	
+
 	/**
 	 * Return a list of all collaborating Reviewers for the selected Reviewer
 	 * 
@@ -164,7 +150,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 
 		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.add(reviewer);
-		this.displayedReviewers.add(reviewer);
 		reviewer.addPropertyChangeListener(this);
 		this.addThesesForReviewer(reviewer);
 		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
@@ -195,23 +180,11 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		return Collections.unmodifiableList(this.reviewers);
 	}
 
-	public List<Reviewer> getDisplayedReviewers() {
-		return displayedReviewers;
-	}
-
 	/**
 	 * @return A read-only view of the theses list
 	 */
 	public List<BachelorThesis> getTheses() {
 		return Collections.unmodifiableList(this.theses);
-	}
-
-	public List<BachelorThesis> getDisplayedTheses() {
-		return displayedTheses;
-	}
-
-	public void setDisplayedTheses(List<BachelorThesis> displayedTheses) {
-		this.displayedTheses = displayedTheses;
 	}
 
 	/**
@@ -310,7 +283,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	public void clear() {
 		this.clearReviewers();
 		this.theses = new ArrayList<>();
-		this.displayedTheses = new ArrayList<>();
 		this.setSelectedReviewer(null);
 	}
 
@@ -319,29 +291,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
 	}
 
-	public void addDisplayedTheses(Collection<BachelorThesis> theses) {
-		ArrayList<BachelorThesis> old = new ArrayList<BachelorThesis>(this.displayedTheses);
-		this.displayedTheses.addAll(theses);
-		this.propertyChangeSupport.firePropertyChange(DISPLAYED_THESES, old, this.displayedTheses);
-	}
-
-	public void clearDisplayedTheses() {
-		ArrayList<BachelorThesis> old = new ArrayList<BachelorThesis>(this.displayedTheses);
-		this.displayedTheses.clear();
-		this.propertyChangeSupport.firePropertyChange(DISPLAYED_THESES, old, this.displayedTheses);
-	}
-	
-	public void addDisplayedReviewers(Collection<Reviewer> reviewers) {
-		ArrayList<Reviewer> old = new ArrayList<Reviewer>(this.displayedReviewers);
-		this.displayedReviewers.addAll(reviewers);
-		this.propertyChangeSupport.firePropertyChange(DISPLAYED_REVIEWERS, old, this.displayedReviewers);
-	}
-
-	public void clearDisplayedReviewers() {
-		ArrayList<Reviewer> old = new ArrayList<Reviewer>(this.displayedReviewers);
-		this.displayedReviewers.clear();
-		this.propertyChangeSupport.firePropertyChange(DISPLAYED_REVIEWERS, old, this.displayedReviewers);
-	}
 
 	public void clearSelectedReviewer() {
 		Optional<Reviewer> old = this.selectedReviewer;
@@ -356,11 +305,9 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		if (!reviewer.getFirstReviews().isEmpty()) {
 			throw new IllegalStateException("Reviewer with firstReviews cannot be deleted");
 		}
-		
 
 		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.remove(reviewer);
-		this.displayedReviewers.remove(reviewer);
 		reviewer.removePropertyChangeListener(this);
 		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
 	}

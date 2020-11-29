@@ -3,7 +3,6 @@ package controller.statecontrollers;
 import static model.enums.EventId.DELETE;
 import static model.enums.EventId.EDIT;
 import static model.enums.EventId.NEW;
-import static model.enums.EventId.SEARCH_OVERVIEW_REVIEWER;
 import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class ReviewerOverviewStateController extends AbstractStateController<Rev
 		this.registerEvent(DELETE, (params) -> this.deleteReviewers((List<Reviewer>) params[0].get()));
 		this.registerEvent(SHOW_COLLABORATION,
 				(params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (List<Reviewer>) params[0].get()));
-		this.registerEvent(SEARCH_OVERVIEW_REVIEWER, (params) -> this.onReviewerSearch((String) params[0].get()));
 		this.registerEvent(NEW, (params) -> switchState(ApplicationState.REVIEWER_EDITOR));
 	}
 
@@ -45,13 +43,6 @@ public class ReviewerOverviewStateController extends AbstractStateController<Rev
 		List<Command> deleteCommands = new ArrayList<>();
 		reviewers.forEach(r -> deleteCommands.add(new DeleteReviewerCommand(this.model, r)));
 		this.commandExecutionController.execute(new BatchCommand(deleteCommands));
-	}
-
-	@SuppressWarnings("unchecked")
-	private void onReviewerSearch(String searchText) {
-		ArrayList<Reviewer> copyList = new ArrayList<Reviewer>(this.model.getReviewers());
-		this.model.clearDisplayedReviewers();
-		this.model.addDisplayedReviewers((ArrayList<Reviewer>) searchController.handleSearch(copyList, searchText));
 	}
 
 	private void switchToState(ApplicationState applicationState, List<Reviewer> selectedReviewers) {

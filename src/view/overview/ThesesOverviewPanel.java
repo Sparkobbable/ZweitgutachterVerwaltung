@@ -1,14 +1,19 @@
 package view.overview;
 
+import static view.tableModels.ThesesOverviewTableModel.AUTHOR_NAME;
+import static view.tableModels.ThesesOverviewTableModel.AUTHOR_STUDY_GROUP;
+import static view.tableModels.ThesesOverviewTableModel.FIRST_REVIEWER;
+import static view.tableModels.ThesesOverviewTableModel.SECOND_REVIEWER;
+import static view.tableModels.ThesesOverviewTableModel.TOPIC;
+
 import java.awt.BorderLayout;
 import java.util.List;
 
-import controller.events.EventSource;
+import controller.search.BachelorThesisSearchStrategy;
+import controller.search.SearchStrategy;
 import model.Model;
 import model.domain.BachelorThesis;
-import model.enums.EventId;
 import view.View;
-import view.eventsources.SearchFieldEventSource;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.ThesesOverviewTableModel;
 
@@ -52,15 +57,15 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 	}
 
 	@Override
-	protected List<EventSource> getEventSources() {
-		List<EventSource> eventSources = super.getEventSources();
-		eventSources.add(new SearchFieldEventSource(EventId.SEARCH_OVERVIEW_THESES, this.searchField));
-		return eventSources;
-	}
-	
-	@Override
 	protected AbstractDataTableModel<BachelorThesis> createTableModel() {
-		return new ThesesOverviewTableModel(model);
+		return new ThesesOverviewTableModel(
+				List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP, TOPIC, FIRST_REVIEWER, SECOND_REVIEWER),
+				List.of(t -> this.searchField.matchesSearch(t)), model);
+	}
+
+	@Override
+	protected SearchStrategy<BachelorThesis> createSearchStrategy() {
+		return new BachelorThesisSearchStrategy();
 	}
 
 }
