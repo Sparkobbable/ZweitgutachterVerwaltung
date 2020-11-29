@@ -4,11 +4,11 @@ import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+
 import javax.swing.JOptionPane;
 
-import controller.ApplicationStateController;
 import controller.CSVController;
-import controller.JSONController;
+import controller.Controller;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
@@ -20,8 +20,8 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 
 	private String filepath;
 	
-	public ImportfirstreviewerStateController(View view, ApplicationStateController applicationStateController, Model model) {
-		super(ApplicationState.FIRSTREVIEWER_IMPORT, view, applicationStateController, model);
+	public ImportfirstreviewerStateController(View view, Controller controller, Model model) {
+		super(ApplicationState.FIRSTREVIEWER_IMPORT, view, controller, model);
 
 		GregorianCalendar now = new GregorianCalendar();
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);

@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import controller.commands.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
@@ -20,9 +20,9 @@ import view.View;
  */
 public class ThesisAssignmentStateController extends AbstractStateController {
 
-	public ThesisAssignmentStateController(View view, ApplicationStateController applicationStateController,
+	public ThesisAssignmentStateController(View view, Controller controller,
 			Model model) {
-		super(ApplicationState.THESIS_ASSIGNMENT, view, applicationStateController, model);
+		super(ApplicationState.THESIS_ASSIGNMENT, view, controller, model);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,8 +43,9 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 			return;
 
 		}
-		bachelorThesesToAdd.forEach(bachelorThesis -> this.commandExecutionController
-				.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis)));
+		bachelorThesesToAdd.forEach(bachelorThesis -> this.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis)));
 		switchToLastVisitedState();
 	}
+
+
 }

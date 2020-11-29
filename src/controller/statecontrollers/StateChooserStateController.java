@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.JOptionPane;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import controller.JSONController;
 import controller.commands.LoadSystemStateCommand;
 import model.Model;
@@ -23,8 +23,8 @@ public class StateChooserStateController extends AbstractStateController {
 
 	private String filepath;
 
-	public StateChooserStateController(View view, ApplicationStateController applicationStateController, Model model) {
-		super(ApplicationState.STATE_CHOOSER, view, applicationStateController, model);
+	public StateChooserStateController(View view, Controller controller, Model model) {
+		super(ApplicationState.STATE_CHOOSER, view, controller, model);
 		GregorianCalendar now = new GregorianCalendar();
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + df.format(now.getTime())
@@ -50,7 +50,7 @@ public class StateChooserStateController extends AbstractStateController {
 			PersistenceHandler persistence = new JSONController(filepath, this.model);
 			try {
 				this.model.clear();
-				this.commandExecutionController.execute(new LoadSystemStateCommand(persistence));
+				this.execute(new LoadSystemStateCommand(persistence));
 				this.view.alert("Der Systemstatus wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e) {
 				e.printStackTrace();

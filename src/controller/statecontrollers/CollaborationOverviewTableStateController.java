@@ -3,7 +3,7 @@ package controller.statecontrollers;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
@@ -12,9 +12,9 @@ import view.View;
 
 public class CollaborationOverviewTableStateController extends AbstractCollaborationOverviewStateController {
 
-	public CollaborationOverviewTableStateController(View view, ApplicationStateController applicationStateController,
+	public CollaborationOverviewTableStateController(View view, Controller controller,
 			Model model) {
-		super(ApplicationState.COLLABORATION_TABLE, view, applicationStateController, model);
+		super(ApplicationState.COLLABORATION_TABLE, view, controller, model);
 	}
 
 	@Override

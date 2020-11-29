@@ -8,7 +8,7 @@ import static model.enums.EventId.SHOW_COLLABORATION;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import controller.commands.DeleteReviewerCommand;
 import controller.commands.base.BatchCommand;
 import controller.commands.base.Command;
@@ -24,9 +24,8 @@ import view.View;
  */
 public class ReviewerOverviewStateController extends AbstractStateController {
 
-	public ReviewerOverviewStateController(View view, ApplicationStateController applicationStateController,
-			Model model) {
-		super(ApplicationState.REVIEWER_OVERVIEW, view, applicationStateController, model);
+	public ReviewerOverviewStateController(View view, Controller controller, Model model) {
+		super(ApplicationState.REVIEWER_OVERVIEW, view, controller, model);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,7 +42,7 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	private void deleteReviewers(List<Reviewer> reviewers) {
 		List<Command> deleteCommands = new ArrayList<>();
 		reviewers.forEach(r -> deleteCommands.add(new DeleteReviewerCommand(this.model, r)));
-		this.commandExecutionController.execute(new BatchCommand(deleteCommands));
+		this.execute(new BatchCommand(deleteCommands));
 	}
 
 	private void switchToState(ApplicationState applicationState, List<Reviewer> selectedReviewers) {

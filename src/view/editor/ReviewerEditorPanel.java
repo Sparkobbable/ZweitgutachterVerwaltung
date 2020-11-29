@@ -175,7 +175,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 
 	protected void observeReviewer(Reviewer reviewer) {
 		this.observe(reviewer);
-		this.observe(reviewer.getSecondReviews());
+		this.observe(reviewer.getUnrejectedSecondReviews());
 	}
 
 	private void updateReviewerFields(Reviewer reviewer) {

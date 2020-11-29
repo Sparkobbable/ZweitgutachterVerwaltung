@@ -2,7 +2,7 @@ package controller.statecontrollers;
 
 import java.util.ArrayList;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
@@ -12,8 +12,8 @@ import view.View;
 public abstract class AbstractCollaborationOverviewStateController extends AbstractStateController {
 
 	public AbstractCollaborationOverviewStateController(ApplicationState applicationState, View view,
-			ApplicationStateController applicationStateController, Model model) {
-		super(applicationState, view, applicationStateController, model);
+			Controller controller, Model model) {
+		super(applicationState, view, controller, model);
 	}
 	
 	protected ArrayList<Reviewer> setCollaborationFirstReviewers() {

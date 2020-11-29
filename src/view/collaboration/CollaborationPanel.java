@@ -1,14 +1,12 @@
 package view.collaboration;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.List;
 
 import controller.events.CustomEventSource;
 import controller.events.EventSource;
 import model.Model;
 import model.enums.EventId;
-import model.enums.PresentationMode;
 import view.View;
 import view.ViewState;
 import view.panelstructure.AbstractViewPanel;

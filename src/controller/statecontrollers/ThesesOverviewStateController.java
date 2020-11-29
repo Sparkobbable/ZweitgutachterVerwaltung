@@ -4,7 +4,7 @@ import static model.enums.EventId.SELECT;
 
 import java.util.List;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import controller.commands.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
@@ -19,9 +19,9 @@ import view.View;
  */
 public class ThesesOverviewStateController extends AbstractStateController {
 
-	public ThesesOverviewStateController(View view, ApplicationStateController applicationStateController,
+	public ThesesOverviewStateController(View view, Controller controller,
 			Model model) {
-		super(ApplicationState.THESES_OVERVIEW, view, applicationStateController, model);
+		super(ApplicationState.THESES_OVERVIEW, view, controller, model);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -39,6 +39,6 @@ public class ThesesOverviewStateController extends AbstractStateController {
 		// list contains only one element
 		BachelorThesis selectedThesis = selectedTheses.get(0);
 		
-		this.commandExecutionController.execute(new AddBachelorThesisCommand(reviewer, selectedThesis));
+		this.execute(new AddBachelorThesisCommand(reviewer, selectedThesis));
 	}
 }

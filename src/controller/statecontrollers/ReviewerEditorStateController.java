@@ -12,13 +12,12 @@ import java.util.Optional;
 
 import javax.swing.JOptionPane;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import controller.commands.RejectSecondReviewCommand;
 import controller.commands.ReviewTypeChangeCommand;
 import controller.commands.base.BatchCommand;
 import controller.commands.base.Command;
 import model.Model;
-import model.domain.Review;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
@@ -34,9 +33,9 @@ import view.editor.ReviewerEditorPanel;
  */
 public class ReviewerEditorStateController extends AbstractStateController {
 
-	public ReviewerEditorStateController(View view, ApplicationStateController applicationStateController,
+	public ReviewerEditorStateController(View view, Controller controller,
 			Model model) {
-		super(ApplicationState.REVIEWER_EDITOR, view, applicationStateController, model);
+		super(ApplicationState.REVIEWER_EDITOR, view, controller, model);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -59,13 +58,13 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private void approve(SecondReview review) {
-		this.commandExecutionController.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED));
+		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED));
 	}
 
 	private void rejectSecondReviews(Collection<SecondReview> reviews) {
 		List<Command> commands = new ArrayList<>();
 		reviews.forEach(review -> commands.add(new RejectSecondReviewCommand(review)));
-		this.commandExecutionController.execute(new BatchCommand(commands));
+		this.execute(new BatchCommand(commands));
 	}
 
 	private void addThesis() {

@@ -1,19 +1,7 @@
 package controller;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Stack;
 
-import controller.commands.base.CommandInvoker;
-import controller.statecontrollers.AbstractStateController;
-import controller.statecontrollers.CollaborationOverviewPieChartStateController;
-import controller.statecontrollers.CollaborationOverviewTableStateController;
-import controller.statecontrollers.HomeStateController;
-import controller.statecontrollers.ReviewerEditorStateController;
-import controller.statecontrollers.ReviewerOverviewStateController;
-import controller.statecontrollers.StateChooserStateController;
-import controller.statecontrollers.ThesesOverviewStateController;
-import controller.statecontrollers.ThesisAssignmentStateController;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -31,30 +19,14 @@ public class ApplicationStateController {
 	private Model model;
 
 	/**
-	 * Set of responsible controller for a given state
-	 */
-	private Set<AbstractStateController> stateControllers;
-
-	/**
 	 * Navigation stack which stores the visited ApplicationStates
 	 */
 	private Stack<ApplicationState> visitedStates;
-	private CommandInvoker commandExecutionController;
 
 	public ApplicationStateController(Model model, View view) {
 		this.view = view;
 		this.model = model;
-		this.commandExecutionController = new CommandInvoker(this.view);
-		visitedStates = new Stack<>();
-		stateControllers = new HashSet<>();
-		stateControllers.add(new HomeStateController(view, this, model));
-		stateControllers.add(new ReviewerOverviewStateController(view, this, model));
-		stateControllers.add(new ThesesOverviewStateController(view, this, model));
-		stateControllers.add(new ReviewerEditorStateController(view, this, model));
-		stateControllers.add(new StateChooserStateController(view, this, model));
-		stateControllers.add(new ThesisAssignmentStateController(view, this, model));
-		stateControllers.add(new CollaborationOverviewTableStateController(view, this, model));
-		stateControllers.add(new CollaborationOverviewPieChartStateController(view, this, model));
+		this.visitedStates = new Stack<>();
 
 		this.view.addEventHandler(EventId.BACK, (params) -> switchToLastVisitedState());
 
@@ -98,10 +70,5 @@ public class ApplicationStateController {
 				return this.visitedStates.peek();
 			}
 		}
-	}
-
-	public CommandInvoker getCommandExecutionController() {
-
-		return this.commandExecutionController;
 	}
 }

@@ -1,7 +1,7 @@
 package controller.statecontrollers;
 
-import controller.ApplicationStateController;
-import controller.commands.base.CommandInvoker;
+import controller.Controller;
+import controller.commands.base.Command;
 import controller.events.Action;
 import model.Model;
 import model.enums.ApplicationState;
@@ -15,10 +15,8 @@ public abstract class AbstractStateController {
 
 	// referenced objects
 	protected View view;
-	private ApplicationStateController applicationStateController;
+	private Controller controller;
 	protected Model model;
-
-	protected CommandInvoker commandExecutionController;
 
 	/**
 	 * The ApplicationState that this StateController is Responsible for
@@ -31,15 +29,14 @@ public abstract class AbstractStateController {
 	 * 
 	 * @param states
 	 * @param view
-	 * @param applicationStateController
+	 * @param controller
 	 */
 	public AbstractStateController(ApplicationState state, View view,
-			ApplicationStateController applicationStateController, Model model) {
+			Controller controller, Model model) {
 		this.state = state;
 		this.view = view;
-		this.applicationStateController = applicationStateController;
+		this.controller = controller;
 		this.model = model;
-		this.commandExecutionController = applicationStateController.getCommandExecutionController();
 
 		this.registerEvents();
 	}
@@ -61,14 +58,14 @@ public abstract class AbstractStateController {
 	 * @param state The new ApplicationState
 	 */
 	public void switchState(ApplicationState state) {
-		applicationStateController.switchState(state);
+		controller.switchState(state);
 	}
 
 	/**
 	 * Switches to the last visited {@link ApplicationState}
 	 */
 	protected void switchToLastVisitedState() {
-		applicationStateController.switchToLastVisitedState();
+		controller.switchToLastVisitedState();
 	}
 
 	/**
@@ -80,11 +77,8 @@ public abstract class AbstractStateController {
 	 */
 	protected abstract void registerEvents();
 	
-	/**
-	 * This method may be overridden
-	 */
-	protected void initialize() {
-		
+	protected void execute(Command command) {
+		this.controller.execute(command);
 	}
-
+	
 }

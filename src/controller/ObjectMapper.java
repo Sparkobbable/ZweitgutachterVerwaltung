@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -13,11 +12,8 @@ import javax.json.JsonValue;
 import model.Model;
 import model.domain.Author;
 import model.domain.BachelorThesis;
-import model.domain.FirstReview;
 import model.domain.Reviewer;
-import model.domain.SecondReview;
 import model.enums.ReviewStatus;
-import model.enums.ReviewType;
 
 public class ObjectMapper {
 

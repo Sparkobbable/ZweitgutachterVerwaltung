@@ -3,6 +3,7 @@ package controller.commands.base;
 import java.util.Stack;
 
 import model.enums.EventId;
+import util.Log;
 import view.View;
 
 public class CommandInvoker {
@@ -18,7 +19,7 @@ public class CommandInvoker {
 	}
 
 	public void execute(Command command) {
-		System.out.println("Executing command " + command);
+		Log.info(this, "Executing command %s.", command);
 		command.execute();
 		this.undoStack.push(command);
 		this.redoStack.clear();
@@ -30,7 +31,7 @@ public class CommandInvoker {
 
 	public void undo() {
 		Command command = undoStack.pop();
-		System.out.println("Reverting command " + command);
+		Log.info(this, "Reverting command %s.", command);
 		this.redoStack.push(command);
 		command.revert();
 		updateView();
@@ -38,7 +39,7 @@ public class CommandInvoker {
 
 	public void redo() {
 		Command command = this.redoStack.pop();
-		System.out.println("Re-executing command " + command);
+		Log.info(this, "Re-executing command %s.", command);
 		this.undoStack.push(command);
 		command.execute();
 		updateView();

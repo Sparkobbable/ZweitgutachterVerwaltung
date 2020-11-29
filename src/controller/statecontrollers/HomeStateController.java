@@ -2,7 +2,7 @@ package controller.statecontrollers;
 
 import static model.enums.EventId.SHOW_REVIEWERS;
 
-import controller.ApplicationStateController;
+import controller.Controller;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -13,8 +13,8 @@ import view.View;
  */
 public class HomeStateController extends AbstractStateController{
 
-	public HomeStateController(View view, ApplicationStateController applicationStateController, Model model) {
-		super(ApplicationState.HOME, view, applicationStateController, model);
+	public HomeStateController(View view, Controller controller, Model model) {
+		super(ApplicationState.HOME, view, controller, model);
 	}
 
 	@Override

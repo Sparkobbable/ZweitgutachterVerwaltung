@@ -1,26 +1,18 @@
 package view.collaboration;
 
-import java.awt.Color;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
 import view.View;
 import view.panelstructure.DefaultPanel;
-import view.tableModels.AbstractDataTableModel;
-import view.tableModels.AbstractTableModel.Column;
 
 public class CollaborationTableModel extends DefaultPanel {
 	
