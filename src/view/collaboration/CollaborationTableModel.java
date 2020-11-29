@@ -11,7 +11,7 @@ import javax.swing.JTable;
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
-import view.View;
+import view.ViewProperties;
 import view.panelstructure.DefaultPanel;
 
 public class CollaborationTableModel extends DefaultPanel {
@@ -29,7 +29,7 @@ public class CollaborationTableModel extends DefaultPanel {
 		
 		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		
 		this.createUIElements();
 	}

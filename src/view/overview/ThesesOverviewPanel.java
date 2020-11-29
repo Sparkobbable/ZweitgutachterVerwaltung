@@ -13,7 +13,7 @@ import controller.search.BachelorThesisSearchStrategy;
 import controller.search.SearchStrategy;
 import model.Model;
 import model.domain.BachelorThesis;
-import view.View;
+import view.ViewProperties;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.ThesesOverviewTableModel;
 
@@ -37,7 +37,7 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 		this.observe(this.model.getTheses());
 
 		this.setLayout(new BorderLayout());
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 
 		this.onPropertyChange(Model.THESES, (evt) -> updateTheses((List<BachelorThesis>) evt.getOldValue(),
 				(List<BachelorThesis>) evt.getNewValue()));

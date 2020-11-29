@@ -25,7 +25,7 @@ import model.domain.Review;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.EventId;
-import view.View;
+import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.eventsources.TextFieldEventSource;
 import view.panelstructure.DefaultPanel;
@@ -78,7 +78,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.selectedReviewer = this.model.getSelectedReviewer();
 
 		this.setLayout(new GridLayout(7, 2));
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 
 		this.createUIElements();
 		this.addUIElements();
@@ -91,11 +91,11 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	}
 
 	private void createUIElements() {
-		this.save = new JButton("Speichern");
-		this.addBachelorThesis = new JButton("Bachelorarbeit hinzufügen");
-		this.deleteThesis = new JButton("Bachelorarbeit löschen");
-		this.approveSecReview = new JButton("Zweitgutachten bestätigen");
-
+		this.save = this.buttonFactory.createButton("Speichern");
+		this.addBachelorThesis = this.buttonFactory.createButton("Bachelorarbeit hinzufügen");
+		this.deleteThesis = this.buttonFactory.createButton("Bachelorarbeit löschen");
+		this.approveSecReview = this.buttonFactory.createButton("Zweitgutachten bestätigen");
+		
 		this.supervisedThesisTableModel = new SupervisedThesisTableModel(
 				List.of(TITLE, AUTHOR_NAME, AUTHOR_STUDY_GROUP, TYPE, STATUS), Collections.emptyList(),
 				this.selectedReviewer);
@@ -151,7 +151,8 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.onPropertyChange(Reviewer.NAME, e -> this.name.setText((String) e.getNewValue()));
 		this.onPropertyChange(Reviewer.EMAIL, e -> this.email.setText((String) e.getNewValue()));
 		this.onPropertyChange(Reviewer.COMMENT, e -> this.comment.setText((String) e.getNewValue()));
-		this.onPropertyChange(Reviewer.MAX_SUPERVISED_THESES, e -> this.maxSupervised.setText((String) e.getNewValue()));
+		this.onPropertyChange(Reviewer.MAX_SUPERVISED_THESES,
+				e -> this.maxSupervised.setText((String) e.getNewValue()));
 	}
 
 	private void updateObserversForSecondReviews(List<Review> oldReviews, List<Review> newReviews) {

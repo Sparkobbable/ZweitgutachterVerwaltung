@@ -4,7 +4,7 @@ import java.awt.FlowLayout;
 import java.util.List;
 import java.util.function.Supplier;
 
-import view.View;
+import view.ViewProperties;
 import view.panelstructure.DefaultPanel;
 
 public abstract class OverviewActionPanel<T> extends DefaultPanel {
@@ -17,7 +17,7 @@ public abstract class OverviewActionPanel<T> extends DefaultPanel {
 		this.selectedElementsSupplier = selectedElementsSupplier;
 		this.setBorder(UNTITLED_BORDER);
 		this.setLayout(new FlowLayout()); // TODO Not quite sure which is the best layout
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 	}
 
 }

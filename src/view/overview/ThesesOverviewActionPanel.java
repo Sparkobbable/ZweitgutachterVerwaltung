@@ -55,7 +55,7 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesi
 	}
 
 	private void createUIElements() {
-		this.select = new JButton("Als Zweitgutachter hinzufügen");
+		this.select = this.buttonFactory.createButton("Als Zweitgutachter hinzufügen");
 		this.reviewers = new JComboBox<>();
 		this.addFilteredReviewers(this.model.getReviewers());
 	}

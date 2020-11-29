@@ -1,6 +1,5 @@
 package view.collaboration;
 
-import java.awt.Color;
 import java.util.Collections;
 //github.com/Sparkobbable/ZweitgutachterVerwaltung.git
 import java.util.List;
@@ -15,7 +14,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
-import view.View;
+import view.ViewProperties;
 import view.panelstructure.DefaultPanel;
 
 public class PieChart extends DefaultPanel {
@@ -32,7 +31,7 @@ public class PieChart extends DefaultPanel {
 		this.dataset = new DefaultPieDataset();
 		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		
 		this.createUIElements();
 	}
@@ -49,7 +48,7 @@ public class PieChart extends DefaultPanel {
 			this.chart = ChartFactory.createPieChart("Zusammenarbeit mit Gutachtern", this.dataset, true, true,
 					false);
 			this.panel = new ChartPanel(chart);
-			this.panel.setBackground(View.background);
+			this.panel.setBackground(ViewProperties.BACKGROUND_COLOR);
 			this.add(this.panel);
 	}
 

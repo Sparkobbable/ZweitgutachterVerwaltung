@@ -7,7 +7,7 @@ import controller.events.CustomEventSource;
 import controller.events.EventSource;
 import model.Model;
 import model.enums.EventId;
-import view.View;
+import view.ViewProperties;
 import view.ViewState;
 import view.panelstructure.AbstractViewPanel;
 import view.panelstructure.DefaultPanel;
@@ -30,7 +30,7 @@ public class CollaborationPanel extends DefaultPanel {
 		super("Zusammenarbeit anzeigen");
 		this.model = model;
 		this.initializeEventSource = new CustomEventSource(EventId.INITIALIZE);
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new BorderLayout());
 
 		this.createUIElements();

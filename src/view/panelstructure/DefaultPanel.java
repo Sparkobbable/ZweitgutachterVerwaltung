@@ -18,6 +18,7 @@ import controller.propertychangelistener.ChangeableProperties;
 import controller.propertychangelistener.PropertyChangeManager;
 import model.enums.EventId;
 import view.MainWindow;
+import view.widgets.ButtonFactory;
 
 /**
  * Abstract class for all different masks that can be set as content for the
@@ -34,7 +35,8 @@ public abstract class DefaultPanel extends AbstractViewPanel {
 	 */
 	private CompositeEventSource eventSourceHandler;
 	private PropertyChangeManager propertyChangeManager;
-
+	protected ButtonFactory buttonFactory;
+	
 	private String title;
 
 	/**
@@ -46,6 +48,7 @@ public abstract class DefaultPanel extends AbstractViewPanel {
 		super();
 		this.eventSourceHandler = new CompositeEventSource();
 		this.propertyChangeManager = new PropertyChangeManager();
+		this.buttonFactory = ButtonFactory.getInstance();
 		this.title = title;
 
 		this.setBorder(titledBorder(title));

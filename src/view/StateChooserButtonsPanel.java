@@ -23,8 +23,8 @@ public class StateChooserButtonsPanel extends DefaultPanel{
 	public StateChooserButtonsPanel() {
 		super("Options");
 		
-		this.loadState = new JButton("Systemzustand laden");
-		this.saveState = new JButton("Systemzustand speichern");
+		this.loadState = this.buttonFactory.createButton("Systemzustand laden");
+		this.saveState = this.buttonFactory.createButton("Systemzustand speichern");
 		this.registerEventSources();
 		
 		this.init();

@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import controller.events.EventSource;
 import model.domain.Reviewer;
 import model.enums.EventId;
-import view.View;
+import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 
 public class ReviewerOverviewActionPanel extends OverviewActionPanel<Reviewer> {
@@ -30,14 +30,14 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel<Reviewer> {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 	}
 
 	private void createUIElements() {
-		this.edit = new JButton("Bearbeiten");
-		this.delete = new JButton("Löschen");
-		this.newReviewer = new JButton("Neu");
-		this.showCollaboration = new JButton("Zusammenarbeit anzeigen");
+		this.edit = this.buttonFactory.createButton("Bearbeiten");
+		this.delete = this.buttonFactory.createButton("Löschen");
+		this.newReviewer = this.buttonFactory.createButton("Neu");
+		this.showCollaboration = this.buttonFactory.createButton("Zusammenarbeit anzeigen");
 	}
 
 	private void addUIElements() {

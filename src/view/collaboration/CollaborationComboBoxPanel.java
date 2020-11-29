@@ -1,6 +1,5 @@
 package view.collaboration;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import javax.swing.JLabel;
 
 import controller.events.EventSource;
 import model.enums.EventId;
-import view.View;
+import view.ViewProperties;
 import view.eventsources.ComboBoxEventSource;
 import view.panelstructure.DefaultPanel;
 
@@ -25,7 +24,7 @@ public class CollaborationComboBoxPanel extends DefaultPanel {
 		super("");
 		this.eventId = eventId;
 		
-		this.setBackground(View.background);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new GridLayout(2,1));
 		
 		this.createUIElements(headline, options);

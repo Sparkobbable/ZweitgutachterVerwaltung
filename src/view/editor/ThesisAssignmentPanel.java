@@ -23,7 +23,7 @@ import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
-import view.View;
+import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.panelstructure.DefaultPanel;
 import view.tableModels.AbstractTableModel.Column;
@@ -60,7 +60,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 		this.model = model;
 		this.observe(model);
 
-		this.setBackground(View.background); // TODO only for component identification, remove before launch
+		this.setBackground(ViewProperties.BACKGROUND_COLOR); // TODO only for component identification, remove before launch
 		this.setLayout(new BorderLayout(10, 10));
 
 		this.createUIElements();
@@ -89,7 +89,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 		this.thesisTable = new JTable(this.thesesTableModel);
 		this.thesisTable.setAutoCreateRowSorter(true);
 		this.thesisScrollPane = new JScrollPane(this.thesisTable);
-		this.addThesis = new JButton();
+		this.addThesis = this.buttonFactory.createButton(null);
 		this.searchField = new SearchField<>(new BachelorThesisSearchStrategy(), (t) -> this.updateThesesList());
 	}
 
