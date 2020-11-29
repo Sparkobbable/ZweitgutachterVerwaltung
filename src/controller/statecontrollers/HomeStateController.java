@@ -2,6 +2,7 @@ package controller.statecontrollers;
 
 import static model.enums.EventId.SHOW_REVIEWERS;
 
+import controller.ApplicationStateController;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;

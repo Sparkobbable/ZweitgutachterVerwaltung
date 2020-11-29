@@ -1,5 +1,6 @@
 package controller.commands;
 
+import controller.commands.base.UnrevertableCommand;
 import model.persistence.PersistenceHandler;
 
 public class LoadSystemStateCommand extends UnrevertableCommand {

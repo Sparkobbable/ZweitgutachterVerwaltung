@@ -1,8 +1,10 @@
 package controller.commands;
 
+import controller.commands.base.RevertableCommand;
 import model.domain.SecondReview;
 import model.enums.ReviewStatus;
 
+//TODO rename to ApproveSecondReviewCommand
 public class ReviewTypeChangeCommand extends RevertableCommand {
 
 	private SecondReview review;

@@ -1,24 +1,42 @@
 package controller.commands;
 
-import model.domain.Review;
+import controller.commands.base.RevertableCommand;
+import model.domain.BachelorThesis;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
+import model.enums.CascadeMode;
+import model.enums.ReviewStatus;
 
 public class RejectSecondReviewCommand extends RevertableCommand {
 
-	private Review review;
-	
-	public RejectSecondReviewCommand(Review review) {
+	private SecondReview review;
+	private ReviewStatus oldStatus;
+
+	public RejectSecondReviewCommand(SecondReview review) {
 		this.review = review;
 	}
 
 	@Override
 	public void execute() {
-//		this.review.getReviewer().removeSecondReviewBachelorThesis();
+		Reviewer reviewer = this.review.getReviewer();
+		BachelorThesis bachelorThesis = this.review.getBachelorThesis();
+
+		this.oldStatus = this.review.getStatus();
+		this.review.setStatus(ReviewStatus.REJECTED);
+		reviewer.removeSecondReview(this.review);
+		reviewer.addRejectedSecondReview(this.review);
+		bachelorThesis.removeSecondReview();
 	}
 
 	@Override
 	public void revert() {
-		// TODO Auto-generated method stub
-		
+		Reviewer reviewer = this.review.getReviewer();
+		BachelorThesis bachelorThesis = this.review.getBachelorThesis();
+
+		this.review.setStatus(this.oldStatus);
+		reviewer.removeRejectedSecondReview(this.review);
+		reviewer.addSecondReview(review, CascadeMode.STOP);
+		bachelorThesis.setSecondReview(review, CascadeMode.STOP);
 	}
 
 }

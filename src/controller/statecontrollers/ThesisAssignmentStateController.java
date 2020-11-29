@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import controller.ApplicationStateController;
 import controller.commands.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
@@ -17,7 +18,7 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#THESIS_ASSIGNMENT}
  */
-public class ThesisAssignmentStateController extends AbstractStateController<BachelorThesis> {
+public class ThesisAssignmentStateController extends AbstractStateController {
 
 	public ThesisAssignmentStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {

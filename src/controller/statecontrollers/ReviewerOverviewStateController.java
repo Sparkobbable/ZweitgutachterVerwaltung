@@ -8,9 +8,10 @@ import static model.enums.EventId.SHOW_COLLABORATION;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.commands.BatchCommand;
-import controller.commands.Command;
+import controller.ApplicationStateController;
 import controller.commands.DeleteReviewerCommand;
+import controller.commands.base.BatchCommand;
+import controller.commands.base.Command;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
@@ -21,7 +22,7 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_OVERVIEW}
  */
-public class ReviewerOverviewStateController extends AbstractStateController<Reviewer> {
+public class ReviewerOverviewStateController extends AbstractStateController {
 
 	public ReviewerOverviewStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {

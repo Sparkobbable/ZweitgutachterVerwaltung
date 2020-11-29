@@ -135,7 +135,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 				new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getUpdatedReviewer(),
 						() -> getOriginalReviewer()),
 				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis),
-				new ButtonEventSource(EventId.DELETE_THESIS, deleteThesis, () -> getSelectedReviews()),
+				new ButtonEventSource(EventId.REJECT, deleteThesis, () -> getSelectedReviews()),
 				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getSelectedReviews()));
 	}
 
@@ -185,6 +185,11 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.comment.setText(reviewer.getComment());
 	}
 
+	/**
+	 * @deprecated erroneous
+	 * 
+	 * @return
+	 */
 	private Reviewer getUpdatedReviewer() {
 		// TODO wont work for theses
 		return new Reviewer(this.nameField.getText(), Integer.valueOf(this.maxSupervised.getText()),

@@ -4,6 +4,7 @@ import static model.enums.EventId.SELECT;
 
 import java.util.List;
 
+import controller.ApplicationStateController;
 import controller.commands.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
@@ -16,7 +17,7 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_OVERVIEW}
  */
-public class ThesesOverviewStateController extends AbstractStateController<BachelorThesis> {
+public class ThesesOverviewStateController extends AbstractStateController {
 
 	public ThesesOverviewStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {

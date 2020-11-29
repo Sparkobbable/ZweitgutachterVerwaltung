@@ -1,4 +1,4 @@
-package controller.commands;
+package controller.commands.base;
 
 import java.util.Stack;
 

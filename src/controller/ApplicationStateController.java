@@ -1,10 +1,19 @@
-package controller.statecontrollers;
+package controller;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import controller.commands.CommandInvoker;
+import controller.commands.base.CommandInvoker;
+import controller.statecontrollers.AbstractStateController;
+import controller.statecontrollers.CollaborationOverviewPieChartStateController;
+import controller.statecontrollers.CollaborationOverviewTableStateController;
+import controller.statecontrollers.HomeStateController;
+import controller.statecontrollers.ReviewerEditorStateController;
+import controller.statecontrollers.ReviewerOverviewStateController;
+import controller.statecontrollers.StateChooserStateController;
+import controller.statecontrollers.ThesesOverviewStateController;
+import controller.statecontrollers.ThesisAssignmentStateController;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;

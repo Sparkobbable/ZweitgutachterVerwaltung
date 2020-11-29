@@ -46,12 +46,4 @@ public class SecondReview extends Review {
 	public ReviewType getReviewType() {
 		return ReviewType.SECOND_REVIEW;
 	}
-
-	/**
-	 * sets the {@link #status} to APPROVED
-	 */
-	public void approve() {
-		this.setStatus(ReviewStatus.APPROVED);
-	}
-
 }

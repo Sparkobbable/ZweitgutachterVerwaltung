@@ -1,5 +1,6 @@
 package controller.commands;
 
+import controller.commands.base.RevertableCommand;
 import model.Model;
 import model.domain.Review;
 import model.domain.Reviewer;
@@ -22,14 +23,14 @@ public class DeleteReviewerCommand extends RevertableCommand {
 			throw new IllegalStateException("Cannot delete reviewers that supervise a BachelorThesis as FirstReviewer");
 		}
 
-		this.reviewer.getSecondReviews().stream().map(Review::getBachelorThesis)
-				.forEach(thesis -> thesis.deleteSecondReview(CascadeMode.STOP));
+		this.reviewer.getUnrejectedSecondReviews().stream().map(Review::getBachelorThesis)
+				.forEach(thesis -> thesis.removeSecondReview());
 		this.model.deleteReviewer(this.reviewer);
 	}
 
 	@Override
 	public void revert() {
-		this.reviewer.getSecondReviews().stream()
+		this.reviewer.getUnrejectedSecondReviews().stream()
 				.forEach(review -> review.getBachelorThesis().setSecondReview(review, CascadeMode.STOP));
 		this.model.addReviewer(reviewer);
 	}

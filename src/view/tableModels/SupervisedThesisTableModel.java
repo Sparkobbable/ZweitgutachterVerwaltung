@@ -41,7 +41,7 @@ public class SupervisedThesisTableModel extends AbstractDataTableModel<Review> {
 
 	@Override
 	protected Collection<Review> getUnfilteredData() {
-		return this.selectedReviewer.getAllReviews();
+		return this.selectedReviewer.getAllSupervisedReviews();
 	}
 
 }

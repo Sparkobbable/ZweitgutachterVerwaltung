@@ -71,7 +71,8 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 
 	/**
 	 * Returns a reviewer with the given name, if any exist.
-	 * 
+	 * <p>
+	 * Use this method with care, as names may or may not be unique
 	 * @param name
 	 * @return
 	 */
@@ -80,7 +81,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	}
 
 	/**
-	 * @return The current State of the Application
+	 * @return The current state of the Application
 	 */
 	public ApplicationState getApplicationState() {
 		return applicationState;
@@ -233,6 +234,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * Defines the methods that should be called when an observed property is
 	 * changed
 	 */
+	//TODO remove this and handle with command pattern
 	@SuppressWarnings("unchecked")
 	private void initializePropertyChangeHandlers() {
 		this.propertyChangeManager.onPropertyChange(Reviewer.FIRST_REVIEWS,
@@ -271,7 +273,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * @param reviewer
 	 */
 	private void addThesesForReviewer(Reviewer reviewer) {
-		reviewer.getAllReviews().stream().map(Review::getBachelorThesis).forEach(this::addThesis);
+		reviewer.getAllSupervisedReviews().stream().map(Review::getBachelorThesis).forEach(this::addThesis);
 	}
 
 	private void clearReviewers() {

@@ -1,4 +1,4 @@
-package controller.commands;
+package controller.commands.base;
 
 public abstract class UnrevertableCommand implements Command{
 

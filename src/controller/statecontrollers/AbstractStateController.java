@@ -1,8 +1,8 @@
 package controller.statecontrollers;
 
-import controller.commands.CommandInvoker;
+import controller.ApplicationStateController;
+import controller.commands.base.CommandInvoker;
 import controller.events.Action;
-import controller.search.SearchFieldController;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -11,14 +11,12 @@ import view.View;
 /**
  * Controls the Application in a given ApplicationState
  */
-public abstract class AbstractStateController<E> {
+public abstract class AbstractStateController {
 
 	// referenced objects
 	protected View view;
 	private ApplicationStateController applicationStateController;
 	protected Model model;
-
-	protected SearchFieldController<E> searchController = new SearchFieldController<E>();
 
 	protected CommandInvoker commandExecutionController;
 

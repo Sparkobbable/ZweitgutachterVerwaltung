@@ -3,7 +3,6 @@ package model.domain;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +20,8 @@ public class Reviewer implements ChangeableProperties {
 	public static final String MAX_SUPERVISED_THESES = "maxSupervisedTheses";
 	public static final String FIRST_REVIEWS = "firstReviews";
 	public static final String SECOND_REVIEWS = "secondReviews";
+	public static final String REJECTED_SECOND_REVIEWS = "rejectedSecondReviews";
+
 	public static final String EMAIL = "email";
 	public static final String COMMENT = "comment";
 
@@ -35,6 +36,7 @@ public class Reviewer implements ChangeableProperties {
 
 	private List<FirstReview> firstReviews;
 	private List<SecondReview> secondReviews;
+	private List<SecondReview> rejectedSecondReviews;
 
 	/**
 	 * Creates a Reviewer for BachelorThesis
@@ -44,6 +46,7 @@ public class Reviewer implements ChangeableProperties {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.firstReviews = new ArrayList<>();
 		this.secondReviews = new ArrayList<>();
+		this.rejectedSecondReviews = new ArrayList<>();
 		this.name = name;
 		this.maxSupervisedThesis = maxSupervisedThesis;
 		this.email = email;
@@ -66,23 +69,42 @@ public class Reviewer implements ChangeableProperties {
 		return this.comment;
 	}
 
-	public List<Review> getAllReviews() {
-		return Stream.concat(this.firstReviews.stream(), this.secondReviews.stream()).collect(Collectors.toList());
+	public List<Review> getAllSupervisedReviews() {
+		return Stream.concat(this.firstReviews.stream(), this.getUnrejectedSecondReviews().stream())
+				.collect(Collectors.toList());
 	}
 
+	/**
+	 * @return the total count of first reviews and second reviews that were not
+	 *         rejected
+	 */
 	public int getTotalReviewCount() {
-		return this.firstReviews.size() + this.secondReviews.size();
+		return this.firstReviews.size() + this.getUnrejectedSecondReviews().size();
 	}
 
 	public float getOccupation() {
 		return occupation;
 	}
 
+	public List<SecondReview> getUnrejectedSecondReviews() {
+		return Collections.unmodifiableList(this.secondReviews);
+	}
+
 	/**
-	 * @return all bachelor theses that are second-reviewed by this reviewer
+	 * @return all bachelor theses that are second-reviewed by this reviewer and not
+	 *         rejected
+	 * @deprecated replaced by {@link #getUnrejectedSecondReviews()}
 	 */
 	public List<SecondReview> getSecondReviews() {
-		return this.secondReviews;
+		return this.getUnrejectedSecondReviews();
+	}
+
+	/**
+	 * @return all bachelor theses that are second-reviewed by this reviewer. This
+	 *         includes rejected reviews.
+	 */
+	public List<SecondReview> getAllSecondReviews() {
+		return Stream.concat(this.secondReviews.stream(), this.rejectedSecondReviews.stream()).collect(Collectors.toList());
 	}
 
 	/**
@@ -120,30 +142,7 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * Adds a bachelorThesis to this (Second-)Reviewer .
-	 * 
-	 * @param bachelorThesis
-	 * @param reviewType
-	 */
-	//TODO remove a similar method exists already
-	public void addBachelorThesis(BachelorThesis bachelorThesis) {
-		this.addSecondReviewerReview(new SecondReview(this, bachelorThesis), CascadeMode.CASCADE);
-	}
-
-	/**
-	 * Deletes a collection of SecondReviews.
-	 * 
-	 * @param reviews
-	 */
-	public void deleteSecondReviews(Collection<SecondReview> reviews) {
-		reviews.forEach(this::deleteSecondReview);
-	}
-
-	/**
-	 * Add a FirstReview to this Reviewer. If the given CascadeMode is set to
-	 * CASCADE, also adds the review to the BachelorThesis referenced within
-	 * theReview.
-	 * 
+	 * Add a FirstReview to this Reviewer. 
 	 * @see #addReview(Review, CascadeMode)
 	 * 
 	 * @param review
@@ -166,7 +165,7 @@ public class Reviewer implements ChangeableProperties {
 	 * @param review
 	 * @param cascadeMode
 	 */
-	public void addSecondReviewerReview(SecondReview review, CascadeMode cascadeMode) {
+	public void addSecondReview(SecondReview review, CascadeMode cascadeMode) {
 		ArrayList<Review> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.add(review);
 		this.updateOppucation();
@@ -175,11 +174,29 @@ public class Reviewer implements ChangeableProperties {
 			review.getBachelorThesis().setSecondReview(review, CascadeMode.STOP);
 		}
 	}
+	
+	/**
+	 * Add a SecondReview to this Reviewer.
+	 * 
+	 * @param review
+	 * @param cascadeMode
+	 */
+	public void addRejectedSecondReview(SecondReview review) {
+		ArrayList<Review> old = new ArrayList<>(this.rejectedSecondReviews);
+		this.rejectedSecondReviews.add(review);
+		this.propertyChangeSupport.firePropertyChange(REJECTED_SECOND_REVIEWS, old, this.rejectedSecondReviews);
+	}
 
-	private void deleteSecondReview(SecondReview review) {
+	public void removeSecondReview(SecondReview review) {
 		ArrayList<SecondReview> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.remove(review);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
+	}
+	
+	public void removeRejectedSecondReview(SecondReview review) {
+		ArrayList<SecondReview> old = new ArrayList<>(this.rejectedSecondReviews);
+		this.rejectedSecondReviews.remove(review);
+		this.propertyChangeSupport.firePropertyChange(REJECTED_SECOND_REVIEWS, old, this.rejectedSecondReviews);
 	}
 
 	private void updateOppucation() {
@@ -205,23 +222,12 @@ public class Reviewer implements ChangeableProperties {
 	 *         or second reviewer
 	 */
 	public boolean reviewsThesis(BachelorThesis thesis) {
-		return this.getAllReviews().stream().map(Review::getBachelorThesis).anyMatch(t -> t == thesis);
+		return this.getAllSupervisedReviews().stream().map(Review::getBachelorThesis).anyMatch(t -> t == thesis);
 	}
 
 	@Override
 	public String toString() {
 		return this.name;
-	}
-
-	/**
-	 * 
-	 * @param bachelorThesis
-	 * @param reviewType
-	 */
-	public void removeSecondReviewBachelorThesis(BachelorThesis bachelorThesis) {
-		this.getSecondReviews().stream().filter(r -> r.getBachelorThesis() == bachelorThesis).findAny()
-				.ifPresent(this::deleteSecondReview);
-
 	}
 
 	public float getFirstOccupation() {
@@ -231,5 +237,6 @@ public class Reviewer implements ChangeableProperties {
 	public float getSecOccupation() {
 		return this.secOccupation;
 	}
+
 
 }

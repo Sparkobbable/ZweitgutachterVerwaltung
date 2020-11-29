@@ -2,15 +2,21 @@ package controller.statecontrollers;
 
 import static model.enums.EventId.ADD_THESIS;
 import static model.enums.EventId.APPROVE_SEC_REVIEW;
-import static model.enums.EventId.DELETE_THESIS;
+import static model.enums.EventId.REJECT;
 import static model.enums.EventId.SAVE_REVIEWER;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JOptionPane;
 
+import controller.ApplicationStateController;
+import controller.commands.RejectSecondReviewCommand;
 import controller.commands.ReviewTypeChangeCommand;
+import controller.commands.base.BatchCommand;
+import controller.commands.base.Command;
 import model.Model;
 import model.domain.Review;
 import model.domain.Reviewer;
@@ -26,7 +32,7 @@ import view.editor.ReviewerEditorPanel;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_EDITOR}
  */
-public class ReviewerEditorStateController extends AbstractStateController<Review> {
+public class ReviewerEditorStateController extends AbstractStateController {
 
 	public ReviewerEditorStateController(View view, ApplicationStateController applicationStateController,
 			Model model) {
@@ -39,7 +45,7 @@ public class ReviewerEditorStateController extends AbstractStateController<Revie
 		this.registerEvent(SAVE_REVIEWER,
 				(params) -> saveReviewer((Reviewer) params[0].get(), (Optional<Reviewer>) params[1].get()));
 		this.registerEvent(ADD_THESIS, (params) -> addThesis());
-		this.registerEvent(DELETE_THESIS, (params) -> deleteSecondReviews((Collection<SecondReview>) params[0].get()));
+		this.registerEvent(REJECT, (params) -> rejectSecondReviews((Collection<SecondReview>) params[0].get()));
 		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));
 	}
 
@@ -56,8 +62,10 @@ public class ReviewerEditorStateController extends AbstractStateController<Revie
 		this.commandExecutionController.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED));
 	}
 
-	private void deleteSecondReviews(Collection<SecondReview> reviews) {
-		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.deleteSecondReviews(reviews));
+	private void rejectSecondReviews(Collection<SecondReview> reviews) {
+		List<Command> commands = new ArrayList<>();
+		reviews.forEach(review -> commands.add(new RejectSecondReviewCommand(review)));
+		this.commandExecutionController.execute(new BatchCommand(commands));
 	}
 
 	private void addThesis() {

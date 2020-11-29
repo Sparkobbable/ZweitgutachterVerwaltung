@@ -1,10 +1,12 @@
-package controller.commands;
+package controller.commands.base;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class ValueChangeCommand <O,V> extends RevertableCommand{
 
+	
+	//TODO remove
 	
 	private O object;
 	private V oldValue;

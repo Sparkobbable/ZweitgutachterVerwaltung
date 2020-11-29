@@ -1,5 +1,6 @@
 package controller.commands;
 
+import controller.commands.base.RevertableCommand;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
@@ -10,25 +11,24 @@ public class AddBachelorThesisCommand extends RevertableCommand {
 	private Reviewer reviewer;
 	private BachelorThesis bachelorThesis;
 
+	private SecondReview newReview;
 	private SecondReview oldReview;
 
 	public AddBachelorThesisCommand(Reviewer reviewer, BachelorThesis bachelorThesis) {
-		this.reviewer = reviewer;
-		this.bachelorThesis = bachelorThesis;
+		this.newReview = new SecondReview(this.reviewer, this.bachelorThesis);
 		this.oldReview = this.bachelorThesis.getSecondReview().orElse(null);
 	}
 
 	@Override
 	public void execute() {
-		SecondReview review = new SecondReview(this.reviewer, this.bachelorThesis);
-		this.reviewer.addSecondReviewerReview(review, CascadeMode.STOP);
-		this.bachelorThesis.setSecondReview(review, CascadeMode.STOP);
+		this.newReview.getReviewer().addSecondReview(newReview, CascadeMode.STOP);
+		this.newReview.getBachelorThesis().setSecondReview(newReview, CascadeMode.STOP);
 	}
 
 	@Override
 	public void revert() {
-		this.reviewer.removeSecondReviewBachelorThesis(this.bachelorThesis);
-		this.bachelorThesis.setSecondReview(this.oldReview, CascadeMode.STOP);
+		this.newReview.getReviewer().removeSecondReview(this.newReview);
+		this.newReview.getBachelorThesis().setSecondReview(this.oldReview, CascadeMode.STOP);
 	}
 
 }
