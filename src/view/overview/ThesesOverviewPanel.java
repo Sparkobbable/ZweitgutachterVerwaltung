@@ -42,7 +42,6 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 		this.onPropertyChange(Model.THESES, (evt) -> updateTheses((List<BachelorThesis>) evt.getOldValue(),
 				(List<BachelorThesis>) evt.getNewValue()));
 		this.onPropertyChange(BachelorThesis.SECOND_REVIEW, (evt) -> updateTableModel());
-		this.onPropertyChange(Model.DISPLAYED_THESES, (evt) -> updateTableModel());
 
 		this.createUIElements();
 		this.addUIElements();

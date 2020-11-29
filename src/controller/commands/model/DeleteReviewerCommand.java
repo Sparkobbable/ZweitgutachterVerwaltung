@@ -1,4 +1,4 @@
-package controller.commands;
+package controller.commands.model;
 
 import controller.commands.base.RevertableCommand;
 import model.Model;
@@ -25,7 +25,7 @@ public class DeleteReviewerCommand extends RevertableCommand {
 
 		this.reviewer.getUnrejectedSecondReviews().stream().map(Review::getBachelorThesis)
 				.forEach(thesis -> thesis.removeSecondReview());
-		this.model.deleteReviewer(this.reviewer);
+		this.model.removeReviewer(this.reviewer);
 	}
 
 	@Override

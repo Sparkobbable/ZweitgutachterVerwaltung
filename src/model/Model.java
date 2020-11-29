@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import controller.propertychangelistener.ChangeableProperties;
 import controller.propertychangelistener.PropertyChangeManager;
@@ -25,8 +24,6 @@ import model.enums.ApplicationState;
  */
 public class Model implements ChangeableProperties, PropertyChangeListener {
 
-	public static final String DISPLAYED_REVIEWERS = "displayedReviewers";
-	public static final String DISPLAYED_THESES = "displayedTheses";
 	public static final String APPLICATION_STATE = "applicationState";
 	public static final String SELECTED_REVIEWER = "selectedReviewer";
 	public static final String COLLABORATING_REVIEWERS = "collaboratingReviewers";
@@ -73,6 +70,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * Returns a reviewer with the given name, if any exist.
 	 * <p>
 	 * Use this method with care, as names may or may not be unique
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -92,6 +90,29 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 */
 	public Optional<Reviewer> getSelectedReviewer() {
 		return selectedReviewer;
+	}
+
+	/**
+	 * Return a list of all collaborating Reviewers for the selected Reviewer
+	 * 
+	 * @return List<Reviewer>
+	 */
+	public Map<Reviewer, Double> getCollaboratingReviewers() {
+		return this.collaboratingReviewers;
+	}
+
+	/**
+	 * @return A read-only view of the reviewer list
+	 */
+	public List<Reviewer> getReviewers() {
+		return Collections.unmodifiableList(this.reviewers);
+	}
+
+	/**
+	 * @return A read-only view of the theses list
+	 */
+	public List<BachelorThesis> getTheses() {
+		return Collections.unmodifiableList(this.theses);
 	}
 
 	/**
@@ -126,15 +147,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		Map<Reviewer, Double> old = this.collaboratingReviewers;
 		this.collaboratingReviewers = list;
 		this.propertyChangeSupport.firePropertyChange(COLLABORATING_REVIEWERS, old, this.collaboratingReviewers);
-	}
-
-	/**
-	 * Return a list of all collaborating Reviewers for the selected Reviewer
-	 * 
-	 * @return List<Reviewer>
-	 */
-	public Map<Reviewer, Double> getCollaboratingReviewers() {
-		return this.collaboratingReviewers;
 	}
 
 	/**
@@ -175,20 +187,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	}
 
 	/**
-	 * @return A read-only view of the reviewer list
-	 */
-	public List<Reviewer> getReviewers() {
-		return Collections.unmodifiableList(this.reviewers);
-	}
-
-	/**
-	 * @return A read-only view of the theses list
-	 */
-	public List<BachelorThesis> getTheses() {
-		return Collections.unmodifiableList(this.theses);
-	}
-
-	/**
 	 * Search a thesis for the given attributes. If not already existing, create a
 	 * new one
 	 * 
@@ -205,15 +203,6 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 			}
 		}
 		return Optional.empty();
-	}
-
-	/**
-	 * 
-	 * @return A list of theses with a missing second Reviewer.
-	 */
-	public List<BachelorThesis> getThesisMissingSecReview() {
-		return this.getTheses().stream().filter(thesis -> thesis.getSecondReview().isEmpty())
-				.collect(Collectors.toList());
 	}
 
 	public void updateReviewer(Reviewer reviewer, Reviewer newReviewer) {
@@ -234,7 +223,7 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 	 * Defines the methods that should be called when an observed property is
 	 * changed
 	 */
-	//TODO remove this and handle with command pattern
+	// TODO remove this and handle with command pattern
 	@SuppressWarnings("unchecked")
 	private void initializePropertyChangeHandlers() {
 		this.propertyChangeManager.onPropertyChange(Reviewer.FIRST_REVIEWS,
@@ -293,25 +282,31 @@ public class Model implements ChangeableProperties, PropertyChangeListener {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
 	}
 
-
 	public void clearSelectedReviewer() {
 		Optional<Reviewer> old = this.selectedReviewer;
 		this.selectedReviewer = Optional.empty();
 		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
 	}
 
-	public void deleteReviewer(Reviewer reviewer) {
+	public void removeReviewer(Reviewer reviewer) {
 		if (!this.reviewers.contains(reviewer)) {
 			throw new IllegalStateException("Reviewer does not exist");
 		}
-		if (!reviewer.getFirstReviews().isEmpty()) {
-			throw new IllegalStateException("Reviewer with firstReviews cannot be deleted");
+		if (reviewer.getTotalReviewCount() > 0) {
+			throw new IllegalStateException("Reviewer that supervises Reviewes cannot be deleted");
 		}
 
 		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.remove(reviewer);
 		reviewer.removePropertyChangeListener(this);
 		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	}
+
+	public Reviewer getNewestReviewer() {
+		if (this.reviewers.isEmpty()) {
+			throw new IllegalStateException("No Reviewer has been added yet.");
+		}
+		return this.reviewers.get(this.reviewers.size() - 1);
 	}
 
 }

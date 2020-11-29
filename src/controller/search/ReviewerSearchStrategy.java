@@ -6,9 +6,9 @@ public class ReviewerSearchStrategy implements SearchStrategy<Reviewer> {
 
 	@Override
 	public boolean match(Reviewer obj, String searchText) {
-		String lower = searchText.toLowerCase();
-		return obj.getName().toLowerCase().contains(lower) || obj.getEmail().toLowerCase().contains(lower)
-				|| obj.getComment().toLowerCase().contains(lower);
+		return SearchStrategy.containsIgnoreCase(obj.getName(), searchText)
+				|| SearchStrategy.containsIgnoreCase(obj.getEmail(), searchText)
+				|| SearchStrategy.containsIgnoreCase(obj.getComment(), searchText);
 	}
 
 }

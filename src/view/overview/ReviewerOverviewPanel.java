@@ -35,7 +35,6 @@ public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 		this.observe(this.model);
 
 		this.onPropertyChange(Model.REVIEWERS, (evt) -> updateTableModel());
-		this.onPropertyChange(Model.DISPLAYED_REVIEWERS, (evt) -> updateTableModel());
 
 		this.tableModel.updateData();
 

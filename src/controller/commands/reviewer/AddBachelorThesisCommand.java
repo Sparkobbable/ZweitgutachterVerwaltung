@@ -1,4 +1,4 @@
-package controller.commands;
+package controller.commands.reviewer;
 
 import controller.commands.base.RevertableCommand;
 import model.domain.BachelorThesis;

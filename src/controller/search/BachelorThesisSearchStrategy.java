@@ -6,10 +6,9 @@ public class BachelorThesisSearchStrategy implements SearchStrategy<BachelorThes
 
 	@Override
 	public boolean match(BachelorThesis obj, String searchText) {
-		String lower = searchText.toLowerCase();
-		return obj.getTopic().toLowerCase().contains(lower)
-				|| obj.getAuthor().getName().toLowerCase().contains(lower)
-				|| obj.getFirstReview().getReviewer().getName().toLowerCase().contains(lower);
+		return SearchStrategy.containsIgnoreCase(obj.getTopic(), searchText)
+				|| SearchStrategy.containsIgnoreCase(obj.getAuthor().getName(), searchText)
+				|| SearchStrategy.containsIgnoreCase(obj.getFirstReview().getReviewer().getName(), searchText);
 	}
 
 }

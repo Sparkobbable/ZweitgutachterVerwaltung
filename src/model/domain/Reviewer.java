@@ -21,7 +21,6 @@ public class Reviewer implements ChangeableProperties {
 	public static final String FIRST_REVIEWS = "firstReviews";
 	public static final String SECOND_REVIEWS = "secondReviews";
 	public static final String REJECTED_SECOND_REVIEWS = "rejectedSecondReviews";
-
 	public static final String EMAIL = "email";
 	public static final String COMMENT = "comment";
 
@@ -43,14 +42,22 @@ public class Reviewer implements ChangeableProperties {
 	 * 
 	 */
 	public Reviewer(String name, int maxSupervisedThesis, String email, String comment) {
-		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.firstReviews = new ArrayList<>();
-		this.secondReviews = new ArrayList<>();
-		this.rejectedSecondReviews = new ArrayList<>();
+		this();
 		this.name = name;
 		this.maxSupervisedThesis = maxSupervisedThesis;
 		this.email = email;
 		this.comment = comment;
+	}
+	
+	/**
+	 * Creates a Reviewer for BachelorThesis
+	 * 
+	 */
+	public Reviewer() {
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		this.firstReviews = new ArrayList<>();
+		this.secondReviews = new ArrayList<>();
+		this.rejectedSecondReviews = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -124,13 +131,13 @@ public class Reviewer implements ChangeableProperties {
 
 	public void setEmail(String email) {
 		String old = this.email;
-		this.email = name;
+		this.email = email;
 		this.propertyChangeSupport.firePropertyChange(EMAIL, old, email);
 	}
 
 	public void setComment(String comment) {
 		String old = this.comment;
-		this.comment = name;
+		this.comment = comment;
 		this.propertyChangeSupport.firePropertyChange(COMMENT, old, comment);
 	}
 

@@ -1,4 +1,4 @@
-package controller.commands;
+package controller.commands.model;
 
 import controller.commands.base.UnrevertableCommand;
 import model.persistence.PersistenceHandler;

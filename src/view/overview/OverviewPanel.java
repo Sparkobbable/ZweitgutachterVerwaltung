@@ -50,17 +50,13 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 	}
 
 	protected void createUIElements() {
-		this.searchField = new SearchField<>(this.createSearchStrategy(), (t) -> {
-			System.out.println(t);
-			updateTableModel();
-		});
+		this.searchField = new SearchField<>(this.createSearchStrategy(), t -> updateTableModel());
 
 		this.tableModel = createTableModel();
 		this.table = new JTable(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
 
 		this.table.setFillsViewportHeight(true);
-		// TODO observe sorting behavior when bachelor thesis count >= 10
 		this.table.setAutoCreateRowSorter(true);
 	}
 

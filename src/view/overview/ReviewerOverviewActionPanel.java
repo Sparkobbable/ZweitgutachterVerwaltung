@@ -51,7 +51,7 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel<Reviewer> {
 	protected List<EventSource> getEventSources() {
 		return List.of(ButtonEventSource.of(EventId.EDIT, edit, selectedElementsSupplier),
 				ButtonEventSource.of(EventId.DELETE, delete, selectedElementsSupplier),
-				ButtonEventSource.of(EventId.NEW, newReviewer),
+				ButtonEventSource.of(EventId.CREATE, newReviewer),
 				ButtonEventSource.of(EventId.SHOW_COLLABORATION, showCollaboration, selectedElementsSupplier));
 	}
 

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import controller.Controller;
-import controller.commands.AddBachelorThesisCommand;
+import controller.commands.reviewer.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;

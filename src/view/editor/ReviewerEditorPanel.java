@@ -27,20 +27,20 @@ import model.domain.SecondReview;
 import model.enums.EventId;
 import view.View;
 import view.eventsources.ButtonEventSource;
+import view.eventsources.TextFieldEventSource;
 import view.panelstructure.DefaultPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
 public class ReviewerEditorPanel extends DefaultPanel {
 	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> selectedReviewer;
-	private Optional<Reviewer> originalReviewer;
 	private Model model;
 
 	private SupervisedThesisTableModel supervisedThesisTableModel;
 	private JTable supervisedThesisTable;
 	private JScrollPane supervisedThesisPane;
 
-	private JTextField nameField;
+	private JTextField name;
 	private JTextField maxSupervised;
 	private JTextField email;
 	private JTextField comment;
@@ -65,7 +65,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		super("Dozenteneditor");
 		this.model = model;
 
-		this.nameField = new JTextField();
+		this.name = new JTextField();
 		this.maxSupervised = new JTextField();
 		this.email = new JTextField();
 		this.comment = new JTextField();
@@ -87,7 +87,6 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.observe(this.model);
 
 		// observe reviewer and the theses where they are second reviewers
-		this.originalReviewer = this.model.getSelectedReviewer();
 		this.selectedReviewer.ifPresent(this::observeReviewer);
 	}
 
@@ -102,24 +101,23 @@ public class ReviewerEditorPanel extends DefaultPanel {
 				this.selectedReviewer);
 		this.supervisedThesisTable = new JTable(supervisedThesisTableModel);
 		this.supervisedThesisTable.setFillsViewportHeight(true);
-		// TODO observe sorting behavior when bachelor thesis count >= 10
 		this.supervisedThesisTable.setAutoCreateRowSorter(true);
 		this.supervisedThesisPane = new JScrollPane(this.supervisedThesisTable);
 	}
 
 	private void addUIElements() {
 		this.add(this.nameFieldLabel);
-		this.nameFieldLabel.setLabelFor(this.nameField);
-		this.add(this.nameField);
+		this.nameFieldLabel.setLabelFor(this.name);
+		this.add(this.name);
 		this.add(this.maxSupervisedLabel);
 		this.maxSupervisedLabel.setLabelFor(this.maxSupervised);
 		this.add(this.maxSupervised);
 		this.add(this.emailLabel);
 		this.emailLabel.setLabelFor(this.email);
-		this.add(this.email); // TODO Supply mockdata
+		this.add(this.email);
 		this.add(this.commentLabel);
 		this.commentLabel.setLabelFor(this.comment);
-		this.add(this.comment); // and for this
+		this.add(this.comment);
 		this.add(this.supervisedLabel);
 		this.supervisedLabel.setLabelFor(this.supervisedThesisPane);
 		this.add(this.supervisedThesisPane);
@@ -131,22 +129,29 @@ public class ReviewerEditorPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(
-				new ButtonEventSource(EventId.SAVE_REVIEWER, save, () -> getUpdatedReviewer(),
-						() -> getOriginalReviewer()),
+		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save),
 				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis),
 				new ButtonEventSource(EventId.REJECT, deleteThesis, () -> getSelectedReviews()),
-				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getSelectedReviews()));
+				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getSelectedReviews()),
+				new TextFieldEventSource(EventId.NAME_CHANGED, this.name, () -> this.name.getText()),
+				new TextFieldEventSource(EventId.MAX_SUPERVISED_THESES_CHANGED, this.maxSupervised,
+						() -> this.maxSupervised.getText()),
+				new TextFieldEventSource(EventId.EMAIL_CHANGED, this.email, () -> this.email.getText()),
+				new TextFieldEventSource(EventId.COMMENT_CHANGED, this.comment, () -> this.comment.getText()));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void initializePropertyChangeConsumers() {
+	private void initializePropertyChangeConsumers() {
 		this.onPropertyChange(Model.SELECTED_REVIEWER,
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
 		this.onPropertyChange(Reviewer.SECOND_REVIEWS,
 				(evt) -> updateObserversForSecondReviews((List<Review>) evt.getOldValue(),
 						(List<Review>) evt.getNewValue()));
 		this.onPropertyChange(SecondReview.STATUS, (evt) -> this.refreshTableModel());
+		this.onPropertyChange(Reviewer.NAME, e -> this.name.setText((String) e.getNewValue()));
+		this.onPropertyChange(Reviewer.EMAIL, e -> this.email.setText((String) e.getNewValue()));
+		this.onPropertyChange(Reviewer.COMMENT, e -> this.comment.setText((String) e.getNewValue()));
+		this.onPropertyChange(Reviewer.MAX_SUPERVISED_THESES, e -> this.maxSupervised.setText((String) e.getNewValue()));
 	}
 
 	private void updateObserversForSecondReviews(List<Review> oldReviews, List<Review> newReviews) {
@@ -173,31 +178,16 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.repaint();
 	}
 
-	protected void observeReviewer(Reviewer reviewer) {
+	private void observeReviewer(Reviewer reviewer) {
 		this.observe(reviewer);
 		this.observe(reviewer.getUnrejectedSecondReviews());
 	}
 
 	private void updateReviewerFields(Reviewer reviewer) {
-		this.nameField.setText(reviewer.getName());
+		this.name.setText(reviewer.getName());
 		this.maxSupervised.setText(String.valueOf(reviewer.getMaxSupervisedThesis()));
 		this.email.setText(reviewer.getEmail());
 		this.comment.setText(reviewer.getComment());
-	}
-
-	/**
-	 * @deprecated erroneous
-	 * 
-	 * @return
-	 */
-	private Reviewer getUpdatedReviewer() {
-		// TODO wont work for theses
-		return new Reviewer(this.nameField.getText(), Integer.valueOf(this.maxSupervised.getText()),
-				this.email.getText(), this.comment.getText());
-	}
-
-	private Optional<Reviewer> getOriginalReviewer() {
-		return this.originalReviewer;
 	}
 
 	private List<Review> getSelectedReviews() {
@@ -207,6 +197,6 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	}
 
 	public boolean validateFields() {
-		return !(this.nameField.getText().isBlank() || this.maxSupervised.getText().isBlank());
+		return !(this.name.getText().isBlank() || this.maxSupervised.getText().isBlank());
 	}
 }

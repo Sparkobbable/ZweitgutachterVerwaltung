@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import controller.Controller;
 import controller.JSONController;
-import controller.commands.LoadSystemStateCommand;
+import controller.commands.model.LoadSystemStateCommand;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;

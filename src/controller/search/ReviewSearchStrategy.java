@@ -6,9 +6,8 @@ public class ReviewSearchStrategy implements SearchStrategy<Review> {
 
 	@Override
 	public boolean match(Review obj, String searchText) {
-		String lower = searchText.toLowerCase();
-		return obj.getBachelorThesis().getTopic().toLowerCase().contains(lower)
-				|| obj.getReviewer().getName().toLowerCase().contains(lower);
+		return SearchStrategy.containsIgnoreCase(obj.getBachelorThesis().getTopic(), searchText)
+				|| SearchStrategy.containsIgnoreCase(obj.getReviewer().getName(), searchText);
 	}
 
 }
