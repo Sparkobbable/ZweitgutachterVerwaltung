@@ -1,4 +1,4 @@
-package view.editor;
+package view.panels.editor;
 
 import static view.tableModels.SupervisedThesisTableModel.AUTHOR_NAME;
 import static view.tableModels.SupervisedThesisTableModel.AUTHOR_STUDY_GROUP;
@@ -28,7 +28,7 @@ import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.eventsources.TextFieldEventSource;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
 public class ReviewerEditorPanel extends DefaultPanel {

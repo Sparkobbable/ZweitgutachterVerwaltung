@@ -1,4 +1,4 @@
-package view.collaboration;
+package view.panels.collaboration;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +12,8 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.View;
 import view.ViewProperties;
-import view.panelstructure.AbstractViewPanel;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.AbstractViewPanel;
+import view.panels.prototypes.DefaultPanel;
 
 public class CollaborationOptionsPanel extends DefaultPanel {
 

@@ -1,4 +1,4 @@
-package view.panelstructure;
+package view.panels.prototypes;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;

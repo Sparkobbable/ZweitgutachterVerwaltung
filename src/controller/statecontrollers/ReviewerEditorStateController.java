@@ -34,7 +34,7 @@ import model.enums.ReviewStatus;
 import model.enums.ReviewType;
 import util.Log;
 import view.View;
-import view.editor.ReviewerEditorPanel;
+import view.panels.editor.ReviewerEditorPanel;
 
 /**
  * Handles the Application when in ApplicationState

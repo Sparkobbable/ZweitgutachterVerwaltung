@@ -1,4 +1,4 @@
-package view.overview;
+package view.panels.overview;
 
 import java.awt.BorderLayout;
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ import model.Model;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.TableClickEventSource;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.widgets.SearchField;
 

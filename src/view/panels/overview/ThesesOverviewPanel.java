@@ -1,4 +1,4 @@
-package view.overview;
+package view.panels.overview;
 
 import static view.tableModels.ThesesOverviewTableModel.AUTHOR_NAME;
 import static view.tableModels.ThesesOverviewTableModel.AUTHOR_STUDY_GROUP;

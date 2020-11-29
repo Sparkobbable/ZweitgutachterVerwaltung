@@ -11,12 +11,14 @@ import controller.propertychangelistener.PropertyChangeManager;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
-import view.collaboration.CollaborationPanel;
-import view.editor.ReviewerEditorPanel;
-import view.editor.ThesisAssignmentPanel;
-import view.overview.ReviewerOverviewPanel;
-import view.overview.ThesesOverviewPanel;
-import view.panelstructure.AbstractViewPanel;
+import view.panels.HomePanel;
+import view.panels.StateChooserPanel;
+import view.panels.collaboration.CollaborationPanel;
+import view.panels.editor.ReviewerEditorPanel;
+import view.panels.editor.ThesisAssignmentPanel;
+import view.panels.overview.ReviewerOverviewPanel;
+import view.panels.overview.ThesesOverviewPanel;
+import view.panels.prototypes.AbstractViewPanel;
 
 // TODO JavaDoc
 public class View implements EventSource {

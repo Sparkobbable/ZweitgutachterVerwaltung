@@ -1,4 +1,4 @@
-package view.overview;
+package view.panels.overview;
 
 import static view.tableModels.ReviewerOverviewTableModel.NAME;
 import static view.tableModels.ReviewerOverviewTableModel.OCCUPATION;

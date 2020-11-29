@@ -1,4 +1,4 @@
-package view.collaboration;
+package view.panels.collaboration;
 
 import java.awt.GridLayout;
 import java.util.List;
@@ -10,7 +10,7 @@ import controller.events.EventSource;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ComboBoxEventSource;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 
 public class CollaborationComboBoxPanel extends DefaultPanel {
 

@@ -1,4 +1,4 @@
-package view.panelstructure;
+package view.panels.prototypes;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;

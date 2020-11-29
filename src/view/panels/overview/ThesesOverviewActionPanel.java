@@ -1,4 +1,4 @@
-package view.overview;
+package view.panels.overview;
 
 import java.util.List;
 import java.util.function.Supplier;

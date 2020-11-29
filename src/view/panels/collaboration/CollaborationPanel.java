@@ -1,4 +1,4 @@
-package view.collaboration;
+package view.panels.collaboration;
 
 import java.awt.BorderLayout;
 import java.util.List;
@@ -9,8 +9,8 @@ import model.Model;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.ViewState;
-import view.panelstructure.AbstractViewPanel;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.AbstractViewPanel;
+import view.panels.prototypes.DefaultPanel;
 
 public class CollaborationPanel extends DefaultPanel {
 

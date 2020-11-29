@@ -1,11 +1,11 @@
-package view.overview;
+package view.panels.overview;
 
 import java.awt.FlowLayout;
 import java.util.List;
 import java.util.function.Supplier;
 
 import view.ViewProperties;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 
 public abstract class OverviewActionPanel<T> extends DefaultPanel {
 	private static final long serialVersionUID = 1L;

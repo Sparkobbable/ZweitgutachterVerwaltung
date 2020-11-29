@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -11,8 +11,9 @@ import javax.swing.JLabel;
 
 import controller.events.EventSource;
 import model.enums.EventId;
+import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 import view.resource.ImageLoader;
 
 /**

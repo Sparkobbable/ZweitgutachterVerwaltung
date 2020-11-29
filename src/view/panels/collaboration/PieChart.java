@@ -1,68 +1,63 @@
-package view.collaboration;
+package view.panels.collaboration;
 
 import java.util.Collections;
+//github.com/Sparkobbable/ZweitgutachterVerwaltung.git
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
 import view.ViewProperties;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 
-public class CollaborationTableModel extends DefaultPanel {
-	
+public class PieChart extends DefaultPanel {
+
 	private Model model;
-	
-	private String[] columnNames = {"Gutachter", "Anzahl gemeinsamer Bachelorarbeiten"};
-	private Object[][] data;
-	private JTable table;
-	
-	public CollaborationTableModel(Model model) {
+
+	private DefaultPieDataset dataset;
+	private JFreeChart chart;
+	private ChartPanel panel;
+
+	public PieChart(Model model) {
 		super("");
 		this.model = model;
-		this.data = new Object[30][2];
-		
+		this.dataset = new DefaultPieDataset();
 		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		
 		this.createUIElements();
 	}
-	
+
 	private void createDataset() {
-		for(int i = 0; i < this.data.length; i++) {
-			this.data[i][0] = null;
-			this.data[i][1] = null;
-		}
+		this.dataset.clear();
 		Map<Reviewer, Double> reviewers = this.model.getCollaboratingReviewers();
-		int i = 0;
 		for (Entry<Reviewer, Double> reviewer : reviewers.entrySet()) {
-			this.data[i][0] = reviewer.getKey();
-			this.data[i][1] = reviewer.getValue().intValue();
-			i++;
-			System.out.println("Schleife: " + i);
+			this.dataset.setValue(reviewer.getKey().getName(), reviewer.getValue());
 		}
-		this.repaint();
-		
 	}
-	
+
 	private void createUIElements() {
-		this.table = new JTable(data, columnNames);
-		JScrollPane sp = new JScrollPane(table);
-		this.add(sp);
-}
+			this.chart = ChartFactory.createPieChart("Zusammenarbeit mit Gutachtern", this.dataset, true, true,
+					false);
+			this.panel = new ChartPanel(chart);
+			this.panel.setBackground(ViewProperties.BACKGROUND_COLOR);
+			this.add(this.panel);
+	}
 
 	@Override
 	protected List<EventSource> getEventSources() {
 		// TODO Auto-generated method stub
 		return Collections.emptyList();
 	}
-	
+
 	/**
 	 * Defines the methods that should be called when an observed property is
 	 * changed
@@ -71,4 +66,3 @@ public class CollaborationTableModel extends DefaultPanel {
 		this.onPropertyChange(Model.COLLABORATING_REVIEWERS, (evt) -> createDataset());
 	}
 }
-

@@ -14,7 +14,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import util.Log;
-import view.panelstructure.AbstractViewPanel;
+import view.panels.prototypes.AbstractViewPanel;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;

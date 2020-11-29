@@ -1,4 +1,4 @@
-package view.editor;
+package view.panels.editor;
 
 import static view.tableModels.ThesesOverviewTableModel.AUTHOR_NAME;
 import static view.tableModels.ThesesOverviewTableModel.AUTHOR_STUDY_GROUP;
@@ -25,7 +25,7 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AbstractTableModel.Column;
 import view.tableModels.ThesesOverviewTableModel;
 import view.widgets.SearchField;

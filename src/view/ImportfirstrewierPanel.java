@@ -10,8 +10,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import controller.events.EventSource;
 import model.enums.EventId;
 import view.eventsources.ChooserEventSource;
-import view.panelstructure.AbstractViewPanel;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.AbstractViewPanel;
+import view.panels.prototypes.DefaultPanel;
 
 
 public class ImportfirstrewierPanel extends DefaultPanel {

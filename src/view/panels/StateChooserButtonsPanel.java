@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import java.awt.Color;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import controller.events.EventSource;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
-import view.panelstructure.DefaultPanel;
+import view.panels.prototypes.DefaultPanel;
 
 public class StateChooserButtonsPanel extends DefaultPanel{
 
