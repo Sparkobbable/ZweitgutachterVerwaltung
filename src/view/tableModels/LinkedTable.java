@@ -18,14 +18,22 @@ public class LinkedTable<T> extends JTable {
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
-
-				if (tableModel.isReference(convertRowIndexToModel(rowAtPoint(e.getPoint())),
-						convertColumnIndexToModel(columnAtPoint(e.getPoint())))) {
-					LinkedTable.this.setCursor(HAND_CURSOR);
-				} else {
-					LinkedTable.this.setCursor(DEFAULT_CURSOR);
-				}
+				LinkedTable.this.updateCursor(tableModel, e);
 			}
+
 		});
 	}
+
+	protected void updateCursor(AbstractTableModel<T> tableModel, MouseEvent e) {
+		int row = rowAtPoint(e.getPoint());
+		int column = columnAtPoint(e.getPoint());
+
+		if (row >= 0 && column >= 0
+				&& tableModel.isReference(convertRowIndexToModel(row), convertColumnIndexToModel(column))) {
+			this.setCursor(HAND_CURSOR);
+		} else {
+			this.setCursor(DEFAULT_CURSOR);
+		}
+	}
+
 }
