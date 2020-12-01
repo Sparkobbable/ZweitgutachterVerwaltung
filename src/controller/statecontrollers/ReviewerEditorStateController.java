@@ -12,8 +12,6 @@ import static model.enums.EventId.SAVE_REVIEWER;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 import javax.swing.JOptionPane;
 
@@ -32,9 +30,7 @@ import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;
 import model.enums.ReviewType;
-import util.Log;
 import view.View;
-import view.panels.editor.ReviewerEditorPanel;
 
 /**
  * Handles the Application when in ApplicationState
@@ -49,39 +45,41 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(SAVE_REVIEWER,
-				(params) -> saveReviewer((Reviewer) params[0].get(), (Optional<Reviewer>) params[1].get()));
+		this.registerEvent(SAVE_REVIEWER, (params) -> saveReviewer());
 		this.registerEvent(ADD_THESIS, (params) -> addThesis());
 		this.registerEvent(REJECT, (params) -> rejectSecondReviews((Collection<SecondReview>) params[0].get()));
 		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));
 
-		this.registerEvent(NAME_CHANGED, this::nameChanged);
-		this.registerEvent(MAX_SUPERVISED_THESES_CHANGED, this::maxSupervisedThesesChanged);
-		this.registerEvent(EMAIL_CHANGED, this::emailChanged);
-		this.registerEvent(COMMENT_CHANGED, this::commentChanged);
+		this.registerEvent(NAME_CHANGED, (params) -> nameChanged((String) params[0].get()));
+		this.registerEvent(MAX_SUPERVISED_THESES_CHANGED, (params) -> maxSupervisedThesesChanged((String) params[0].get()));
+		this.registerEvent(EMAIL_CHANGED, (params) -> emailChanged((String) params[0].get()));
+		this.registerEvent(COMMENT_CHANGED, (params) -> commentChanged((String) params[0].get()));
 	}
 
-	private void nameChanged(Supplier<?>[] params) {
-		this.execute(new ReviewerNameChangeCommand(this.model.getSelectedReviewer().orElseThrow(),
-				(String) params[0].get()));
+	private void nameChanged(String newValue) {
+		if (!this.model.getSelectedReviewer().orElseThrow().getName().equals(newValue)) {
+			this.execute(new ReviewerNameChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue));
+		}
 	}
 
-	private void maxSupervisedThesesChanged(Supplier<?>[] params) {
-		//TODO validate that this is a positive number
-		int maxSupervisedTheses = Integer.parseInt((String) params[0].get());
-		this.execute(new ReviewerMaxSupervisedThesesChangeCommand(this.model.getSelectedReviewer().orElseThrow(),
-				maxSupervisedTheses));
+	private void maxSupervisedThesesChanged(String newValue) {
+		int maxSupervisedTheses = Integer.parseInt(newValue);
+		if (this.model.getSelectedReviewer().orElseThrow().getMaxSupervisedThesis() != maxSupervisedTheses) {
+			this.execute(new ReviewerMaxSupervisedThesesChangeCommand(this.model.getSelectedReviewer().orElseThrow(),
+					maxSupervisedTheses));
+		}
 	}
 
-	private void emailChanged(Supplier<?>[] params) {
-		this.execute(new ReviewerEmailChangeCommand(this.model.getSelectedReviewer().orElseThrow(),
-				(String) params[0].get()));
+	private void emailChanged(String newValue) {
+		if (!this.model.getSelectedReviewer().orElseThrow().getEmail().equals(newValue)) {
+			this.execute(new ReviewerEmailChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue));
+		}
 	}
 
-	private void commentChanged(Supplier<?>[] params) {
-		System.out.println(params[0].get());
-		this.execute(new ReviewerCommentChangeCommand(this.model.getSelectedReviewer().orElseThrow(),
-				(String) params[0].get()));
+	private void commentChanged(String newValue) {
+		if (!this.model.getSelectedReviewer().orElseThrow().getComment().equals(newValue)) {
+			this.execute(new ReviewerCommentChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue));
+		}
 	}
 
 	private void approveReviews(Collection<SecondReview> reviews) {
@@ -111,25 +109,20 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private boolean validate() {
-		if (!((ReviewerEditorPanel) this.view.assumeState(ApplicationState.REVIEWER_EDITOR)).validateFields()) {
-			this.view.assumeState(ApplicationState.REVIEWER_EDITOR)
-					.alert("Die benötigten Felder wurden nicht alle gefüllt!", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
+
 		return true;
 	}
 
-	private void saveReviewer(Reviewer newReviewer, Optional<Reviewer> originalReviewer) {
-		if (!validate()) {
-			return;
+	private void saveReviewer() {
+		if (!this.validateFields()) {
+			this.view.alert("Die benötigten Felder wurden nicht alle gefüllt!", JOptionPane.ERROR_MESSAGE);
 		}
-		Log.info(this.getClass().getName(), "Saving edited Reviewer %s.", newReviewer.getName());
-		if (originalReviewer.isPresent()) {
-			model.updateReviewer(originalReviewer.get(), newReviewer);
-		} else {
-			model.addReviewer(newReviewer);
-		}
-		this.model.clearSelectedReviewer();
 		switchToLastVisitedState();
+	}
+
+	public boolean validateFields() {
+		Reviewer selectedReviewer = this.model.getSelectedReviewer().orElseThrow();
+		return selectedReviewer.getName() != null && selectedReviewer.getName().isBlank()
+				&& selectedReviewer.getMaxSupervisedThesis() >= 0;
 	}
 }

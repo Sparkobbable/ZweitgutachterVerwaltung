@@ -41,10 +41,8 @@ public class Reviewer implements ChangeableProperties {
 	 * Creates a Reviewer for BachelorThesis
 	 * 
 	 */
-	public Reviewer(String name, int maxSupervisedThesis, String email, String comment) {
-		this();
-		this.name = name;
-		this.maxSupervisedThesis = maxSupervisedThesis;
+	public Reviewer(String name, int maxSupervisedTheses, String email, String comment) {
+		this(name, maxSupervisedTheses);
 		this.email = email;
 		this.comment = comment;
 	}
@@ -53,11 +51,14 @@ public class Reviewer implements ChangeableProperties {
 	 * Creates a Reviewer for BachelorThesis
 	 * 
 	 */
-	public Reviewer() {
+	public Reviewer(String name, int maxSupervisedTheses) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.firstReviews = new ArrayList<>();
 		this.secondReviews = new ArrayList<>();
 		this.rejectedSecondReviews = new ArrayList<>();
+		this.name = name;
+		this.maxSupervisedThesis = maxSupervisedTheses;
+
 	}
 
 	public String getName() {

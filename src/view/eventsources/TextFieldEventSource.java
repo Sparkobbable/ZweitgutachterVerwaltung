@@ -1,5 +1,7 @@
 package view.eventsources;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.function.Supplier;
 
 import javax.swing.JTextField;
@@ -22,7 +24,13 @@ public class TextFieldEventSource extends SingleEventSource {
 
 	@Override
 	public void addEventHandler(Action action) {
-		textField.addActionListener(e -> action.perform(this.params));
+		this.textField.addFocusListener(new FocusAdapter() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				action.perform(TextFieldEventSource.this.params);
+			}
+		});
 	}
 
 }

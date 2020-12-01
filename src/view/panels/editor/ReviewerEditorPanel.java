@@ -28,6 +28,8 @@ import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.eventsources.TextFieldEventSource;
+import view.inputverifiers.IntegerInputVerifier;
+import view.inputverifiers.NonEmptyStringInputVerifier;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
@@ -65,16 +67,6 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		super("Dozenteneditor");
 		this.model = model;
 
-		this.name = new JTextField();
-		this.maxSupervised = new JTextField();
-		this.email = new JTextField();
-		this.comment = new JTextField();
-		this.nameFieldLabel = new JLabel("Name: ");
-		this.maxSupervisedLabel = new JLabel("Max. Anzahl Bachelorarbeiten: ");
-		this.emailLabel = new JLabel("Email: ");
-		this.commentLabel = new JLabel("Bemerkung: ");
-		this.supervisedLabel = new JLabel("Betreute Bachelorarbeiten: ");
-
 		this.selectedReviewer = this.model.getSelectedReviewer();
 
 		this.setLayout(new GridLayout(7, 2));
@@ -91,6 +83,19 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	}
 
 	private void createUIElements() {
+		this.name = new JTextField();
+		this.maxSupervised = new JTextField();
+		this.email = new JTextField();
+		this.comment = new JTextField();
+		this.nameFieldLabel = new JLabel("Name: ");
+		this.maxSupervisedLabel = new JLabel("Max. Anzahl Bachelorarbeiten: ");
+		this.emailLabel = new JLabel("Email: ");
+		this.commentLabel = new JLabel("Bemerkung: ");
+		this.supervisedLabel = new JLabel("Betreute Bachelorarbeiten: ");
+		
+		this.name.setInputVerifier(new NonEmptyStringInputVerifier());
+		this.maxSupervised.setInputVerifier(new IntegerInputVerifier());
+		
 		this.save = this.buttonFactory.createButton("Speichern");
 		this.addBachelorThesis = this.buttonFactory.createButton("Bachelorarbeit hinzufügen");
 		this.deleteThesis = this.buttonFactory.createButton("Bachelorarbeit löschen");
@@ -197,7 +202,4 @@ public class ReviewerEditorPanel extends DefaultPanel {
 				.mapToObj(this.supervisedThesisTableModel::getByIndex).collect(Collectors.toList());
 	}
 
-	public boolean validateFields() {
-		return !(this.name.getText().isBlank() || this.maxSupervised.getText().isBlank());
-	}
 }
