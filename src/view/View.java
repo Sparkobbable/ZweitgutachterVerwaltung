@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +37,7 @@ public class View implements EventSource {
 		this.eventSourceHandler = new CompositeEventSource();
 		this.eventSourceHandler.register(this.menuHandler);
 		this.createViews();
-		window.setJMenuBar(menuHandler);
+		this.window.setJMenuBar(this.menuHandler);
 
 		this.propertyChangeManager = new PropertyChangeManager();
 		this.propertyChangeManager.onPropertyChange(Model.APPLICATION_STATE,
@@ -73,12 +72,12 @@ public class View implements EventSource {
 	 * Shows the window.
 	 */
 	public void setVisible() {
-		window.setVisible(true);
+		this.window.setVisible(true);
 	}
 
 	private void switchState(ApplicationState oldState, ApplicationState newState) {
-		viewsByApplicationStates.get(newState).prepare();
-		window.switchToView(viewsByApplicationStates.get(newState).getViewId());
+		this.viewsByApplicationStates.get(newState).prepare();
+		this.window.switchToView(this.viewsByApplicationStates.get(newState).getViewId());
 	}
 
 	// TODO rmv
@@ -88,17 +87,7 @@ public class View implements EventSource {
 	 * @return A view of the view responsible for handling that state
 	 */
 	public AbstractViewPanel assumeState(ApplicationState state) {
-		return viewsByApplicationStates.get(state);
-	}
-
-	/**
-	 * 
-	 * @param state
-	 * @return A (different) view of the view responsible for handling that state
-	 */
-	// TODO return view of view instead of whole object?
-	public AbstractViewPanel atState(ApplicationState state) {
-		return viewsByApplicationStates.get(state);
+		return this.viewsByApplicationStates.get(state);
 	}
 
 	/**
@@ -134,7 +123,6 @@ public class View implements EventSource {
 
 	public void addEventHandler(ApplicationState state, EventId eventId, Action action) {
 		this.viewsByApplicationStates.get(state).addEventHandler(eventId, action);
-		;
 	}
 
 	public void setUndoable(boolean b) {
@@ -143,7 +131,5 @@ public class View implements EventSource {
 
 	public void setRedoable(boolean b) {
 		this.menuHandler.setRedoable(b);
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -68,7 +68,7 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	}
 	
 	private void create() {
-		this.execute(new CreateReviewerCommand(this.model));
+		this.execute(new CreateReviewerCommand(this.model, ApplicationState.REVIEWER_OVERVIEW));
 		this.model.setSelectedReviewer(this.model.getNewestReviewer());
 		this.switchState(ApplicationState.REVIEWER_EDITOR);
 	}
@@ -84,7 +84,7 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 
 	private void deleteReviewers(List<Reviewer> reviewers) {
 		List<Command> deleteCommands = new ArrayList<>();
-		reviewers.forEach(r -> deleteCommands.add(new DeleteReviewerCommand(this.model, r)));
+		reviewers.forEach(r -> deleteCommands.add(new DeleteReviewerCommand(r, this.model, ApplicationState.REVIEWER_OVERVIEW)));
 		this.execute(new BatchCommand(deleteCommands));
 	}
 

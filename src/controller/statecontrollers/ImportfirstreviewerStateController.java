@@ -47,12 +47,12 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 			try {
 				ArrayList<Reviewer> reviewers = csv.loadcsvImport();
 				//this.model.setReviewers(reviewers);
-				this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Die Datei wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
+				this.view.alert("Die Datei wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
 				} catch(Exception e) {
-				this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Es ist ein Fehler beim Laden der Datei aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
+				this.view.alert("Es ist ein Fehler beim Laden der Datei aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.", JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
-			this.view.assumeState(ApplicationState.FIRSTREVIEWER_IMPORT).alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
+			this.view.alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
 
 		}
 	

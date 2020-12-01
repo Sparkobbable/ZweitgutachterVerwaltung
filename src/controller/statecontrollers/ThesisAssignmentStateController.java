@@ -20,8 +20,7 @@ import view.View;
  */
 public class ThesisAssignmentStateController extends AbstractStateController {
 
-	public ThesisAssignmentStateController(View view, Controller controller,
-			Model model) {
+	public ThesisAssignmentStateController(View view, Controller controller, Model model) {
 		super(ApplicationState.THESIS_ASSIGNMENT, view, controller, model);
 	}
 
@@ -43,9 +42,9 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 			return;
 
 		}
-		bachelorThesesToAdd.forEach(bachelorThesis -> this.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis)));
+		bachelorThesesToAdd.forEach(bachelorThesis -> this
+				.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis, ApplicationState.REVIEWER_EDITOR)));
 		switchToLastVisitedState();
 	}
-
 
 }

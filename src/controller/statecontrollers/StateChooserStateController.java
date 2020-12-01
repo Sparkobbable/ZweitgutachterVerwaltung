@@ -49,8 +49,7 @@ public class StateChooserStateController extends AbstractStateController {
 		if (file.exists()) {
 			PersistenceHandler persistence = new JSONController(filepath, this.model);
 			try {
-				this.model.clear();
-				this.execute(new LoadSystemStateCommand(persistence));
+				this.execute(new LoadSystemStateCommand(persistence, this.model));
 				this.view.alert("Der Systemstatus wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e) {
 				e.printStackTrace();

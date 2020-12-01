@@ -51,14 +51,16 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));
 
 		this.registerEvent(NAME_CHANGED, (params) -> nameChanged((String) params[0].get()));
-		this.registerEvent(MAX_SUPERVISED_THESES_CHANGED, (params) -> maxSupervisedThesesChanged((String) params[0].get()));
+		this.registerEvent(MAX_SUPERVISED_THESES_CHANGED,
+				(params) -> maxSupervisedThesesChanged((String) params[0].get()));
 		this.registerEvent(EMAIL_CHANGED, (params) -> emailChanged((String) params[0].get()));
 		this.registerEvent(COMMENT_CHANGED, (params) -> commentChanged((String) params[0].get()));
 	}
 
 	private void nameChanged(String newValue) {
 		if (!this.model.getSelectedReviewer().orElseThrow().getName().equals(newValue)) {
-			this.execute(new ReviewerNameChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue));
+			this.execute(new ReviewerNameChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue,
+					ApplicationState.REVIEWER_EDITOR));
 		}
 	}
 
@@ -66,19 +68,21 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		int maxSupervisedTheses = Integer.parseInt(newValue);
 		if (this.model.getSelectedReviewer().orElseThrow().getMaxSupervisedThesis() != maxSupervisedTheses) {
 			this.execute(new ReviewerMaxSupervisedThesesChangeCommand(this.model.getSelectedReviewer().orElseThrow(),
-					maxSupervisedTheses));
+					maxSupervisedTheses, ApplicationState.REVIEWER_EDITOR));
 		}
 	}
 
 	private void emailChanged(String newValue) {
 		if (!this.model.getSelectedReviewer().orElseThrow().getEmail().equals(newValue)) {
-			this.execute(new ReviewerEmailChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue));
+			this.execute(new ReviewerEmailChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue,
+					ApplicationState.REVIEWER_EDITOR));
 		}
 	}
 
 	private void commentChanged(String newValue) {
 		if (!this.model.getSelectedReviewer().orElseThrow().getComment().equals(newValue)) {
-			this.execute(new ReviewerCommentChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue));
+			this.execute(new ReviewerCommentChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue,
+					ApplicationState.REVIEWER_EDITOR));
 		}
 	}
 
@@ -92,12 +96,13 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private void approve(SecondReview review) {
-		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED));
+		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED, ApplicationState.REVIEWER_EDITOR));
 	}
 
 	private void rejectSecondReviews(Collection<SecondReview> reviews) {
 		List<Command> commands = new ArrayList<>();
-		reviews.forEach(review -> commands.add(new RejectSecondReviewCommand(review)));
+		reviews.forEach(
+				review -> commands.add(new RejectSecondReviewCommand(review, ApplicationState.REVIEWER_EDITOR)));
 		this.execute(new BatchCommand(commands));
 	}
 

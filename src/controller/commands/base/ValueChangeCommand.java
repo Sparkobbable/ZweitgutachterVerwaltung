@@ -3,16 +3,17 @@ package controller.commands.base;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class ValueChangeCommand<O, V> extends RevertableCommand {
+import model.enums.ApplicationState;
 
-	// TODO remove
+public class ValueChangeCommand<O, V> extends RevertibleCommand {
 
 	private O object;
 	private V oldValue;
 	private V newValue;
 	private BiConsumer<O, V> setter;
 
-	public ValueChangeCommand(BiConsumer<O, V> setter, Function<O, V> getter, O object, V newValue) {
+	public ValueChangeCommand(BiConsumer<O, V> setter, Function<O, V> getter, O object, V newValue, ApplicationState applicationState) {
+		super(applicationState);
 		this.setter = setter;
 		this.object = object;
 		this.newValue = newValue;

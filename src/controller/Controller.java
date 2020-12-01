@@ -37,7 +37,7 @@ public class Controller {
 		this.model = model;
 		this.view = view;
 		this.applicationStateController = new ApplicationStateController(model, view);
-		this.commandInvoker = new CommandInvoker(view);
+		this.commandInvoker = new CommandInvoker(this.view, this.model, this.applicationStateController);
 
 		this.initializeStateControllers();
 	}

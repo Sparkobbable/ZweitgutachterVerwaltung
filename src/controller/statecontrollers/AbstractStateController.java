@@ -37,7 +37,6 @@ public abstract class AbstractStateController {
 		this.view = view;
 		this.controller = controller;
 		this.model = model;
-
 		this.registerEvents();
 	}
 

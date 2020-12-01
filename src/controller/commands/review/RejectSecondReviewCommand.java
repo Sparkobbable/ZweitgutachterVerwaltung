@@ -1,18 +1,20 @@
 package controller.commands.review;
 
-import controller.commands.base.RevertableCommand;
+import controller.commands.base.RevertibleCommand;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
+import model.enums.ApplicationState;
 import model.enums.CascadeMode;
 import model.enums.ReviewStatus;
 
-public class RejectSecondReviewCommand extends RevertableCommand {
+public class RejectSecondReviewCommand extends RevertibleCommand {
 
 	private SecondReview review;
 	private ReviewStatus oldStatus;
 
-	public RejectSecondReviewCommand(SecondReview review) {
+	public RejectSecondReviewCommand(SecondReview review, ApplicationState applicationState) {
+		super(applicationState);
 		this.review = review;
 	}
 

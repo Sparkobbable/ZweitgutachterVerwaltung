@@ -1,17 +1,19 @@
 package controller.commands.model;
 
-import controller.commands.base.RevertableCommand;
+import controller.commands.base.RevertibleCommand;
 import model.Model;
 import model.domain.Review;
 import model.domain.Reviewer;
+import model.enums.ApplicationState;
 import model.enums.CascadeMode;
 
-public class DeleteReviewerCommand extends RevertableCommand {
+public class DeleteReviewerCommand extends RevertibleCommand {
 
 	private Reviewer reviewer;
 	private Model model;
 
-	public DeleteReviewerCommand(Model model, Reviewer reviewer) {
+	public DeleteReviewerCommand(Reviewer reviewer, Model model, ApplicationState applicationState) {
+		super(applicationState);
 		this.model = model;
 		this.reviewer = reviewer;
 	}

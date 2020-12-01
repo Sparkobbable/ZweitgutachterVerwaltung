@@ -1,10 +1,11 @@
 package controller.commands.model;
 
-import controller.commands.base.RevertableCommand;
+import controller.commands.base.RevertibleCommand;
 import model.Model;
 import model.domain.Reviewer;
+import model.enums.ApplicationState;
 
-public class CreateReviewerCommand extends RevertableCommand{
+public class CreateReviewerCommand extends RevertibleCommand{
 
 	private static final String DEFAULT_NAME = "Nachname, Vorname";
 	private static final int DEFAULT_THESIS_COUNT = 0;
@@ -12,7 +13,8 @@ public class CreateReviewerCommand extends RevertableCommand{
 	private Reviewer reviewer;
 	private Model model;
 	
-	public CreateReviewerCommand(Model model) {
+	public CreateReviewerCommand(Model model, ApplicationState applicationState) {
+		super(applicationState);
 		this.model = model;
 	}
 	

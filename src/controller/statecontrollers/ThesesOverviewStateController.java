@@ -39,6 +39,6 @@ public class ThesesOverviewStateController extends AbstractStateController {
 		// list contains only one element
 		BachelorThesis selectedThesis = selectedTheses.get(0);
 		
-		this.execute(new AddBachelorThesisCommand(reviewer, selectedThesis));
+		this.execute(new AddBachelorThesisCommand(reviewer, selectedThesis, ApplicationState.THESES_OVERVIEW));
 	}
 }
