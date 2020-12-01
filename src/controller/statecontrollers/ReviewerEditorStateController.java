@@ -116,13 +116,14 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	private void saveReviewer() {
 		if (!this.validateFields()) {
 			this.view.alert("Die benötigten Felder wurden nicht alle gefüllt!", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 		switchToLastVisitedState();
 	}
 
 	public boolean validateFields() {
 		Reviewer selectedReviewer = this.model.getSelectedReviewer().orElseThrow();
-		return selectedReviewer.getName() != null && selectedReviewer.getName().isBlank()
+		return selectedReviewer.getName() != null && !selectedReviewer.getName().isBlank()
 				&& selectedReviewer.getMaxSupervisedThesis() >= 0;
 	}
 }

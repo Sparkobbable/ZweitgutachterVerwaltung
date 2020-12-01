@@ -82,7 +82,7 @@ public class Main {
 			}
 			
 		}
-		return new Model(List.of(bts));
+		return new Model(List.of(bts), List.of(reviewers));
 	}
 
 	private static String[] firstname = { "Fynn", "Luca", "Paul", "Lasse", "Nils", "Ben", "Sören", "Alexander", "Sven",
