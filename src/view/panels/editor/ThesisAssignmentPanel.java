@@ -26,7 +26,7 @@ import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.DefaultPanel;
-import view.tableModels.AbstractTableModel.Column;
+import view.tableModels.Column;
 import view.tableModels.ThesesOverviewTableModel;
 import view.widgets.SearchField;
 

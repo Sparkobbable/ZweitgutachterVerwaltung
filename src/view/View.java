@@ -3,6 +3,9 @@ package view;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import controller.events.Action;
 import controller.events.CompositeEventSource;
 import controller.events.EventSource;
@@ -10,6 +13,7 @@ import controller.propertychangelistener.PropertyChangeManager;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import util.Log;
 import view.panels.HomePanel;
 import view.panels.StateChooserPanel;
 import view.panels.collaboration.CollaborationPanel;
@@ -29,7 +33,7 @@ public class View implements EventSource {
 	private MainWindow window;
 	private MenuBarHandler menuHandler;
 	private PropertyChangeManager propertyChangeManager;
-	
+
 	public View(Model model) {
 		this.model = model;
 		this.window = new MainWindow();
@@ -131,5 +135,31 @@ public class View implements EventSource {
 
 	public void setRedoable(boolean b) {
 		this.menuHandler.setRedoable(b);
+	}
+
+	/*
+	 * -----------------------------------------------------------------------------
+	 * -- | static methods
+	 * -----------------------------------------------------------------------------
+	 * --
+	 */
+
+	static {
+		updateLookAndFeel();
+	}
+
+	/**
+	 * Updates the Look&Feel to match the native Look&Feel.
+	 */
+	private static void updateLookAndFeel() {
+		try {
+			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+			UIManager.setLookAndFeel(systemLookAndFeelClassName);
+			Log.info(MainWindow.class.getName(), "Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+			// use default look & feel
+		}
 	}
 }

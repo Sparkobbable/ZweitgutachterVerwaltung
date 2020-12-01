@@ -15,10 +15,12 @@ import model.enums.EventId;
  */
 public class TableClickEventSource extends SingleEventSource {
 	private JTable table;
+	private int clickCount;
 
-	public TableClickEventSource(EventId eventId, JTable table, Supplier<?>... params) {
+	public TableClickEventSource(EventId eventId, JTable table, int clickCount, Supplier<?>... params) {
 		super(eventId, params);
 		this.table = table;
+		this.clickCount = clickCount;
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class TableClickEventSource extends SingleEventSource {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2) {
+				if (mouseEvent.getClickCount() == clickCount) {
 					action.perform(params);
 				}
 			}

@@ -4,21 +4,32 @@ import static view.tableModels.ThesesOverviewTableModel.AUTHOR_NAME;
 import static view.tableModels.ThesesOverviewTableModel.AUTHOR_STUDY_GROUP;
 import static view.tableModels.ThesesOverviewTableModel.FIRST_REVIEWER;
 import static view.tableModels.ThesesOverviewTableModel.SECOND_REVIEWER;
+import static view.tableModels.ThesesOverviewTableModel.SECOND_REVIEWER_STATUS;
 import static view.tableModels.ThesesOverviewTableModel.TOPIC;
 
 import java.awt.BorderLayout;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import controller.events.EventSource;
 import controller.search.BachelorThesisSearchStrategy;
 import controller.search.SearchStrategy;
 import model.Model;
 import model.domain.BachelorThesis;
+import model.enums.EventId;
 import view.ViewProperties;
+import view.eventsources.TableClickEventSource;
 import view.tableModels.AbstractDataTableModel;
+import view.tableModels.Column;
 import view.tableModels.ThesesOverviewTableModel;
 
 public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 
+	private static final List<Column<BachelorThesis, ?>> THESES_TABLE_COLUMNS = List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP,
+			TOPIC, FIRST_REVIEWER, SECOND_REVIEWER, SECOND_REVIEWER_STATUS);
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -49,17 +60,29 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 		this.tableModel.updateData();
 	}
 
+	
+	@Override
+	protected List<EventSource> getEventSources() {
+		return new LinkedList<EventSource>(List.of(this.actionPanel,
+				new TableClickEventSource(EventId.NAVIGATE, this.table, 1, this::getNavigationTarget)));
+	}
+
 	private void updateTheses(List<BachelorThesis> oldValue, List<BachelorThesis> newValue) {
 		this.stopObserving(oldValue);
 		this.observe(newValue);
 		this.updateTableModel();
 	}
 
+	private Optional<?> getNavigationTarget() {
+		int selectedColumn = this.table.convertColumnIndexToModel(this.table.getSelectedColumn());
+		int selectedRow = this.table.convertRowIndexToModel(this.table.getSelectedRow());
+		return this.tableModel.getReferencedAt(selectedRow, selectedColumn);
+	}
+
 	@Override
 	protected AbstractDataTableModel<BachelorThesis> createTableModel() {
-		return new ThesesOverviewTableModel(
-				List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP, TOPIC, FIRST_REVIEWER, SECOND_REVIEWER),
-				List.of(t -> this.searchField.matchesSearch(t)), model);
+		return new ThesesOverviewTableModel(THESES_TABLE_COLUMNS, List.of(t -> this.searchField.matchesSearch(t)),
+				model);
 	}
 
 	@Override

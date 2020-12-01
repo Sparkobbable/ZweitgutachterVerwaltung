@@ -1,7 +1,6 @@
 package view.panels.overview;
 
 import java.awt.BorderLayout;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -9,14 +8,12 @@ import java.util.stream.IntStream;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import controller.events.EventSource;
 import controller.search.SearchStrategy;
 import model.Model;
-import model.enums.EventId;
 import view.ViewProperties;
-import view.eventsources.TableClickEventSource;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
+import view.tableModels.LinkedTable;
 import view.widgets.SearchField;
 
 public abstract class OverviewPanel<T> extends DefaultPanel {
@@ -53,7 +50,7 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 		this.searchField = new SearchField<>(this.createSearchStrategy(), t -> updateTableModel());
 
 		this.tableModel = createTableModel();
-		this.table = new JTable(this.tableModel);
+		this.table = new LinkedTable<T>(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
 
 		this.table.setFillsViewportHeight(true);
@@ -73,12 +70,6 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 	protected List<T> getSelectedElements() {
 		return IntStream.of(this.table.getSelectedRows()).map(this.table::convertRowIndexToModel)
 				.mapToObj(this.tableModel::getByIndex).collect(Collectors.toList());
-	}
-
-	@Override
-	protected List<EventSource> getEventSources() {
-		return new LinkedList<EventSource>(List.of(this.actionPanel,
-				new TableClickEventSource(EventId.EDIT, this.table, () -> getSelectedElements())));
 	}
 
 	protected void updateTableModel() {

@@ -23,17 +23,9 @@ public class LoadSystemStateCommand extends IrevertibleCommand {
 
 	@Override
 	public void execute() {
-		try {
-			Pair<List<Reviewer>, List<BachelorThesis>> load = persistenceHandler.load();
-			System.out.println("Loaded:");
-			System.out.println(load.fst);
-			System.out.println(load.snd);
-			this.model.overrideReviewers(load.fst);
-			this.model.overrideBachelorTheses(load.snd);
-		} catch (Exception e) {
-			// don't check this exception at compile time
-			throw new RuntimeException(e);
-		}
+		Pair<List<Reviewer>, List<BachelorThesis>> load = persistenceHandler.load();
+		this.model.overrideReviewers(load.fst);
+		this.model.overrideBachelorTheses(load.snd);
 	}
 
 }
