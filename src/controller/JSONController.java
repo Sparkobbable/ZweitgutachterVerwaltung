@@ -1,80 +1,86 @@
 package controller;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.json.JsonStructure;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 import javax.json.JsonWriter;
 
-import model.Model;
+import com.sun.tools.javac.util.Pair;
+
+import model.domain.BachelorThesis;
+import model.domain.Reviewer;
 import model.persistence.PersistenceHandler;
 
-
-public class JSONController implements PersistenceHandler{
+public class JSONController implements PersistenceHandler {
 
 	private String filename;
-	private ObjectMapper mapper;
-	
+
 	/**
 	 * Creates a JSONContoller for the file with the given name.
+	 * 
 	 * @param filename Name including path and format of the Json file.
 	 */
-	public JSONController(String filename, Model model) {
+	public JSONController(String filename) {
 		this.filename = filename;
-		this.mapper = new ObjectMapper(model);
 	}
-	
+
 	/**
-	 * Saves all reviewers including every other Object from the current model in a Json file.
+	 * Saves all reviewers including every other Object from the current model in a
+	 * Json file.
+	 * 
 	 * @param list ArrayList of current reviewers in the system.
 	 */
-	public void save() {
+	public void save(List<Reviewer> reviewers, List<BachelorThesis> bachelorTheses) {
+		JsonWriter jsonWriter = null;
 		try {
-			FileWriter fw = new FileWriter(filename);
-			JsonWriter jsonWriter = Json.createWriter(fw);
-			jsonWriter.writeObject(mapper.createJsonFromObject());
-			jsonWriter.close();
-			fw.close();
+			jsonWriter = Json.createWriter(new FileWriter(filename));
+			jsonWriter.writeObject(ObjectMapper.mapToJson(reviewers, bachelorTheses));
+			System.out.println("Save-success");
+			if (jsonWriter != null) {
+				jsonWriter.close();
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
+//		} finally {
+//			
 		}
 	}
-	
+
 	/**
 	 * Loads all reviewers including every other Object from the Json file.
 	 * 
 	 * @throws Exception when the loaded Json file is not in the correct format
 	 */
-	public void load() throws Exception {
-		FileReader fr;
-		JsonStructure struct;
+	public Pair<List<Reviewer>, List<BachelorThesis>> load() {
+		JsonReader reader = null;
 		try {
-			fr = new FileReader(filename);
-			JsonReader reader = Json.createReader(fr);
-			struct = reader.read();
-			JsonValue value = struct;
-			reader.close();
-			fr.close();
-			
-			if(value.getValueType() == ValueType.OBJECT) {
-				JsonObject object = (JsonObject) value;
-				mapper.createObjectsFromJson(object.getJsonArray("reviewers"), object.getJsonArray("bachelorTheses"));
-			} else {
-				throw new Exception("Die geladene Json Datei beinhaltet keinen Systemstatus");
+			reader = Json.createReader(new FileReader(filename));
+			JsonValue value = reader.read();
+			if (value.getValueType() != ValueType.OBJECT) {
+				throw new RuntimeException("Ungültiges Json-Format");
 			}
-		} catch(FileNotFoundException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
+			JsonObject object = (JsonObject) value;
+			List<Reviewer> reviewers = ObjectMapper.mapToReviewers(object.getJsonArray(ObjectMapper.REVIEWERS));
+			List<BachelorThesis> bachelorTheses = ObjectMapper
+					.mapToBachelorTheses(object.getJsonArray(ObjectMapper.BACHELOR_THESES), reviewers);
+			System.out.println("Load-success");
+
+			return Pair.of(reviewers, bachelorTheses);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
 		}
+
 	}
-	
-	
+
 }

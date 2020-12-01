@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,6 +14,8 @@ import model.enums.CascadeMode;
 
 public class Reviewer implements ChangeableProperties {
 
+	private static final AtomicInteger INTERNAL_ID_GENERATOR = new AtomicInteger();
+	
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors
@@ -23,6 +26,8 @@ public class Reviewer implements ChangeableProperties {
 	public static final String REJECTED_SECOND_REVIEWS = "rejectedSecondReviews";
 	public static final String EMAIL = "email";
 	public static final String COMMENT = "comment";
+	public static final String INTERNAL_ID = "internalId";
+	
 
 	// Data
 	private String name;
@@ -32,6 +37,7 @@ public class Reviewer implements ChangeableProperties {
 	private float occupation;
 	private float firstOccupation;
 	private float secOccupation;
+	private int internalId;
 
 	private List<FirstReview> firstReviews;
 	private List<SecondReview> secondReviews;
@@ -39,6 +45,17 @@ public class Reviewer implements ChangeableProperties {
 
 	/**
 	 * Creates a Reviewer for BachelorThesis
+	 * @param internalId 
+	 * 
+	 */
+	public Reviewer(String name, int maxSupervisedTheses, String email, String comment, int internalId) {
+		this(name, maxSupervisedTheses, email, comment);
+		this.internalId = internalId;
+	}
+	
+	/**
+	 * Creates a Reviewer for BachelorThesis
+	 * @param internalId 
 	 * 
 	 */
 	public Reviewer(String name, int maxSupervisedTheses, String email, String comment) {
@@ -58,6 +75,7 @@ public class Reviewer implements ChangeableProperties {
 		this.rejectedSecondReviews = new ArrayList<>();
 		this.name = name;
 		this.maxSupervisedThesis = maxSupervisedTheses;
+		this.internalId = INTERNAL_ID_GENERATOR.incrementAndGet();
 
 	}
 
@@ -244,6 +262,10 @@ public class Reviewer implements ChangeableProperties {
 
 	public float getSecOccupation() {
 		return this.secOccupation;
+	}
+
+	public int getInternalId() {
+		return internalId;
 	}
 
 

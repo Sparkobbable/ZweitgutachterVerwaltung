@@ -229,4 +229,18 @@ public class Model implements ChangeableProperties {
 		return this.reviewers.get(this.reviewers.size() - 1);
 	}
 
+	public void overrideReviewers(List<Reviewer> reviewers) {
+		List<Reviewer> old = new ArrayList<>(this.reviewers);
+		this.reviewers.clear();
+		this.reviewers.addAll(reviewers);
+		this.propertyChangeSupport.firePropertyChange(REVIEWERS, old, this.reviewers);
+	}
+
+	public void overrideBachelorTheses(List<BachelorThesis> bachelorTheses) {
+		List<BachelorThesis> old = new ArrayList<>(this.theses);
+		this.theses.clear();
+		this.theses.addAll(bachelorTheses);
+		this.propertyChangeSupport.firePropertyChange(THESES, old, this.theses);		
+	}
+
 }

@@ -47,7 +47,7 @@ public class StateChooserStateController extends AbstractStateController {
 	private void loadState() {
 		File file = new File(filepath);
 		if (file.exists()) {
-			PersistenceHandler persistence = new JSONController(filepath, this.model);
+			PersistenceHandler persistence = new JSONController(filepath);
 			try {
 				this.execute(new LoadSystemStateCommand(persistence, this.model));
 				this.view.alert("Der Systemstatus wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
@@ -75,18 +75,14 @@ public class StateChooserStateController extends AbstractStateController {
 		if (file.exists()) {
 			int result = this.view.alert("Die Datei exisiert bereits. \n Wollen Sie diese überschreiben?",
 					JOptionPane.QUESTION_MESSAGE);
-			if (result == JOptionPane.YES_OPTION) {
-				PersistenceHandler persistence = new JSONController(filepath, this.model);
-				persistence.save();
-				this.view.alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
-			} else {
+			if (result == JOptionPane.NO_OPTION) {
 				this.view.alert("Speichern des Systemzustands wurde abgebrochen", JOptionPane.INFORMATION_MESSAGE);
+				return;
 			}
-		} else {
-//			PersistenceHandler persistence = new JSONController(filepath);
-//			persistence.saveReviewers(model.getReviewers());
-			this.view.alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
 		}
+		PersistenceHandler persistence = new JSONController(filepath);
+		persistence.save(this.model.getReviewers(), this.model.getTheses());
+		this.view.alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void setFilePath(String filepath) {
