@@ -1,9 +1,9 @@
 package view.tableModels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-
-import javax.swing.JProgressBar;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
@@ -19,7 +19,7 @@ public class DividedProgressRenderer implements TableCellRenderer {
 	 * Creates a Cell-Renderer which displays a horizontal stacked bar chart
 	 */
 	public DividedProgressRenderer() {
-		this.stackedChart = StackedBarChart.createStackedBarChart("", "");
+		this.stackedChart = StackedBarChart.createStackedBarChart("Erstgutachten", "Zweitgutachten");
 	}
 	
 	@Override
@@ -27,6 +27,8 @@ public class DividedProgressRenderer implements TableCellRenderer {
 			int row, int column) {
 		this.stackedChart.setValue(((Integer[]) value)[0], ((Integer[]) value)[1]);
 	    ChartPanel chartPanel = new ChartPanel(this.stackedChart.getChart());
+	    chartPanel.setLayout(new BorderLayout());
+	    chartPanel.add(new JLabel(((Integer[]) value)[2] + "%"), BorderLayout.EAST);
 	    chartPanel.setBackground(Color.WHITE);
 		return chartPanel;
 	}

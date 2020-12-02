@@ -5,6 +5,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.CategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -77,6 +78,8 @@ public class StackedBarChart{
 		renderer.setSeriesPaint(0, new Color(128, 0, 0));
 		renderer.setSeriesPaint(1, new Color(0, 0, 255));
 		renderer.setDefaultFillPaint(new Color(0, 0, 0));
+		renderer.setSeriesToolTipGenerator(0, new ToolTipGenerator("Erstgutachten"));
+		renderer.setSeriesToolTipGenerator(1, new ToolTipGenerator("Zweitgutachten"));
 		
 		plot.getDomainAxis().setVisible(false);
 		
@@ -93,4 +96,24 @@ public class StackedBarChart{
 	public JFreeChart getChart() {
 		return this.chart;
 	}
+}
+
+class ToolTipGenerator implements CategoryToolTipGenerator {
+
+	private String toolTip;
+	
+	ToolTipGenerator() {
+		
+	}
+	
+	ToolTipGenerator(String toolTip) {
+		this.toolTip = toolTip;
+	}
+	
+	@Override
+	public String generateToolTip(CategoryDataset arg0, int arg1, int arg2) {
+		return toolTip;
+	}
+
+	
 }
