@@ -16,7 +16,7 @@ public class ReviewerOverviewTableModel extends AbstractDataTableModel<Reviewer>
 	public static final Column<Reviewer, String> NAME = Column.of("Name", Reviewer::getName, String.class);
 	public static final Column<Reviewer, Integer> THESIS_COUNT = Column.of("Anzahl betreute Bachelorarbeiten",
 			Reviewer::getTotalReviewCount, Integer.class);
-	private static final Column<Reviewer, Integer[]> OCCUPATION = Column.of("Auslastung",
+	public static final Column<Reviewer, Integer[]> OCCUPATION = Column.of("Auslastung",
 			 r -> new Integer[] { (int) (r.getFirstOccupation() * 100), (int) (r.getSecOccupation() * 100), (int) (r.getOccupation() * 100) }, Integer[].class);
 
 	public ReviewerOverviewTableModel(List<Column<Reviewer, ?>> columns, List<Predicate<Reviewer>> filters, Model model) {
