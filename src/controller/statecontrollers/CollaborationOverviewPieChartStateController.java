@@ -3,6 +3,7 @@ package controller.statecontrollers;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import controller.Controller;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
@@ -11,9 +12,9 @@ import view.View;
 
 public class CollaborationOverviewPieChartStateController extends AbstractCollaborationOverviewStateController {
 
-	public CollaborationOverviewPieChartStateController(View view, ApplicationStateController applicationStateController,
+	public CollaborationOverviewPieChartStateController(View view, Controller controller,
 			Model model) {
-		super(ApplicationState.COLLABORATION_PIECHART, view, applicationStateController, model);
+		super(ApplicationState.COLLABORATION_PIECHART, view, controller, model);
 	}
 	
 	@Override

@@ -1,15 +1,17 @@
 package controller.statecontrollers;
 
 import static model.enums.EventId.SELECT;
-import static model.enums.EventId.SEARCH_OVERVIEW_THESES;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-
+import controller.Controller;
+import controller.commands.reviewer.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
+import model.enums.EventId;
 import util.Log;
 import view.View;
 
@@ -17,35 +19,36 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_OVERVIEW}
  */
-public class ThesesOverviewStateController extends AbstractStateController<BachelorThesis> {
+public class ThesesOverviewStateController extends AbstractStateController {
 
-	public ThesesOverviewStateController(View view, ApplicationStateController applicationStateController,
+	public ThesesOverviewStateController(View view, Controller controller,
 			Model model) {
-		super(ApplicationState.THESES_OVERVIEW, view, applicationStateController, model);
+		super(ApplicationState.THESES_OVERVIEW, view, controller, model);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(SELECT, (params) -> addSecondReviewer((int[]) params[0].get(), (Reviewer) params[1].get()));
-		this.registerEvent(SEARCH_OVERVIEW_THESES, (params) -> this.onThesisSearch((String) params[0].get()));
+		this.registerEvent(SELECT, (params) -> addSecondReviewer((List<BachelorThesis>) params[0].get(), (Reviewer) params[1].get()));
+		this.registerEvent(EventId.NAVIGATE, (params) -> navigate((Optional<Reviewer>) params[0].get()));
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void onThesisSearch(String searchText) {
-		ArrayList<BachelorThesis> copyList = new ArrayList<BachelorThesis>(this.model.getTheses());
-		this.model.clearDisplayedTheses();
-		this.model.addDisplayedTheses((ArrayList<BachelorThesis>) searchController.handleSearch(copyList, searchText));
+	private void navigate(Optional<Reviewer> reviewer) {
+		if (reviewer.isPresent()) {
+			this.model.setSelectedReviewer(reviewer.get());
+			this.switchState(ApplicationState.REVIEWER_EDITOR);
+		}
 	}
 
-	private void addSecondReviewer(int[] indices, Reviewer reviewer) {
+	private void addSecondReviewer(List<BachelorThesis> selectedTheses, Reviewer reviewer) {
 		// check that one and only one row is selected
-		if (indices.length != 1) {
+		if (selectedTheses.size() != 1) {
 			Log.warning(this, "Only one thesis can be edited at a time.");
 			return;
 		}
-		// indices contains only one element
-		int index = indices[0];
-
-		this.model.getDisplayedTheses().get(index).setSecondReviewer(reviewer);
+		// list contains only one element
+		BachelorThesis selectedThesis = selectedTheses.get(0);
+		
+		this.execute(new AddBachelorThesisCommand(reviewer, selectedThesis, ApplicationState.THESES_OVERVIEW));
 	}
 }

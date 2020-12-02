@@ -1,37 +1,42 @@
 package view.widgets;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
-import java.net.URL;
+import java.util.function.Consumer;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import view.eventsources.SearchFieldEventSource;
+import controller.search.SearchStrategy;
 
 
-public class SearchField extends JPanel {
+public class SearchField<T> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
+	private SearchStrategy<T> searchStrategy;
+	private ButtonFactory buttonFactory;
 	//UI-Elements
-	private JTextField searchField;
+	private JTextField searchText;
 	private JButton searchButton;
 	
-	//Data
+	
 	
 	/**
 	 * Creates a search widget containing a textfield and a searchbutton
 	 * Needs wiring using {@link SearchFieldEventSource}
 	 */
-	public SearchField() {
-		this.searchField = new JTextField();
-		this.searchButton = new JButton(getSearchIcon());
-		
+	public SearchField(SearchStrategy<T> searchStrategy, Consumer<String> onUpdate) {
+		this.buttonFactory = ButtonFactory.getInstance();
+		this.searchStrategy = searchStrategy;
+		this.searchText = new JTextField();
+		this.searchButton = this.buttonFactory.createImageButton("search3");
+		this.searchButton.addActionListener((e) -> onUpdate.accept(this.searchText.getText()));
+		ActionListener update = (e) -> onUpdate.accept(this.searchText.getText());
+		this.searchText.addActionListener(update);
+		this.searchText.addActionListener(update);
 		this.setLayout(new GridLayout(1, 2));
 		
 		this.addUiElements();
@@ -42,16 +47,12 @@ public class SearchField extends JPanel {
 	}
 
 	private void addUiElements() {
-		this.add(searchField);
+		this.add(searchText);
 		this.add(searchButton);
 	}
 
-	private ImageIcon getSearchIcon() {
-		URL resource = this.getClass().getResource("../resource/images/search3.png");
-		return new ImageIcon(resource);
+	public boolean matchesSearch(T obj) {
+		return searchStrategy.match(obj, searchText.getText());
 	}
 
-	public String getSearchText() {
-		return this.searchField.getText();
-	}
 }

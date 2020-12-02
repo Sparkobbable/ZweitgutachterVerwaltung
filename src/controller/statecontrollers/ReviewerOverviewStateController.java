@@ -1,13 +1,20 @@
 package controller.statecontrollers;
 
+import static model.enums.EventId.DELETE;
 import static model.enums.EventId.EDIT;
+import static model.enums.EventId.CREATE;
 import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
-import static model.enums.EventId.SEARCH_OVERVIEW_REVIEWER;
-import static model.enums.EventId.NEW;
-
+import controller.Controller;
+import controller.commands.base.BatchCommand;
+import controller.commands.base.Command;
+import controller.commands.model.CreateReviewerCommand;
+import controller.commands.model.DeleteReviewerCommand;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
@@ -18,43 +25,75 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#REVIEWER_OVERVIEW}
  */
-public class ReviewerOverviewStateController extends AbstractStateController<Reviewer> {
+public class ReviewerOverviewStateController extends AbstractStateController {
 
-	public ReviewerOverviewStateController(View view, ApplicationStateController applicationStateController,
-			Model model) {
-		super(ApplicationState.REVIEWER_OVERVIEW, view, applicationStateController, model);
+	public ReviewerOverviewStateController(View view, Controller controller, Model model) {
+		super(ApplicationState.REVIEWER_OVERVIEW, view, controller, model);
 	}
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EDIT,
-				(params) -> this.switchToState(ApplicationState.REVIEWER_EDITOR, (int[]) params[0].get()));
-//		this.registerEvent(DELETE, (params) -> this.deleteEntries((int[]) params[0].get())); // TODO don't Remove delete
-		this.registerEvent(SHOW_COLLABORATION,
-				(params) -> switchToState(ApplicationState.COLLABORATION_TABLE, (int[]) params[0].get()));
-		this.registerEvent(SEARCH_OVERVIEW_REVIEWER, (params) -> this.onReviewerSearch((String) params[0].get()));
-		this.registerEvent(NEW, (params) -> switchState(ApplicationState.REVIEWER_EDITOR));
+		this.registerEvent(EDIT, this::edit);
+		this.registerEvent(DELETE, this::delete);
+		this.registerEvent(SHOW_COLLABORATION, this::showCollaborations);
+		this.registerEvent(CREATE, this::create);
+	}
+
+	private void create(Supplier<?>[] params) {
+		this.create();
 	}
 
 	@SuppressWarnings("unchecked")
-	private void onReviewerSearch(String searchText) {
-		ArrayList<Reviewer> copyList = new ArrayList<Reviewer>(this.model.getReviewers());
-		this.model.clearDisplayedReviewers();
-		this.model.addDisplayedReviewers((ArrayList<Reviewer>) searchController.handleSearch(copyList, searchText));
+	private void showCollaborations(Supplier<?>[] params) {
+		this.showCollaborationsForReviewers((List<Reviewer>) params[0].get());
 	}
 
-	private void switchToState(ApplicationState applicationState, int[] indices) {
-		// check that one and only one row is selected
-		if (indices.length != 1) {
-			Log.warning(this.getClass().getName(), "Only one reviewer can be edited at a time. ");
+	@SuppressWarnings("unchecked")
+	private void delete(Supplier<?>[] params) {
+		this.deleteReviewers((List<Reviewer>) params[0].get());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void edit(Supplier<?>[] params) {
+		this.editReviewers((List<Reviewer>) params[0].get());
+	}
+
+	private void editReviewers(List<Reviewer> reviewers) {
+		Optional<Reviewer> optSelectedReviewer = this.extractSingleSelectedReviewer(reviewers);
+		if (optSelectedReviewer.isEmpty()) {
 			return;
 		}
-		// indices contains only one element
-		Integer index = indices[0];
+		this.model.setSelectedReviewer(optSelectedReviewer.get());
+		this.switchState(ApplicationState.REVIEWER_EDITOR);
+	}
+	
+	private void create() {
+		this.execute(new CreateReviewerCommand(this.model, ApplicationState.REVIEWER_OVERVIEW));
+		this.model.setSelectedReviewer(this.model.getNewestReviewer());
+		this.switchState(ApplicationState.REVIEWER_EDITOR);
+	}
 
-		model.setSelectedReviewer(index);
-		Log.info(this.getClass().getName(), "Starting editmode on reviewer %s",
-				model.getSelectedReviewer().get().getName());
-		switchState(applicationState);
+	private void showCollaborationsForReviewers(List<Reviewer> reviewers) {
+		Optional<Reviewer> optSelectedReviewer = this.extractSingleSelectedReviewer(reviewers);
+		if (optSelectedReviewer.isEmpty()) {
+			return;
+		}
+		this.model.setSelectedReviewer(optSelectedReviewer.get());
+		this.switchState(ApplicationState.COLLABORATION_TABLE);
+	}
+
+	private void deleteReviewers(List<Reviewer> reviewers) {
+		List<Command> deleteCommands = new ArrayList<>();
+		reviewers.forEach(r -> deleteCommands.add(new DeleteReviewerCommand(r, this.model, ApplicationState.REVIEWER_OVERVIEW)));
+		this.execute(new BatchCommand(deleteCommands));
+	}
+
+	private Optional<Reviewer> extractSingleSelectedReviewer(List<Reviewer> selectedReviewers) {
+		if (selectedReviewers.size() != 1) {
+			Log.warning(this.getClass().getName(), "Only one reviewer can be edited at a time. ");
+			return Optional.empty();
+		}
+		Reviewer selectedReviewer = selectedReviewers.get(0);
+		return Optional.of(selectedReviewer);
 	}
 }

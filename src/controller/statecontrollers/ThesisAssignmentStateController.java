@@ -1,13 +1,13 @@
 package controller.statecontrollers;
 
 import static model.enums.EventId.ADD_THESIS_TO_REVIEWER;
-import static model.enums.EventId.SEARCH_THESIS;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 
-import controller.commands.AddBachelorThesisCommand;
+import controller.Controller;
+import controller.commands.reviewer.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
@@ -18,26 +18,15 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#THESIS_ASSIGNMENT}
  */
-public class ThesisAssignmentStateController extends AbstractStateController<BachelorThesis> {
+public class ThesisAssignmentStateController extends AbstractStateController {
 
-	public ThesisAssignmentStateController(View view, ApplicationStateController applicationStateController,
-			Model model) {
-		super(ApplicationState.THESIS_ASSIGNMENT, view, applicationStateController, model);
+	public ThesisAssignmentStateController(View view, Controller controller, Model model) {
+		super(ApplicationState.THESIS_ASSIGNMENT, view, controller, model);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(ADD_THESIS_TO_REVIEWER,
-				(params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
-		this.registerEvent(SEARCH_THESIS, (params) -> this.onThesisSearch((String) params[0].get()));
-	}
-
-	@SuppressWarnings("unchecked")
-	private void onThesisSearch(String searchText) {
-		ArrayList<BachelorThesis> copyList = new ArrayList<BachelorThesis>(this.model.getTheses());
-		this.model.clearDisplayedTheses();
-		this.model.addDisplayedTheses((ArrayList<BachelorThesis>) searchController.handleSearch(copyList, searchText));
 		this.registerEvent(ADD_THESIS_TO_REVIEWER,
 				(params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
 	}
@@ -53,8 +42,9 @@ public class ThesisAssignmentStateController extends AbstractStateController<Bac
 			return;
 
 		}
-		bachelorThesesToAdd.forEach(bachelorThesis -> this.commandExecutionController
-				.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis)));
+		bachelorThesesToAdd.forEach(bachelorThesis -> this
+				.execute(new AddBachelorThesisCommand(reviewer, bachelorThesis, ApplicationState.REVIEWER_EDITOR)));
 		switchToLastVisitedState();
 	}
+
 }

@@ -8,23 +8,24 @@ import controller.events.CompositeEventSource;
 import controller.events.EventSource;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
+import view.widgets.ButtonFactory;
 
 public class MenuBarHandler extends JMenuBar implements EventSource {
 
 	private static final long serialVersionUID = 1L;
 	private CompositeEventSource eventSourceHandler;
+	private ButtonFactory buttonFactory;
 	private JButton back;
 	private JButton undo;
 	private JButton redo;
+	
 
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
-		this.back = new JButton("Zurück");
-		this.undo = new JButton("Rückgängig");
-		this.redo = new JButton("Wiederherstellen");
-		designButton(this.back);
-		designButton(this.undo);
-		designButton(this.redo);
+		this.buttonFactory = ButtonFactory.getInstance();
+		this.back = this.buttonFactory.createMenuButton("Zurück");
+		this.undo = this.buttonFactory.createMenuButton("Rückgängig");
+		this.redo = this.buttonFactory.createMenuButton("Wiederherstellen");
 		undo.setEnabled(false);
 		redo.setEnabled(false);
 		this.add(back);
@@ -32,13 +33,6 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 		this.add(redo);
 
 		this.registerEventSources();
-	}
-
-	private void designButton(JButton button) {
-		button.setOpaque(true);
-		button.setContentAreaFilled(false);
-		button.setBorderPainted(false);
-		button.setFocusable(false);
 	}
 
 	protected void registerEventSources() {

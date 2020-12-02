@@ -3,6 +3,7 @@ package view.tableModels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;

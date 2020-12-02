@@ -7,25 +7,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import util.Log;
-import view.panelstructure.AbstractViewPanel;
+import view.panels.prototypes.AbstractViewPanel;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel mainContainer;
-	private Map<Integer, AbstractViewPanel> availableViews; // TODO can/shall we remove this?
+	private Map<Integer, AbstractViewPanel> availableViews;
 	private CardLayout cardLayout;
-
-	static {
-		updateLookAndFeel();
-	}
 
 	public MainWindow() {
 		this.mainContainer = new JPanel();
@@ -33,7 +28,7 @@ public class MainWindow extends JFrame {
 		this.availableViews = new HashMap<>();
 		this.mainContainer.setLayout(cardLayout);
 
-		this.setSize(800, 800);
+		this.setSize(ViewProperties.DEFAULT_WIDTH, ViewProperties.DEFAULT_HEIGHT);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
 		this.setBackground(Color.PINK);
@@ -50,23 +45,6 @@ public class MainWindow extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
-		}
-	}
-
-	/**
-	 * Updates the Look&Feel to match the native Look&Feel.
-	 * <p>
-	 * TODO decide if we can use this without testing on a Mac (no)
-	 */
-	private static void updateLookAndFeel() {
-		try {
-			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-			UIManager.setLookAndFeel(systemLookAndFeelClassName);
-			Log.info(MainWindow.class.getName(), "Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-			// use default look & feel
 		}
 	}
 
@@ -91,7 +69,9 @@ public class MainWindow extends JFrame {
 	 */
 	public void registerView(AbstractViewPanel view) {
 		if (this.availableViews.containsKey(view.getViewId())) {
-			Log.info(this.getClass().getName(), "View %s is already registered in MainWindow. It will not be registered again.", view.getClass().getName());
+			Log.info(this.getClass().getName(),
+					"View %s is already registered in MainWindow. It will not be registered again.",
+					view.getClass().getName());
 		} else {
 			Log.info(this.getClass().getName(), "Registering view %s.", view.getClass().getName());
 			this.availableViews.put(view.getViewId(), view);

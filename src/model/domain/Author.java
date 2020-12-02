@@ -6,6 +6,9 @@ package model.domain;
  */
 public class Author {
 
+	public static final String NAME = "name";
+	public static final String STUDY_GROUP = "studyGroup";
+	
 	// data - Authors cannot be edited, yet
 	private final String name;
 	private final String studyGroup;

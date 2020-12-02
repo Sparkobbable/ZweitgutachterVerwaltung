@@ -23,7 +23,7 @@ public class BachelorThesis implements ChangeableProperties {
 	private final String topic;
 	private final Author author;
 	private final FirstReview firstReview;
-	
+
 	private Optional<SecondReview> secondReview;
 
 	/**
@@ -65,8 +65,16 @@ public class BachelorThesis implements ChangeableProperties {
 	 * 
 	 * @param reviewer
 	 */
+	// TODO only used for import
 	public void setSecondReviewer(Reviewer reviewer) {
 		this.setSecondReview(new SecondReview(reviewer, this), CascadeMode.CASCADE);
+	}
+
+	/**
+	 * Removes the secondReviewer reference from this reviewer
+	 */
+	public void removeSecondReview() {
+		this.setSecondReview(null, CascadeMode.STOP);
 	}
 
 	/**
@@ -77,12 +85,12 @@ public class BachelorThesis implements ChangeableProperties {
 	 * @param secondReview
 	 * @param cascadeMode
 	 */
-	void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
+	public void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
 		Optional<SecondReview> old = this.secondReview;
 		this.secondReview = Optional.ofNullable(secondReview);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);
 		if (cascadeMode == CascadeMode.CASCADE && this.secondReview.isPresent()) {
-			secondReview.getReviewer().addSecondReviewerReview(secondReview, CascadeMode.STOP);
+			secondReview.getReviewer().addSecondReview(secondReview, CascadeMode.STOP);
 		}
 	}
 
@@ -94,10 +102,6 @@ public class BachelorThesis implements ChangeableProperties {
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(listener);
-	}
-
-	public void setSecondReview(Optional<SecondReview> review) {
-		this.setSecondReview(review.orElse(null), CascadeMode.CASCADE);
 	}
 
 }

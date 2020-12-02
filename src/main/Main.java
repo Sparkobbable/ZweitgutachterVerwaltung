@@ -1,6 +1,5 @@
 package main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
@@ -83,7 +82,7 @@ public class Main {
 			}
 			
 		}
-		return new Model(List.of(bts));
+		return new Model(List.of(bts), List.of(reviewers));
 	}
 
 	private static String[] firstname = { "Fynn", "Luca", "Paul", "Lasse", "Nils", "Ben", "Sören", "Alexander", "Sven",

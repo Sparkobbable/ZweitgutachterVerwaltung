@@ -1,8 +1,10 @@
 package view;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.events.Action;
 import controller.events.CompositeEventSource;
@@ -11,12 +13,15 @@ import controller.propertychangelistener.PropertyChangeManager;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
-import view.collaboration.CollaborationPanel;
-import view.editor.ReviewerEditorPanel;
-import view.editor.ThesisAssignmentPanel;
-import view.overview.ReviewerOverviewPanel;
-import view.overview.ThesesOverviewPanel;
-import view.panelstructure.AbstractViewPanel;
+import util.Log;
+import view.panels.HomePanel;
+import view.panels.StateChooserPanel;
+import view.panels.collaboration.CollaborationPanel;
+import view.panels.editor.ReviewerEditorPanel;
+import view.panels.editor.ThesisAssignmentPanel;
+import view.panels.overview.ReviewerOverviewPanel;
+import view.panels.overview.ThesesOverviewPanel;
+import view.panels.prototypes.AbstractViewPanel;
 
 // TODO JavaDoc
 public class View implements EventSource {
@@ -28,10 +33,6 @@ public class View implements EventSource {
 	private MainWindow window;
 	private MenuBarHandler menuHandler;
 	private PropertyChangeManager propertyChangeManager;
-	
-	//Color palette
-	public static final Color button = new Color(62, 76, 84);
-	public static final Color background = new Color(36, 50, 63);
 
 	public View(Model model) {
 		this.model = model;
@@ -40,7 +41,7 @@ public class View implements EventSource {
 		this.eventSourceHandler = new CompositeEventSource();
 		this.eventSourceHandler.register(this.menuHandler);
 		this.createViews();
-		window.setJMenuBar(menuHandler);
+		this.window.setJMenuBar(this.menuHandler);
 
 		this.propertyChangeManager = new PropertyChangeManager();
 		this.propertyChangeManager.onPropertyChange(Model.APPLICATION_STATE,
@@ -75,12 +76,12 @@ public class View implements EventSource {
 	 * Shows the window.
 	 */
 	public void setVisible() {
-		window.setVisible(true);
+		this.window.setVisible(true);
 	}
 
 	private void switchState(ApplicationState oldState, ApplicationState newState) {
-		viewsByApplicationStates.get(newState).prepare();
-		window.switchToView(viewsByApplicationStates.get(newState).getViewId());
+		this.viewsByApplicationStates.get(newState).prepare();
+		this.window.switchToView(this.viewsByApplicationStates.get(newState).getViewId());
 	}
 
 	// TODO rmv
@@ -90,17 +91,7 @@ public class View implements EventSource {
 	 * @return A view of the view responsible for handling that state
 	 */
 	public AbstractViewPanel assumeState(ApplicationState state) {
-		return viewsByApplicationStates.get(state);
-	}
-
-	/**
-	 * 
-	 * @param state
-	 * @return A (different) view of the view responsible for handling that state
-	 */
-	// TODO return view of view instead of whole object?
-	public AbstractViewPanel atState(ApplicationState state) {
-		return viewsByApplicationStates.get(state);
+		return this.viewsByApplicationStates.get(state);
 	}
 
 	/**
@@ -136,7 +127,6 @@ public class View implements EventSource {
 
 	public void addEventHandler(ApplicationState state, EventId eventId, Action action) {
 		this.viewsByApplicationStates.get(state).addEventHandler(eventId, action);
-		;
 	}
 
 	public void setUndoable(boolean b) {
@@ -145,7 +135,31 @@ public class View implements EventSource {
 
 	public void setRedoable(boolean b) {
 		this.menuHandler.setRedoable(b);
-		// TODO Auto-generated method stub
+	}
 
+	/*
+	 * -----------------------------------------------------------------------------
+	 * -- | static methods
+	 * -----------------------------------------------------------------------------
+	 * --
+	 */
+
+	static {
+		updateLookAndFeel();
+	}
+
+	/**
+	 * Updates the Look&Feel to match the native Look&Feel.
+	 */
+	private static void updateLookAndFeel() {
+		try {
+			String systemLookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+			UIManager.setLookAndFeel(systemLookAndFeelClassName);
+			Log.info(MainWindow.class.getName(), "Successfully Updated LookAndFeel to %s", systemLookAndFeelClassName);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+			// use default look & feel
+		}
 	}
 }
