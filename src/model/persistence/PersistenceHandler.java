@@ -2,8 +2,7 @@ package model.persistence;
 
 import java.util.List;
 
-import com.sun.tools.javac.util.Pair;
-
+import model.Pair;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 

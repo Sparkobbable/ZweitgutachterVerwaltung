@@ -2,10 +2,9 @@ package controller.commands.model;
 
 import java.util.List;
 
-import com.sun.tools.javac.util.Pair;
-
 import controller.commands.base.IrevertibleCommand;
 import model.Model;
+import model.Pair;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.persistence.PersistenceHandler;
@@ -24,8 +23,8 @@ public class LoadSystemStateCommand extends IrevertibleCommand {
 	@Override
 	public void execute() {
 		Pair<List<Reviewer>, List<BachelorThesis>> load = persistenceHandler.load();
-		this.model.overrideReviewers(load.fst);
-		this.model.overrideBachelorTheses(load.snd);
+		this.model.overrideReviewers(load.getKey());
+		this.model.overrideBachelorTheses(load.getValue());
 	}
 
 }

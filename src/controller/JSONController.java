@@ -12,8 +12,7 @@ import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 import javax.json.JsonWriter;
 
-import com.sun.tools.javac.util.Pair;
-
+import model.Pair;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.persistence.PersistenceHandler;
@@ -72,7 +71,7 @@ public class JSONController implements PersistenceHandler {
 					.mapToBachelorTheses(object.getJsonArray(ObjectMapper.BACHELOR_THESES), reviewers);
 			System.out.println("Load-success");
 
-			return Pair.of(reviewers, bachelorTheses);
+			return Pair.createPair(reviewers, bachelorTheses);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
