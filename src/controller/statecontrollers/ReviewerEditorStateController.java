@@ -8,6 +8,7 @@ import static model.enums.EventId.MAX_SUPERVISED_THESES_CHANGED;
 import static model.enums.EventId.NAME_CHANGED;
 import static model.enums.EventId.REJECT;
 import static model.enums.EventId.SAVE_REVIEWER;
+import static model.enums.EventId.RESERVE_SEC_REVIEW;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,12 +50,21 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		this.registerEvent(ADD_THESIS, (params) -> addThesis());
 		this.registerEvent(REJECT, (params) -> rejectSecondReviews((Collection<SecondReview>) params[0].get()));
 		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));
+		this.registerEvent(RESERVE_SEC_REVIEW, (params) -> reserveReviews((Collection<SecondReview>) params[0].get()));
 
 		this.registerEvent(NAME_CHANGED, (params) -> nameChanged((String) params[0].get()));
 		this.registerEvent(MAX_SUPERVISED_THESES_CHANGED,
 				(params) -> maxSupervisedThesesChanged((String) params[0].get()));
 		this.registerEvent(EMAIL_CHANGED, (params) -> emailChanged((String) params[0].get()));
 		this.registerEvent(COMMENT_CHANGED, (params) -> commentChanged((String) params[0].get()));
+	}
+
+	private void reserveReviews(Collection<SecondReview> reviews) {
+		if (this.model.getSelectedReviewer().isEmpty()) {
+			throw new IllegalStateException("Selected reviewer must not be empty");
+		}
+		reviews.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
+		.map(review -> (SecondReview) review).forEach(this::reserve);
 	}
 
 	private void nameChanged(String newValue) {
@@ -97,6 +107,10 @@ public class ReviewerEditorStateController extends AbstractStateController {
 
 	private void approve(SecondReview review) {
 		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED, ApplicationState.REVIEWER_EDITOR));
+	}
+
+	private void reserve(SecondReview review) {
+		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.RESERVED, ApplicationState.REVIEWER_EDITOR));
 	}
 
 	private void rejectSecondReviews(Collection<SecondReview> reviews) {

@@ -55,6 +55,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
 	private JButton approveSecReview;
+	private JButton reserveSecReview;
 
 	/**
 	 * Creates a view containing a table presenting the reviewer's supervised
@@ -69,7 +70,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 
 		this.selectedReviewer = this.model.getSelectedReviewer();
 
-		this.setLayout(new GridLayout(7, 2));
+		this.setLayout(new GridLayout(8, 2));
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 
 		this.createUIElements();
@@ -100,6 +101,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.addBachelorThesis = this.buttonFactory.createButton("Bachelorarbeit hinzufügen");
 		this.deleteThesis = this.buttonFactory.createButton("Bachelorarbeit löschen");
 		this.approveSecReview = this.buttonFactory.createButton("Zweitgutachten bestätigen");
+		this.reserveSecReview = this.buttonFactory.createButton("Bachelorarbeit vormerken");
 		
 		this.supervisedThesisTableModel = new SupervisedThesisTableModel(
 				List.of(TITLE, AUTHOR_NAME, AUTHOR_STUDY_GROUP, TYPE, STATUS), Collections.emptyList(),
@@ -130,6 +132,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
 		this.add(this.approveSecReview);
+		this.add(this.reserveSecReview);
 	}
 
 	@Override
@@ -138,6 +141,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis),
 				new ButtonEventSource(EventId.REJECT, deleteThesis, () -> getSelectedReviews()),
 				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getSelectedReviews()),
+				new ButtonEventSource(EventId.RESERVE_SEC_REVIEW, reserveSecReview, () -> getSelectedReviews()),
 				new TextFieldEventSource(EventId.NAME_CHANGED, this.name, () -> this.name.getText()),
 				new TextFieldEventSource(EventId.MAX_SUPERVISED_THESES_CHANGED, this.maxSupervised,
 						() -> this.maxSupervised.getText()),

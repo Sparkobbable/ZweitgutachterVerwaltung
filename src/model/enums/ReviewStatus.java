@@ -1,7 +1,7 @@
 package model.enums;
 
 public enum ReviewStatus {
-	REQUESTED("Angefragt"), APPROVED("Bestätigt"), REJECTED("Abgelehnt");
+	REQUESTED("Angefragt"), RESERVED("Vorgemerkt"), APPROVED("Bestätigt"), REJECTED("Abgelehnt");
 
 	private String label;
 
