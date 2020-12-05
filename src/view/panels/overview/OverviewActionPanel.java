@@ -16,7 +16,7 @@ public abstract class OverviewActionPanel<T> extends DefaultPanel {
 		super("");
 		this.selectedElementsSupplier = selectedElementsSupplier;
 		this.setBorder(UNTITLED_BORDER);
-		this.setLayout(new FlowLayout()); // TODO Not quite sure which is the best layout
+		this.setLayout(new FlowLayout()); 
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 	}
 

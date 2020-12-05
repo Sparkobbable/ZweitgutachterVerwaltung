@@ -127,7 +127,6 @@ public class ObjectMapper {
 		reviewerbuilder.add(Reviewer.MAX_SUPERVISED_THESES, r.getMaxSupervisedThesis());
 		reviewerbuilder.add(Reviewer.INTERNAL_ID, r.getInternalId());
 		
-//			reviewerbuilder.add("occupation", r.getOccupation()); TODO remove
 		return reviewerbuilder.build();
 	}
 

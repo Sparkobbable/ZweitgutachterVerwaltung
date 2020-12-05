@@ -22,7 +22,7 @@ public class CollaborationPanel extends DefaultPanel {
 	private AbstractViewPanel chart;
 	
 	private PieChart pieChart;
-	private CollaborationTableModel table;
+	private CollaborationTable table;
 	
 	private CustomEventSource initializeEventSource;
 
@@ -41,10 +41,10 @@ public class CollaborationPanel extends DefaultPanel {
 
 	private void createUIElements() {
 		this.pieChart = new PieChart(this.model);
-		this.table = new CollaborationTableModel(this.model);
+		this.table = new CollaborationTable(this.model);
 		
 		this.options = new CollaborationOptionsPanel(this.model);
-		this.chart = this.table;
+		this.chart = this.table;									
 	}
 
 	private void addUIElements() {

@@ -23,7 +23,10 @@ import view.panels.overview.ReviewerOverviewPanel;
 import view.panels.overview.ThesesOverviewPanel;
 import view.panels.prototypes.AbstractViewPanel;
 
-// TODO JavaDoc
+/**
+ * Handles and stores the panels. Shows and links them to their {@link ApplicationState}
+ *
+ */
 public class View implements EventSource {
 
 	private Map<ApplicationState, AbstractViewPanel> viewsByApplicationStates;
@@ -82,16 +85,6 @@ public class View implements EventSource {
 	private void switchState(ApplicationState oldState, ApplicationState newState) {
 		this.viewsByApplicationStates.get(newState).prepare();
 		this.window.switchToView(this.viewsByApplicationStates.get(newState).getViewId());
-	}
-
-	// TODO rmv
-	/**
-	 * 
-	 * @param state
-	 * @return A view of the view responsible for handling that state
-	 */
-	public AbstractViewPanel assumeState(ApplicationState state) {
-		return this.viewsByApplicationStates.get(state);
 	}
 
 	/**

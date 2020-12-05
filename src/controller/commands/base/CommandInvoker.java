@@ -50,7 +50,7 @@ public class CommandInvoker {
 	public void redo() {
 		if (this.redoStack.peek().getApplicationState() != model.getApplicationState()) {
 			applicationStateController.switchState(this.redoStack.peek().getApplicationState());
-			return; //TODO return from this method or continue?
+			return; 
 		}
 		Command command = this.redoStack.pop();
 		Log.info(this, "Re-executing command %s.", command);

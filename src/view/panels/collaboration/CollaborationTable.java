@@ -14,7 +14,7 @@ import model.domain.Reviewer;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
 
-public class CollaborationTableModel extends DefaultPanel {
+public class CollaborationTable extends DefaultPanel { 
 	
 	private Model model;
 	
@@ -22,7 +22,7 @@ public class CollaborationTableModel extends DefaultPanel {
 	private Object[][] data;
 	private JTable table;
 	
-	public CollaborationTableModel(Model model) {
+	public CollaborationTable(Model model) {
 		super("");
 		this.model = model;
 		this.data = new Object[30][2];

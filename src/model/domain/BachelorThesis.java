@@ -63,9 +63,10 @@ public class BachelorThesis implements ChangeableProperties {
 	 * Creates a new SecondReview instance and adds it to this thesis as well as the
 	 * referenced Reviewer.
 	 * 
+	 * This Method should only be used during the import
+	 * 
 	 * @param reviewer
 	 */
-	// TODO only used for import
 	public void setSecondReviewer(Reviewer reviewer) {
 		this.setSecondReview(new SecondReview(reviewer, this), CascadeMode.CASCADE);
 	}

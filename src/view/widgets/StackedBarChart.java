@@ -67,7 +67,7 @@ public class StackedBarChart{
 	}
 	
 	private static JFreeChart buildStackedBarChart(CategoryDataset dataSet) {
-		JFreeChart chart = ChartFactory.createStackedBarChart(null, null, null, dataSet, PlotOrientation.HORIZONTAL, false, false, false);
+		JFreeChart chart = ChartFactory.createStackedBarChart(null, null, null, dataSet, PlotOrientation.HORIZONTAL, false, true, true);
 		
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundPaint(Color.WHITE);
@@ -75,11 +75,12 @@ public class StackedBarChart{
 		plot.setRangeGridlinesVisible(false);
 		
 		CategoryItemRenderer renderer = plot.getRenderer();
-		renderer.setSeriesPaint(0, new Color(128, 0, 0));
-		renderer.setSeriesPaint(1, new Color(0, 0, 255));
+		renderer.setSeriesPaint(0, new Color(200, 0, 0));
+		renderer.setSeriesPaint(1, new Color(0, 0, 200));
 		renderer.setDefaultFillPaint(new Color(0, 0, 0));
 		renderer.setSeriesToolTipGenerator(0, new ToolTipGenerator("Erstgutachten"));
 		renderer.setSeriesToolTipGenerator(1, new ToolTipGenerator("Zweitgutachten"));
+		
 		
 		plot.getDomainAxis().setVisible(false);
 		
@@ -101,10 +102,6 @@ public class StackedBarChart{
 class ToolTipGenerator implements CategoryToolTipGenerator {
 
 	private String toolTip;
-	
-	ToolTipGenerator() {
-		
-	}
 	
 	ToolTipGenerator(String toolTip) {
 		this.toolTip = toolTip;

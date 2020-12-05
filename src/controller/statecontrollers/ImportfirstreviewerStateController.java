@@ -42,7 +42,6 @@ public class ImportfirstreviewerStateController extends AbstractStateController{
 	private void loadReview() {
 		File file = new File(filepath);
 		if(file.exists()) {
-			//TODO in CSVController
 			CSVController csv = new CSVController(filepath);
 			try {
 				ArrayList<Reviewer> reviewers = csv.loadcsvImport();

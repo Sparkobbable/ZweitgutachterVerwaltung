@@ -60,7 +60,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 		this.model = model;
 		this.observe(model);
 
-		this.setBackground(ViewProperties.BACKGROUND_COLOR); // TODO only for component identification, remove before launch
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new BorderLayout(10, 10));
 
 		this.createUIElements();

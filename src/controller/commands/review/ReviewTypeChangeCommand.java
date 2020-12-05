@@ -5,7 +5,6 @@ import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;
 
-//TODO rename to ApproveSecondReviewCommand
 public class ReviewTypeChangeCommand extends RevertibleCommand {
 
 	private SecondReview review;

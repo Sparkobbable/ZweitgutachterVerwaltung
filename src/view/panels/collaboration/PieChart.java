@@ -54,7 +54,6 @@ public class PieChart extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		// TODO Auto-generated method stub
 		return Collections.emptyList();
 	}
 

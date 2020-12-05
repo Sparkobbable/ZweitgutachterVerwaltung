@@ -22,8 +22,7 @@ public class Main {
 	 * Creates a sample list of reviewers, bachelor theses, authors and reviews
 	 * <p>
 
-	 * TODO remove this before deploying to prod -> why? testdata would be cool for presentation
-	 * TODO put this back into Controller when this gets a Model of all Data
+	 * TODO remove this before deploying to prod
 	 */
 	private static Model mockData() {
 		String[] studyGroup = {"WI 60/19", "WI 61/19", "IG 58/19", "BW 52/19", "WI 43/18", "WI 42/17", "IG 68/20", "IG 67/20", "WI 63/20"};
