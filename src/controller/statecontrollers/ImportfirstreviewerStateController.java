@@ -16,6 +16,7 @@ import model.enums.EventId;
 import model.persistence.PersistenceHandler;
 import view.View;
 
+//TODO @leoniemersmann javadoc
 public class ImportfirstreviewerStateController extends AbstractStateController{
 
 	private String filepath;

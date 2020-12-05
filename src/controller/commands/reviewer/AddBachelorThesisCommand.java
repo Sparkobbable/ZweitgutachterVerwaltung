@@ -1,5 +1,6 @@
 package controller.commands.reviewer;
 
+import controller.commands.base.Command;
 import controller.commands.base.RevertibleCommand;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
@@ -7,12 +8,18 @@ import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.CascadeMode;
 
+/**
+ * {@link Command} that adds a (second) {@link Reviewer} to a BachelorThesis and a BachelorThesis
+ * to a {@link Reviewer}
+ * 
+ */
 public class AddBachelorThesisCommand extends RevertibleCommand {
 
 	private SecondReview newReview;
 	private SecondReview oldReview;
 
-	public AddBachelorThesisCommand(Reviewer reviewer, BachelorThesis bachelorThesis, ApplicationState applicationState) {
+	public AddBachelorThesisCommand(Reviewer reviewer, BachelorThesis bachelorThesis,
+			ApplicationState applicationState) {
 		super(applicationState);
 		this.newReview = new SecondReview(reviewer, bachelorThesis);
 		this.oldReview = bachelorThesis.getSecondReview().orElse(null);

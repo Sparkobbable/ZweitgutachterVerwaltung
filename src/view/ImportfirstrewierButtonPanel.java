@@ -10,9 +10,9 @@ import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.DefaultPanel;
 
+@SuppressWarnings("serial") // should not be serialized
 public class ImportfirstrewierButtonPanel extends DefaultPanel{
 
-private static final long serialVersionUID = 1L;
 	
 	private JButton loadImport;
 	

@@ -2,11 +2,15 @@ package view.resource;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Responsible for loading any Images from the file system.
+ *
+ */
 public class ImageLoader {
 
 	private static final String IMAGE_FOLDER = "images/";
 	private static final String DEFAULT_SUFFIX = ".png";
-	
+
 	private static ImageLoader instance;
 
 	public static ImageLoader getInstance() {

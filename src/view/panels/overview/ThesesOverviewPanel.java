@@ -11,8 +11,6 @@ import java.awt.BorderLayout;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import controller.events.EventSource;
 import controller.search.BachelorThesisSearchStrategy;
@@ -36,8 +34,7 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 	 * Creates a view containing a table presenting the bachelorThesis without a
 	 * second review and other data of the thesis
 	 * 
-	 * @param viewId Unique viewId from {@link ViewId}
-	 * @param model  Needs the model as data access
+	 * @param model The model that shall be visualized
 	 */
 	@SuppressWarnings("unchecked")
 	public ThesesOverviewPanel(Model model) {
@@ -60,7 +57,6 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 		this.tableModel.updateData();
 	}
 
-	
 	@Override
 	protected List<EventSource> getEventSources() {
 		return new LinkedList<EventSource>(List.of(this.actionPanel,

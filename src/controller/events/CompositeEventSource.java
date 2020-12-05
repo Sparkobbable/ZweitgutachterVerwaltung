@@ -5,17 +5,27 @@ import java.util.HashSet;
 
 import model.enums.EventId;
 
+/**
+ * An {@link EventSource} composed by a set of internal EventSources
+ * <p>
+ * An event is omitted from this EventSource whenever it is omitted by any of
+ * the internal EventSources.
+ * <p>
+ * Technically, it redirects all incoming
+ * {@link #addEventHandler(EventId, Action)} requests to the underlying
+ * EventSources.
+ */
 public class CompositeEventSource implements EventSource {
 	private Collection<EventSource> eventSources;
-	
+
 	public CompositeEventSource() {
 		this.eventSources = new HashSet<>();
 	}
-	
+
 	public void register(EventSource eventSource) {
 		this.eventSources.add(eventSource);
 	}
-	
+
 	public void registerAll(Collection<EventSource> eventSource) {
 		this.eventSources.addAll(eventSource);
 	}

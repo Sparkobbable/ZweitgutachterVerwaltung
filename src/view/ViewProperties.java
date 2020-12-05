@@ -2,6 +2,10 @@ package view;
 
 import java.awt.Color;
 
+/**
+ * Stores constant properties relevant for the {@link View}
+ *
+ */
 public interface ViewProperties {
 	// Color palette
 	public static final Color BUTTON_COLOR = new Color(62, 76, 84);

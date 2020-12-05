@@ -14,6 +14,7 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtils;
 
+//TODO @jpfrehe javadoc
 public class StackedBarChart{
 	
 	private CategoryDataset dataSet;
@@ -99,6 +100,7 @@ public class StackedBarChart{
 	}
 }
 
+//TODO @jpfrehe javadoc
 class ToolTipGenerator implements CategoryToolTipGenerator {
 
 	private String toolTip;

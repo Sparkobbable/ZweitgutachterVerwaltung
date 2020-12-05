@@ -12,9 +12,8 @@ import view.ViewState;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 
+@SuppressWarnings("serial") // should not be serialized
 public class CollaborationPanel extends DefaultPanel {
-
-	private static final long serialVersionUID = 1L;
 
 	private Model model;
 

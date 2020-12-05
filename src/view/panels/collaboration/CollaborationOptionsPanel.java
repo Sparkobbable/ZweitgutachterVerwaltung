@@ -10,14 +10,12 @@ import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.EventId;
-import view.View;
 import view.ViewProperties;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 
+@SuppressWarnings("serial") // should not be serialized
 public class CollaborationOptionsPanel extends DefaultPanel {
-
-	private static final long serialVersionUID = 1L;
 
 	private Optional<Reviewer> optReviewer;
 	private Model model;

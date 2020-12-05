@@ -6,6 +6,10 @@ import java.util.function.Supplier;
 
 import model.enums.EventId;
 
+/**
+ * {@link SingleEventSource} that can be triggered manually by calling the
+ * {@link #trigger()} method
+ */
 public class CustomEventSource extends SingleEventSource {
 
 	private Set<Action> actions;

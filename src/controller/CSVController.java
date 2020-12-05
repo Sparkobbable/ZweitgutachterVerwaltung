@@ -18,7 +18,7 @@ import model.domain.BachelorThesis;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ReviewStatus;
-
+//TODO javadoc
 public class CSVController {
 private String filename;
  

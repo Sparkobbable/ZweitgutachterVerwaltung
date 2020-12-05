@@ -17,7 +17,11 @@ import model.domain.SecondReview;
 import model.enums.CascadeMode;
 import model.enums.ReviewStatus;
 
-public class ObjectMapper {
+/**
+ * Maps JsonObjects to domain model objects.
+ *
+ */
+public class JsonMapper {
 
 	static final String REVIEWERS = "reviewers";
 	static final String BACHELOR_THESES = "bachelorTheses";
@@ -51,7 +55,7 @@ public class ObjectMapper {
 	}
 
 	public static List<Reviewer> mapToReviewers(JsonArray reviewers) {
-		return reviewers.stream().map(ObjectMapper::mapToReviewer).collect(Collectors.toList());
+		return reviewers.stream().map(JsonMapper::mapToReviewer).collect(Collectors.toList());
 	}
 
 	private static BachelorThesis mapToBachelorThesis(JsonObject jThesis, List<Reviewer> reviewers) {
@@ -59,7 +63,7 @@ public class ObjectMapper {
 		Reviewer firstReviewer = findReviewerById(jThesis.getInt(FIRST_REVIEWER), reviewers);
 		BachelorThesis bachelorThesis = new BachelorThesis(jThesis.getString(BachelorThesis.TOPIC), author,
 				firstReviewer);
-		
+
 		if (jThesis.containsKey(SECOND_REVIEWER)) {
 			Reviewer secondReviewer = findReviewerById(jThesis.getInt(SECOND_REVIEWER), reviewers);
 			ReviewStatus reviewStatus = ReviewStatus.valueOf(jThesis.getString(SECOND_REVIEW_STATUS));
@@ -83,7 +87,7 @@ public class ObjectMapper {
 	}
 
 	private static JsonArray mapToBachelorThesesJson(List<BachelorThesis> bachelorTheses) {
-		List<JsonObject> jThesis = bachelorTheses.stream().map(ObjectMapper::mapToBachelorThesisJson)
+		List<JsonObject> jThesis = bachelorTheses.stream().map(JsonMapper::mapToBachelorThesisJson)
 				.collect(Collectors.toList());
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		jThesis.forEach(arrayBuilder::add);
@@ -111,8 +115,7 @@ public class ObjectMapper {
 	}
 
 	private static JsonArray mapToReviewersJson(List<Reviewer> reviewers) {
-		List<JsonObject> jReviewer = reviewers.stream().map(ObjectMapper::mapToReviewerJson)
-				.collect(Collectors.toList());
+		List<JsonObject> jReviewer = reviewers.stream().map(JsonMapper::mapToReviewerJson).collect(Collectors.toList());
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
 		jReviewer.forEach(arrayBuilder::add);
@@ -126,7 +129,7 @@ public class ObjectMapper {
 		reviewerbuilder.add(Reviewer.COMMENT, r.getComment());
 		reviewerbuilder.add(Reviewer.MAX_SUPERVISED_THESES, r.getMaxSupervisedThesis());
 		reviewerbuilder.add(Reviewer.INTERNAL_ID, r.getInternalId());
-		
+
 		return reviewerbuilder.build();
 	}
 

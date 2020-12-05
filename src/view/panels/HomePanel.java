@@ -19,9 +19,8 @@ import view.resource.ImageLoader;
 /**
  * Basic home panel, allows navigating to different application sections
  */
+@SuppressWarnings("serial") // should not be serialized
 public class HomePanel extends DefaultPanel {
-
-	private static final long serialVersionUID = 1L;
 
 	private JLabel headline;
 	private JButton showReviewers;

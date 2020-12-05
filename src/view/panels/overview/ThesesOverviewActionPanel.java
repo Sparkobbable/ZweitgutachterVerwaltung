@@ -25,7 +25,7 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesi
 	/**
 	 * Provides a section with several buttons for interaction with the table.
 	 * 
-	 * @param id Unique ID from {@link ViewId}
+	 * @param selectedElementsSupplier supplies the currently selected {@link BachelorThesis}s
 	 */
 	@SuppressWarnings("unchecked")
 	public ThesesOverviewActionPanel(Model model, Supplier<List<BachelorThesis>> selectedElementsSupplier) {

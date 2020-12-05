@@ -9,6 +9,9 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import view.View;
 
+/**
+ * Class that handles program startup, creates the Model, View and Container
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -21,12 +24,12 @@ public class Main {
 	/**
 	 * Creates a sample list of reviewers, bachelor theses, authors and reviews
 	 * <p>
-
 	 * TODO remove this before deploying to prod
 	 */
 	private static Model mockData() {
-		String[] studyGroup = {"WI 60/19", "WI 61/19", "IG 58/19", "BW 52/19", "WI 43/18", "WI 42/17", "IG 68/20", "IG 67/20", "WI 63/20"};
-		String[] topic = {"Simulation von Elektronenbahnen in Perkeo 2",
+		String[] studyGroup = { "WI 60/19", "WI 61/19", "IG 58/19", "BW 52/19", "WI 43/18", "WI 42/17", "IG 68/20",
+				"IG 67/20", "WI 63/20" };
+		String[] topic = { "Simulation von Elektronenbahnen in Perkeo 2",
 				"Marketingkonzeption für Gastronomiebetriebe unter besonderer Betrachtung der Kommunikationspolitik",
 				"Welchen Einflus hat Product Placement auf die Rezipienten? Und kann sich die EInstellung zu einer Marke durch angewandtes Product Placement verändern?",
 				"Computerbasierte Bearbeitung technischer Inhalte zur Effizienzsteigerung und Kommunikationsverbesserung in der Modellpflege in der Automobilindustrie",
@@ -52,8 +55,8 @@ public class Main {
 				"Implementierung effizienter Beschaffungsprozesse von C-Teilen anhand des e-Procurement im Rahmen einer geplanten Einkaufszentralisierung der inländischenProduktionsstandorte am Beispiel der WeserGold GmbH & Co. KG",
 				"OneE.ON als Konzept zur strategischen Unternehmensführung: Analyse und Handlungsempfehlungen für die E.ON Westfalen Weser AG",
 				"Aufbau einer Vertriebskooperation in Kanada am Beispiel des Vertriebszweiges ProVita der ORNAMIN Kunststoffwerke W. Zschetzsche GmbH & Co. KG",
-				"Analyse des Projektes E.ON Managed Print Services und Entwicklung von Handlungsempfehlungen für zukünftige Outsourcingaktivitäten"};
-		String[] comment = {"", "Hallo", "Den mag ich besonders", "Der ist immer zu spät"};
+				"Analyse des Projektes E.ON Managed Print Services und Entwicklung von Handlungsempfehlungen für zukünftige Outsourcingaktivitäten" };
+		String[] comment = { "", "Hallo", "Den mag ich besonders", "Der ist immer zu spät" };
 
 		Author[] authors = new Author[30];
 		for (int i = 0; i < authors.length; i++) {
@@ -63,14 +66,15 @@ public class Main {
 		for (int i = 0; i < reviewers.length; i++) {
 			String firstName = randomFrom(firstname);
 			String lastName = randomFrom(surname);
-			reviewers[i] = new Reviewer(String.format("%s, %s", lastName, firstName), 10, String.format("%s.%s@hsw.de", firstName, lastName), randomFrom(comment));
+			reviewers[i] = new Reviewer(String.format("%s, %s", lastName, firstName), 10,
+					String.format("%s.%s@hsw.de", firstName, lastName), randomFrom(comment));
 		}
-		
+
 		BachelorThesis[] bts = new BachelorThesis[topic.length];
 		for (int i = 0; i < bts.length; i++) {
 			bts[i] = new BachelorThesis(topic[i], randomFrom(authors), randomFrom(reviewers));
 		}
-		
+
 		for (BachelorThesis bt : bts) {
 			if (Math.random() < 0.5) {
 				continue;
@@ -79,7 +83,7 @@ public class Main {
 			if (r2 != bt.getFirstReview().getReviewer()) {
 				bt.setSecondReviewer(r2);
 			}
-			
+
 		}
 		return new Model(List.of(bts), List.of(reviewers));
 	}

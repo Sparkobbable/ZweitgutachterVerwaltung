@@ -8,6 +8,13 @@ import model.enums.EventId;
 import util.Log;
 import view.View;
 
+/**
+ * Class responsible for invoking comments.
+ * <p>
+ * It implements an undo/redo-mechanism and updates the View's undoable and
+ * redoable visualizations.
+ *
+ */
 public class CommandInvoker {
 	private View view;
 	private Model model;
@@ -50,7 +57,7 @@ public class CommandInvoker {
 	public void redo() {
 		if (this.redoStack.peek().getApplicationState() != model.getApplicationState()) {
 			applicationStateController.switchState(this.redoStack.peek().getApplicationState());
-			return; 
+			return;
 		}
 		Command command = this.redoStack.pop();
 		Log.info(this, "Re-executing command %s.", command);
@@ -58,7 +65,7 @@ public class CommandInvoker {
 		command.execute();
 		updateView();
 	}
-	
+
 	private void updateView() {
 		this.view.setUndoable(!this.undoStack.isEmpty());
 		this.view.setRedoable(!this.redoStack.isEmpty());

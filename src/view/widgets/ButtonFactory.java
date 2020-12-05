@@ -7,6 +7,10 @@ import javax.swing.JButton;
 import view.ViewProperties;
 import view.resource.ImageLoader;
 
+/**
+ * Factory class for {@link JButton}s that have some default properties
+ *
+ */
 public class ButtonFactory {
 
 	private static ButtonFactory instance;
@@ -29,10 +33,6 @@ public class ButtonFactory {
 		return button;
 	}
 
-	protected void scaleButton(JButton button, float size) {
-		button.setFont(button.getFont().deriveFont(size));
-	}
-	
 	public JButton createMenuButton(String title) {
 		JButton button = new JButton(title);
 		this.scaleButton(button, ViewProperties.MENU_BUTTON_FONT_SIZE);
@@ -57,5 +57,10 @@ public class ButtonFactory {
 		button.setContentAreaFilled(false);
 		button.setForeground(Color.WHITE);
 		return button;
+	}
+	
+
+	private void scaleButton(JButton button, float size) {
+		button.setFont(button.getFont().deriveFont(size));
 	}
 }

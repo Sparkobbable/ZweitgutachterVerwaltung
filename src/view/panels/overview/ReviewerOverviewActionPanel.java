@@ -22,10 +22,10 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel<Reviewer> {
 	/**
 	 * Provides a section with several buttons for interaction with the table.
 	 * 
-	 * @param id Unique ID from {@link ViewId}
+	 * @param selectedElementsSupplier supplies the currently selected Reviewers
 	 */
-	public ReviewerOverviewActionPanel(Supplier<List<Reviewer>> selectedRowIndexSupplier) {
-		super(selectedRowIndexSupplier);
+	public ReviewerOverviewActionPanel(Supplier<List<Reviewer>> selectedElementsSupplier) {
+		super(selectedElementsSupplier);
 
 		this.createUIElements();
 		this.addUIElements();

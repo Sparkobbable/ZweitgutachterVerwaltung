@@ -12,10 +12,9 @@ import view.ViewProperties;
 import view.eventsources.ComboBoxEventSource;
 import view.panels.prototypes.DefaultPanel;
 
+@SuppressWarnings("serial") // should not be serialized
 public class CollaborationComboBoxPanel extends DefaultPanel {
 
-	private static final long serialVersionUID = 1L;
-	
 	private JLabel headline;
 	private JComboBox<String> choosePresentationMode;
 	private EventId eventId;

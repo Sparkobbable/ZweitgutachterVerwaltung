@@ -2,6 +2,10 @@ package controller.events;
 
 import model.enums.EventId;
 
+/**
+ * Interface implemented by classes that can omit events.
+ *
+ */
 public interface EventSource {
 
 	/**

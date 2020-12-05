@@ -7,6 +7,16 @@ import controller.events.Action;
 import model.enums.EventId;
 import view.ViewState;
 
+/**
+ * A wrapper class that represents an {@link AbstractViewPanel} at a given
+ * {@link ViewState}
+ * <p>
+ * This class can be used if an AbstractViewPanel has different ViewStates. Each
+ * ViewState should then be linked to an ApplicationState
+ * 
+ * @see AbstractViewPanel#atState(ViewState)
+ *
+ */
 @SuppressWarnings("serial")
 public class ViewPanelDecorator extends AbstractViewPanel {
 
@@ -17,7 +27,6 @@ public class ViewPanelDecorator extends AbstractViewPanel {
 		this.innerPanel = innerPanel;
 		this.viewState = viewState;
 		this.setLayout(new BorderLayout());
-
 	}
 
 	@Override

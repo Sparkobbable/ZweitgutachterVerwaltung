@@ -1,5 +1,8 @@
 package model.enums;
 
+/**
+ * Type to differentiate FirstReviews from SecondReviews
+ */
 public enum ReviewType {
 	FIRST_REVIEW("Erstgutachten"), SECOND_REVIEW("Zweitgutachten");
 	private String label;

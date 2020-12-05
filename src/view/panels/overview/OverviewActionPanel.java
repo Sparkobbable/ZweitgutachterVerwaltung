@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
 
+@SuppressWarnings("serial") // should not be serialized
 public abstract class OverviewActionPanel<T> extends DefaultPanel {
-	private static final long serialVersionUID = 1L;
 
 	protected Supplier<List<T>> selectedElementsSupplier;
 

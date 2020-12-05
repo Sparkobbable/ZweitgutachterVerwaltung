@@ -17,6 +17,13 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.persistence.PersistenceHandler;
 
+/**
+ * {@link PersistenceHandler} that handles JSON persistance.
+ * <p>
+ * Can be used to save and load Lists of Reviewers and BachelorTheses in or from
+ * JSON files.
+ *
+ */
 public class JSONController implements PersistenceHandler {
 
 	private String filename;
@@ -40,15 +47,12 @@ public class JSONController implements PersistenceHandler {
 		JsonWriter jsonWriter = null;
 		try {
 			jsonWriter = Json.createWriter(new FileWriter(filename));
-			jsonWriter.writeObject(ObjectMapper.mapToJson(reviewers, bachelorTheses));
-			System.out.println("Save-success");
+			jsonWriter.writeObject(JsonMapper.mapToJson(reviewers, bachelorTheses));
 			if (jsonWriter != null) {
 				jsonWriter.close();
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-//		} finally {
-//			
 		}
 	}
 
@@ -66,12 +70,12 @@ public class JSONController implements PersistenceHandler {
 				throw new RuntimeException("Ungültiges Json-Format");
 			}
 			JsonObject object = (JsonObject) value;
-			List<Reviewer> reviewers = ObjectMapper.mapToReviewers(object.getJsonArray(ObjectMapper.REVIEWERS));
-			List<BachelorThesis> bachelorTheses = ObjectMapper
-					.mapToBachelorTheses(object.getJsonArray(ObjectMapper.BACHELOR_THESES), reviewers);
+			List<Reviewer> reviewers = JsonMapper.mapToReviewers(object.getJsonArray(JsonMapper.REVIEWERS));
+			List<BachelorThesis> bachelorTheses = JsonMapper
+					.mapToBachelorTheses(object.getJsonArray(JsonMapper.BACHELOR_THESES), reviewers);
 			System.out.println("Load-success");
 
-			return Pair.createPair(reviewers, bachelorTheses);
+			return Pair.of(reviewers, bachelorTheses);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {

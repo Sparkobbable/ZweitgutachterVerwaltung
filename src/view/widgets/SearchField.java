@@ -11,37 +11,44 @@ import javax.swing.JTextField;
 
 import controller.search.SearchStrategy;
 
-
+/**
+ * Panel that displays a search field and that should be checked when displaying
+ * searchable data.
+ * 
+ * @param <T> Class of Elements that can be searched
+ */
 public class SearchField<T> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private SearchStrategy<T> searchStrategy;
 	private ButtonFactory buttonFactory;
-	//UI-Elements
+	// UI-Elements
 	private JTextField searchText;
 	private JButton searchButton;
-	
-	
-	
+
 	/**
-	 * Creates a search widget containing a textfield and a searchbutton
-	 * Needs wiring using {@link SearchFieldEventSource}
+	 * Creates a search widget containing a text field and a search button.
+	 * 
+	 * @param searchStrategy Strategy used for filtering elements for a given search
+	 *                       text
+	 * @param onUpdate       method that will be called when the search text is
+	 *                       altered
 	 */
 	public SearchField(SearchStrategy<T> searchStrategy, Consumer<String> onUpdate) {
 		this.buttonFactory = ButtonFactory.getInstance();
 		this.searchStrategy = searchStrategy;
 		this.searchText = new JTextField();
 		this.searchButton = this.buttonFactory.createImageButton("search3");
-		this.searchButton.addActionListener((e) -> onUpdate.accept(this.searchText.getText()));
 		ActionListener update = (e) -> onUpdate.accept(this.searchText.getText());
+		this.searchButton.addActionListener(update);
 		this.searchText.addActionListener(update);
 		this.searchText.addActionListener(update);
 		this.setLayout(new GridLayout(1, 2));
-		
+
 		this.addUiElements();
 	}
-	
+
 	public void setSearchHandler(ActionListener actionListener, PropertyChangeListener propertyListener) {
 		this.searchButton.addActionListener(actionListener);
 	}

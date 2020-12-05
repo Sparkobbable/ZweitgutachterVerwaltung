@@ -17,7 +17,7 @@ import view.View;
 
 /**
  * Handles the Application when in ApplicationState
- * {@link ApplicationState#JSON_CHOOSER}
+ * {@link ApplicationState#STATE_CHOOSER}
  */
 public class StateChooserStateController extends AbstractStateController {
 

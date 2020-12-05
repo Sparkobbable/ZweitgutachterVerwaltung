@@ -16,9 +16,8 @@ import view.tableModels.AbstractDataTableModel;
 import view.tableModels.LinkedTable;
 import view.widgets.SearchField;
 
+@SuppressWarnings("serial") // should not be serialized
 public abstract class OverviewPanel<T> extends DefaultPanel {
-
-	private static final long serialVersionUID = 1L;
 
 	protected Model model;
 

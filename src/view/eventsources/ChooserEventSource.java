@@ -8,10 +8,17 @@ import controller.events.Action;
 import controller.events.SingleEventSource;
 import model.enums.EventId;
 
+/**
+ * {@link SingleEventSource} represented by a JFileChooser
+ * <p>
+ * Triggers events when a File is chosen with a JFileChooser
+ *
+ * @see JFileChooser#addActionListener(java.awt.event.ActionListener)
+ */
 public class ChooserEventSource extends SingleEventSource {
-	
-	private JFileChooser filechooser;
-	
+
+	private final JFileChooser filechooser;
+
 	public ChooserEventSource(EventId eventId, JFileChooser filechooser, Supplier<?>... params) {
 		super(eventId, params);
 		this.filechooser = filechooser;

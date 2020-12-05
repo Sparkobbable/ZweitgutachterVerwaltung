@@ -10,6 +10,7 @@ import model.enums.ApplicationState;
 import model.enums.EventId;
 import view.View;
 
+//TODO @jpfrehe javadoc
 public class CollaborationOverviewPieChartStateController extends AbstractCollaborationOverviewStateController {
 
 	public CollaborationOverviewPieChartStateController(View view, Controller controller,

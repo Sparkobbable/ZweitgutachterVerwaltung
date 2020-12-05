@@ -14,9 +14,9 @@ import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 
 
+@SuppressWarnings("serial") // should not be serialized
 public class ImportfirstrewierPanel extends DefaultPanel {
 
-	private static final long serialVersionUID = 1L;
 	private JFileChooser chooseImport;
 	private AbstractViewPanel buttons;
 

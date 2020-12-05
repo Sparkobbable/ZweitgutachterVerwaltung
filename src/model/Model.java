@@ -17,7 +17,6 @@ import model.enums.ApplicationState;
 
 /**
  * Data store for all reviewers
- * <p>
  */
 public class Model implements ChangeableProperties {
 

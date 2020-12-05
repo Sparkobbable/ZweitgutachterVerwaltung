@@ -30,10 +30,21 @@ import view.tableModels.Column;
 import view.tableModels.ThesesOverviewTableModel;
 import view.widgets.SearchField;
 
+/**
+ * Panel responsible for assigning a thesis to the selectedReviwer
+ * <p>
+ * It is required that a reviewer is currently selected when opening this panel.
+ * This panel's content updates automatically when the selected reviewer or any
+ * of its theses changes.
+ *
+ */
+@SuppressWarnings("serial") // should not be serialized
 public class ThesisAssignmentPanel extends DefaultPanel {
 
 	// Constants
-	private static final long serialVersionUID = 1L;
+	/**
+	 * List of Columns displayed in this panel's table
+	 */
 	private static final List<Column<BachelorThesis, ?>> THESES_TABLE_COLUMNS = List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP,
 			TOPIC, FIRST_REVIEWER);
 
@@ -52,8 +63,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 	 * Creates a view containing a table presenting the bachelorThesis without a
 	 * second review and other data of the thesis
 	 * 
-	 * @param viewId Unique viewId from {@link ViewId}
-	 * @param model  Needs the model as data access
+	 * @param model The presented Model, needs for data access
 	 */
 	public ThesisAssignmentPanel(Model model) {
 		super("Bachelorthesis-Editor");
@@ -114,6 +124,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 				(evt) -> updateSelectedReviewer((Optional<Reviewer>) evt.getNewValue()));
 		this.onPropertyChange(Reviewer.SECOND_REVIEWS, (evt) -> updateThesesList());
 		this.onPropertyChange(Reviewer.FIRST_REVIEWS, (evt) -> updateThesesList());
+
 	}
 
 	private void updateThesesList() {
@@ -126,6 +137,9 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 
 	private void updateSelectedReviewer(Optional<Reviewer> selectedReviewer) {
 		if (selectedReviewer.isPresent()) {
+			if (Objects.nonNull(this.selectedReviewer)) {
+				this.stopObserving(this.selectedReviewer);
+			}
 			this.selectedReviewer = selectedReviewer.get();
 			this.observe(this.selectedReviewer);
 			this.addThesis.setText(this.createButtonText());

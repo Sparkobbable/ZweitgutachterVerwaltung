@@ -1,5 +1,9 @@
 package model.enums;
 
+/**
+ * A logical representation of a view panel
+ *
+ */
 public enum ApplicationState {
 
 	HOME, REVIEWER_OVERVIEW, THESES_OVERVIEW, REVIEWER_EDITOR, STATE_CHOOSER,

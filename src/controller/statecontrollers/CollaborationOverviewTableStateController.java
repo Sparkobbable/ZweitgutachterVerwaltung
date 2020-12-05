@@ -10,6 +10,7 @@ import model.enums.ApplicationState;
 import model.enums.EventId;
 import view.View;
 
+//TODO @jpfrehe javadoc
 public class CollaborationOverviewTableStateController extends AbstractCollaborationOverviewStateController {
 
 	public CollaborationOverviewTableStateController(View view, Controller controller,

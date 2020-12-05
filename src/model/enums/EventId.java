@@ -1,5 +1,9 @@
 package model.enums;
 
+/**
+ * Id of an Event. Must be uniquely assignable to an event in combination with an {@link ApplicationState}.
+ *
+ */
 public enum EventId {
 
 	SHOW_REVIEWERS, 

@@ -3,6 +3,11 @@ package controller.propertychangelistener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Interface to indicate that some of this class's properties can be changed and
+ * observed.
+ *
+ */
 public interface ChangeableProperties {
 	/**
 	 * Adds a propertyChangeListener to this Object that is called when any property
@@ -14,8 +19,8 @@ public interface ChangeableProperties {
 	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener);
 
 	/**
-	 * Removes a propertyChangeListener from this Object 
-	 * 	 * 
+	 * Removes a propertyChangeListener from this Object *
+	 * 
 	 * @see PropertyChangeSupport#removePropertyChangeListener(PropertyChangeListener)
 	 * @param propertyChangeListener
 	 */

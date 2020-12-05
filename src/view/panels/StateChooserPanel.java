@@ -13,44 +13,42 @@ import view.eventsources.ChooserEventSource;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 
+/**
+ * Panel responsible for saving and loading the current system state.
+ */
+@SuppressWarnings("serial") // should not be serialized
 public class StateChooserPanel extends DefaultPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private JFileChooser chooseJson;
-	private AbstractViewPanel buttons;
-	
+	private final JFileChooser chooseJson;
+	private final AbstractViewPanel buttons;
+
 	public StateChooserPanel() {
 		super("Systemzustand Manager");
-		
+
 		this.chooseJson = new JFileChooser();
 		this.buttons = new StateChooserButtonsPanel();
 		this.registerEventSources();
-		
+
 		this.init();
 	}
-	
-	public void init() {
+
+	private void init() {
 		this.setBackground(Color.gray);
 		this.setLayout(new GridLayout(2, 2));
-		this.add(chooseJson);
-		this.add(buttons);
-		
+		this.add(this.chooseJson);
+		this.add(this.buttons);
+
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Json Datei", "json");
-		chooseJson.setFileFilter(filter);
-		chooseJson.setApproveButtonText("Select");
+		this.chooseJson.setFileFilter(filter);
+		this.chooseJson.setApproveButtonText("Select");
 	}
-	
+
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(
-				new ChooserEventSource(EventId.CHOOSE_FILEPATH, chooseJson, () -> getFilePath()),
-				buttons);
+		return List.of(new ChooserEventSource(EventId.CHOOSE_FILEPATH, chooseJson, () -> getFilePath()), buttons);
 	}
-	
+
 	private String getFilePath() {
-		return chooseJson.getSelectedFile().getAbsolutePath();
+		return this.chooseJson.getSelectedFile().getAbsolutePath();
 	}
 }

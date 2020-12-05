@@ -3,6 +3,13 @@ package controller.commands.base;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Composite command of several commands that should be executed together.
+ * <p>
+ * All commands processed in this BatchCommand must originiate in the same
+ * ApplicationState.
+ *
+ */
 public class BatchCommand extends DefaultCommand {
 
 	private final List<Command> commands;

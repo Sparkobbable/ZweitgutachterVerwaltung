@@ -9,6 +9,12 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * Class that handles listening to property changes and calling the correct
+ * methods accordingly. For each Property Id, a list of Method is stored that
+ * are called when a property with the fitting propertyId is modified.
+ *
+ */
 public class PropertyChangeManager implements PropertyChangeListener {
 
 	/**
@@ -80,7 +86,5 @@ public class PropertyChangeManager implements PropertyChangeListener {
 			return consumer;
 		}
 	}
-
-
 
 }

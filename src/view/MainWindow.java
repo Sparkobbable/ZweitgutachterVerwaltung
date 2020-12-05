@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 import util.Log;
 import view.panels.prototypes.AbstractViewPanel;
 
+/**
+ * {@link JFrame} that displays an {@link AbstractViewPanel}, swapping between ViewPanels by using a {@link CardLayout}.
+ */
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 

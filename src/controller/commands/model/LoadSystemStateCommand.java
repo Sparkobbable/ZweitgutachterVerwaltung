@@ -23,8 +23,8 @@ public class LoadSystemStateCommand extends IrevertibleCommand {
 	@Override
 	public void execute() {
 		Pair<List<Reviewer>, List<BachelorThesis>> load = persistenceHandler.load();
-		this.model.overrideReviewers(load.getKey());
-		this.model.overrideBachelorTheses(load.getValue());
+		this.model.overrideReviewers(load.getLeft());
+		this.model.overrideBachelorTheses(load.getRight());
 	}
 
 }

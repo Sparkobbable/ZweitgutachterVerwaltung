@@ -10,15 +10,18 @@ import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.widgets.ButtonFactory;
 
+/**
+ * Responsible for visualization and event handling for a menu bar.
+ *
+ */
+@SuppressWarnings("serial") // this class should not be serialized
 public class MenuBarHandler extends JMenuBar implements EventSource {
 
-	private static final long serialVersionUID = 1L;
 	private CompositeEventSource eventSourceHandler;
 	private ButtonFactory buttonFactory;
 	private JButton back;
 	private JButton undo;
 	private JButton redo;
-	
 
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();

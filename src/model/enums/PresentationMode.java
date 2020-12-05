@@ -3,6 +3,7 @@ package model.enums;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+//TODO @jpfrehe javadoc
 public enum PresentationMode {
 	TABLE("Tabelle"), PIECHART("Tortendiagramm");
 	

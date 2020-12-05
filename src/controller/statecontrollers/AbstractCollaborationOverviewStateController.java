@@ -9,6 +9,7 @@ import model.enums.ApplicationState;
 import model.enums.ReviewType;
 import view.View;
 
+//TODO @jpfrehe javadoc
 public abstract class AbstractCollaborationOverviewStateController extends AbstractStateController {
 
 	public AbstractCollaborationOverviewStateController(ApplicationState applicationState, View view,

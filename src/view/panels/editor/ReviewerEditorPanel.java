@@ -33,8 +33,15 @@ import view.inputverifiers.NonEmptyStringInputVerifier;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.SupervisedThesisTableModel;
 
+/**
+ * Panel that is responsible for displaying a detailed view of a Reviewer.
+ * <p>
+ * It is responsible for editing reviewers as well as linking to the
+ * {@link ThesisAssignmentPanel}
+ *
+ */
+@SuppressWarnings("serial") // should not be serialized
 public class ReviewerEditorPanel extends DefaultPanel {
-	private static final long serialVersionUID = 1L;
 	private Optional<Reviewer> selectedReviewer;
 	private Model model;
 
@@ -93,16 +100,16 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.emailLabel = new JLabel("Email: ");
 		this.commentLabel = new JLabel("Bemerkung: ");
 		this.supervisedLabel = new JLabel("Betreute Bachelorarbeiten: ");
-		
+
 		this.name.setInputVerifier(new NonEmptyStringInputVerifier());
 		this.maxSupervised.setInputVerifier(new IntegerInputVerifier());
-		
+
 		this.save = this.buttonFactory.createButton("Speichern");
 		this.addBachelorThesis = this.buttonFactory.createButton("Bachelorarbeit hinzufügen");
 		this.deleteThesis = this.buttonFactory.createButton("Bachelorarbeit löschen");
 		this.approveSecReview = this.buttonFactory.createButton("Zweitgutachten bestätigen");
 		this.reserveSecReview = this.buttonFactory.createButton("Bachelorarbeit vormerken");
-		
+
 		this.supervisedThesisTableModel = new SupervisedThesisTableModel(
 				List.of(TITLE, AUTHOR_NAME, AUTHOR_STUDY_GROUP, TYPE, STATUS), Collections.emptyList(),
 				this.selectedReviewer);
