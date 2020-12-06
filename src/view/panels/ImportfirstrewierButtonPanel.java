@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import java.awt.Color;
 import java.util.List;
@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import controller.events.EventSource;
 import model.enums.EventId;
+import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.DefaultPanel;
 
@@ -19,15 +20,19 @@ public class ImportfirstrewierButtonPanel extends DefaultPanel{
 
 	public ImportfirstrewierButtonPanel() {
 		super( "Options");
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		
-		this.loadImport = new JButton("FirstReviewer Import");
-			this.registerEventSources();
-		
-		this.init();
+		this.createUIElements();
+		this.addUIElements();
+		this.registerEventSources();
 	}
 	
-	public void init() {
-		this.setBackground(Color.orange);
+	private void createUIElements() {
+		this.loadImport = new JButton("FirstReviewer Import");
+	}
+	
+	
+	private void addUIElements() {
 		this.add(loadImport);
 		
 	}

@@ -4,7 +4,6 @@ import controller.events.Action;
 import controller.events.EventSource;
 import model.enums.ApplicationState;
 import model.enums.EventId;
-import view.panels.prototypes.AbstractViewPanel;
 
 /**
  * Interface of a View visible to the controller.
