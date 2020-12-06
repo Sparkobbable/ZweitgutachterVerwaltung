@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.events.EventSource;
 import model.enums.EventId;
+import view.ViewProperties;
 import view.eventsources.ChooserEventSource;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
@@ -19,28 +20,32 @@ import view.panels.prototypes.DefaultPanel;
 @SuppressWarnings("serial") // should not be serialized
 public class StateChooserPanel extends DefaultPanel {
 
-	private final JFileChooser chooseJson;
-	private final AbstractViewPanel buttons;
+	private JFileChooser chooseJson;
+	private AbstractViewPanel buttons;
 
 	public StateChooserPanel() {
 		super("Systemzustand Manager");
-
-		this.chooseJson = new JFileChooser();
-		this.buttons = new StateChooserButtonsPanel();
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
+		this.setLayout(new GridLayout(2, 2));
+		
+		
+		this.createUIElements();
+		this.addUIElements();
 		this.registerEventSources();
-
-		this.init();
 	}
 
-	private void init() {
-		this.setBackground(Color.gray);
-		this.setLayout(new GridLayout(2, 2));
-		this.add(this.chooseJson);
-		this.add(this.buttons);
-
+	private void createUIElements() {
+		this.chooseJson = new JFileChooser();
+		this.buttons = new StateChooserButtonsPanel();
+		
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Json Datei", "json");
 		this.chooseJson.setFileFilter(filter);
 		this.chooseJson.setApproveButtonText("Select");
+	}
+	
+	private void addUIElements() {
+		this.add(this.chooseJson);
+		this.add(this.buttons);
 	}
 
 	@Override

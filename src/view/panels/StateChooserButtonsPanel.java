@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import controller.events.EventSource;
 import model.enums.EventId;
+import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.DefaultPanel;
 
@@ -17,21 +18,24 @@ import view.panels.prototypes.DefaultPanel;
 @SuppressWarnings("serial") // should not be serialized
 public class StateChooserButtonsPanel extends DefaultPanel {
 
-	private final JButton loadState;
-	private final JButton saveState;
+	private JButton loadState;
+	private JButton saveState;
 
 	public StateChooserButtonsPanel() {
 		super("");
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 
+		this.createUIElements();
+		this.addUIElements();
+		this.registerEventSources();
+	}
+	
+	private void createUIElements() {
 		this.loadState = this.buttonFactory.createButton("Systemzustand laden");
 		this.saveState = this.buttonFactory.createButton("Systemzustand speichern");
-		this.registerEventSources();
-
-		this.init();
 	}
 
-	public void init() {
-		this.setBackground(Color.gray);
+	private void addUIElements() {
 		this.add(loadState);
 		this.add(saveState);
 	}

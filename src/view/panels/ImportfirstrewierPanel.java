@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.events.EventSource;
 import model.enums.EventId;
+import view.ViewProperties;
 import view.eventsources.ChooserEventSource;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
@@ -23,27 +24,26 @@ public class ImportfirstrewierPanel extends DefaultPanel {
 
 	public ImportfirstrewierPanel() {
 		super("FirstReviewer Import");
-		this.setBackground(Color.orange);
-this.chooseImport = new JFileChooser();
-		this.buttons = new ImportfirstrewierButtonPanel();
-
-	
-
-		this.registerEventSources();
-
-		this.init();
-
-	}
-
-	public void init() {
-		this.setBackground(Color.orange);
+		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new GridLayout(2, 2));
-		this.add(chooseImport);
-		this.add(buttons);
-
+		
+		this.createUIElements();
+		this.addUIElements();
+		this.registerEventSources();
+	}
+	
+	private void createUIElements() {
+		this.chooseImport = new JFileChooser();
+		this.buttons = new ImportfirstrewierButtonPanel();
+		
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Datei", "csv");
 		chooseImport.setFileFilter(filter);
 		chooseImport.setApproveButtonText("Select");
+	}
+
+	private void addUIElements() {
+		this.add(chooseImport);
+		this.add(buttons);
 	}
 
 	@Override
