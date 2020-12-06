@@ -9,8 +9,8 @@ import model.enums.CascadeMode;
 
 public class DeleteReviewerCommand extends RevertibleCommand {
 
-	private Reviewer reviewer;
-	private Model model;
+	private final Reviewer reviewer;
+	private final Model model;
 
 	public DeleteReviewerCommand(Reviewer reviewer, Model model, ApplicationState applicationState) {
 		super(applicationState);
@@ -20,7 +20,6 @@ public class DeleteReviewerCommand extends RevertibleCommand {
 
 	@Override
 	public void execute() {
-		System.out.println("exec");
 		if (!this.reviewer.getFirstReviews().isEmpty()) {
 			throw new IllegalStateException("Cannot delete reviewers that supervise a BachelorThesis as FirstReviewer");
 		}

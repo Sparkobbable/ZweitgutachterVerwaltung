@@ -16,18 +16,22 @@ import view.View;
  *
  */
 public class CommandInvoker {
-	private View view;
-	private Model model;
-	private ApplicationStateController applicationStateController;
-	private Stack<Command> undoStack = new Stack<>();
-	private Stack<Command> redoStack = new Stack<>();
+	private final View view;
+	private final Model model;
+	private final ApplicationStateController applicationStateController;
+	private final Stack<Command> undoStack;
+	private final Stack<Command> redoStack;
 
 	public CommandInvoker(View view, Model model, ApplicationStateController applicationStateController) {
 		this.view = view;
 		this.model = model;
 		this.applicationStateController = applicationStateController;
+		this.undoStack = new Stack<>();
+		this.redoStack = new Stack<>();
 		this.view.addEventHandler(EventId.UNDO, (params) -> this.undo());
 		this.view.addEventHandler(EventId.REDO, (params) -> this.redo());
+
+		
 
 	}
 

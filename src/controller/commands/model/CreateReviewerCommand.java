@@ -11,7 +11,7 @@ public class CreateReviewerCommand extends RevertibleCommand{
 	private static final int DEFAULT_THESIS_COUNT = 0;
 
 	private Reviewer reviewer;
-	private Model model;
+	private final Model model;
 	
 	public CreateReviewerCommand(Model model, ApplicationState applicationState) {
 		super(applicationState);
@@ -21,12 +21,12 @@ public class CreateReviewerCommand extends RevertibleCommand{
 	@Override
 	public void execute() {
 		this.reviewer = new Reviewer(DEFAULT_NAME, DEFAULT_THESIS_COUNT);
-		this.model.addReviewer(reviewer);
+		this.model.addReviewer(this.reviewer);
 	}
 
 	@Override
 	public void revert() {
-		this.model.removeReviewer(reviewer);
+		this.model.removeReviewer(this.reviewer);
 	}
 
 }

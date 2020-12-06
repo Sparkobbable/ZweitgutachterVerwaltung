@@ -11,8 +11,8 @@ import model.persistence.PersistenceHandler;
 
 public class LoadSystemStateCommand extends IrevertibleCommand {
 
-	private PersistenceHandler persistenceHandler;
-	private Model model;
+	private final PersistenceHandler persistenceHandler;
+	private final Model model;
 
 	public LoadSystemStateCommand(PersistenceHandler persistenceHandler, Model model) {
 		super(model.getApplicationState());

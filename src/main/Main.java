@@ -7,6 +7,7 @@ import model.Model;
 import model.domain.Author;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
+import view.SwingView;
 import view.View;
 
 /**
@@ -16,7 +17,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Model data = mockData();
-		View view = new View(data);
+		View view = new SwingView(data);
 		new Controller(data, view);
 		view.setVisible();
 	}

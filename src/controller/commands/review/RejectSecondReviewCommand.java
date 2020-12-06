@@ -10,7 +10,7 @@ import model.enums.ReviewStatus;
 
 public class RejectSecondReviewCommand extends RevertibleCommand {
 
-	private SecondReview review;
+	private final SecondReview review;
 	private ReviewStatus oldStatus;
 
 	public RejectSecondReviewCommand(SecondReview review, ApplicationState applicationState) {
