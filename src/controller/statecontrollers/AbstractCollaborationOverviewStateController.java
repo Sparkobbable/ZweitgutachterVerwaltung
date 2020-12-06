@@ -8,8 +8,17 @@ import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.ReviewType;
 import view.View;
+import view.panels.collaboration.CollaborationOptionsPanel;
+import view.panels.collaboration.CollaborationPanel;
+import view.panels.collaboration.CollaborationTable;
+import view.panels.collaboration.PieChart;
 
-//TODO @jpfrehe javadoc
+/**
+ * Abstract ApplicationStateController which includes
+ * all methods that are needed for every collaborationStateController.
+ * They are divided because they apply to different ApplicationStates.
+ * Although they have methods in common. They inherit them from this class. 
+ */
 public abstract class AbstractCollaborationOverviewStateController extends AbstractStateController {
 
 	public AbstractCollaborationOverviewStateController(ApplicationState applicationState, View view,
@@ -17,6 +26,31 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 		super(applicationState, view, controller, model);
 	}
 	
+	/**
+	 * Switches between different graphics including {@link CollaborationTable}} and {@link PieChart} 
+	 * within the {@link CollaborationPanel}.
+	 * 
+	 * @param params - Selected presentationMode from comboBox in {@link CollaborationOptionsPanel}
+	 */
+	protected void switchPresentation(String params) {
+		switch(params) {
+		case "Tabelle":
+			this.switchState(ApplicationState.COLLABORATION_TABLE);
+			break;
+		case "Tortendiagramm":
+			this.switchState(ApplicationState.COLLABORATION_PIECHART);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid PresentationMode from ComboBox");
+		}
+	}
+	
+	/**
+	 * Collects data for {@link CollaborationPanel} and saves it to the model. 
+	 * This method gets all FirstReviewers, which collaborate with the selected Reviewer.
+	 * 
+	 * @return ArrayList of collaborating reviewers
+	 */
 	protected ArrayList<Reviewer> setCollaborationFirstReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
 		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getAllSupervisedReviews().stream()
@@ -26,6 +60,12 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 		return result;
 	}
 	
+	/**
+	 * Collects data for {@link CollaborationPanel} and saves it to the model. 
+	 * This method gets all SecondReviewers, which collaborate with the selected Reviewer.
+	 * 
+	 * @return ArrayList of collaborating reviewers
+	 */
 	protected ArrayList<Reviewer> setCollaborationSecondReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
 		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getAllSupervisedReviews().stream()
@@ -36,6 +76,12 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 		return result;
 	}
 	
+	/**
+	 * Collects data for {@link CollaborationPanel} and saves it to the model. 
+	 * This method gets all Reviewers, which collaborate with the selected Reviewer.
+	 * 
+	 * @return ArrayList of collaborating reviewers
+	 */
 	protected ArrayList<Reviewer> setCollaborationAllReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
 		this.model.getSelectedReviewer().ifPresent(reviewer -> reviewer.getAllSupervisedReviews().stream()

@@ -9,8 +9,14 @@ import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import view.View;
+import view.panels.collaboration.CollaborationOptionsPanel;
+import view.panels.collaboration.CollaborationTable;
+import view.panels.collaboration.PieChart;
 
-//TODO @jpfrehe javadoc
+/**
+ * Handles the Application when in ApplicationState
+ * {@link ApplicationState#COLLABORATION_TABLE}
+ */
 public class CollaborationOverviewTableStateController extends AbstractCollaborationOverviewStateController {
 
 	public CollaborationOverviewTableStateController(View view, Controller controller,
@@ -26,25 +32,20 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 				(params) -> switchData((String) params[0].get()));
 	}
 	
+	/**
+	 * Initializes the data set for the selected Reviewer.
+	 * Gets invoked when the panel gets opened.
+	 */
 	protected void initialize() {
-		this.switchPresentation("Tabelle");
 		this.switchData("Nur Erstgutachter");
 	}
 	
-	private void switchPresentation(String params) {
-
-		switch(params) {
-		case "Tabelle":
-			this.switchState(ApplicationState.COLLABORATION_TABLE);
-			break;
-		case "Tortendiagramm":
-			this.switchState(ApplicationState.COLLABORATION_PIECHART);
-			break;
-		default:
-			throw new IllegalArgumentException("Invalid PresentationMode from ComboBox");
-		}
-	}
-	
+	/**
+	 * Switches between different data in counted which
+	 * will get presented in the {@link CollaborationTable} or {@link PieChart}.
+	 * 
+	 * @param params - selected dataMode from comboBox in {@link CollaborationOptionsPanel}
+	 */
 	private void switchData(String params) {
 		System.out.println("Data:" + params);
 		switch(params) {
