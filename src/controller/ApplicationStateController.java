@@ -48,7 +48,7 @@ public class ApplicationStateController {
 		Log.info(this.getClass().getName(), "Switched to ApplicationState: %s", applicationState.name());
 		this.model.setApplicationState(applicationState);
 
-		if (this.visitedStates.empty() || !this.visitedStates.peek().equals(applicationState)) {
+		if (this.visitedStates.empty() || !this.visitedStates.peek().isEqual(applicationState)) {
 			this.visitedStates.push(applicationState);
 		}
 	}
