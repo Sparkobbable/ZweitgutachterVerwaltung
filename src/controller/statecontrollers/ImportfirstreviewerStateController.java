@@ -89,7 +89,7 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 			this.filepath = filepath;
 			this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			this.view.alert("Bitte wählen Sie eine gültige .csv-Datei aus", JOptionPane.ERROR_MESSAGE)
+			this.view.alert("Bitte wählen Sie eine gültige .csv-Datei aus", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
