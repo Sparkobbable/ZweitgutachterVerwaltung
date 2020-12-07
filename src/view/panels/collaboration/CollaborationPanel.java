@@ -1,9 +1,12 @@
 package view.panels.collaboration;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.util.List;
 
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import controller.events.CustomEventSource;
@@ -20,19 +23,26 @@ import view.widgets.PieChart;
 @SuppressWarnings("serial") // should not be serialized
 public class CollaborationPanel extends DefaultPanel {
 
+	private final String TABLE = "table";
+	private final String PIECHART = "pieChart";
+	
 	private Model model;
+	private CardLayout cardLayout;
 
 	private AbstractViewPanel options;
-	private Component chart;
+	private JPanel chart;
 	
 	private PieChart pieChart;
 	private JTable table;
+	private ReviewerOverviewTableModel tableModel;
+	private JScrollPane tableScrollPane;
 	
 	private CustomEventSource initializeEventSource;
 
 	public CollaborationPanel(Model model) {
 		super("Zusammenarbeit anzeigen");
 		this.model = model;
+		this.cardLayout = new CardLayout();
 		this.initializeEventSource = new CustomEventSource(EventId.INITIALIZE);
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new BorderLayout());
@@ -45,15 +55,20 @@ public class CollaborationPanel extends DefaultPanel {
 
 	private void createUIElements() {
 		this.pieChart = new PieChart("Zusammenarbeit der Gutachter", this.model);
-		this.table = new JTable(new ReviewerOverviewTableModel(this.model));
+		this.tableModel = new ReviewerOverviewTableModel(this.model);
+		this.table = new JTable(this.tableModel);
+		this.tableScrollPane = new JScrollPane(this.table);
 		
 		this.options = new CollaborationOptionsPanel(this.model);
-		this.chart = this.table;									
+		this.chart = new JPanel();		
+		this.chart.setLayout(cardLayout);
 	}
 
 	private void addUIElements() {
 		this.add(this.options, BorderLayout.PAGE_START);
 		this.add(this.chart, BorderLayout.CENTER);
+		this.chart.add(tableScrollPane, TABLE);
+		this.chart.add(pieChart, PIECHART);
 	}
 
 	@Override
@@ -65,14 +80,10 @@ public class CollaborationPanel extends DefaultPanel {
 	public void initializeState(ViewState viewState) {
 		switch (viewState) {
 		case TABLE:
-			this.remove(chart);
-			this.chart = this.table;
-			this.add(chart);
+			this.cardLayout.show(chart, TABLE);
 			break;
 		case PIECHART:
-			this.remove(chart);
-			this.chart = this.pieChart;
-			this.add(chart);
+			this.cardLayout.show(chart, PIECHART);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");

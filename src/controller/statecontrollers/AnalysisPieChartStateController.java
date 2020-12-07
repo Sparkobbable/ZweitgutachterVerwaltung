@@ -44,7 +44,7 @@ public class AnalysisPieChartStateController extends AbstractAnalysisStateContro
 			this.model.setAnalyseReviewers(this.getAllSecondReviewers());
 			break;
 		case "Zweit- & Erstgutachter":
-			this.model.setAnalyseReviewers((ArrayList<Reviewer>) this.model.getReviewers());
+			this.model.setAnalyseReviewers(this.model.getReviewers());
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid DataMode from ComboBox");

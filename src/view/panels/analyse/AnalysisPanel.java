@@ -19,6 +19,7 @@ import view.ViewState;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.ReviewerOverviewTableModel;
+import view.widgets.BarChart;
 import view.widgets.PieChart;
 
 public class AnalysisPanel extends DefaultPanel {
@@ -59,6 +60,7 @@ public class AnalysisPanel extends DefaultPanel {
 	
 	private void createUIElemenets() {
 		this.pieChart = new PieChart("Gutachter Verteilung", this.model);
+		this.barChart = new BarChart("Gutachter Verteilung", this.model);
 		this.tableModel = new ReviewerOverviewTableModel(List.of(ReviewerOverviewTableModel.NAME, 
 				ReviewerOverviewTableModel.FIRSTREVIEW_COUNT, ReviewerOverviewTableModel.SECONDREVIEW_COUNT),
 				Collections.emptyList(), model);
@@ -78,7 +80,7 @@ public class AnalysisPanel extends DefaultPanel {
 		this.add(chart, BorderLayout.CENTER);
 		this.chart.add(tableScrollPane, TABLE);
 		this.chart.add(pieChart, PIECHART);
-//		this.chart.add(barChart, BARCHART);
+		this.chart.add(barChart, BARCHART);
 	}
 
 	@Override
@@ -96,7 +98,7 @@ public class AnalysisPanel extends DefaultPanel {
 			this.cardLayout.show(chart, PIECHART);
 			break;
 		case BARCHART:
-//			this.cardLayout.show(chart, BARCHART);
+			this.cardLayout.show(chart, BARCHART);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");

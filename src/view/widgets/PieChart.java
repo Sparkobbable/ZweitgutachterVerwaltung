@@ -31,6 +31,7 @@ public class PieChart extends DefaultPanel {
 	public PieChart(String title,Model model) {
 		super("");
 		this.model = model;
+		this.title = title;
 		this.dataset = new DefaultPieDataset();
 		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
@@ -49,7 +50,7 @@ public class PieChart extends DefaultPanel {
 	
 	private void createAnalyseDataset() {
 		this.dataset.clear();
-		ArrayList<Reviewer> reviewers = this.model.getAnalyseReviewers();
+		List<Reviewer> reviewers = this.model.getAnalyseReviewers();
 		int reviewcount = 0;
 		for(Reviewer reviewer : reviewers) {
 			reviewcount += reviewer.getTotalReviewCount();

@@ -32,7 +32,7 @@ public class Model implements ChangeableProperties {
 	private List<BachelorThesis> theses;
 	private List<Reviewer> reviewers;
 
-	private ArrayList<Reviewer> analyseReviewers;
+	private List<Reviewer> analyseReviewers;
 	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -96,7 +96,7 @@ public class Model implements ChangeableProperties {
 	 * 
 	 * @return List<Reviewer>
 	 */
-	public ArrayList<Reviewer> getAnalyseReviewers() {
+	public List<Reviewer> getAnalyseReviewers() {
 		return this.analyseReviewers;
 	}
 
@@ -142,8 +142,8 @@ public class Model implements ChangeableProperties {
 	 * 
 	 * @param list
 	 */
-	public void setAnalyseReviewers(ArrayList<Reviewer> list) {
-		ArrayList<Reviewer> old = this.analyseReviewers;
+	public void setAnalyseReviewers(List<Reviewer> list) {
+		List<Reviewer> old = this.analyseReviewers;
 		this.analyseReviewers = list;
 		this.propertyChangeSupport.firePropertyChange(ANALYSE_REVIEWERS, old, this.analyseReviewers);
 	}
