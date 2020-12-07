@@ -28,8 +28,10 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 	protected void registerEvents() {
 		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
 				(params) -> this.switchPresentation((String) params[0].get()));
-		this.registerEvent(EventId.CHOOSE_DATA_FOR_COLLABORATION,
+		this.registerEvent(EventId.CHOOSE_DATA_FOR_TABLE,
 				(params) -> switchData((String) params[0].get()));
+		this.registerEvent(EventId.INITIALIZE,
+				(params) -> this.initialize());
 	}
 	
 	/**

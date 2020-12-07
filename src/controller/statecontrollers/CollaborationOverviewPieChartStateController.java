@@ -28,19 +28,8 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	protected void registerEvents() {
 		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
 				(params) -> this.switchPresentation((String) params[0].get()));
-		this.registerEvent(EventId.CHOOSE_DATA_FOR_COLLABORATION,
+		this.registerEvent(EventId.CHOOSE_DATA_FOR_PIECHART,
 				(params) -> this.switchData((String) params[0].get()));
-		this.registerEvent(EventId.INITIALIZE,
-				(params) -> this.initialize());
-
-	}
-	
-	/**
-	 * Initializes the data set for the selected Reviewer.
-	 * Gets invoked when the panel gets opened.
-	 */
-	protected void initialize() {
-		this.switchData("Nur Erstgutachter");
 	}
 	
 	/**

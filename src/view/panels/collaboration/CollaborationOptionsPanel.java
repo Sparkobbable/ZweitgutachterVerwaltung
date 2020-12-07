@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
+import model.enums.ApplicationState;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.panels.prototypes.AbstractViewPanel;
@@ -45,7 +46,11 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 		this.nameField = new JTextField();
 
 		String[] options = { "Nur Erstgutachter", "Nur Zweitgutachter", "Zweit- & Erstgutachter" };
-		this.chooseData = new CollaborationComboBoxPanel("Ansicht", options, EventId.CHOOSE_DATA_FOR_COLLABORATION);
+		if(this.model.getApplicationState().equals(ApplicationState.COLLABORATION_TABLE)) {
+			this.chooseData = new CollaborationComboBoxPanel("Ansicht", options, EventId.CHOOSE_DATA_FOR_TABLE);
+		} else {
+			this.chooseData = new CollaborationComboBoxPanel("Ansicht", options, EventId.CHOOSE_DATA_FOR_PIECHART);
+		}
 		String[] options2 = { "Tabelle", "Tortendiagramm" };
 		this.choosePresentation = new CollaborationComboBoxPanel("Darstellung", options2,
 				EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION);
