@@ -5,7 +5,6 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
-import model.enums.CascadeMode;
 import model.enums.ReviewStatus;
 
 public class RejectSecondReviewCommand extends RevertibleCommand {
@@ -37,8 +36,8 @@ public class RejectSecondReviewCommand extends RevertibleCommand {
 
 		this.review.setStatus(this.oldStatus);
 		reviewer.removeRejectedSecondReview(this.review);
-		reviewer.addSecondReview(review, CascadeMode.STOP);
-		bachelorThesis.setSecondReview(review, CascadeMode.STOP);
+		reviewer.addSecondReview(review);
+		bachelorThesis.setSecondReview(review);
 	}
 
 }

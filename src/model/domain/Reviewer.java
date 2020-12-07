@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import controller.propertychangelistener.ChangeableProperties;
-import model.enums.CascadeMode;
 
 public class Reviewer implements ChangeableProperties {
 
@@ -189,16 +188,12 @@ public class Reviewer implements ChangeableProperties {
 	 * @see #addReview(Review, CascadeMode)
 	 * 
 	 * @param review
-	 * @param cascadeMode
 	 */
-	public void addSecondReview(SecondReview review, CascadeMode cascadeMode) {
+	public void addSecondReview(SecondReview review) {
 		ArrayList<Review> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.add(review);
 		this.updateOppucation();
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
-		if (cascadeMode == CascadeMode.CASCADE) {
-			review.getBachelorThesis().setSecondReview(review, CascadeMode.STOP);
-		}
 	}
 	
 	/**

@@ -14,7 +14,6 @@ import model.domain.Author;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
-import model.enums.CascadeMode;
 import model.enums.ReviewStatus;
 
 /**
@@ -68,8 +67,8 @@ public class JsonMapper {
 			Reviewer secondReviewer = findReviewerById(jThesis.getInt(SECOND_REVIEWER), reviewers);
 			ReviewStatus reviewStatus = ReviewStatus.valueOf(jThesis.getString(SECOND_REVIEW_STATUS));
 			SecondReview secondReview = new SecondReview(secondReviewer, bachelorThesis, reviewStatus);
-			secondReviewer.addSecondReview(secondReview, CascadeMode.STOP);
-			bachelorThesis.setSecondReview(secondReview, CascadeMode.STOP);
+			secondReviewer.addSecondReview(secondReview);
+			bachelorThesis.setSecondReview(secondReview);
 		}
 		return bachelorThesis;
 	}

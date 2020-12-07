@@ -5,7 +5,6 @@ import model.Model;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
-import model.enums.CascadeMode;
 
 public class DeleteReviewerCommand extends RevertibleCommand {
 
@@ -32,7 +31,7 @@ public class DeleteReviewerCommand extends RevertibleCommand {
 	@Override
 	public void revert() {
 		this.reviewer.getUnrejectedSecondReviews().stream()
-				.forEach(review -> review.getBachelorThesis().setSecondReview(review, CascadeMode.STOP));
+				.forEach(review -> review.getBachelorThesis().setSecondReview(review));
 		this.model.addReviewer(reviewer);
 	}
 

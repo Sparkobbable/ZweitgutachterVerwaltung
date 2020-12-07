@@ -6,7 +6,6 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
-import model.enums.CascadeMode;
 
 /**
  * {@link Command} that adds a (second) {@link Reviewer} to a BachelorThesis and a BachelorThesis
@@ -27,14 +26,14 @@ public class AddBachelorThesisCommand extends RevertibleCommand {
 
 	@Override
 	public void execute() {
-		this.newReview.getReviewer().addSecondReview(newReview, CascadeMode.STOP);
-		this.newReview.getBachelorThesis().setSecondReview(newReview, CascadeMode.STOP);
+		this.newReview.getReviewer().addSecondReview(newReview);
+		this.newReview.getBachelorThesis().setSecondReview(newReview);
 	}
 
 	@Override
 	public void revert() {
 		this.newReview.getReviewer().removeSecondReview(this.newReview);
-		this.newReview.getBachelorThesis().setSecondReview(this.oldReview, CascadeMode.STOP);
+		this.newReview.getBachelorThesis().setSecondReview(this.oldReview);
 	}
 
 }

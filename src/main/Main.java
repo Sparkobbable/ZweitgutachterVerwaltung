@@ -6,7 +6,9 @@ import controller.Controller;
 import model.Model;
 import model.domain.Author;
 import model.domain.BachelorThesis;
+import model.domain.Review;
 import model.domain.Reviewer;
+import model.domain.SecondReview;
 import view.SwingView;
 import view.View;
 
@@ -82,7 +84,9 @@ public class Main {
 			}
 			Reviewer r2 = randomFrom(reviewers);
 			if (r2 != bt.getFirstReview().getReviewer()) {
-				bt.setSecondReviewer(r2);
+				SecondReview review = new SecondReview(r2, bt);
+				bt.setSecondReview(review);
+				r2.addSecondReview(review);
 			}
 
 		}

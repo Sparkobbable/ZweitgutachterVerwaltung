@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.Optional;
 
 import controller.propertychangelistener.ChangeableProperties;
-import model.enums.CascadeMode;
 
 /**
  * stores information about a BachelorThesis
@@ -60,22 +59,10 @@ public class BachelorThesis implements ChangeableProperties {
 	}
 
 	/**
-	 * Creates a new SecondReview instance and adds it to this thesis as well as the
-	 * referenced Reviewer.
-	 * 
-	 * This Method should only be used during the import
-	 * 
-	 * @param reviewer
-	 */
-	public void setSecondReviewer(Reviewer reviewer) {
-		this.setSecondReview(new SecondReview(reviewer, this), CascadeMode.CASCADE);
-	}
-
-	/**
 	 * Removes the secondReviewer reference from this reviewer
 	 */
 	public void removeSecondReview() {
-		this.setSecondReview(null, CascadeMode.STOP);
+		this.setSecondReview(null);
 	}
 
 	/**
@@ -84,15 +71,11 @@ public class BachelorThesis implements ChangeableProperties {
 	 * observers.
 	 * 
 	 * @param secondReview
-	 * @param cascadeMode
 	 */
-	public void setSecondReview(SecondReview secondReview, CascadeMode cascadeMode) {
+	public void setSecondReview(SecondReview secondReview) {
 		Optional<SecondReview> old = this.secondReview;
 		this.secondReview = Optional.ofNullable(secondReview);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEW, old, this.secondReview);
-		if (cascadeMode == CascadeMode.CASCADE && this.secondReview.isPresent()) {
-			secondReview.getReviewer().addSecondReview(secondReview, CascadeMode.STOP);
-		}
 	}
 
 	@Override
