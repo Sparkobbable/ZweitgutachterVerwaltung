@@ -37,7 +37,7 @@ import view.tableModels.SupervisedThesesTableModel;
  * Panel that is responsible for displaying a detailed view of a Reviewer.
  * <p>
  * It is responsible for editing reviewers as well as linking to the
- * {@link ThesisAssignmentPanel}
+ * {@link ThesesAssignmentPanel}
  *
  */
 @SuppressWarnings("serial") // should not be serialized

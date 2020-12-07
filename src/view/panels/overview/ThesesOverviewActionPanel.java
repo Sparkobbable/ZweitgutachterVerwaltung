@@ -12,8 +12,9 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
+import view.panels.prototypes.AbstractActionPanel;
 
-public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesis> {
+public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesis> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,8 +62,7 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesi
 	}
 
 	private void addUIElements() {
-		this.add(reviewers);
-		this.add(select);
+		this.add(reviewers, select);
 	}
 
 	@Override

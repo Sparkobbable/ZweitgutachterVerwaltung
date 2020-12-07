@@ -9,6 +9,7 @@ import static model.enums.EventId.NAME_CHANGED;
 import static model.enums.EventId.REJECT;
 import static model.enums.EventId.SAVE;
 import static model.enums.EventId.RESERVE_SEC_REVIEW;
+import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.ArrayList;
 import java.util.Collection;

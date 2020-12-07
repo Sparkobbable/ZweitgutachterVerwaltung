@@ -10,8 +10,9 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
+import view.panels.prototypes.AbstractActionPanel;
 
-public class ReviewerOverviewActionPanel extends OverviewActionPanel<Reviewer> {
+public class ReviewerOverviewActionPanel extends AbstractActionPanel<Reviewer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,25 +27,20 @@ public class ReviewerOverviewActionPanel extends OverviewActionPanel<Reviewer> {
 	 */
 	public ReviewerOverviewActionPanel(Supplier<List<Reviewer>> selectedElementsSupplier) {
 		super(selectedElementsSupplier);
-
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
-		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 	}
 
-	private void createUIElements() {
+	protected void createUIElements() {
 		this.edit = this.buttonFactory.createButton("Bearbeiten");
 		this.delete = this.buttonFactory.createButton("Löschen");
 		this.newReviewer = this.buttonFactory.createButton("Neu");
 		this.showCollaboration = this.buttonFactory.createButton("Zusammenarbeit anzeigen");
 	}
 
-	private void addUIElements() {
-		this.add(edit);
-		this.add(delete);
-		this.add(newReviewer);
-		this.add(showCollaboration);
+	protected void addUIElements() {
+		this.add(edit, delete, newReviewer, showCollaboration);
 	}
 
 	@Override

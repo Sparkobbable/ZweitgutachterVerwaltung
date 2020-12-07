@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import controller.search.SearchStrategy;
 import model.Model;
 import view.ViewProperties;
+import view.panels.prototypes.AbstractActionPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.LinkedTable;
@@ -23,7 +24,7 @@ public abstract class OverviewPanel<T> extends DefaultPanel {
 
 	// UI-components
 	protected AbstractDataTableModel<T> tableModel;
-	protected OverviewActionPanel<T> actionPanel;
+	protected AbstractActionPanel<T> actionPanel;
 	protected SearchField<T> searchField;
 
 	protected JTable table;
