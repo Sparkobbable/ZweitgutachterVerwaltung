@@ -14,6 +14,7 @@ import model.enums.ApplicationState;
 import model.enums.EventId;
 import util.Log;
 import view.panels.HomePanel;
+import view.panels.ImportfirstrewierPanel;
 import view.panels.StateChooserPanel;
 import view.panels.collaboration.CollaborationPanel;
 import view.panels.editor.ReviewerEditorPanel;
