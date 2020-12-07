@@ -41,7 +41,7 @@ public class StateChooserButtonsPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.LOAD_STATE, loadState),
-				new ButtonEventSource(EventId.SAVE_STATE, saveState));
+		return List.of(new ButtonEventSource(EventId.LOAD, loadState),
+				new ButtonEventSource(EventId.SAVE, saveState));
 	}
 }

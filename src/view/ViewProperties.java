@@ -13,6 +13,6 @@ public interface ViewProperties {
 	public static final float BUTTON_FONT_SIZE = 16f;
 	public static final float MENU_BUTTON_FONT_SIZE = 12f;
 	public static final int DEFAULT_HEIGHT = 800;
-	public static final int DEFAULT_WIDTH = 1000;
+	public static final int DEFAULT_WIDTH = 1200;
 	
 }

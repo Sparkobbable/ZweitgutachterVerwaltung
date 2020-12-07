@@ -33,8 +33,8 @@ public class StateChooserStateController extends AbstractStateController {
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.LOAD_STATE, (params) -> loadState());
-		this.registerEvent(EventId.SAVE_STATE, (params) -> saveState());
+		this.registerEvent(EventId.LOAD, (params) -> loadState());
+		this.registerEvent(EventId.SAVE, (params) -> saveState());
 		this.registerEvent(EventId.CHOOSE_FILEPATH, (params) -> setFilePath((String) params[0].get()));
 	}
 

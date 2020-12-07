@@ -7,7 +7,7 @@ import static model.enums.EventId.EMAIL_CHANGED;
 import static model.enums.EventId.MAX_SUPERVISED_THESES_CHANGED;
 import static model.enums.EventId.NAME_CHANGED;
 import static model.enums.EventId.REJECT;
-import static model.enums.EventId.SAVE_REVIEWER;
+import static model.enums.EventId.SAVE;
 import static model.enums.EventId.RESERVE_SEC_REVIEW;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(SAVE_REVIEWER, (params) -> saveReviewer());
+		this.registerEvent(SAVE, (params) -> saveReviewer());
 		this.registerEvent(ADD_THESIS, (params) -> addThesis());
 		this.registerEvent(REJECT, (params) -> rejectSecondReviews((Collection<SecondReview>) params[0].get()));
 		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));

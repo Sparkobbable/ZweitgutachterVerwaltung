@@ -1,10 +1,10 @@
 package view.panels.editor;
 
-import static view.tableModels.SupervisedThesisTableModel.AUTHOR_NAME;
-import static view.tableModels.SupervisedThesisTableModel.AUTHOR_STUDY_GROUP;
-import static view.tableModels.SupervisedThesisTableModel.STATUS;
-import static view.tableModels.SupervisedThesisTableModel.TITLE;
-import static view.tableModels.SupervisedThesisTableModel.TYPE;
+import static view.tableModels.SupervisedThesesTableModel.AUTHOR_NAME;
+import static view.tableModels.SupervisedThesesTableModel.AUTHOR_STUDY_GROUP;
+import static view.tableModels.SupervisedThesesTableModel.STATUS;
+import static view.tableModels.SupervisedThesesTableModel.TITLE;
+import static view.tableModels.SupervisedThesesTableModel.TYPE;
 
 import java.awt.GridLayout;
 import java.util.Collections;
@@ -31,7 +31,7 @@ import view.eventsources.TextFieldEventSource;
 import view.inputverifiers.IntegerInputVerifier;
 import view.inputverifiers.NonEmptyStringInputVerifier;
 import view.panels.prototypes.DefaultPanel;
-import view.tableModels.SupervisedThesisTableModel;
+import view.tableModels.SupervisedThesesTableModel;
 
 /**
  * Panel that is responsible for displaying a detailed view of a Reviewer.
@@ -45,8 +45,8 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	private Optional<Reviewer> selectedReviewer;
 	private Model model;
 
-	private SupervisedThesisTableModel supervisedThesisTableModel;
-	private JTable supervisedThesisTable;
+	private SupervisedThesesTableModel supervisedThesesTableModel;
+	private JTable supervisedThesesTable;
 	private JScrollPane supervisedThesisPane;
 
 	private JTextField name;
@@ -110,13 +110,13 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.approveSecReview = this.buttonFactory.createButton("Zweitgutachten bestätigen");
 		this.reserveSecReview = this.buttonFactory.createButton("Bachelorarbeit vormerken");
 
-		this.supervisedThesisTableModel = new SupervisedThesisTableModel(
+		this.supervisedThesesTableModel = new SupervisedThesesTableModel(
 				List.of(TITLE, AUTHOR_NAME, AUTHOR_STUDY_GROUP, TYPE, STATUS), Collections.emptyList(),
 				this.selectedReviewer);
-		this.supervisedThesisTable = new JTable(supervisedThesisTableModel);
-		this.supervisedThesisTable.setFillsViewportHeight(true);
-		this.supervisedThesisTable.setAutoCreateRowSorter(true);
-		this.supervisedThesisPane = new JScrollPane(this.supervisedThesisTable);
+		this.supervisedThesesTable = new JTable(supervisedThesesTableModel);
+		this.supervisedThesesTable.setFillsViewportHeight(true);
+		this.supervisedThesesTable.setAutoCreateRowSorter(true);
+		this.supervisedThesisPane = new JScrollPane(this.supervisedThesesTable);
 	}
 
 	private void addUIElements() {
@@ -144,7 +144,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.SAVE_REVIEWER, save),
+		return List.of(new ButtonEventSource(EventId.SAVE, save),
 				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis),
 				new ButtonEventSource(EventId.REJECT, deleteThesis, () -> getSelectedReviews()),
 				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getSelectedReviews()),
@@ -177,7 +177,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	}
 
 	private void refreshTableModel() {
-		this.supervisedThesisTableModel.updateData();
+		this.supervisedThesesTableModel.updateData();
 		this.repaint();
 	}
 
@@ -188,7 +188,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 			Reviewer reviewer = this.selectedReviewer.get();
 			this.updateReviewerFields(reviewer);
 			this.observeReviewer(reviewer);
-			this.supervisedThesisTableModel.setSelectedReviewer(reviewer);
+			this.supervisedThesesTableModel.setSelectedReviewer(reviewer);
 
 		}
 
@@ -208,9 +208,9 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	}
 
 	private List<Review> getSelectedReviews() {
-		return IntStream.of(this.supervisedThesisTable.getSelectedRows())
-				.map(this.supervisedThesisTable::convertRowIndexToModel)
-				.mapToObj(this.supervisedThesisTableModel::getByIndex).collect(Collectors.toList());
+		return IntStream.of(this.supervisedThesesTable.getSelectedRows())
+				.map(this.supervisedThesesTable::convertRowIndexToModel)
+				.mapToObj(this.supervisedThesesTableModel::getByIndex).collect(Collectors.toList());
 	}
 
 }

@@ -10,7 +10,7 @@ import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ReviewType;
 
-public class SupervisedThesisTableModel extends AbstractDataTableModel<Review> {
+public class SupervisedThesesTableModel extends AbstractDataTableModel<Review> {
 
 	private static final long serialVersionUID = 1L;
 	private Reviewer selectedReviewer;
@@ -27,7 +27,7 @@ public class SupervisedThesisTableModel extends AbstractDataTableModel<Review> {
 			r -> r.getReviewType() == ReviewType.SECOND_REVIEW ? ((SecondReview) r).getStatus().getLabel() : "-",
 			String.class);
 
-	public SupervisedThesisTableModel(List<Column<Review, ?>> columns, List<Predicate<Review>> filters,
+	public SupervisedThesesTableModel(List<Column<Review, ?>> columns, List<Predicate<Review>> filters,
 			Optional<Reviewer> selectedReviewer) {
 		super(columns, filters);
 		selectedReviewer.ifPresent(this::setSelectedReviewer);
