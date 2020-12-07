@@ -38,21 +38,21 @@ public class AnalysisPieChartStateController extends AbstractAnalysisStateContro
 		System.out.println("Data:" + reviewerFilter);
 		switch (reviewerFilter) {
 		case "Nur Erstgutachter":
-			this.model.setAnalyseReviewers(this.getReviewerCount(this.getAllFirstReviewers()));
+			this.model.setAnalyseReviewers(this.getAllFirstReviewers());
 			break;
 		case "Nur Zweitgutachter":
-			this.model.setAnalyseReviewers(this.getReviewerCount(this.getAllSecondReviewers()));
+			this.model.setAnalyseReviewers(this.getAllSecondReviewers());
 			break;
 		case "Zweit- & Erstgutachter":
-			this.model.setAnalyseReviewers(this.getReviewerCount(this.model.getReviewers()));
+			this.model.setAnalyseReviewers((ArrayList<Reviewer>) this.model.getReviewers());
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid DataMode from ComboBox");
 		}
 	}
 	
-	private List<Reviewer> getAllFirstReviewers() {
-		List<Reviewer> result = new ArrayList<>();
+	private ArrayList<Reviewer> getAllFirstReviewers() {
+		ArrayList<Reviewer> result = new ArrayList<>();
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
 			for(Review currentReview : currentReviewer.getFirstReviews()) {
 				if(!result.contains(currentReview.getReviewer())) {
@@ -63,26 +63,13 @@ public class AnalysisPieChartStateController extends AbstractAnalysisStateContro
 		return result;
 	}
 	
-	private List<Reviewer> getAllSecondReviewers() {
-		List<Reviewer> result = new ArrayList<>();
+	private ArrayList<Reviewer> getAllSecondReviewers() {
+		ArrayList<Reviewer> result = new ArrayList<>();
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
 			for(Review currentReview : currentReviewer.getUnrejectedSecondReviews()) {
 				if(!result.contains(currentReview.getReviewer())) {
 					result.add(currentReview.getReviewer());
 				}
-			}
-		}
-		return result;
-	}
-	
-	private HashMap<Reviewer, Pair<Integer, Integer>> getReviewerCount(List<Reviewer> reviewers) {
-		HashMap<Reviewer, Pair<Integer, Integer>> result = new HashMap<>();
-		
-		for(Reviewer currentReviewer : reviewers) {
-			if(!result.containsKey(currentReviewer)) {
-				result.put(currentReviewer, 
-						new Pair<Integer, Integer>(
-								currentReviewer.getFirstReviewCount(), currentReviewer.getSecondReviewCount()));
 			}
 		}
 		return result;

@@ -11,7 +11,7 @@ import model.enums.EventId;
 import view.View;
 import view.panels.collaboration.CollaborationOptionsPanel;
 import view.panels.collaboration.CollaborationTable;
-import view.panels.collaboration.PieChart;
+import view.widgets.PieChart;
 
 /**
  * Handles the Application when in ApplicationState

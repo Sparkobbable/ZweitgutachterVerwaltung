@@ -32,7 +32,7 @@ public class Model implements ChangeableProperties {
 	private List<BachelorThesis> theses;
 	private List<Reviewer> reviewers;
 
-	private Map<Reviewer, Pair<Integer, Integer>> analyseReviewers;
+	private ArrayList<Reviewer> analyseReviewers;
 	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -49,7 +49,7 @@ public class Model implements ChangeableProperties {
 	public Model() {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.selectedReviewer = Optional.empty();
-		this.analyseReviewers = new HashMap<>();
+		this.analyseReviewers = new ArrayList<>();
 		this.collaboratingReviewers = new HashMap<>();
 		this.theses = new ArrayList<>();
 		this.reviewers = new ArrayList<>();
@@ -96,7 +96,7 @@ public class Model implements ChangeableProperties {
 	 * 
 	 * @return List<Reviewer>
 	 */
-	public Map<Reviewer, Pair<Integer, Integer>> getAnalyseReviewers() {
+	public ArrayList<Reviewer> getAnalyseReviewers() {
 		return this.analyseReviewers;
 	}
 
@@ -142,8 +142,8 @@ public class Model implements ChangeableProperties {
 	 * 
 	 * @param list
 	 */
-	public void setAnalyseReviewers(HashMap<Reviewer, Pair<Integer, Integer>> list) {
-		Map<Reviewer, Pair<Integer, Integer>> old = this.analyseReviewers;
+	public void setAnalyseReviewers(ArrayList<Reviewer> list) {
+		ArrayList<Reviewer> old = this.analyseReviewers;
 		this.analyseReviewers = list;
 		this.propertyChangeSupport.firePropertyChange(ANALYSE_REVIEWERS, old, this.analyseReviewers);
 	}

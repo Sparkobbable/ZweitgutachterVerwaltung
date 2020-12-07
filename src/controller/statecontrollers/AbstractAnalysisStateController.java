@@ -13,6 +13,7 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 	public AbstractAnalysisStateController(ApplicationState applicationState,
 			View view, Controller controller, Model model) {
 		super(applicationState, view, controller, model);
+		this.reviewerFilter = "Nur Erstgutachter";
 		this.registerEvent(EventId.INITIALIZE, (params) -> this.initialize());
 	}
 	

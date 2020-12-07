@@ -12,7 +12,7 @@ import view.View;
 import view.panels.collaboration.CollaborationOptionsPanel;
 import view.panels.collaboration.CollaborationPanel;
 import view.panels.collaboration.CollaborationTable;
-import view.panels.collaboration.PieChart;
+import view.widgets.PieChart;
 
 /**
  * Abstract ApplicationStateController which includes all methods that are

@@ -15,6 +15,7 @@ import view.ViewState;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.ReviewerOverviewTableModel;
+import view.widgets.PieChart;
 
 @SuppressWarnings("serial") // should not be serialized
 public class CollaborationPanel extends DefaultPanel {
@@ -43,7 +44,7 @@ public class CollaborationPanel extends DefaultPanel {
 	}
 
 	private void createUIElements() {
-		this.pieChart = new PieChart(this.model);
+		this.pieChart = new PieChart("Zusammenarbeit der Gutachter", this.model);
 		this.table = new JTable(new ReviewerOverviewTableModel(this.model));
 		
 		this.options = new CollaborationOptionsPanel(this.model);

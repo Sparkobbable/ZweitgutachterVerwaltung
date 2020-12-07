@@ -1,7 +1,7 @@
-package view.panels.collaboration;
+package view.widgets;
 
+import java.util.ArrayList;
 import java.util.Collections;
-//github.com/Sparkobbable/ZweitgutachterVerwaltung.git
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,13 +9,12 @@ import java.util.Map.Entry;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.data.UnknownKeyException;
 import org.jfree.data.general.DefaultPieDataset;
 
 import controller.events.EventSource;
 import model.Model;
-import model.Pair;
 import model.domain.Reviewer;
-import model.enums.ApplicationState;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
 
@@ -23,12 +22,13 @@ import view.panels.prototypes.DefaultPanel;
 public class PieChart extends DefaultPanel {
 
 	private Model model;
+	private String title;
 
 	private DefaultPieDataset dataset;
 	private JFreeChart chart;
 	private ChartPanel panel;
 
-	public PieChart(Model model) {
+	public PieChart(String title,Model model) {
 		super("");
 		this.model = model;
 		this.dataset = new DefaultPieDataset();
@@ -49,13 +49,28 @@ public class PieChart extends DefaultPanel {
 	
 	private void createAnalyseDataset() {
 		this.dataset.clear();
-		Map<Reviewer, Pair<Integer, Integer>> reviewers = this.model.getAnalyseReviewers();
-		for(Entry<Reviewer, Pair<Integer, Integer>> reviewer : reviewers.entrySet()) {
+		ArrayList<Reviewer> reviewers = this.model.getAnalyseReviewers();
+		int reviewcount = 0;
+		for(Reviewer reviewer : reviewers) {
+			reviewcount += reviewer.getTotalReviewCount();
+		}
+		
+		for(Reviewer reviewer : reviewers) {
+			if(reviewer.getTotalReviewCount() > (reviewcount * 0.05)) {
+				this.dataset.setValue(reviewer.getName(), reviewer.getTotalReviewCount());
+			} else {
+				try {
+					double count = (double) this.dataset.getValue("Sonstige");
+					this.dataset.setValue("Sonstige", count + reviewer.getTotalReviewCount());
+				} catch(UnknownKeyException e) {
+					this.dataset.setValue("Sonstige", reviewer.getTotalReviewCount());
+				}
+			}
 		}
 	}
 
 	private void createUIElements() {
-			this.chart = ChartFactory.createPieChart("Zusammenarbeit mit Gutachtern", this.dataset, true, true,
+			this.chart = ChartFactory.createPieChart(this.title, this.dataset, true, true,
 					false);
 			this.panel = new ChartPanel(chart);
 			this.panel.setBackground(ViewProperties.BACKGROUND_COLOR);
@@ -73,5 +88,6 @@ public class PieChart extends DefaultPanel {
 	 */
 	private void initializePropertyChangeHandlers() {
 		this.onPropertyChange(Model.COLLABORATING_REVIEWERS, (evt) -> createCallaborationDataset());
+		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> createAnalyseDataset());
 	}
 }
