@@ -7,6 +7,8 @@ import static view.tableModels.ReviewerOverviewTableModel.THESIS_COUNT;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.table.TableRowSorter;
+
 import controller.events.EventSource;
 import controller.search.ReviewerSearchStrategy;
 import controller.search.SearchStrategy;
@@ -16,6 +18,7 @@ import model.enums.EventId;
 import view.eventsources.TableClickEventSource;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.DividedProgressRenderer;
+import view.tableModels.OccupationComparator;
 import view.tableModels.ReviewerOverviewTableModel;
 
 public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
@@ -60,6 +63,7 @@ public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 	protected void createUIElements() {
 		super.createUIElements();
 		this.table.getColumnModel().getColumn(2).setCellRenderer(new DividedProgressRenderer());
+		((TableRowSorter<ReviewerOverviewTableModel>) this.table.getRowSorter()).setComparator(2, new OccupationComparator());
 	}
 
 	@Override
