@@ -14,7 +14,7 @@ import controller.propertychangelistener.ChangeableProperties;
 public class Reviewer implements ChangeableProperties {
 
 	private static final AtomicInteger INTERNAL_ID_GENERATOR = new AtomicInteger();
-	
+
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors
@@ -26,7 +26,6 @@ public class Reviewer implements ChangeableProperties {
 	public static final String EMAIL = "email";
 	public static final String COMMENT = "comment";
 	public static final String INTERNAL_ID = "internalId";
-	
 
 	// Data
 	private String name;
@@ -44,17 +43,19 @@ public class Reviewer implements ChangeableProperties {
 
 	/**
 	 * Creates a Reviewer for BachelorThesis
-	 * @param internalId 
+	 * 
+	 * @param internalId
 	 * 
 	 */
 	public Reviewer(String name, int maxSupervisedTheses, String email, String comment, int internalId) {
 		this(name, maxSupervisedTheses, email, comment);
 		this.internalId = internalId;
 	}
-	
+
 	/**
 	 * Creates a Reviewer for BachelorThesis
-	 * @param internalId 
+	 * 
+	 * @param internalId
 	 * 
 	 */
 	public Reviewer(String name, int maxSupervisedTheses, String email, String comment) {
@@ -62,7 +63,7 @@ public class Reviewer implements ChangeableProperties {
 		this.email = email;
 		this.comment = comment;
 	}
-	
+
 	/**
 	 * Creates a Reviewer for BachelorThesis
 	 * 
@@ -129,7 +130,8 @@ public class Reviewer implements ChangeableProperties {
 	 *         includes rejected reviews.
 	 */
 	public List<SecondReview> getAllSecondReviews() {
-		return Stream.concat(this.secondReviews.stream(), this.rejectedSecondReviews.stream()).collect(Collectors.toList());
+		return Stream.concat(this.secondReviews.stream(), this.rejectedSecondReviews.stream())
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -167,7 +169,8 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * Add a FirstReview to this Reviewer. 
+	 * Add a FirstReview to this Reviewer.
+	 * 
 	 * @see #addReview(Review, CascadeMode)
 	 * 
 	 * @param review
@@ -195,7 +198,7 @@ public class Reviewer implements ChangeableProperties {
 		this.updateOppucation();
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
 	}
-	
+
 	/**
 	 * Add a SecondReview to this Reviewer.
 	 * 
@@ -213,7 +216,7 @@ public class Reviewer implements ChangeableProperties {
 		this.secondReviews.remove(review);
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
 	}
-	
+
 	public void removeRejectedSecondReview(SecondReview review) {
 		ArrayList<SecondReview> old = new ArrayList<>(this.rejectedSecondReviews);
 		this.rejectedSecondReviews.remove(review);
@@ -248,7 +251,7 @@ public class Reviewer implements ChangeableProperties {
 
 	@Override
 	public String toString() {
-		return this.name;
+		return String.format("%s (%d/%d)", this.name, this.getTotalReviewCount(), this.getMaxSupervisedThesis());
 	}
 
 	public float getFirstOccupation() {
@@ -262,6 +265,5 @@ public class Reviewer implements ChangeableProperties {
 	public int getInternalId() {
 		return internalId;
 	}
-
 
 }

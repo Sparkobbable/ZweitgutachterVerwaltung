@@ -12,6 +12,7 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
+import view.widgets.StackedBarChartWidget;
 
 public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesis> {
 
@@ -19,13 +20,15 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesi
 
 	private JComboBox<Reviewer> reviewers;
 	private JButton select;
+	private StackedBarChartWidget stackedBarChartWidget;
 
 	private Model model;
 
 	/**
 	 * Provides a section with several buttons for interaction with the table.
 	 * 
-	 * @param selectedElementsSupplier supplies the currently selected {@link BachelorThesis}s
+	 * @param selectedElementsSupplier supplies the currently selected
+	 *                                 {@link BachelorThesis}s
 	 */
 	@SuppressWarnings("unchecked")
 	public ThesesOverviewActionPanel(Model model, Supplier<List<BachelorThesis>> selectedElementsSupplier) {
@@ -39,6 +42,14 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesi
 		this.observe(model.getReviewers());
 		this.onPropertyChange(Model.REVIEWERS,
 				(evt) -> updateReviewers((List<Reviewer>) evt.getOldValue(), (List<Reviewer>) evt.getNewValue()));
+		this.reviewers.addActionListener(e -> updateReviewerPreview());
+		this.select.addActionListener(e -> updateReviewerPreview());
+	}
+
+	protected void updateReviewerPreview() {
+		Reviewer reviewer = (Reviewer) this.reviewers.getSelectedItem();
+		this.stackedBarChartWidget.update(reviewer.getFirstReviews().size(),
+				reviewer.getUnrejectedSecondReviews().size(), reviewer.getMaxSupervisedThesis());
 	}
 
 	private void updateReviewers(List<Reviewer> oldValue, List<Reviewer> newValue) {
@@ -56,12 +67,17 @@ public class ThesesOverviewActionPanel extends OverviewActionPanel<BachelorThesi
 
 	private void createUIElements() {
 		this.select = this.buttonFactory.createButton("Als Zweitgutachter hinzufügen");
+		this.stackedBarChartWidget = StackedBarChartWidget.getInstance();
+		
 		this.reviewers = new JComboBox<>();
+		this.reviewers.addActionListener(e-> this.updateReviewerPreview());
+		
 		this.addFilteredReviewers(this.model.getReviewers());
 	}
 
 	private void addUIElements() {
 		this.add(reviewers);
+		this.add(stackedBarChartWidget);
 		this.add(select);
 	}
 

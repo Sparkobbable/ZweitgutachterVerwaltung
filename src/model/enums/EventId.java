@@ -15,4 +15,6 @@ public enum EventId {
 	// TODO Refactor names, like "NEW" could be used for a button anywhere in the
 	// application
 	// TODO we should rather make them less telling, so that an EventId only makes sense when combined with an ApplicationState
+	
+	
 }

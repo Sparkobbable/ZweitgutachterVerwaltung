@@ -60,7 +60,7 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 	@Override
 	protected List<EventSource> getEventSources() {
 		return new LinkedList<EventSource>(List.of(this.actionPanel,
-				new TableClickEventSource(EventId.NAVIGATE, this.table, 1, this::getNavigationTarget)));
+				new TableClickEventSource(EventId.NAVIGATE, this.table, 2, this::getNavigationTarget)));
 	}
 
 	private void updateTheses(List<BachelorThesis> oldValue, List<BachelorThesis> newValue) {

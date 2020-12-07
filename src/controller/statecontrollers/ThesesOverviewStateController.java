@@ -46,7 +46,15 @@ public class ThesesOverviewStateController extends AbstractStateController {
 			Log.warning(this, "Only one thesis can be edited at a time.");
 			return;
 		}
+		
 		// list contains only one element
+
+		if (reviewer.getMaxSupervisedThesis() - reviewer.getTotalReviewCount() < selectedTheses.size()) {
+			//geht net
+			Log.warning(this, "Max occupation reached.");
+			return;
+		}
+		
 		BachelorThesis selectedThesis = selectedTheses.get(0);
 		
 		this.execute(new AddBachelorThesisCommand(reviewer, selectedThesis, ApplicationState.THESES_OVERVIEW));
