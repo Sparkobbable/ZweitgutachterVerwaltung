@@ -16,13 +16,14 @@ public class BachelorThesis implements ChangeableProperties {
 	public static final String AUTHOR = "author";
 	public static final String FIRST_REVIEW = "firstReview";
 	public static final String SECOND_REVIEW = "secondReview";
+	public static final String COMMENT = "comment";
 
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	private final String topic;
 	private final Author author;
 	private final FirstReview firstReview;
-
+	private final String comment;
 	private Optional<SecondReview> secondReview;
 
 	/**
@@ -33,13 +34,15 @@ public class BachelorThesis implements ChangeableProperties {
 	 * @param firstReview  First Review made by a Reviewer
 	 * @param secondReview Second Review made by a Reviewer
 	 */
-	public BachelorThesis(String topic, Author author, Reviewer firstReviewer) {
+	public BachelorThesis(String topic, Author author, Reviewer firstReviewer, String comment) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.secondReview = Optional.empty();
 		this.topic = topic;
 		this.author = author;
 		this.firstReview = new FirstReview(firstReviewer, this);
+
 		firstReviewer.addFirstReviewerReview(this.firstReview);
+		this.comment = comment;
 	}
 
 	public String getTopic() {

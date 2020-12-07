@@ -63,7 +63,7 @@ public class Main {
 
 		Author[] authors = new Author[30];
 		for (int i = 0; i < authors.length; i++) {
-			authors[i] = new Author(generateName(), randomFrom(studyGroup));
+			authors[i] = new Author(generateName(), randomFrom(studyGroup), "GMBHS");
 		}
 		Reviewer[] reviewers = new Reviewer[20];
 		for (int i = 0; i < reviewers.length; i++) {
@@ -75,7 +75,7 @@ public class Main {
 
 		BachelorThesis[] bts = new BachelorThesis[topic.length];
 		for (int i = 0; i < bts.length; i++) {
-			bts[i] = new BachelorThesis(topic[i], randomFrom(authors), randomFrom(reviewers));
+			bts[i] = new BachelorThesis(topic[i], randomFrom(authors), randomFrom(reviewers), randomFrom(comment));
 		}
 
 		for (BachelorThesis bt : bts) {
