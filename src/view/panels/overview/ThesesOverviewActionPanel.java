@@ -49,6 +49,9 @@ public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesi
 
 	protected void updateReviewerPreview() {
 		Reviewer reviewer = (Reviewer) this.reviewers.getSelectedItem();
+		if (reviewer == null) {
+			return;
+		}
 		this.stackedBarChartWidget.update(reviewer.getFirstReviews().size(),
 				reviewer.getUnrejectedSecondReviews().size(), reviewer.getMaxSupervisedThesis());
 	}
@@ -69,10 +72,10 @@ public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesi
 	private void createUIElements() {
 		this.select = this.buttonFactory.createButton("Als Zweitgutachter hinzufügen");
 		this.stackedBarChartWidget = StackedBarChartWidget.getInstance();
-		
+
 		this.reviewers = new JComboBox<>();
-		this.reviewers.addActionListener(e-> this.updateReviewerPreview());
-		
+		this.reviewers.addActionListener(e -> this.updateReviewerPreview());
+
 		this.addFilteredReviewers(this.model.getReviewers());
 	}
 
