@@ -1,4 +1,4 @@
-package view.panels.collaboration;
+package view.widgets;
 
 import java.awt.GridLayout;
 import java.util.List;
@@ -7,19 +7,20 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import controller.events.EventSource;
+import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ComboBoxEventSource;
 import view.panels.prototypes.DefaultPanel;
 
 @SuppressWarnings("serial") // should not be serialized
-public class CollaborationComboBoxPanel extends DefaultPanel {
+public class ComboBoxPanel extends DefaultPanel {
 
 	private JLabel headline;
 	private JComboBox<String> choosePresentationMode;
 	private EventId eventId;
 	
-	public CollaborationComboBoxPanel(String headline, String[] options, EventId eventId) {
+	public ComboBoxPanel(String headline, String[] options, EventId eventId) {
 		super("");
 		this.eventId = eventId;
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
@@ -45,7 +46,7 @@ public class CollaborationComboBoxPanel extends DefaultPanel {
 		return List.of(new ComboBoxEventSource(this.eventId, choosePresentationMode, () -> getPresentationMode()));
 	}
 	
-	private String getPresentationMode() {
-			return this.choosePresentationMode.getSelectedItem().toString();
+	private ComboBoxMode getPresentationMode() {
+			return ComboBoxMode.of(this.choosePresentationMode.getSelectedItem().toString()).orElseThrow();
 	}
 }

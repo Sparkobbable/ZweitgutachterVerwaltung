@@ -8,10 +8,11 @@ import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import model.enums.ComboBoxMode;
 import view.View;
 import view.panels.collaboration.CollaborationOptionsPanel;
 import view.panels.collaboration.CollaborationTable;
-import view.panels.collaboration.PieChart;
+import view.widgets.PieChart;
 
 /**
  * Handles the Application when in ApplicationState
@@ -27,9 +28,9 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
-				(params) -> this.switchPresentation((String) params[0].get()));
+				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
 		this.registerEvent(EventId.CHOOSE_REVIEWER_FILTER,
-				(params) -> this.switchData((String) params[0].get()));
+				(params) -> this.switchData((ComboBoxMode) params[0].get()));
 	}
 	
 	/**
@@ -38,7 +39,7 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	 * 
 	 * @param reviewerFilter - selected dataMode from comboBox in {@link CollaborationOptionsPanel}
 	 */
-	protected void switchData(String reviewerFilter) {
+	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {
 			System.out.println("skip");
@@ -46,13 +47,13 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 		}
 		System.out.println("Data:" + reviewerFilter);
 		switch(reviewerFilter) {
-		case "Nur Erstgutachter":
+		case FIRSTREVIEWER:
 			this.model.setCollaboratingReviewers(this.getReviewerRatio(this.setCollaborationFirstReviewers()));
 			break;
-		case "Nur Zweitgutachter":
+		case SECONDREVIEWER:
 			this.model.setCollaboratingReviewers(this.getReviewerRatio(this.setCollaborationSecondReviewers()));
 			break;
-		case "Zweit- & Erstgutachter":
+		case ALLREVIEWER:
 			this.model.setCollaboratingReviewers(this.getReviewerRatio(this.setCollaborationAllReviewers()));
 			break;
 		default:
