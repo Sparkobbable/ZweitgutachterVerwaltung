@@ -85,17 +85,11 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 	}
 
 	private void setFilePath(String filepath) {
-		if (filepath.substring(filepath.length() - 5, filepath.length()).equals(".csv")) {
+		if (filepath.endsWith(".csv")) {
 			this.filepath = filepath;
 			this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			if (filepath.contains(".")) {
-				this.filepath = filepath.substring(0, filepath.indexOf(".")) + ".csv";
-				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				this.filepath = filepath + ".csv";
-				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
-			}
+			this.view.alert("Bitte wählen Sie eine gültige .csv-Datei aus", JOptionPane.ERROR_MESSAGE)
 		}
 	}
 }
