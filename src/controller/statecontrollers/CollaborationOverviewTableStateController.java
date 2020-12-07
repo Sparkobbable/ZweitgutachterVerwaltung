@@ -19,8 +19,7 @@ import view.panels.collaboration.PieChart;
  */
 public class CollaborationOverviewTableStateController extends AbstractCollaborationOverviewStateController {
 
-	public CollaborationOverviewTableStateController(View view, Controller controller,
-			Model model) {
+	public CollaborationOverviewTableStateController(View view, Controller controller, Model model) {
 		super(ApplicationState.COLLABORATION_TABLE, view, controller, model);
 	}
 
@@ -28,29 +27,24 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 	protected void registerEvents() {
 		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
 				(params) -> this.switchPresentation((String) params[0].get()));
-		this.registerEvent(EventId.CHOOSE_DATA_FOR_TABLE,
-				(params) -> switchData((String) params[0].get()));
-		this.registerEvent(EventId.INITIALIZE,
-				(params) -> this.initialize());
+		this.registerEvent(EventId.CHOOSE_REVIEWER_FILTER, (params) -> switchData((String) params[0].get()));
 	}
-	
+
 	/**
-	 * Initializes the data set for the selected Reviewer.
-	 * Gets invoked when the panel gets opened.
-	 */
-	protected void initialize() {
-		this.switchData("Nur Erstgutachter");
-	}
-	
-	/**
-	 * Switches between different data in counted which
-	 * will get presented in the {@link CollaborationTable} or {@link PieChart}.
+	 * Switches between different data in counted which will get presented in the
+	 * {@link CollaborationTable} or {@link PieChart}.
 	 * 
-	 * @param params - selected dataMode from comboBox in {@link CollaborationOptionsPanel}
+	 * @param reviewerFilter - selected dataMode from comboBox in
+	 *                       {@link CollaborationOptionsPanel}
 	 */
-	private void switchData(String params) {
-		System.out.println("Data:" + params);
-		switch(params) {
+	protected void switchData(String reviewerFilter) {
+		this.reviewerFilter = reviewerFilter;
+		if (this.model.getApplicationState() != this.state) {
+			System.out.println("skip");
+			return;
+		}
+		System.out.println("Data:" + reviewerFilter);
+		switch (reviewerFilter) {
 		case "Nur Erstgutachter":
 			this.model.setCollaboratingReviewers(this.getReviewerCount(this.setCollaborationFirstReviewers()));
 			break;
@@ -67,20 +61,20 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 
 	private HashMap<Reviewer, Double> getReviewerCount(ArrayList<Reviewer> reviewers) {
 		HashMap<Reviewer, Double> result = new HashMap<>();
-		
-		for(Reviewer currentReviewer : reviewers) {
-			if(!result.containsKey(currentReviewer)) {
+
+		for (Reviewer currentReviewer : reviewers) {
+			if (!result.containsKey(currentReviewer)) {
 				System.out.println(this.countReviewerperArrayList(reviewers, currentReviewer));
 				result.put(currentReviewer, this.countReviewerperArrayList(reviewers, currentReviewer));
 			}
 		}
 		return result;
 	}
-	
+
 	private double countReviewerperArrayList(ArrayList<Reviewer> reviewers, Reviewer reviewer) {
 		double number = 0.0;
-		for(Reviewer currentReviewer : reviewers) {
-			if(currentReviewer.equals(reviewer)) {
+		for (Reviewer currentReviewer : reviewers) {
+			if (currentReviewer.equals(reviewer)) {
 				number++;
 			}
 		}

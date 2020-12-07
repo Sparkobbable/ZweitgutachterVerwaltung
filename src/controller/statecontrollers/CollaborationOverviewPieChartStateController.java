@@ -28,7 +28,7 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	protected void registerEvents() {
 		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
 				(params) -> this.switchPresentation((String) params[0].get()));
-		this.registerEvent(EventId.CHOOSE_DATA_FOR_PIECHART,
+		this.registerEvent(EventId.CHOOSE_REVIEWER_FILTER,
 				(params) -> this.switchData((String) params[0].get()));
 	}
 	
@@ -36,11 +36,16 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	 * Switches between different data in percentage which
 	 * will get presented in the {@link CollaborationTable} or {@link PieChart}.
 	 * 
-	 * @param params - selected dataMode from comboBox in {@link CollaborationOptionsPanel}
+	 * @param reviewerFilter - selected dataMode from comboBox in {@link CollaborationOptionsPanel}
 	 */
-	private void switchData(String params) {
-		System.out.println("Data:" + params);
-		switch(params) {
+	protected void switchData(String reviewerFilter) {
+		this.reviewerFilter = reviewerFilter;
+		if (this.model.getApplicationState() != this.state) {
+			System.out.println("skip");
+			return;
+		}
+		System.out.println("Data:" + reviewerFilter);
+		switch(reviewerFilter) {
 		case "Nur Erstgutachter":
 			this.model.setCollaboratingReviewers(this.getReviewerRatio(this.setCollaborationFirstReviewers()));
 			break;

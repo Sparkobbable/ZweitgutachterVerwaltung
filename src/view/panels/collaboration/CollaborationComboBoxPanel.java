@@ -22,7 +22,6 @@ public class CollaborationComboBoxPanel extends DefaultPanel {
 	public CollaborationComboBoxPanel(String headline, String[] options, EventId eventId) {
 		super("");
 		this.eventId = eventId;
-		
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new GridLayout(2,1));
 		
