@@ -9,6 +9,7 @@ import controller.statecontrollers.AbstractStateController;
 import controller.statecontrollers.CollaborationOverviewPieChartStateController;
 import controller.statecontrollers.CollaborationOverviewTableStateController;
 import controller.statecontrollers.HomeStateController;
+import controller.statecontrollers.ImportfirstreviewerStateController;
 import controller.statecontrollers.ReviewerEditorStateController;
 import controller.statecontrollers.ReviewerOverviewStateController;
 import controller.statecontrollers.StateChooserStateController;
@@ -52,6 +53,7 @@ public class Controller {
 		stateControllers.add(new ThesesAssignmentStateController(this.view, this, this.model));
 		stateControllers.add(new CollaborationOverviewTableStateController(this.view, this, this.model));
 		stateControllers.add(new CollaborationOverviewPieChartStateController(this.view, this, this.model));
+		stateControllers.add(new ImportfirstreviewerStateController(this.view, this, this.model));
 	}
 
 	/**

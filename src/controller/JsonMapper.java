@@ -61,7 +61,7 @@ public class JsonMapper {
 		Author author = mapToAuthor(jThesis.getJsonObject(BachelorThesis.AUTHOR));
 		Reviewer firstReviewer = findReviewerById(jThesis.getInt(FIRST_REVIEWER), reviewers);
 		BachelorThesis bachelorThesis = new BachelorThesis(jThesis.getString(BachelorThesis.TOPIC), author,
-				firstReviewer);
+				firstReviewer, "");
 
 		if (jThesis.containsKey(SECOND_REVIEWER)) {
 			Reviewer secondReviewer = findReviewerById(jThesis.getInt(SECOND_REVIEWER), reviewers);
@@ -74,7 +74,7 @@ public class JsonMapper {
 	}
 
 	private static Author mapToAuthor(JsonObject jAuthor) {
-		return new Author(jAuthor.getString(Author.NAME), jAuthor.getString(Author.STUDY_GROUP));
+		return new Author(jAuthor.getString(Author.NAME), jAuthor.getString(Author.STUDY_GROUP), "");
 	}
 
 	private static Reviewer mapToReviewer(JsonValue jsonValue) {

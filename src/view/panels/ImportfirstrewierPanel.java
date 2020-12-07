@@ -48,7 +48,7 @@ public class ImportfirstrewierPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ChooserEventSource(EventId.IMPORT_FIRST_REVIEWERS, chooseImport, () -> getFilePath()),
+		return List.of(new ChooserEventSource(EventId.CHOOSE_FILEPATH, chooseImport, () -> getFilePath()),
 				buttons);
 
 	}

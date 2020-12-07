@@ -12,34 +12,34 @@ import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.DefaultPanel;
 
 @SuppressWarnings("serial") // should not be serialized
-public class ImportfirstrewierButtonPanel extends DefaultPanel{
+public class ImportfirstrewierButtonPanel extends DefaultPanel {
 
-	
 	private JButton loadImport;
-	
+	private JButton saveCSV;
 
 	public ImportfirstrewierButtonPanel() {
-		super( "Options");
+		super("");
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
-		
+
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
 	}
-	
+
 	private void createUIElements() {
-		this.loadImport = new JButton("FirstReviewer Import");
+		this.loadImport = new JButton("Importieren");
+		this.saveCSV = new JButton("Exportieren");
 	}
-	
-	
+
 	private void addUIElements() {
 		this.add(loadImport);
-		
+		this.add(saveCSV);
+
 	}
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(
-				new ButtonEventSource(EventId.IMPORT_FIRST_REVIEWERS, loadImport));
+		return List.of(new ButtonEventSource(EventId.LOAD, loadImport),
+				new ButtonEventSource(EventId.SAVE, saveCSV));
 	}
 }
