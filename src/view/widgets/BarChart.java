@@ -1,14 +1,11 @@
 package view.widgets;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.UnknownKeyException;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import controller.events.EventSource;

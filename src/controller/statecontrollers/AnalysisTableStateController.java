@@ -7,6 +7,7 @@ import model.Model;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
+import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
 
@@ -20,13 +21,13 @@ public class AnalysisTableStateController extends AbstractAnalysisStateControlle
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(EventId.ANALYSIS_CHOOSE_PRESENTATION, 
-				(params) -> this.switchPresentation((String) params[0].get()));
+				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
 		this.registerEvent(EventId.ANALYSIS_CHOOSE_DATA, 
-				(params) -> this.switchData((String) params[0].get()));	
+				(params) -> this.switchData((ComboBoxMode) params[0].get()));	
 	}
 
 	@Override
-	protected void switchData(String reviewerFilter) {
+	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {
 			System.out.println("skip");
@@ -34,13 +35,13 @@ public class AnalysisTableStateController extends AbstractAnalysisStateControlle
 		}
 		System.out.println("Data:" + reviewerFilter);
 		switch (reviewerFilter) {
-		case "Nur Erstgutachter":
+		case FIRSTREVIEWER:
 			this.model.setAnalyseReviewers(this.getAllFirstReviewers());
 			break;
-		case "Nur Zweitgutachter":
+		case SECONDREVIEWER:
 			this.model.setAnalyseReviewers(this.getAllSecondReviewers());
 			break;
-		case "Zweit- & Erstgutachter":
+		case ALLREVIEWER:
 			this.model.setAnalyseReviewers(this.model.getReviewers());
 			break;
 		default:

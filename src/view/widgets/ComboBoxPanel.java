@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import controller.events.EventSource;
+import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ComboBoxEventSource;
@@ -45,7 +46,7 @@ public class ComboBoxPanel extends DefaultPanel {
 		return List.of(new ComboBoxEventSource(this.eventId, choosePresentationMode, () -> getPresentationMode()));
 	}
 	
-	private String getPresentationMode() {
-			return this.choosePresentationMode.getSelectedItem().toString();
+	private ComboBoxMode getPresentationMode() {
+			return ComboBoxMode.of(this.choosePresentationMode.getSelectedItem().toString()).orElseThrow();
 	}
 }

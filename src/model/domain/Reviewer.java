@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -120,6 +121,24 @@ public class Reviewer implements ChangeableProperties {
 	 */
 	public int getSecondReviewCount() {
 		return this.secondReviews.size();
+	}
+	
+	public int getReviewsWithselectedReviewerCount(Optional<Reviewer> optional) {
+		int count = 0;
+		if(optional.isPresent()) {
+			for(Review r : this.firstReviews) {
+				if(r.getReviewer().equals(optional.get())) {
+					count++;
+				}
+			}
+			for(Review r : this.secondReviews) {
+				if(r.getReviewer().equals(optional.get())) {
+					count++;
+				}
+			}
+		}
+		return count;
+		
 	}
 
 	public float getOccupation() {

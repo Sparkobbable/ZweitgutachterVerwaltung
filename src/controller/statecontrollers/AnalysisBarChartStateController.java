@@ -1,15 +1,13 @@
 package controller.statecontrollers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import controller.Controller;
 import model.Model;
-import model.Pair;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
+import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
 
@@ -23,27 +21,27 @@ public class AnalysisBarChartStateController extends AbstractAnalysisStateContro
 	@Override
 	protected void registerEvents() {
 		this.registerEvent(EventId.ANALYSIS_CHOOSE_PRESENTATION, 
-				(params) -> this.switchPresentation((String) params[0].get()));
+				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
 		this.registerEvent(EventId.ANALYSIS_CHOOSE_DATA, 
-				(params) -> this.switchData((String) params[0].get()));	
+				(params) -> this.switchData((ComboBoxMode) params[0].get()));	
 	}
 
 	@Override
-	protected void switchData(String reviewerFilter) {
-		this.reviewerFilter = reviewerFilter;
+	protected void switchData(ComboBoxMode comboBoxMode) {
+		this.reviewerFilter = comboBoxMode;
 		if (this.model.getApplicationState() != this.state) {
 			System.out.println("skip");
 			return;
 		}
-		System.out.println("Data:" + reviewerFilter);
-		switch (reviewerFilter) {
-		case "Nur Erstgutachter":
+		System.out.println("Data:" + comboBoxMode);
+		switch (comboBoxMode) {
+		case FIRSTREVIEWER:
 			this.model.setAnalyseReviewers(this.getAllFirstReviewers());
 			break;
-		case "Nur Zweitgutachter":
+		case SECONDREVIEWER:
 			this.model.setAnalyseReviewers(this.getAllSecondReviewers());
 			break;
-		case "Zweit- & Erstgutachter":
+		case ALLREVIEWER:
 			this.model.setAnalyseReviewers(this.model.getReviewers());
 			break;
 		default:

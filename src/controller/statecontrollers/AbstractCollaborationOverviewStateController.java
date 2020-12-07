@@ -6,6 +6,7 @@ import controller.Controller;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
+import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import model.enums.ReviewType;
 import view.View;
@@ -22,7 +23,7 @@ import view.widgets.PieChart;
  */
 public abstract class AbstractCollaborationOverviewStateController extends AbstractStateController {
 
-	protected String reviewerFilter;
+	protected ComboBoxMode reviewerFilter;
 
 	public AbstractCollaborationOverviewStateController(ApplicationState applicationState, View view,
 			Controller controller, Model model) {
@@ -38,12 +39,12 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 	 * @param params - Selected presentationMode from comboBox in
 	 *               {@link CollaborationOptionsPanel}
 	 */
-	protected void switchPresentation(String params) {
+	protected void switchPresentation(ComboBoxMode params) {
 		switch (params) {
-		case "Tabelle":
+		case TABLE:
 			this.switchState(ApplicationState.COLLABORATION_TABLE);
 			break;
-		case "Tortendiagramm":
+		case PIECHART:
 			this.switchState(ApplicationState.COLLABORATION_PIECHART);
 			break;
 		default:
@@ -113,11 +114,11 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 	 */
 	protected void initialize() {
 		if (this.reviewerFilter == null) {
-			this.reviewerFilter = "Nur Erstgutachter";
+			this.reviewerFilter = ComboBoxMode.FIRSTREVIEWER;
 			System.out.println("(re)set");
 		}
 		this.switchData(this.reviewerFilter);
 	}
 
-	protected abstract void switchData(String reviewerFilter);
+	protected abstract void switchData(ComboBoxMode reviewerFilter);
 }

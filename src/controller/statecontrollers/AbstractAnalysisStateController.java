@@ -3,17 +3,18 @@ package controller.statecontrollers;
 import controller.Controller;
 import model.Model;
 import model.enums.ApplicationState;
+import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
 
 public abstract class AbstractAnalysisStateController extends AbstractStateController {
 
-	protected String reviewerFilter;
+	protected ComboBoxMode reviewerFilter;
 	
 	public AbstractAnalysisStateController(ApplicationState applicationState,
 			View view, Controller controller, Model model) {
 		super(applicationState, view, controller, model);
-		this.reviewerFilter = "Nur Erstgutachter";
+		this.reviewerFilter = ComboBoxMode.FIRSTREVIEWER;
 		this.registerEvent(EventId.INITIALIZE, (params) -> this.initialize());
 	}
 	
@@ -21,15 +22,15 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		this.switchData(this.reviewerFilter);
 	}
 	
-	protected void switchPresentation(String params) {
+	protected void switchPresentation(ComboBoxMode params) {
 		switch(params) {
-		case "Tabelle":
+		case TABLE:
 			this.switchState(ApplicationState.ANALYSE_TABLE);
 			break;
-		case "Tortendiagramm":
+		case PIECHART:
 			this.switchState(ApplicationState.ANALYSE_PIECHART);
 			break;
-		case "Balkendiagramm":
+		case BARCHART:
 			this.switchState(ApplicationState.ANALYSE_BARCHART);
 			break;
 		default:
@@ -37,6 +38,6 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		}
 	}
 	
-	protected abstract void switchData(String reviewerFilter);
+	protected abstract void switchData(ComboBoxMode reviewerFilter);
 
 }

@@ -2,7 +2,6 @@ package view.panels.collaboration;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.util.List;
 
 import javax.swing.JPanel;
