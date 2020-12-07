@@ -271,4 +271,8 @@ public class Reviewer implements ChangeableProperties {
 		return internalId;
 	}
 
+	public List<SecondReview> getRejectedSecondReviews() {
+		return Collections.unmodifiableList(this.rejectedSecondReviews);
+	}
+
 }

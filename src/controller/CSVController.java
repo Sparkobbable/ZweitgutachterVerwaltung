@@ -45,12 +45,20 @@ public class CSVController implements PersistenceHandler {
 		CSVParser csvParser = null;
 		try {
 			reader = Files.newBufferedReader(Paths.get(filename));
-			reader.readLine();
+			String firstLine;
+			do {
+				reader.mark(2048);
+				firstLine = reader.readLine();
+				System.out.println(firstLine);
+			} while (firstLine.matches("([;]|\s)*"));
+
+			// go to the last marker before the correct line
+			reader.reset();
+
 			csvParser = new CSVParser(reader, CSVFormat.EXCEL.withFirstRecordAsHeader().withIgnoreHeaderCase()
 					.withIgnoreEmptyLines().withTrim().withDelimiter(';'));
 			List<BachelorThesis> bachelorThesis = new ArrayList<BachelorThesis>();
 			List<Reviewer> listreviewer = new ArrayList<Reviewer>();
-			csvParser.getHeaderNames().forEach(s -> System.out.println(s + "\n"));
 			for (CSVRecord csvRecord : csvParser) {
 				String name = csvRecord.get("Name, Vorname");
 				String studyGroup = csvRecord.get("Studien-\ngruppe");

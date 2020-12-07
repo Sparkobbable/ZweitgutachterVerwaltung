@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
 import controller.Controller;
 import controller.commands.base.BatchCommand;
 import controller.commands.base.Command;
 import controller.commands.reviewer.AddBachelorThesisCommand;
 import model.Model;
 import model.domain.BachelorThesis;
+import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
@@ -45,15 +48,31 @@ public class ThesesOverviewStateController extends AbstractStateController {
 
 	private void addSecondReviewer(List<BachelorThesis> selectedTheses, Reviewer reviewer) {
 
+		if (selectedTheses.isEmpty()) {
+			this.view.alert("Keine Bachelor Theses ausgewählt", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (selectedTheses.stream().map(BachelorThesis::getSecondReview).anyMatch(Optional::isPresent)) {
-			// geht net
-			Log.warning(this, "One or more BachelorTheses already have a second Reviewer.");
+			this.view.alert("Mindestens eine Bachelorarbeit hat bereits einen Reviewer", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (selectedTheses.stream().anyMatch(reviewer.getRejectedSecondReviews().stream().map(Review::getBachelorThesis)
+				.collect(Collectors.toList())::contains)) {
+			this.view.alert("Der Reviewer hat mindestens eine Bachelorarbeit abgelehnt", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		if (reviewer.getMaxSupervisedThesis() - reviewer.getTotalReviewCount() < selectedTheses.size()) {
-			// geht net
-			Log.warning(this, "Max occupation reached.");
+			this.view.alert("Diese Aktion überschreitet die Maximalanzahl an Gutachten für diesen Reviwer",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (selectedTheses.stream().map(BachelorThesis::getFirstReview).map(Review::getReviewer)
+				.anyMatch(firstReviewer -> reviewer == firstReviewer)) {
+			this.view.alert("Erst- und Zweitgutachter können nicht identisch sein.",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
