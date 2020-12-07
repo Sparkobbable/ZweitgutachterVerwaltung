@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import javax.swing.JOptionPane;
+
 import controller.Controller;
 import controller.commands.base.BatchCommand;
 import controller.commands.base.Command;
@@ -18,6 +20,7 @@ import controller.commands.model.DeleteReviewerCommand;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
+import model.exceptions.SupervisesThesisException;
 import util.Log;
 import view.View;
 
@@ -85,7 +88,12 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 	private void deleteReviewers(List<Reviewer> reviewers) {
 		List<Command> deleteCommands = new ArrayList<>();
 		reviewers.forEach(r -> deleteCommands.add(new DeleteReviewerCommand(r, this.model, ApplicationState.REVIEWER_OVERVIEW)));
-		this.execute(new BatchCommand(deleteCommands));
+		try {
+			this.execute(new BatchCommand(deleteCommands));
+		} catch (SupervisesThesisException e) {
+			this.view.alert(String.format("%s betreut eine Bachelorarbeit als Erstgutachter und kann daher nicht gelöscht werden.", e.getReviewerName()), JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 
 	private Optional<Reviewer> extractSingleSelectedReviewer(List<Reviewer> selectedReviewers) {
