@@ -1,20 +1,15 @@
 package controller;
 
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonValue;
-import javax.json.JsonWriter;
-import javax.json.JsonValue.ValueType;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 import model.Pair;
 import model.domain.Author;
@@ -22,10 +17,6 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.persistence.PersistenceHandler;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 //TODO javadoc
 public class CSVController implements PersistenceHandler {
@@ -50,22 +41,23 @@ public class CSVController implements PersistenceHandler {
 	}
 
 	public Pair<List<Reviewer>, List<BachelorThesis>> load() {
-		Reader reader = null;
+		BufferedReader reader = null;
 		CSVParser csvParser = null;
 		try {
 			reader = Files.newBufferedReader(Paths.get(filename));
-			csvParser = new CSVParser(reader,
-					CSVFormat.EXCEL.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim().withDelimiter(';'));
+			reader.readLine();
+			csvParser = new CSVParser(reader, CSVFormat.EXCEL.withFirstRecordAsHeader().withIgnoreHeaderCase()
+					.withIgnoreEmptyLines().withTrim().withDelimiter(';'));
 			List<BachelorThesis> bachelorThesis = new ArrayList<BachelorThesis>();
 			List<Reviewer> listreviewer = new ArrayList<Reviewer>();
-
+			csvParser.getHeaderNames().forEach(s -> System.out.println(s + "\n"));
 			for (CSVRecord csvRecord : csvParser) {
-				String name = csvRecord.get("Name");
-				String studyGroup = csvRecord.get("Studien-gruppe");
+				String name = csvRecord.get("Name, Vorname");
+				String studyGroup = csvRecord.get("Studien-\ngruppe");
 				String company = csvRecord.get("Praxispartner");
 				String topic = csvRecord.get("Themenvorschlag Bachelor Thesis");
-				String firstreviewer = csvRecord.get("Dozent 1. Gutachten");
-				String secondreviewer = csvRecord.get("Dozent 2. Gutachten");
+				String firstreviewer = csvRecord.get("Dozent\n1. Gutachten");
+				String secondreviewer = csvRecord.get("Dozent\n2. Gutachten");
 				String commant = csvRecord.get("Bemerkung");
 
 				Reviewer reviewer = new Reviewer(firstreviewer, 10);
@@ -80,7 +72,7 @@ public class CSVController implements PersistenceHandler {
 				listreviewer.add(sereviewer);
 
 			}
-			
+
 			csvParser.close();
 			return Pair.of(listreviewer, bachelorThesis);
 		} catch (IOException e) {
