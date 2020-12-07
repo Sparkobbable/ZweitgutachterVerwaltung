@@ -14,5 +14,6 @@ public interface ViewProperties {
 	public static final float MENU_BUTTON_FONT_SIZE = 12f;
 	public static final int DEFAULT_HEIGHT = 800;
 	public static final int DEFAULT_WIDTH = 1200;
+	public static final long NOTIFICATION_TIMER = 4;
 	
 }

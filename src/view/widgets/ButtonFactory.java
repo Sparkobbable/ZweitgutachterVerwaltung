@@ -63,4 +63,10 @@ public class ButtonFactory {
 	private void scaleButton(JButton button, float size) {
 		button.setFont(button.getFont().deriveFont(size));
 	}
+
+	public JButton createMenuButton(String title, Color color) {
+		JButton menuButton = createMenuButton(title);
+		menuButton.setForeground(color);
+		return menuButton;
+	}
 }

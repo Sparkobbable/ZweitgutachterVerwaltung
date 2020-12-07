@@ -42,4 +42,9 @@ public interface View extends EventSource {
 	 * Makes this view visible.
 	 */
 	public void setVisible();
+
+	/*
+	 * Notifies the view that values have changed
+	 */
+	public void notifyValuesChanged();
 }

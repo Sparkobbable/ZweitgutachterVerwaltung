@@ -159,4 +159,9 @@ public class SwingView implements View {
 		}
 	}
 
+	@Override
+	public void notifyValuesChanged() {
+		this.menuHandler.notifyValuesChanged();
+	}
+
 }

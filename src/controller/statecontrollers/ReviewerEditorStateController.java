@@ -7,15 +7,12 @@ import static model.enums.EventId.EMAIL_CHANGED;
 import static model.enums.EventId.MAX_SUPERVISED_THESES_CHANGED;
 import static model.enums.EventId.NAME_CHANGED;
 import static model.enums.EventId.REJECT;
-import static model.enums.EventId.SAVE;
 import static model.enums.EventId.RESERVE_SEC_REVIEW;
-import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 
 import controller.Controller;
 import controller.commands.base.BatchCommand;
@@ -47,7 +44,6 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(SAVE, (params) -> saveReviewer());
 		this.registerEvent(ADD_THESIS, (params) -> addThesis());
 		this.registerEvent(REJECT, (params) -> rejectSecondReviews((Collection<SecondReview>) params[0].get()));
 		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));
@@ -131,14 +127,6 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	private boolean validate() {
 
 		return true;
-	}
-
-	private void saveReviewer() {
-		if (!this.validateFields()) {
-			this.view.alert("Die benötigten Felder wurden nicht alle gefüllt!", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		switchToLastVisitedState();
 	}
 
 	public boolean validateFields() {
