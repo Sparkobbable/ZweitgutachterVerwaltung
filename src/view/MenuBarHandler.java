@@ -1,7 +1,14 @@
 package view;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
 import controller.events.Action;
 import controller.events.CompositeEventSource;
@@ -22,6 +29,7 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	private JButton back;
 	private JButton undo;
 	private JButton redo;
+	private JButton valuesChanged;
 
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
@@ -29,13 +37,34 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 		this.back = this.buttonFactory.createMenuButton("Zurück");
 		this.undo = this.buttonFactory.createMenuButton("Rückgängig");
 		this.redo = this.buttonFactory.createMenuButton("Wiederherstellen");
+		this.valuesChanged = this.buttonFactory.createMenuButton("Alle Eingaben wurden gespeichert", Color.RED);
+		this.valuesChanged.setVisible(false);
 		undo.setEnabled(false);
 		redo.setEnabled(false);
-		this.add(back);
-		this.add(undo);
-		this.add(redo);
-
+		
+		JPanel leftLayout = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel rightLayout = new JPanel();
+		rightLayout.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		leftLayout.add(back);
+		leftLayout.add(undo);
+		leftLayout.add(redo);
+		rightLayout.add(valuesChanged);
+		
+		this.add(leftLayout);
+		this.add(rightLayout);
+		
 		this.registerEventSources();
+	}
+	
+	public void notifyValuesChanged() {
+		this.valuesChanged.setVisible(true);
+		ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
+		scheduler.schedule(() -> hideValuesChanged(), ViewProperties.NOTIFICATION_TIMER, TimeUnit.SECONDS);
+	}
+	
+	private void hideValuesChanged() {
+		this.valuesChanged.setVisible(false);
 	}
 
 	protected void registerEventSources() {

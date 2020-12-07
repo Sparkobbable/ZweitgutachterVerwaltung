@@ -43,7 +43,7 @@ public class CommandInvoker {
 		if (!command.isRevertible()) {
 			this.undoStack.clear();
 		}
-		updateView();
+		updateViewValueChanged();
 	}
 
 	public void undo() {
@@ -67,9 +67,14 @@ public class CommandInvoker {
 		Log.info(this, "Re-executing command %s.", command);
 		this.undoStack.push(command);
 		command.execute();
-		updateView();
+		updateViewValueChanged();
 	}
 
+	private void updateViewValueChanged() {
+		updateView();
+		this.view.notifyValuesChanged();
+	}
+	
 	private void updateView() {
 		this.view.setUndoable(!this.undoStack.isEmpty());
 		this.view.setRedoable(!this.redoStack.isEmpty());

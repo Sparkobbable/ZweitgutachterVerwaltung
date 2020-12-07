@@ -37,7 +37,7 @@ import view.tableModels.SupervisedThesesTableModel;
  * Panel that is responsible for displaying a detailed view of a Reviewer.
  * <p>
  * It is responsible for editing reviewers as well as linking to the
- * {@link ThesisAssignmentPanel}
+ * {@link ThesesAssignmentPanel}
  *
  */
 @SuppressWarnings("serial") // should not be serialized
@@ -58,7 +58,6 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	private JLabel emailLabel;
 	private JLabel commentLabel;
 	private JLabel supervisedLabel;
-	private JButton save;
 	private JButton addBachelorThesis;
 	private JButton deleteThesis;
 	private JButton approveSecReview;
@@ -77,7 +76,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 
 		this.selectedReviewer = this.model.getSelectedReviewer();
 
-		this.setLayout(new GridLayout(8, 2));
+		this.setLayout(new GridLayout(7, 2));
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 
 		this.createUIElements();
@@ -104,11 +103,10 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.name.setInputVerifier(new NonEmptyStringInputVerifier());
 		this.maxSupervised.setInputVerifier(new IntegerInputVerifier());
 
-		this.save = this.buttonFactory.createButton("Speichern");
-		this.addBachelorThesis = this.buttonFactory.createButton("Bachelorarbeit hinzufügen");
-		this.deleteThesis = this.buttonFactory.createButton("Bachelorarbeit löschen");
+		this.addBachelorThesis = this.buttonFactory.createButton("Zweitgutachten hinzufügen");
+		this.deleteThesis = this.buttonFactory.createButton("Zweitgutachten ablehnen");
 		this.approveSecReview = this.buttonFactory.createButton("Zweitgutachten bestätigen");
-		this.reserveSecReview = this.buttonFactory.createButton("Bachelorarbeit vormerken");
+		this.reserveSecReview = this.buttonFactory.createButton("Zweitgutachten vormerken");
 
 		this.supervisedThesesTableModel = new SupervisedThesesTableModel(
 				List.of(TITLE, AUTHOR_NAME, AUTHOR_STUDY_GROUP, TYPE, STATUS), Collections.emptyList(),
@@ -135,7 +133,6 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.add(this.supervisedLabel);
 		this.supervisedLabel.setLabelFor(this.supervisedThesisPane);
 		this.add(this.supervisedThesisPane);
-		this.add(this.save);
 		this.add(this.addBachelorThesis);
 		this.add(this.deleteThesis);
 		this.add(this.approveSecReview);
@@ -144,8 +141,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(new ButtonEventSource(EventId.SAVE, save),
-				new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis),
+		return List.of(new ButtonEventSource(EventId.ADD_THESIS, addBachelorThesis),
 				new ButtonEventSource(EventId.REJECT, deleteThesis, () -> getSelectedReviews()),
 				new ButtonEventSource(EventId.APPROVE_SEC_REVIEW, approveSecReview, () -> getSelectedReviews()),
 				new ButtonEventSource(EventId.RESERVE_SEC_REVIEW, reserveSecReview, () -> getSelectedReviews()),
@@ -168,7 +164,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.onPropertyChange(Reviewer.EMAIL, e -> this.email.setText((String) e.getNewValue()));
 		this.onPropertyChange(Reviewer.COMMENT, e -> this.comment.setText((String) e.getNewValue()));
 		this.onPropertyChange(Reviewer.MAX_SUPERVISED_THESES,
-				e -> this.maxSupervised.setText((String) e.getNewValue()));
+				e -> this.maxSupervised.setText(String.valueOf((int) e.getNewValue())));
 	}
 
 	private void updateObserversForSecondReviews(List<Review> oldReviews, List<Review> newReviews) {

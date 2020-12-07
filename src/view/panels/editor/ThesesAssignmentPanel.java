@@ -16,6 +16,8 @@ import java.util.stream.IntStream;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controller.events.EventSource;
 import controller.search.BachelorThesisSearchStrategy;
@@ -25,6 +27,7 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
+import view.eventsources.TableClickEventSource;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.Column;
 import view.tableModels.ThesesOverviewTableModel;
@@ -39,7 +42,7 @@ import view.widgets.SearchField;
  *
  */
 @SuppressWarnings("serial") // should not be serialized
-public class ThesisAssignmentPanel extends DefaultPanel {
+public class ThesesAssignmentPanel extends DefaultPanel {
 
 	// Constants
 	/**
@@ -53,9 +56,9 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 	private Model model;
 
 	// UI-Elements
-	private JTable thesisTable;
+	private JTable thesesTable;
 	private JScrollPane thesisScrollPane;
-	private JButton addThesis;
+	private ThesesAssignmentActionPanel actionPanel;
 	private ThesesOverviewTableModel thesesTableModel;
 	private SearchField<BachelorThesis> searchField;
 
@@ -65,7 +68,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 	 * 
 	 * @param model The presented Model, needs for data access
 	 */
-	public ThesisAssignmentPanel(Model model) {
+	public ThesesAssignmentPanel(Model model) {
 		super("Bachelorthesis-Editor");
 		this.model = model;
 		this.observe(model);
@@ -84,23 +87,29 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List
-				.of(new ButtonEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.addThesis, () -> getSelectedTheses()));
+		return List.of(this.actionPanel, 
+				new TableClickEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.thesesTable, 2, () -> getSelectedTheses()));
 	}
 
 	private List<BachelorThesis> getSelectedTheses() {
-		return IntStream.of(this.thesisTable.getSelectedRows()).map(this.thesisTable::convertRowIndexToModel)
+		return IntStream.of(this.thesesTable.getSelectedRows()).map(this.thesesTable::convertRowIndexToModel)
 				.mapToObj(this.thesesTableModel::getByIndex).collect(Collectors.toList());
 	}
 
 	private void createUIElements() {
 		this.thesesTableModel = new ThesesOverviewTableModel(THESES_TABLE_COLUMNS, this.getThesisTableFilters(),
 				this.model);
-		this.thesisTable = new JTable(this.thesesTableModel);
-		this.thesisTable.setAutoCreateRowSorter(true);
-		this.thesisScrollPane = new JScrollPane(this.thesisTable);
-		this.addThesis = this.buttonFactory.createButton(null);
+		this.thesesTable = new JTable(this.thesesTableModel);
+		this.thesesTable.setAutoCreateRowSorter(true);
+		this.thesesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				ThesesAssignmentPanel.this.actionPanel.setTextForReviewer(ThesesAssignmentPanel.this.selectedReviewer);
+			}
+		});
+		this.thesisScrollPane = new JScrollPane(this.thesesTable);
 		this.searchField = new SearchField<>(new BachelorThesisSearchStrategy(), (t) -> this.updateThesesList());
+		this.actionPanel = new ThesesAssignmentActionPanel(() -> getSelectedTheses());
 	}
 
 	private List<Predicate<BachelorThesis>> getThesisTableFilters() {
@@ -108,14 +117,10 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 				t -> this.searchField.matchesSearch(t));
 	}
 
-	protected String createButtonText() {
-		return String.format("Zweitgutachten %s zuordnen", this.selectedReviewer.getName());
-	}
-
 	private void addUIElements() {
 		this.add(this.searchField, BorderLayout.PAGE_START);
 		this.add(this.thesisScrollPane, BorderLayout.CENTER);
-		this.add(this.addThesis, BorderLayout.PAGE_END);
+		this.add(this.actionPanel, BorderLayout.PAGE_END);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -142,7 +147,7 @@ public class ThesisAssignmentPanel extends DefaultPanel {
 			}
 			this.selectedReviewer = selectedReviewer.get();
 			this.observe(this.selectedReviewer);
-			this.addThesis.setText(this.createButtonText());
+			this.actionPanel.setTextForReviewer(this.selectedReviewer);
 			this.thesesTableModel.updateData();
 			this.repaint();
 		} else {

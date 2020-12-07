@@ -1,6 +1,7 @@
 package controller.statecontrollers;
 
 import static model.enums.EventId.ADD_THESIS_TO_REVIEWER;
+import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ import view.View;
  * Handles the Application when in ApplicationState
  * {@link ApplicationState#THESIS_ASSIGNMENT}
  */
-public class ThesisAssignmentStateController extends AbstractStateController {
+public class ThesesAssignmentStateController extends AbstractStateController {
 
-	public ThesisAssignmentStateController(View view, Controller controller, Model model) {
+	public ThesesAssignmentStateController(View view, Controller controller, Model model) {
 		super(ApplicationState.THESIS_ASSIGNMENT, view, controller, model);
 	}
 
@@ -29,6 +30,7 @@ public class ThesisAssignmentStateController extends AbstractStateController {
 	protected void registerEvents() {
 		this.registerEvent(ADD_THESIS_TO_REVIEWER,
 				(params) -> this.addSecondReviewThesis((List<BachelorThesis>) params[0].get()));
+		this.registerEvent(SHOW_COLLABORATION, (params) -> this.switchState(ApplicationState.COLLABORATION_TABLE));
 	}
 
 	private void addSecondReviewThesis(List<BachelorThesis> bachelorThesesToAdd) {

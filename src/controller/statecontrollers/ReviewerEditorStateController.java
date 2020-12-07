@@ -7,18 +7,15 @@ import static model.enums.EventId.EMAIL_CHANGED;
 import static model.enums.EventId.MAX_SUPERVISED_THESES_CHANGED;
 import static model.enums.EventId.NAME_CHANGED;
 import static model.enums.EventId.REJECT;
-import static model.enums.EventId.SAVE;
 import static model.enums.EventId.RESERVE_SEC_REVIEW;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
 import controller.Controller;
-import controller.commands.base.BatchCommand;
-import controller.commands.base.Command;
 import controller.commands.review.RejectSecondReviewCommand;
 import controller.commands.review.ReviewTypeChangeCommand;
 import controller.commands.reviewer.ReviewerCommentChangeCommand;
@@ -26,6 +23,7 @@ import controller.commands.reviewer.ReviewerEmailChangeCommand;
 import controller.commands.reviewer.ReviewerMaxSupervisedThesesChangeCommand;
 import controller.commands.reviewer.ReviewerNameChangeCommand;
 import model.Model;
+import model.domain.Review;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
@@ -46,11 +44,10 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(SAVE, (params) -> saveReviewer());
 		this.registerEvent(ADD_THESIS, (params) -> addThesis());
-		this.registerEvent(REJECT, (params) -> rejectSecondReviews((Collection<SecondReview>) params[0].get()));
-		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<SecondReview>) params[0].get()));
-		this.registerEvent(RESERVE_SEC_REVIEW, (params) -> reserveReviews((Collection<SecondReview>) params[0].get()));
+		this.registerEvent(REJECT, (params) -> rejectSecondReviews((Collection<Review>) params[0].get()));
+		this.registerEvent(APPROVE_SEC_REVIEW, (params) -> approveReviews((Collection<Review>) params[0].get()));
+		this.registerEvent(RESERVE_SEC_REVIEW, (params) -> reserveReviews((Collection<Review>) params[0].get()));
 
 		this.registerEvent(NAME_CHANGED, (params) -> nameChanged((String) params[0].get()));
 		this.registerEvent(MAX_SUPERVISED_THESES_CHANGED,
@@ -59,12 +56,12 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		this.registerEvent(COMMENT_CHANGED, (params) -> commentChanged((String) params[0].get()));
 	}
 
-	private void reserveReviews(Collection<SecondReview> reviews) {
+	private void reserveReviews(Collection<Review> collection) {
 		if (this.model.getSelectedReviewer().isEmpty()) {
 			throw new IllegalStateException("Selected reviewer must not be empty");
 		}
-		reviews.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
-		.map(review -> (SecondReview) review).forEach(this::reserve);
+		collection.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
+		.map(review -> (SecondReview) review).findAny().ifPresentOrElse(this::reserve, this::notifyFirstReview);
 	}
 
 	private void nameChanged(String newValue) {
@@ -96,15 +93,19 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		}
 	}
 
-	private void approveReviews(Collection<SecondReview> reviews) {
+	private void approveReviews(Collection<Review> collection) {
 
 		if (this.model.getSelectedReviewer().isEmpty()) {
 			throw new IllegalStateException("Selected reviewer must not be empty");
 		}
-		reviews.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
-				.map(review -> (SecondReview) review).forEach(this::approve);
+		collection.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
+				.map(review -> (SecondReview) review).findAny().ifPresentOrElse(this::approve, this::notifyFirstReview);
 	}
 
+	private void notifyFirstReview() {
+		this.view.alert("Ausgewählt ist ein Gutachten, welches als Erstgutachten betreut wird. Die gewählte Aktion kann darauf nicht angewendet werden.", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 	private void approve(SecondReview review) {
 		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED, ApplicationState.REVIEWER_EDITOR));
 	}
@@ -113,11 +114,13 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.RESERVED, ApplicationState.REVIEWER_EDITOR));
 	}
 
-	private void rejectSecondReviews(Collection<SecondReview> reviews) {
-		List<Command> commands = new ArrayList<>();
-		reviews.forEach(
-				review -> commands.add(new RejectSecondReviewCommand(review, ApplicationState.REVIEWER_EDITOR)));
-		this.execute(new BatchCommand(commands));
+	private void rejectSecondReviews(Collection<Review> collection) {
+		collection.stream().filter(review -> review.getReviewType().equals(ReviewType.SECOND_REVIEW))
+		.map(review -> (SecondReview) review).findAny().ifPresentOrElse(this::reject, this::notifyFirstReview);
+	}
+	
+	private void reject(SecondReview review) {
+		this.execute(new RejectSecondReviewCommand(review, ApplicationState.REVIEWER_EDITOR));
 	}
 
 	private void addThesis() {
@@ -130,14 +133,6 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	private boolean validate() {
 
 		return true;
-	}
-
-	private void saveReviewer() {
-		if (!this.validateFields()) {
-			this.view.alert("Die benötigten Felder wurden nicht alle gefüllt!", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		switchToLastVisitedState();
 	}
 
 	public boolean validateFields() {

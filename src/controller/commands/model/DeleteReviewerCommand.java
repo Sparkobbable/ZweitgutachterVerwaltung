@@ -5,6 +5,7 @@ import model.Model;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
+import model.exceptions.SupervisesThesisException;
 
 public class DeleteReviewerCommand extends RevertibleCommand {
 
@@ -20,7 +21,7 @@ public class DeleteReviewerCommand extends RevertibleCommand {
 	@Override
 	public void execute() {
 		if (!this.reviewer.getFirstReviews().isEmpty()) {
-			throw new IllegalStateException("Cannot delete reviewers that supervise a BachelorThesis as FirstReviewer");
+			throw new SupervisesThesisException("Cannot delete reviewers that supervise a BachelorThesis as FirstReviewer", this.reviewer);
 		}
 
 		this.reviewer.getUnrejectedSecondReviews().stream().map(Review::getBachelorThesis)

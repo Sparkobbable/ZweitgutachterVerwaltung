@@ -13,7 +13,7 @@ import controller.statecontrollers.ReviewerEditorStateController;
 import controller.statecontrollers.ReviewerOverviewStateController;
 import controller.statecontrollers.StateChooserStateController;
 import controller.statecontrollers.ThesesOverviewStateController;
-import controller.statecontrollers.ThesisAssignmentStateController;
+import controller.statecontrollers.ThesesAssignmentStateController;
 import model.Model;
 import model.enums.ApplicationState;
 import view.View;
@@ -49,7 +49,7 @@ public class Controller {
 		stateControllers.add(new ThesesOverviewStateController(this.view, this, this.model));
 		stateControllers.add(new ReviewerEditorStateController(this.view, this, this.model));
 		stateControllers.add(new StateChooserStateController(this.view, this, this.model));
-		stateControllers.add(new ThesisAssignmentStateController(this.view, this, this.model));
+		stateControllers.add(new ThesesAssignmentStateController(this.view, this, this.model));
 		stateControllers.add(new CollaborationOverviewTableStateController(this.view, this, this.model));
 		stateControllers.add(new CollaborationOverviewPieChartStateController(this.view, this, this.model));
 	}

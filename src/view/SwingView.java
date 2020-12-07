@@ -18,7 +18,7 @@ import view.panels.ImportfirstrewierPanel;
 import view.panels.StateChooserPanel;
 import view.panels.collaboration.CollaborationPanel;
 import view.panels.editor.ReviewerEditorPanel;
-import view.panels.editor.ThesisAssignmentPanel;
+import view.panels.editor.ThesesAssignmentPanel;
 import view.panels.overview.ReviewerOverviewPanel;
 import view.panels.overview.ThesesOverviewPanel;
 import view.panels.prototypes.AbstractViewPanel;
@@ -60,7 +60,7 @@ public class SwingView implements View {
 		this.registerView(ApplicationState.THESES_OVERVIEW, new ThesesOverviewPanel(model));
 		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(model));
 		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportfirstrewierPanel());
-		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesisAssignmentPanel(model));
+		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesesAssignmentPanel(model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel());
 
 		CollaborationPanel collabPanel = new CollaborationPanel(model);
@@ -157,6 +157,11 @@ public class SwingView implements View {
 			e.printStackTrace();
 			// use default look & feel
 		}
+	}
+
+	@Override
+	public void notifyValuesChanged() {
+		this.menuHandler.notifyValuesChanged();
 	}
 
 }

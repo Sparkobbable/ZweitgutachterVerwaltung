@@ -31,10 +31,10 @@ public class Reviewer implements ChangeableProperties {
 	private String name;
 	private String email;
 	private String comment;
-	private int maxSupervisedThesis;
-	private float occupation;
-	private float firstOccupation;
-	private float secOccupation;
+	private int maxSupervisedTheses;
+	private Double occupation;
+	private Double firstOccupation;
+	private Double secOccupation;
 	private int internalId;
 
 	private List<FirstReview> firstReviews;
@@ -74,7 +74,7 @@ public class Reviewer implements ChangeableProperties {
 		this.secondReviews = new ArrayList<>();
 		this.rejectedSecondReviews = new ArrayList<>();
 		this.name = name;
-		this.maxSupervisedThesis = maxSupervisedTheses;
+		this.maxSupervisedTheses = maxSupervisedTheses;
 		this.internalId = INTERNAL_ID_GENERATOR.incrementAndGet();
 
 	}
@@ -84,7 +84,7 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	public int getMaxSupervisedThesis() {
-		return maxSupervisedThesis;
+		return maxSupervisedTheses;
 	}
 
 	public String getEmail() {
@@ -108,7 +108,7 @@ public class Reviewer implements ChangeableProperties {
 		return this.firstReviews.size() + this.getUnrejectedSecondReviews().size();
 	}
 
-	public float getOccupation() {
+	public Double getOccupation() {
 		return occupation;
 	}
 
@@ -161,9 +161,9 @@ public class Reviewer implements ChangeableProperties {
 		this.propertyChangeSupport.firePropertyChange(COMMENT, old, comment);
 	}
 
-	public void setMaxSupervisedThesis(int maxSupervisedThesis) {
-		int old = this.maxSupervisedThesis;
-		this.maxSupervisedThesis = maxSupervisedThesis;
+	public void setMaxSupervisedTheses(int maxSupervisedThesis) {
+		int old = this.maxSupervisedTheses;
+		this.maxSupervisedTheses = maxSupervisedThesis;
 		this.updateOppucation();
 		this.propertyChangeSupport.firePropertyChange(MAX_SUPERVISED_THESES, old, maxSupervisedThesis);
 	}
@@ -224,9 +224,14 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	private void updateOppucation() {
-		this.occupation = (float) (this.firstReviews.size() + this.secondReviews.size()) / this.maxSupervisedThesis;
-		this.firstOccupation = (float) this.firstReviews.size() / this.maxSupervisedThesis;
-		this.secOccupation = (float) this.secondReviews.size() / this.maxSupervisedThesis;
+		if (this.maxSupervisedTheses == 0) {
+			this.occupation = Double.valueOf(100);
+			this.firstOccupation = null;
+			this.secOccupation = null;
+		}
+		this.occupation = (double) (this.firstReviews.size() + this.secondReviews.size()) / this.maxSupervisedTheses;
+		this.firstOccupation = (double) this.firstReviews.size() / this.maxSupervisedTheses;
+		this.secOccupation = (double) this.secondReviews.size() / this.maxSupervisedTheses;
 	}
 
 	@Override
@@ -254,11 +259,11 @@ public class Reviewer implements ChangeableProperties {
 		return String.format("%s (%d/%d)", this.name, this.getTotalReviewCount(), this.getMaxSupervisedThesis());
 	}
 
-	public float getFirstOccupation() {
+	public Double getFirstOccupation() {
 		return this.firstOccupation;
 	}
 
-	public float getSecOccupation() {
+	public Double getSecOccupation() {
 		return this.secOccupation;
 	}
 
