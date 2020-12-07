@@ -10,6 +10,11 @@ import static model.enums.EventId.REJECT;
 import static model.enums.EventId.RESERVE_SEC_REVIEW;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.JOptionPane;
+
 import controller.Controller;
 import controller.commands.review.RejectSecondReviewCommand;
 import controller.commands.review.ReviewTypeChangeCommand;
@@ -56,7 +61,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 			throw new IllegalStateException("Selected reviewer must not be empty");
 		}
 		collection.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
-		.map(review -> (SecondReview) review).forEach(this::reserve);
+		.map(review -> (SecondReview) review).findAny().ifPresentOrElse(this::reserve, this::notifyFirstReview);
 	}
 
 	private void nameChanged(String newValue) {
@@ -94,9 +99,13 @@ public class ReviewerEditorStateController extends AbstractStateController {
 			throw new IllegalStateException("Selected reviewer must not be empty");
 		}
 		collection.stream().filter(review -> review.getReviewType() == ReviewType.SECOND_REVIEW)
-				.map(review -> (SecondReview) review).forEach(this::approve);
+				.map(review -> (SecondReview) review).findAny().ifPresentOrElse(this::approve, this::notifyFirstReview);
 	}
 
+	private void notifyFirstReview() {
+		this.view.alert("Ausgewählt ist ein Gutachten, welches als Erstgutachten betreut wird. Die gewählte Aktion kann darauf nicht angewendet werden.", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 	private void approve(SecondReview review) {
 		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.APPROVED, ApplicationState.REVIEWER_EDITOR));
 	}
@@ -107,7 +116,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 
 	private void rejectSecondReviews(Collection<Review> collection) {
 		collection.stream().filter(review -> review.getReviewType().equals(ReviewType.SECOND_REVIEW))
-		.map(review -> (SecondReview) review).forEach(this::reject);
+		.map(review -> (SecondReview) review).findAny().ifPresentOrElse(this::reject, this::notifyFirstReview);
 	}
 	
 	private void reject(SecondReview review) {

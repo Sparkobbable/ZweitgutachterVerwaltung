@@ -11,7 +11,7 @@ import model.enums.ApplicationState;
 public class ReviewerMaxSupervisedThesesChangeCommand extends ValueChangeCommand<Reviewer, Integer> {
 
 	public ReviewerMaxSupervisedThesesChangeCommand(Reviewer reviewer, int newValue, ApplicationState applicationState) {
-		super(Reviewer::setMaxSupervisedThesis, Reviewer::getMaxSupervisedThesis, reviewer, newValue, applicationState);
+		super(Reviewer::setMaxSupervisedTheses, Reviewer::getMaxSupervisedThesis, reviewer, newValue, applicationState);
 	}
 
 }

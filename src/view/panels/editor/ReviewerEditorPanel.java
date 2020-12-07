@@ -164,7 +164,7 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.onPropertyChange(Reviewer.EMAIL, e -> this.email.setText((String) e.getNewValue()));
 		this.onPropertyChange(Reviewer.COMMENT, e -> this.comment.setText((String) e.getNewValue()));
 		this.onPropertyChange(Reviewer.MAX_SUPERVISED_THESES,
-				e -> this.maxSupervised.setText((String) e.getNewValue()));
+				e -> this.maxSupervised.setText(String.valueOf((int) e.getNewValue())));
 	}
 
 	private void updateObserversForSecondReviews(List<Review> oldReviews, List<Review> newReviews) {
