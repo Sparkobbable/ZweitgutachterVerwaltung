@@ -29,7 +29,7 @@ public class DividedProgressRenderer implements TableCellRenderer {
 		this.stackedChart.setValue(((Integer[]) value)[0], ((Integer[]) value)[1]);
 	    ChartPanel chartPanel = new ChartPanel(this.stackedChart.getChart());
 	    chartPanel.setLayout(new BorderLayout());
-	    chartPanel.add(new JLabel(((Integer[]) value)[2] + "%"), BorderLayout.EAST);
+	    chartPanel.add(new JLabel(((Integer[]) value)[2] + "%   "), BorderLayout.EAST);
 	    chartPanel.setBackground(Color.WHITE);
 		return chartPanel;
 	}

@@ -27,6 +27,7 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
+import view.eventsources.TableClickEventSource;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.Column;
 import view.tableModels.ThesesOverviewTableModel;
@@ -86,7 +87,8 @@ public class ThesesAssignmentPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(this.actionPanel);
+		return List.of(this.actionPanel, 
+				new TableClickEventSource(EventId.ADD_THESIS_TO_REVIEWER, this.thesesTable, 2, () -> getSelectedTheses()));
 	}
 
 	private List<BachelorThesis> getSelectedTheses() {

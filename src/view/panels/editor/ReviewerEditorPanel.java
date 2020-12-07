@@ -103,10 +103,10 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.name.setInputVerifier(new NonEmptyStringInputVerifier());
 		this.maxSupervised.setInputVerifier(new IntegerInputVerifier());
 
-		this.addBachelorThesis = this.buttonFactory.createButton("Bachelorarbeit hinzufügen");
-		this.deleteThesis = this.buttonFactory.createButton("Bachelorarbeit löschen");
+		this.addBachelorThesis = this.buttonFactory.createButton("Zweitgutachten hinzufügen");
+		this.deleteThesis = this.buttonFactory.createButton("Zweitgutachten ablehnen");
 		this.approveSecReview = this.buttonFactory.createButton("Zweitgutachten bestätigen");
-		this.reserveSecReview = this.buttonFactory.createButton("Bachelorarbeit vormerken");
+		this.reserveSecReview = this.buttonFactory.createButton("Zweitgutachten vormerken");
 
 		this.supervisedThesesTableModel = new SupervisedThesesTableModel(
 				List.of(TITLE, AUTHOR_NAME, AUTHOR_STUDY_GROUP, TYPE, STATUS), Collections.emptyList(),
