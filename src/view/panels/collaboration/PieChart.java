@@ -13,7 +13,9 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import controller.events.EventSource;
 import model.Model;
+import model.Pair;
 import model.domain.Reviewer;
+import model.enums.ApplicationState;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
 
@@ -37,11 +39,18 @@ public class PieChart extends DefaultPanel {
 		this.createUIElements();
 	}
 
-	private void createDataset() {
+	private void createCallaborationDataset() {
 		this.dataset.clear();
 		Map<Reviewer, Double> reviewers = this.model.getCollaboratingReviewers();
 		for (Entry<Reviewer, Double> reviewer : reviewers.entrySet()) {
 			this.dataset.setValue(reviewer.getKey().getName(), reviewer.getValue());
+		}
+	}
+	
+	private void createAnalyseDataset() {
+		this.dataset.clear();
+		Map<Reviewer, Pair<Integer, Integer>> reviewers = this.model.getAnalyseReviewers();
+		for(Entry<Reviewer, Pair<Integer, Integer>> reviewer : reviewers.entrySet()) {
 		}
 	}
 
@@ -63,6 +72,6 @@ public class PieChart extends DefaultPanel {
 	 * changed
 	 */
 	private void initializePropertyChangeHandlers() {
-		this.onPropertyChange(Model.COLLABORATING_REVIEWERS, (evt) -> createDataset());
+		this.onPropertyChange(Model.COLLABORATING_REVIEWERS, (evt) -> createCallaborationDataset());
 	}
 }

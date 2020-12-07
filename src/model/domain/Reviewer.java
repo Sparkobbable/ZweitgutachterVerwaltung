@@ -107,6 +107,20 @@ public class Reviewer implements ChangeableProperties {
 	public int getTotalReviewCount() {
 		return this.firstReviews.size() + this.getUnrejectedSecondReviews().size();
 	}
+	
+	/**
+	 * @return the count of first reviews
+	 */
+	public int getFirstReviewCount() {
+		return this.firstReviews.size();
+	}
+	
+	/**
+	 * @return the count of second reviews that were not rejected
+	 */
+	public int getSecondReviewCount() {
+		return this.secondReviews.size();
+	}
 
 	public float getOccupation() {
 		return occupation;

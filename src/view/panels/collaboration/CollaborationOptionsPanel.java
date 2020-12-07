@@ -13,6 +13,7 @@ import model.enums.EventId;
 import view.ViewProperties;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
+import view.widgets.ComboBoxPanel;
 
 @SuppressWarnings("serial") // should not be serialized
 public class CollaborationOptionsPanel extends DefaultPanel {
@@ -44,9 +45,9 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 		this.nameField = new JTextField();
 
 		String[] options = { "Nur Erstgutachter", "Nur Zweitgutachter", "Zweit- & Erstgutachter" };
-		this.chooseData = new CollaborationComboBoxPanel("Ansicht", options, EventId.CHOOSE_REVIEWER_FILTER);
+		this.chooseData = new ComboBoxPanel("Ansicht", options, EventId.CHOOSE_REVIEWER_FILTER);
 		String[] options2 = { "Tabelle", "Tortendiagramm" };
-		this.choosePresentation = new CollaborationComboBoxPanel("Darstellung", options2,
+		this.choosePresentation = new ComboBoxPanel("Darstellung", options2,
 				EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION);
 
 	}

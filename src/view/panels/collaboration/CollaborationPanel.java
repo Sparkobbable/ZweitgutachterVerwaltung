@@ -1,7 +1,10 @@
 package view.panels.collaboration;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.util.List;
+
+import javax.swing.JTable;
 
 import controller.events.CustomEventSource;
 import controller.events.EventSource;
@@ -11,6 +14,7 @@ import view.ViewProperties;
 import view.ViewState;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
+import view.tableModels.ReviewerOverviewTableModel;
 
 @SuppressWarnings("serial") // should not be serialized
 public class CollaborationPanel extends DefaultPanel {
@@ -18,10 +22,10 @@ public class CollaborationPanel extends DefaultPanel {
 	private Model model;
 
 	private AbstractViewPanel options;
-	private AbstractViewPanel chart;
+	private Component chart;
 	
 	private PieChart pieChart;
-	private CollaborationTable table;
+	private JTable table;
 	
 	private CustomEventSource initializeEventSource;
 
@@ -40,7 +44,7 @@ public class CollaborationPanel extends DefaultPanel {
 
 	private void createUIElements() {
 		this.pieChart = new PieChart(this.model);
-		this.table = new CollaborationTable(this.model);
+		this.table = new JTable(new ReviewerOverviewTableModel(this.model));
 		
 		this.options = new CollaborationOptionsPanel(this.model);
 		this.chart = this.table;									

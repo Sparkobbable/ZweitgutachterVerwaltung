@@ -6,6 +6,9 @@ import java.util.Set;
 import controller.commands.base.Command;
 import controller.commands.base.CommandInvoker;
 import controller.statecontrollers.AbstractStateController;
+import controller.statecontrollers.AnalysisBarChartStateController;
+import controller.statecontrollers.AnalysisPieChartStateController;
+import controller.statecontrollers.AnalysisTableStateController;
 import controller.statecontrollers.CollaborationOverviewPieChartStateController;
 import controller.statecontrollers.CollaborationOverviewTableStateController;
 import controller.statecontrollers.HomeStateController;
@@ -52,6 +55,9 @@ public class Controller {
 		stateControllers.add(new ThesisAssignmentStateController(this.view, this, this.model));
 		stateControllers.add(new CollaborationOverviewTableStateController(this.view, this, this.model));
 		stateControllers.add(new CollaborationOverviewPieChartStateController(this.view, this, this.model));
+		stateControllers.add(new AnalysisBarChartStateController(this.view, this, this.model));
+		stateControllers.add(new AnalysisTableStateController(this.view, this, this.model));
+		stateControllers.add(new AnalysisPieChartStateController(this.view, this, this.model));
 	}
 
 	/**

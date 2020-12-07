@@ -8,5 +8,5 @@ import view.panels.prototypes.AbstractViewPanel;
  */
 public enum ViewState {
 
-	TABLE, PIECHART;
+	TABLE, PIECHART, BARCHART;
 }

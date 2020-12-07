@@ -1,4 +1,4 @@
-package view.panels.collaboration;
+package view.widgets;
 
 import java.awt.GridLayout;
 import java.util.List;
@@ -13,13 +13,13 @@ import view.eventsources.ComboBoxEventSource;
 import view.panels.prototypes.DefaultPanel;
 
 @SuppressWarnings("serial") // should not be serialized
-public class CollaborationComboBoxPanel extends DefaultPanel {
+public class ComboBoxPanel extends DefaultPanel {
 
 	private JLabel headline;
 	private JComboBox<String> choosePresentationMode;
 	private EventId eventId;
 	
-	public CollaborationComboBoxPanel(String headline, String[] options, EventId eventId) {
+	public ComboBoxPanel(String headline, String[] options, EventId eventId) {
 		super("");
 		this.eventId = eventId;
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);

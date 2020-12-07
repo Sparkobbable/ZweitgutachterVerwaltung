@@ -22,6 +22,7 @@ public class Model implements ChangeableProperties {
 
 	public static final String APPLICATION_STATE = "applicationState";
 	public static final String SELECTED_REVIEWER = "selectedReviewer";
+	public static final String ANALYSE_REVIEWERS = "analyseReviewers";
 	public static final String COLLABORATING_REVIEWERS = "collaboratingReviewers";
 	public static final String REVIEWERS = "reviewers";
 	public static final String THESES = "theses";
@@ -31,6 +32,7 @@ public class Model implements ChangeableProperties {
 	private List<BachelorThesis> theses;
 	private List<Reviewer> reviewers;
 
+	private Map<Reviewer, Pair<Integer, Integer>> analyseReviewers;
 	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -47,7 +49,8 @@ public class Model implements ChangeableProperties {
 	public Model() {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.selectedReviewer = Optional.empty();
-		this.collaboratingReviewers = new HashMap<Reviewer, Double>();
+		this.analyseReviewers = new HashMap<>();
+		this.collaboratingReviewers = new HashMap<>();
 		this.theses = new ArrayList<>();
 		this.reviewers = new ArrayList<>();
 	}
@@ -86,6 +89,16 @@ public class Model implements ChangeableProperties {
 	public Map<Reviewer, Double> getCollaboratingReviewers() {
 		return this.collaboratingReviewers;
 	}
+	
+	/**
+	 * Return a list of all Reviewers for the current Analyse
+	 * including the amount of their reviews
+	 * 
+	 * @return List<Reviewer>
+	 */
+	public Map<Reviewer, Pair<Integer, Integer>> getAnalyseReviewers() {
+		return this.analyseReviewers;
+	}
 
 	/**
 	 * @return A read-only view of the reviewer list
@@ -121,6 +134,18 @@ public class Model implements ChangeableProperties {
 		Optional<Reviewer> old = this.selectedReviewer;
 		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
 		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
+	}
+	
+	/**
+	 * Set the analysis of Reviewers for the current Analyse and notify any
+	 * observers
+	 * 
+	 * @param list
+	 */
+	public void setAnalyseReviewers(HashMap<Reviewer, Pair<Integer, Integer>> list) {
+		Map<Reviewer, Pair<Integer, Integer>> old = this.analyseReviewers;
+		this.analyseReviewers = list;
+		this.propertyChangeSupport.firePropertyChange(ANALYSE_REVIEWERS, old, this.analyseReviewers);
 	}
 
 	/**
