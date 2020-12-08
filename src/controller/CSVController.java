@@ -2,6 +2,8 @@ package controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -38,7 +40,7 @@ public class CSVController implements PersistenceHandler {
 		BufferedReader reader = null;
 		CSVParser csvParser = null;
 		try {
-			reader = Files.newBufferedReader(Paths.get(filename));
+			reader = Files.newBufferedReader(Paths.get(filename), Charset.forName("UTF-8"));
 			String firstLine;
 			do {
 				reader.mark(2048);
@@ -49,8 +51,8 @@ public class CSVController implements PersistenceHandler {
 			// go to the last marker before the correct line
 			reader.reset();
 
-			csvParser = new CSVParser(reader, CSVFormat.EXCEL.withFirstRecordAsHeader().withIgnoreHeaderCase()
-					.withIgnoreEmptyLines().withTrim().withDelimiter(';'));
+			csvParser = new CSVParser(reader,
+					CSVFormat.EXCEL.withFirstRecordAsHeader().withIgnoreEmptyLines(true).withDelimiter(';'));
 
 			Pair<List<Reviewer>, List<BachelorThesis>> returnIn = CSVMapper.maptoModel(csvParser);
 

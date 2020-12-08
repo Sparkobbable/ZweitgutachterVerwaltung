@@ -31,11 +31,14 @@ public class CSVMapper {
 	private static Pair<List<Reviewer>, List<BachelorThesis>> createObjekts(CSVRecord csvRecord, List bachelorThesis,
 			List listreviewer, List listauthor) {
 		String name = csvRecord.get("Name, Vorname");
-		String studyGroup = csvRecord.get("Studien-\ngruppe");
+		String studyGroup = csvRecord.get("Studien-\r\n" + 
+				"gruppe");
 		String company = csvRecord.get("Praxispartner");
 		String topic = csvRecord.get("Themenvorschlag Bachelor Thesis");
-		String firstreviewer = csvRecord.get("Dozent\n1. Gutachten");
-		String secondreviewer = csvRecord.get("Dozent\n2. Gutachten");
+		String firstreviewer = csvRecord.get("Dozent\r\n" + 
+				"1. Gutachten");
+		String secondreviewer = csvRecord.get("Dozent\r\n" + 
+				"2. Gutachten");
 		String commant = csvRecord.get("Bemerkung");
 
 		System.out.println(name + firstreviewer + secondreviewer);
