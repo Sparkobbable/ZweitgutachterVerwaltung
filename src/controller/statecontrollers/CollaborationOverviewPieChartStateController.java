@@ -12,6 +12,7 @@ import model.enums.ComboBoxMode;
 import view.View;
 import view.panels.collaboration.CollaborationOptionsPanel;
 import view.panels.collaboration.CollaborationTable;
+import view.widgets.ComboBoxPanel;
 import view.widgets.PieChart;
 
 /**
@@ -37,8 +38,9 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	 * Switches between different data in percentage which
 	 * will get presented in the {@link CollaborationTable} or {@link PieChart}.
 	 * 
-	 * @param reviewerFilter - selected dataMode from comboBox in {@link CollaborationOptionsPanel}
+	 * @param reviewerFilter - selected dataMode from {@link ComboBoxPanel} in {@link CollaborationOptionsPanel}
 	 */
+	@Override
 	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {

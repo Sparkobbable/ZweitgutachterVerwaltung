@@ -14,6 +14,9 @@ import model.domain.Reviewer;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
 
+/**
+ * Table in the {@link CollaborationPanel}}
+ */
 @SuppressWarnings("serial") // should not be serialized
 public class CollaborationTable extends DefaultPanel { 
 	

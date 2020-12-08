@@ -19,6 +19,9 @@ import view.panels.prototypes.DefaultPanel;
 import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.PieChart;
 
+/**
+ * Panel showing multiple analysis of collaborating reviewers
+ */
 @SuppressWarnings("serial") // should not be serialized
 public class CollaborationPanel extends DefaultPanel {
 
@@ -75,6 +78,9 @@ public class CollaborationPanel extends DefaultPanel {
 		return List.of(this.options, this.initializeEventSource);
 	}
 
+	/**
+	 * Switching the presentation of analysis for each {@link ViewState}
+	 */
 	@Override
 	public void initializeState(ViewState viewState) {
 		switch (viewState) {

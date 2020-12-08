@@ -15,6 +15,10 @@ import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.widgets.ComboBoxPanel;
 
+/**
+ * Options in the {@link CollaborationPanel} including the comboBoxes
+ * to choose the presentation and data
+ */
 @SuppressWarnings("serial") // should not be serialized
 public class CollaborationOptionsPanel extends DefaultPanel {
 

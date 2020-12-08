@@ -22,6 +22,9 @@ import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.BarChart;
 import view.widgets.PieChart;
 
+/**
+ * Panel showing multiple analysis of reviews
+ */
 public class AnalysisPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -88,6 +91,9 @@ public class AnalysisPanel extends DefaultPanel {
 		return List.of(this.options, this.initializeEventSource);
 	}
 	
+	/**
+	 * Switching the presentation of analysis for each {@link ViewState}
+	 */
 	@Override
 	public void initializeState(ViewState viewState) {
 		switch (viewState) {

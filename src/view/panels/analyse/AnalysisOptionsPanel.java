@@ -10,6 +10,10 @@ import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.widgets.ComboBoxPanel;
 
+/**
+ * Options in the {@link AnalysisPanel} including the comboBoxes
+ * to choose the presentation and data
+ */
 public class AnalysisOptionsPanel extends DefaultPanel {
 
 	private static final long serialVersionUID = 1L;

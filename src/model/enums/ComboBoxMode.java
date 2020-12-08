@@ -3,13 +3,19 @@ package model.enums;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-//TODO @jpfrehe javadoc
+import view.widgets.ComboBoxPanel;
+
+/**
+* Results from {@link ComboBoxPanel} transferring the entered Strings
+*/
 public enum ComboBoxMode {
 	TABLE("Tabelle"), PIECHART("Tortendiagramm"), BARCHART("Balkendiagramm"),
 	FIRSTREVIEWER("Nur Erstgutachter"), SECONDREVIEWER("Nur Zweitgutachter"),
 	ALLREVIEWER("Zweit- & Erstgutachter");
 	
-	
+	/**
+	 * String from the comboBox
+	 */
 	private String label;
 	
 	private ComboBoxMode(String label) {

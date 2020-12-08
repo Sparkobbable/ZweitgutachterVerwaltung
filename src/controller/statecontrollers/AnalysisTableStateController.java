@@ -1,16 +1,19 @@
 package controller.statecontrollers;
 
-import java.util.ArrayList;
-
 import controller.Controller;
 import model.Model;
-import model.domain.Review;
-import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
+import view.tableModels.ReviewerOverviewTableModel;
+import view.widgets.ComboBoxPanel;
+import view.widgets.PieChart;
 
+/**
+ * Handles the Application when in ApplicationState
+ * {@link ApplicationState#ANALYSE_TABLE}
+ */
 public class AnalysisTableStateController extends AbstractAnalysisStateController {
 
 	public AnalysisTableStateController(View view, Controller controller,
@@ -26,6 +29,12 @@ public class AnalysisTableStateController extends AbstractAnalysisStateControlle
 				(params) -> this.switchData((ComboBoxMode) params[0].get()));	
 	}
 
+	/**
+	 * Switches between different data in percentage which
+	 * will get presented in the {@link PieChart}, {@link BarChart} or {@link ReviewerOverviewTableModel}.
+	 * 
+	 * @param reviewerFilter - selected dataMode from {@link ComboBoxPanel} in {@link AnalysisOptionsPanelOptionsPanel}
+	 */
 	@Override
 	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
@@ -47,29 +56,5 @@ public class AnalysisTableStateController extends AbstractAnalysisStateControlle
 		default:
 			throw new IllegalArgumentException("Invalid DataMode from ComboBox");
 		}
-	}
-	
-	private ArrayList<Reviewer> getAllFirstReviewers() {
-		ArrayList<Reviewer> result = new ArrayList<>();
-		for(Reviewer currentReviewer : this.model.getReviewers()) {
-			for(Review currentReview : currentReviewer.getFirstReviews()) {
-				if(!result.contains(currentReview.getReviewer())) {
-					result.add(currentReview.getReviewer());
-				}
-			}
-		}
-		return result;
-	}
-	
-	private ArrayList<Reviewer> getAllSecondReviewers() {
-		ArrayList<Reviewer> result = new ArrayList<>();
-		for(Reviewer currentReviewer : this.model.getReviewers()) {
-			for(Review currentReview : currentReviewer.getUnrejectedSecondReviews()) {
-				if(!result.contains(currentReview.getReviewer())) {
-					result.add(currentReview.getReviewer());
-				}
-			}
-		}
-		return result;
 	}
 }

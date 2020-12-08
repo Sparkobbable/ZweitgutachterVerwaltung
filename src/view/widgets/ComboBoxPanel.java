@@ -13,6 +13,9 @@ import view.ViewProperties;
 import view.eventsources.ComboBoxEventSource;
 import view.panels.prototypes.DefaultPanel;
 
+/**
+ * Widget ComboBox which can be used in every Panel
+ */
 @SuppressWarnings("serial") // should not be serialized
 public class ComboBoxPanel extends DefaultPanel {
 

@@ -6,8 +6,14 @@ import java.util.function.Predicate;
 
 import model.Model;
 import model.domain.Reviewer;
+import view.panels.collaboration.CollaborationPanel;
 
+/**
+ * TableModel for the {@link CollaborationPanel}}
+ */
 public class CollaboratingReviewerTableModel extends AbstractDataTableModel<Reviewer>{
+
+	private static final long serialVersionUID = 1L;
 
 	private Model model;
 	
