@@ -26,6 +26,7 @@ public class Reviewer implements ChangeableProperties {
 	public static final String REJECTED_SECOND_REVIEWS = "rejectedSecondReviews";
 	public static final String EMAIL = "email";
 	public static final String COMMENT = "comment";
+	public static final String OCCUPATION = "occupation";
 	public static final String INTERNAL_ID = "internalId";
 
 	// Data
@@ -247,6 +248,7 @@ public class Reviewer implements ChangeableProperties {
 	public void removeSecondReview(SecondReview review) {
 		ArrayList<SecondReview> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.remove(review);
+		updateOppucation();
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
 	}
 
@@ -257,6 +259,7 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	private void updateOppucation() {
+		Double old = this.occupation;
 		if (this.maxSupervisedTheses == 0) {
 			this.occupation = Double.valueOf(100);
 			this.firstOccupation = null;
@@ -265,6 +268,7 @@ public class Reviewer implements ChangeableProperties {
 		this.occupation = (double) (this.firstReviews.size() + this.secondReviews.size()) / this.maxSupervisedTheses;
 		this.firstOccupation = (double) this.firstReviews.size() / this.maxSupervisedTheses;
 		this.secOccupation = (double) this.secondReviews.size() / this.maxSupervisedTheses;
+		this.propertyChangeSupport.firePropertyChange(OCCUPATION, old, this.occupation);
 	}
 
 	@Override

@@ -40,8 +40,10 @@ public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 		this.registerEventSources();
 
 		this.observe(this.model);
+		this.model.getReviewers().forEach(this::observe);
 
 		this.onPropertyChange(Model.REVIEWERS, (evt) -> updateTableModel());
+		this.onPropertyChange(Reviewer.OCCUPATION, (evt) -> updateTableModel());
 
 		this.tableModel.updateData();
 
@@ -59,6 +61,7 @@ public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 				List.of(r -> this.searchField.matchesSearch(r)), model);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void createUIElements() {
 		super.createUIElements();

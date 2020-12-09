@@ -253,7 +253,7 @@ public class Model implements ChangeableProperties {
 		return this.reviewers.get(this.reviewers.size() - 1);
 	}
 
-	public void overrideReviewers(List<Reviewer> reviewers) {
+	public void overrideReviewers(List<Reviewer> reviewers) { //TODO is it just a setter for reviewers?
 		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.clear();
 		this.reviewers.addAll(reviewers);
