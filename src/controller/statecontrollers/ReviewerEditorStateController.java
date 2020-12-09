@@ -73,6 +73,14 @@ public class ReviewerEditorStateController extends AbstractStateController {
 
 	private void maxSupervisedThesesChanged(String newValue) {
 		int maxSupervisedTheses = Integer.parseInt(newValue);
+		
+		int supervised = this.model.getSelectedReviewer().orElseThrow().getAllSupervisedReviews().size();
+		if (supervised > maxSupervisedTheses) {
+			this.view.alert(String.format("%s sind %s Gutachten zugeordnet. Daher kann die Anzahl der maximal betreuten Bachelorarbeiten nicht unter %s liegen.", this.model.getSelectedReviewer().orElseThrow().getName(), supervised, supervised), JOptionPane.INFORMATION_MESSAGE);
+			this.model.getSelectedReviewer().orElseThrow().setMaxSupervisedTheses(supervised);
+			return;
+		}
+		
 		if (this.model.getSelectedReviewer().orElseThrow().getMaxSupervisedThesis() != maxSupervisedTheses) {
 			this.execute(new ReviewerMaxSupervisedThesesChangeCommand(this.model.getSelectedReviewer().orElseThrow(),
 					maxSupervisedTheses, ApplicationState.REVIEWER_EDITOR));
