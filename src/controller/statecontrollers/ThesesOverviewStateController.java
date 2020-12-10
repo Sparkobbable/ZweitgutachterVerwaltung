@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.swing.JOptionPane;
-
 import controller.Controller;
 import controller.commands.base.BatchCommand;
 import controller.commands.base.Command;
@@ -18,7 +16,6 @@ import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
-import util.Log;
 import view.View;
 
 /**
@@ -49,30 +46,28 @@ public class ThesesOverviewStateController extends AbstractStateController {
 	private void addSecondReviewer(List<BachelorThesis> selectedTheses, Reviewer reviewer) {
 
 		if (selectedTheses.isEmpty()) {
-			this.view.alert("Keine Bachelor Theses ausgewählt", JOptionPane.ERROR_MESSAGE);
+			this.popupError("Keine Bachelorthesis ausgewählt");
 			return;
 		}
 		if (selectedTheses.stream().map(BachelorThesis::getSecondReview).anyMatch(Optional::isPresent)) {
-			this.view.alert("Mindestens eine Bachelorarbeit hat bereits einen Reviewer", JOptionPane.ERROR_MESSAGE);
+			this.popupError("Mindestens eine Bachelorarbeit hat bereits einen Reviewer");
 			return;
 		}
 
 		if (selectedTheses.stream().anyMatch(reviewer.getRejectedSecondReviews().stream().map(Review::getBachelorThesis)
 				.collect(Collectors.toList())::contains)) {
-			this.view.alert("Der Reviewer hat mindestens eine Bachelorarbeit abgelehnt", JOptionPane.ERROR_MESSAGE);
+			this.popupError("Der Reviewer hat mindestens eine Bachelorarbeit abgelehnt");
 			return;
 		}
 
 		if (reviewer.getMaxSupervisedThesis() - reviewer.getTotalReviewCount() < selectedTheses.size()) {
-			this.view.alert("Diese Aktion überschreitet die Maximalanzahl an Gutachten für diesen Reviwer",
-					JOptionPane.ERROR_MESSAGE);
+			this.popupError("Diese Aktion überschreitet die Maximalanzahl an Gutachten für diesen Reviwer");
 			return;
 		}
 
 		if (selectedTheses.stream().map(BachelorThesis::getFirstReview).map(Review::getReviewer)
 				.anyMatch(firstReviewer -> reviewer == firstReviewer)) {
-			this.view.alert("Erst- und Zweitgutachter können nicht identisch sein.",
-					JOptionPane.ERROR_MESSAGE);
+			this.popupError("Erst- und Zweitgutachter können nicht identisch sein.");
 			return;
 		}
 

@@ -18,6 +18,7 @@ public class ThesesOverviewTableModel extends AbstractDataTableModel<BachelorThe
 	public static final Column<BachelorThesis, String> AUTHOR_STUDY_GROUP = Column.of("Autor (Studiengruppe)",
 			t -> t.getAuthor().getStudyGroup(), String.class);
 	public static final Column<BachelorThesis, String> TOPIC = Column.of("Thema", t -> t.getTopic(), String.class);
+	public static final Column<BachelorThesis, String> COMMENT = Column.of("Bemerkung", t -> t.getComment(), String.class);
 	public static final LinkedColumn<BachelorThesis, String, Reviewer> FIRST_REVIEWER = LinkedColumn.of("Erstgutachter",
 			t -> t.getFirstReview().getReviewer().getName(), t -> t.getFirstReview().getReviewer(), String.class);
 	public static final LinkedColumn<BachelorThesis, String, Reviewer> SECOND_REVIEWER = LinkedColumn.of(

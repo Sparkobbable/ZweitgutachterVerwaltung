@@ -6,6 +6,7 @@ import static view.tableModels.ThesesOverviewTableModel.FIRST_REVIEWER;
 import static view.tableModels.ThesesOverviewTableModel.SECOND_REVIEWER;
 import static view.tableModels.ThesesOverviewTableModel.SECOND_REVIEWER_STATUS;
 import static view.tableModels.ThesesOverviewTableModel.TOPIC;
+import static view.tableModels.ThesesOverviewTableModel.COMMENT;
 
 import java.awt.BorderLayout;
 import java.util.LinkedList;
@@ -27,7 +28,7 @@ import view.tableModels.ThesesOverviewTableModel;
 public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 
 	private static final List<Column<BachelorThesis, ?>> THESES_TABLE_COLUMNS = List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP,
-			TOPIC, FIRST_REVIEWER, SECOND_REVIEWER, SECOND_REVIEWER_STATUS);
+			TOPIC, COMMENT, FIRST_REVIEWER, SECOND_REVIEWER, SECOND_REVIEWER_STATUS);
 	private static final long serialVersionUID = 1L;
 
 	/**

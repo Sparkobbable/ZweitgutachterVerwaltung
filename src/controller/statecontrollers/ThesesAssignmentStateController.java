@@ -38,9 +38,9 @@ public class ThesesAssignmentStateController extends AbstractStateController {
 		Reviewer reviewer = this.model.getSelectedReviewer().orElseThrow();
 
 		if (bachelorThesesToAdd.size() + reviewer.getTotalReviewCount() > reviewer.getMaxSupervisedThesis()) {
-			this.view.alert(String.format(
+			this.popupWarn(String.format(
 					"Die Anzahl der gewählten Bachelorarbeiten überschreitet die maximale Anzahl an Arbeiten die der Dozent %s betreut.",
-					reviewer.getName()), JOptionPane.WARNING_MESSAGE);
+					reviewer.getName()));
 			return;
 
 		}

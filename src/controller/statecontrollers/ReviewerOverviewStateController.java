@@ -91,7 +91,7 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 		try {
 			this.execute(new BatchCommand(deleteCommands));
 		} catch (SupervisesThesisException e) {
-			this.view.alert(String.format("%s betreut eine Bachelorarbeit als Erstgutachter und kann daher nicht gelöscht werden.", e.getReviewerName()), JOptionPane.ERROR_MESSAGE);
+			this.popupError(String.format("%s betreut eine Bachelorarbeit als Erstgutachter und kann daher nicht gelöscht werden.", e.getReviewerName()));
 		}
 		
 	}

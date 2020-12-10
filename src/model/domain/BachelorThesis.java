@@ -91,4 +91,8 @@ public class BachelorThesis implements ChangeableProperties {
 		this.propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
 }
