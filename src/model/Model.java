@@ -168,8 +168,8 @@ public class Model implements ChangeableProperties {
 	 * @param reviewer
 	 */
 	public void addReviewer(Reviewer reviewer) {
-		if (this.reviewers.contains(reviewer)) {
-			throw new IllegalStateException("Reviewer already registered");
+		if (reviewer.isPresentInList(this.reviewers)) {
+			return;
 		}
 		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.add(reviewer);
@@ -182,8 +182,8 @@ public class Model implements ChangeableProperties {
 	 * @param thesis
 	 */
 	public void addThesis(BachelorThesis thesis) {
-		if (this.theses.contains(thesis)) {
-			throw new IllegalStateException("BachelorThesis already registered");
+		if (thesis.isThesisInList(this.theses)) {
+			return;
 		}
 		List<BachelorThesis> old = new ArrayList<>(this.theses);
 		this.theses.add(thesis);
@@ -267,6 +267,14 @@ public class Model implements ChangeableProperties {
 		this.theses.clear();
 		this.theses.addAll(bachelorTheses);
 		this.propertyChangeSupport.firePropertyChange(THESES, old, this.theses);		
+	}
+
+	public void addReviewers(List<Reviewer> reviewers) {
+		reviewers.forEach(this::addReviewer);
+	}
+
+	public void addBachelorTheses(List<BachelorThesis> bachelortheses) {
+		bachelortheses.forEach(this::addThesis);
 	}
 
 }

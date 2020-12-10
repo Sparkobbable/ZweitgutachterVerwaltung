@@ -2,6 +2,7 @@ package model.domain;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 import java.util.Optional;
 
 import controller.propertychangelistener.ChangeableProperties;
@@ -93,6 +94,10 @@ public class BachelorThesis implements ChangeableProperties {
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+	
+	public boolean isThesisInList(List<BachelorThesis> thesesList) {
+		return thesesList.stream().filter(thesisInList -> thesisInList.getTopic().equals(this.getTopic())).findAny().isPresent();
 	}
 
 }

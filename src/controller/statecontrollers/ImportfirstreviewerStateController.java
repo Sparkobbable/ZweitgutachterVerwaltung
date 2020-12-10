@@ -35,7 +35,7 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.LOAD, (params) -> loadReview());
+		this.registerEvent(EventId.LOAD, (params) -> loadReview((boolean) params[0].get()));
 		this.registerEvent(EventId.SAVE, (params) -> saveCSV());
 		this.registerEvent(EventId.CHOOSE_FILEPATH, (params) -> setFilePath((String) params[0].get()));
 	}
@@ -43,26 +43,30 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 	/**
 	 * This Method handles the Event {@link EventId#LOAD_JSON} starting a
 	 * JFileChooser and giving the chosen path to the {@link PersistenceHandler}
+	 * @param override 
 	 * 
 	 * @param params
 	 */
 
-	private void loadReview() {
+	private void loadReview(boolean override) {
 		File file = new File(filepath);
 		if (file.exists()) {
 			PersistenceHandler persistence = new CSVController(filepath);
 			try {
-				this.execute(new LoadSystemStateCommand(persistence, this.model));
-				this.view.alert("Die Datei wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
+				this.execute(new LoadSystemStateCommand(persistence, this.model, override));
+				if (override) {
+					this.popupInfo("Die Datei wurde erfolgreich geladen");
+				} else {
+					this.popupInfo("Alle noch nicht vorhandenen Einträge wurden geladen");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				this.view.alert(
-						"Es ist ein Fehler beim Laden der Datei aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.",
-						JOptionPane.ERROR_MESSAGE);
+				this.popupError(
+						"Es ist ein Fehler beim Laden der Datei aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.");
 				e.printStackTrace();
 			}
 		} else {
-			this.view.alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
+			this.popupError("Die ausgewählte Datei existiert nicht");
 
 		}
 
@@ -74,34 +78,26 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 			int result = this.view.alert("Die Datei exisiert bereits. \n Wollen Sie diese überschreiben?",
 					JOptionPane.QUESTION_MESSAGE);
 			if (result == JOptionPane.NO_OPTION) {
-				this.view.alert("Speichern der Datei wurde abgebrochen", JOptionPane.INFORMATION_MESSAGE);
+				this.popupInfo("Speichern der Datei wurde abgebrochen");
 				return;
 			}
 		}
 		PersistenceHandler persistence = new CSVController(filepath);
 		persistence.save(this.model.getReviewers(), this.model.getTheses());
-		this.view.alert("Die Datei wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
+		this.popupInfo("Die Datei wurde erfolgreich gespeichert.");
 	}
 
-//	private void setFilePath(String filepath) {
-//		if (filepath.endsWith(".csv")) {
-//			this.filepath = filepath;
-//			this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
-//		} else {
-//			this.view.alert("Bitte wählen Sie eine gültige .csv-Datei aus", JOptionPane.ERROR_MESSAGE);
-//		}
-//	}
 	private void setFilePath(String filepath) {
 		if (filepath.substring(filepath.length() - 5, filepath.length()).equals(".csv")) {
 			this.filepath = filepath;
-			this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+			this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 		} else {
 			if (filepath.contains(".")) {
 				this.filepath = filepath.substring(0, filepath.indexOf(".")) + ".csv";
-				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+				this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 			} else {
 				this.filepath = filepath + ".csv";
-				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+				this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 			}
 		}
 	}

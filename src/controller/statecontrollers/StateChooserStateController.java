@@ -49,17 +49,16 @@ public class StateChooserStateController extends AbstractStateController {
 		if (file.exists()) {
 			PersistenceHandler persistence = new JSONController(filepath);
 			try {
-				this.execute(new LoadSystemStateCommand(persistence, this.model));
-				this.view.alert("Der Systemstatus wurde erfolgreich geladen", JOptionPane.INFORMATION_MESSAGE);
+				this.execute(new LoadSystemStateCommand(persistence, this.model, true));
+				this.popupInfo("Der Systemstatus wurde erfolgreich geladen");
 			} catch (Exception e) {
 				e.printStackTrace();
-				this.view.alert(
-						"Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.",
-						JOptionPane.ERROR_MESSAGE);
+				this.popupError(
+						"Es ist ein Fehler beim Laden des Systemstandes aufgetreten. \n Versuchen Sie es mit einer gültigen Datei.");
 				e.printStackTrace();
 			}
 		} else {
-			this.view.alert("Die ausgewählte Datei existiert nicht", JOptionPane.ERROR_MESSAGE);
+			this.popupError("Die ausgewählte Datei existiert nicht");
 		}
 
 	}
@@ -82,20 +81,20 @@ public class StateChooserStateController extends AbstractStateController {
 		}
 		PersistenceHandler persistence = new JSONController(filepath);
 		persistence.save(this.model.getReviewers(), this.model.getTheses());
-		this.view.alert("Der Systemzustand wurde erfolgreich gespeichert.", JOptionPane.INFORMATION_MESSAGE);
+		this.popupInfo("Der Systemzustand wurde erfolgreich gespeichert.");
 	}
 
 	private void setFilePath(String filepath) {
 		if (filepath.substring(filepath.length() - 5, filepath.length()).equals(".json")) {
 			this.filepath = filepath;
-			this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+			this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 		} else {
 			if (filepath.contains(".")) {
 				this.filepath = filepath.substring(0, filepath.indexOf(".")) + ".json";
-				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+				this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 			} else {
 				this.filepath = filepath + ".json";
-				this.view.alert("Der Dateipfad wurde erfolgreich geändert", JOptionPane.INFORMATION_MESSAGE);
+				this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 			}
 		}
 	}

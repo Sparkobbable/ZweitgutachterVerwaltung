@@ -315,5 +315,9 @@ public class Reviewer implements ChangeableProperties {
 	public List<SecondReview> getRejectedSecondReviews() {
 		return Collections.unmodifiableList(this.rejectedSecondReviews);
 	}
+	
+	public boolean isPresentInList(List<Reviewer> reviewerList) {
+		return reviewerList.stream().filter(reviewerInList -> reviewerInList.getName().equals(this.getName())).findAny().isPresent();
+	}
 
 }

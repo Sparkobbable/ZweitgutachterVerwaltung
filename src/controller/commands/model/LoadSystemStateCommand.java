@@ -13,18 +13,25 @@ public class LoadSystemStateCommand extends IrevertibleCommand {
 
 	private final PersistenceHandler persistenceHandler;
 	private final Model model;
+	private boolean override;
 
-	public LoadSystemStateCommand(PersistenceHandler persistenceHandler, Model model) {
+	public LoadSystemStateCommand(PersistenceHandler persistenceHandler, Model model, boolean override) {
 		super(model.getApplicationState());
 		this.model = model;
+		this.override = override;
 		this.persistenceHandler = persistenceHandler;
 	}
 
 	@Override
 	public void execute() {
 		Pair<List<Reviewer>, List<BachelorThesis>> load = persistenceHandler.load();
-		this.model.overrideReviewers(load.getLeft());
-		this.model.overrideBachelorTheses(load.getRight());
+		if (this.override) {
+			this.model.overrideReviewers(load.getLeft());
+			this.model.overrideBachelorTheses(load.getRight());
+		} else {
+			this.model.addReviewers(load.getLeft());
+			this.model.addBachelorTheses(load.getRight());
+		}
 		System.out.println("Hallo");
 	}
 
