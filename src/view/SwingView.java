@@ -72,6 +72,7 @@ public class SwingView implements View {
 		this.registerView(ApplicationState.ANALYSE_TABLE, analysisPanel.atState(ViewState.TABLE));
 		this.registerView(ApplicationState.ANALYSE_PIECHART, analysisPanel.atState(ViewState.PIECHART));
 		this.registerView(ApplicationState.ANALYSE_BARCHART, analysisPanel.atState(ViewState.BARCHART));
+		this.registerView(ApplicationState.ANALYSE_BARCHARTHORIZONTAL, analysisPanel.atState(ViewState.BARCHARTHORIZONTAL));
 
 	}
 

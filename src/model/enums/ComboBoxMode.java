@@ -9,9 +9,9 @@ import view.widgets.ComboBoxPanel;
 * Results from {@link ComboBoxPanel} transferring the entered Strings
 */
 public enum ComboBoxMode {
-	TABLE("Tabelle"), PIECHART("Tortendiagramm"), BARCHART("Balkendiagramm"),
-	FIRSTREVIEWER("Nur Erstgutachter"), SECONDREVIEWER("Nur Zweitgutachter"),
-	ALLREVIEWER("Zweit- & Erstgutachter");
+	TABLE("Tabelle"), PIECHART("Tortendiagramm"), BARCHART("Säulendiagramm"),
+	BARCHARTHORIZONTAL("Balkendiagramm"), FIRSTREVIEWER("Nur Erstgutachter"),
+	SECONDREVIEWER("Nur Zweitgutachter"), ALLREVIEWER("Zweit- & Erstgutachter");
 	
 	/**
 	 * String from the comboBox

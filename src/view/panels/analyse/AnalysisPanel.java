@@ -21,6 +21,7 @@ import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AnalysisReviewerTableModel;
 import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.BarChart;
+import view.widgets.BarChartHorizontal;
 import view.widgets.PieChart;
 
 /**
@@ -33,6 +34,7 @@ public class AnalysisPanel extends DefaultPanel {
 	private final String TABLE = "table";
 	private final String PIECHART = "pieChart";
 	private final String BARCHART = "barChart";
+	private final String BARCHARTHORIZONTAL = "barChartHorizontal";
 	
 	private Model model;
 	private CardLayout cardLayout;
@@ -42,6 +44,7 @@ public class AnalysisPanel extends DefaultPanel {
 	
 	private AnalysisReviewerTableModel tableModel;
 	private PieChart pieChart;
+	private Component barChartHorizontal;
 	private Component barChart;
 	private JTable table;
 	private JScrollPane tableScrollPane;
@@ -64,8 +67,9 @@ public class AnalysisPanel extends DefaultPanel {
 	}
 	
 	private void createUIElemenets() {
-		this.pieChart = new PieChart("Gutachter Verteilung", this.model);
-		this.barChart = new BarChart("Gutachter Verteilung", this.model);
+		this.pieChart = new PieChart("Gutachten Verteilung", this.model);
+		this.barChart = new BarChart("Gutachten Verteilung", this.model);
+		this.barChartHorizontal = new BarChartHorizontal("Gutachten Verteilung", this.model);
 		this.tableModel = new AnalysisReviewerTableModel(this.model);
 		this.table = new JTable(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
@@ -84,6 +88,7 @@ public class AnalysisPanel extends DefaultPanel {
 		this.chart.add(tableScrollPane, TABLE);
 		this.chart.add(pieChart, PIECHART);
 		this.chart.add(barChart, BARCHART);
+		this.chart.add(barChartHorizontal, BARCHARTHORIZONTAL);
 	}
 
 	@Override
@@ -105,6 +110,9 @@ public class AnalysisPanel extends DefaultPanel {
 			break;
 		case BARCHART:
 			this.cardLayout.show(chart, BARCHART);
+			break;
+		case BARCHARTHORIZONTAL:
+			this.cardLayout.show(chart, BARCHARTHORIZONTAL);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");

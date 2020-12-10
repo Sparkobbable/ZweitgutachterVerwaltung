@@ -60,6 +60,9 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		case BARCHART:
 			this.switchState(ApplicationState.ANALYSE_BARCHART);
 			break;
+		case BARCHARTHORIZONTAL:
+			this.switchState(ApplicationState.ANALYSE_BARCHARTHORIZONTAL);
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid PresentationMode from ComboBox");
 		}

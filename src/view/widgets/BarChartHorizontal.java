@@ -11,45 +11,59 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import controller.events.EventSource;
 import model.Model;
+import model.domain.Reviewer;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
 
 public class BarChartHorizontal extends DefaultPanel{
- private Model model;
- private String title;
+	
+	private static final long serialVersionUID = 1L;
+	
+	private Model model;
+	private String title;
  
- private DefaultCategoryDataset dataset;
- private JFreeChart chart;
- private ChartPanel panel;
+	private DefaultCategoryDataset dataset;
+	private JFreeChart chart;
+	private ChartPanel panel;
  
- public BarChartHorizontal(String title, Model model) {
-	 super("");
-	 this.model =model;
-	 this.title = title;
-	 this.dataset = new DefaultCategoryDataset();
-	 this.initializePropertyChangeHandlers();
-	 this.observe(this.model);
-	 this.setBackground(ViewProperties.BACKGROUND_COLOR);
+	 public BarChartHorizontal(String title, Model model) {
+		 super("");
+		 this.model =model;
+		 this.title = title;
+		 this.dataset = new DefaultCategoryDataset();
+		 this.initializePropertyChangeHandlers();
+		 this.observe(this.model);
+		 this.setBackground(ViewProperties.BACKGROUND_COLOR);
+		 
+		 this.createUIElements();
+	 }
 	 
-	 this.createUIElements();
- }
-
-private void createUIElements() {
-	this.chart =ChartFactory.createBarChart(this.title, "Gutachter", "Anzahl Gutachten", this.dataset, PlotOrientation.HORIZONTAL, true, true, false);
-	this.panel = new ChartPanel(chart);
-	this.panel.setBackground(ViewProperties.BACKGROUND_COLOR);
-	this.add(panel);
-}
-protected List<EventSource> getEventSources(){
-	return Collections.emptyList();
-}
-private void initializePropertyChangeHandlers() {
-	this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> createDataset());
-}
-
-private void createDataset() {
-
-	return null;
-}
-
+	private void createDataset() {
+		this.dataset.clear();
+		List<Reviewer> reviewers = this.model.getAnalyseReviewers();
+		
+		for(Reviewer reviewer : reviewers) {
+			this.dataset.addValue(reviewer.getFirstReviewCount(), reviewer.getName(), "Erstgutachten");
+			this.dataset.addValue(reviewer.getSecondReviewCount(), reviewer.getName(), "Zweitgutachten");
+		}
+	}
+	
+	private void createUIElements() {
+		this.chart =ChartFactory.createBarChart(this.title, "Gutachten", "Anzahl Gutachten", this.dataset, PlotOrientation.HORIZONTAL, true, true, false);
+		this.panel = new ChartPanel(chart);
+		this.panel.setBackground(ViewProperties.BACKGROUND_COLOR);
+		this.add(panel);
+	}
+	
+	protected List<EventSource> getEventSources(){
+		return Collections.emptyList();
+	}
+	
+	/**
+	 * Defines the methods that should be called when an observed property is
+	 * changed
+	 */
+	private void initializePropertyChangeHandlers() {
+		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> createDataset());
+	}	
 }
