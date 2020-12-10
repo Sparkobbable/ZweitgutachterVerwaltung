@@ -27,9 +27,9 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
+		this.registerEvent(EventId.CHOOSE_PRESENTATION,
 				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
-		this.registerEvent(EventId.CHOOSE_REVIEWER_FILTER,
+		this.registerEvent(EventId.CHOOSE_REVIEW_FILTER,
 				(params) -> this.switchData((ComboBoxMode) params[0].get()));
 	}
 	

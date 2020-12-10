@@ -1,7 +1,11 @@
 package controller.statecontrollers;
 
+import java.util.Optional;
+
 import controller.Controller;
 import model.Model;
+import model.Pair;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.ComboBoxMode;
 import model.enums.EventId;
@@ -45,16 +49,56 @@ public abstract class AbstractSingleAnalysisStateController extends AbstractStat
 	protected void switchPresentation(ComboBoxMode params) {
 		switch(params) {
 		case TABLE:
-			this.switchState(ApplicationState.ANALYSE_TABLE);
+			this.switchState(ApplicationState.SINGLE_ANALYSIS_TABLE);
 			break;
 		case PIECHART:
-			this.switchState(ApplicationState.ANALYSE_PIECHART);
+			this.switchState(ApplicationState.SINGLE_ANALYSIS_PIECHART);
 			break;
 		case BARCHART:
-			this.switchState(ApplicationState.ANALYSE_BARCHART);
+			this.switchState(ApplicationState.SINGLE_ANALYSIS_BARCHART);
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid PresentationMode from ComboBox");
+		}
+	}
+	
+	protected void switchData(ComboBoxMode reviewerFilter) {
+		this.reviewerFilter = reviewerFilter;
+		if (this.model.getApplicationState() != this.state) {
+			System.out.println("skip");
+			return;
+		}
+		System.out.println("Data:" + reviewerFilter);
+		switch (reviewerFilter) {
+		case FIRSTREVIEWER:
+			this.model.setSingleReviews(this.getReviewCount(this.model.getSelectedReviewer()));
+			break;
+		case SECONDREVIEWER:
+			this.model.setSingleReviews(this.getReviewCount(this.model.getSelectedReviewer()));
+			break;
+		case ALLREVIEWER:
+			this.model.setSingleReviews(this.getReviewCount(this.model.getSelectedReviewer()));
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid DataMode from ComboBox");
+		}
+	}
+	
+	protected Pair<Optional<Integer>, Optional<Integer>> getReviewCount(Optional<Reviewer> optional) {
+		if(optional.isPresent()) {
+			Reviewer reviewer = optional.get();
+			switch(this.reviewerFilter) {
+			case FIRSTREVIEWER:
+				return new Pair<Optional<Integer>, Optional<Integer>>(Optional.of(reviewer.getFirstReviewCount()), Optional.empty());
+			case SECONDREVIEWER:
+				return new Pair<Optional<Integer>, Optional<Integer>>(Optional.empty(), Optional.of(reviewer.getApprovedSecondReviewCount()));
+			case ALLREVIEWER:
+				return new Pair<Optional<Integer>, Optional<Integer>>(Optional.of(reviewer.getFirstReviewCount()), Optional.of(reviewer.getApprovedSecondReviewCount()));
+			default:
+				throw new IllegalArgumentException("Invalid DataMode for currentDataStatus");
+			}
+		} else {
+			return new Pair<Optional<Integer>, Optional<Integer>>(Optional.empty(), Optional.empty());
 		}
 	}
 
@@ -63,7 +107,4 @@ public abstract class AbstractSingleAnalysisStateController extends AbstractStat
 		// TODO Auto-generated method stub
 		
 	}
-	
-	protected abstract void switchData(ComboBoxMode reviewerFilter);
-
 }

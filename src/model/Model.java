@@ -24,6 +24,7 @@ public class Model implements ChangeableProperties {
 
 	public static final String APPLICATION_STATE = "applicationState";
 	public static final String SELECTED_REVIEWER = "selectedReviewer";
+	public static final String SINGLE_REVIEWS = "singleReviews";
 	public static final String ANALYSE_REVIEWERS = "analyseReviewers";
 	public static final String COLLABORATING_REVIEWERS = "collaboratingReviewers";
 	public static final String REVIEWERS = "reviewers";
@@ -34,6 +35,7 @@ public class Model implements ChangeableProperties {
 	private List<BachelorThesis> theses;
 	private List<Reviewer> reviewers;
 
+	private Pair<Optional<Integer>, Optional<Integer>> singleReviews;
 	private Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> analyseReviewers;
 	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
@@ -50,6 +52,7 @@ public class Model implements ChangeableProperties {
 	 */
 	public Model() {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		this.singleReviews = new Pair<>(Optional.empty(), Optional.empty());
 		this.selectedReviewer = Optional.empty();
 		this.analyseReviewers = new HashMap<>();
 		this.collaboratingReviewers = new HashMap<>();
@@ -73,14 +76,21 @@ public class Model implements ChangeableProperties {
 	 * @return The current state of the Application
 	 */
 	public ApplicationState getApplicationState() {
-		return applicationState;
+		return this.applicationState;
 	}
 
 	/**
 	 * @return The selected Reviewer, if any exist
 	 */
 	public Optional<Reviewer> getSelectedReviewer() {
-		return selectedReviewer;
+		return this.selectedReviewer;
+	}
+	
+	/**
+	 * @return The reviewcount for the selectedReviewer
+	 */
+	public Pair<Optional<Integer>, Optional<Integer>> getSingleReviews() {
+		return this.singleReviews;
 	}
 
 	/**
@@ -136,6 +146,17 @@ public class Model implements ChangeableProperties {
 		Optional<Reviewer> old = this.selectedReviewer;
 		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
 		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
+	}
+	
+	/**
+	 * Set the single Reviews for the selected Reviewer.
+	 * 
+	 * @param selectedReviewer <Pair<Optional<Integer>, Optional<Integer>>
+	 */
+	public void setSingleReviews(Pair<Optional<Integer>, Optional<Integer>> reviews) {
+		Pair<Optional<Integer>, Optional<Integer>> old = this.singleReviews;
+		this.singleReviews = reviews;
+		this.propertyChangeSupport.firePropertyChange(SINGLE_REVIEWS, old, this.singleReviews);
 	}
 	
 	/**

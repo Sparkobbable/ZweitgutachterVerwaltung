@@ -18,6 +18,7 @@ import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.CollaboratingReviewerTableModel;
 import view.tableModels.ReviewerOverviewTableModel;
+import view.widgets.BarChart;
 import view.widgets.PieChart;
 
 /**
@@ -28,6 +29,7 @@ public class CollaborationPanel extends DefaultPanel {
 
 	private final String TABLE = "table";
 	private final String PIECHART = "pieChart";
+	private final String BARCHART = "barChart";
 	
 	private Model model;
 	private CardLayout cardLayout;
@@ -36,6 +38,7 @@ public class CollaborationPanel extends DefaultPanel {
 	private JPanel chart;
 	
 	private PieChart pieChart;
+	private BarChart barChart;
 	private JTable table;
 	private CollaboratingReviewerTableModel tableModel;
 	private JScrollPane tableScrollPane;
@@ -59,6 +62,7 @@ public class CollaborationPanel extends DefaultPanel {
 
 	private void createUIElements() {
 		this.pieChart = new PieChart("Zusammenarbeit der Gutachter", this.model);
+		this.barChart = new BarChart("Zusammenarbeit der Gutachter", this.model);
 		this.tableModel = new CollaboratingReviewerTableModel(this.model);
 		this.table = new JTable(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
@@ -73,6 +77,7 @@ public class CollaborationPanel extends DefaultPanel {
 		this.add(this.chart, BorderLayout.CENTER);
 		this.chart.add(tableScrollPane, TABLE);
 		this.chart.add(pieChart, PIECHART);
+		this.chart.add(barChart, BARCHART);
 	}
 
 	@Override
@@ -92,10 +97,11 @@ public class CollaborationPanel extends DefaultPanel {
 		case PIECHART:
 			this.cardLayout.show(chart, PIECHART);
 			break;
+		case BARCHART:
+			this.cardLayout.show(chart, BARCHART);
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");
 		}
-		
 		initializeEventSource.trigger();
 	}
 	

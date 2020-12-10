@@ -26,11 +26,11 @@ public class AnalysisTableStateController extends AbstractAnalysisStateControlle
 	
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.ANALYSIS_CHOOSE_PRESENTATION, 
+		this.registerEvent(EventId.CHOOSE_PRESENTATION, 
 				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
-		this.registerEvent(EventId.ANALYSIS_CHOOSE_DATA, 
+		this.registerEvent(EventId.CHOOSE_REVIEW_FILTER, 
 				(params) -> this.switchData((ComboBoxMode) params[0].get()));	
-		this.registerEvent(EventId.ANALYSIS_SELECT_REVIEWER, 
+		this.registerEvent(EventId.SELECT, 
 				(params) -> this.showSingleAnalysis((Reviewer) params[0].get()));
 	}
 

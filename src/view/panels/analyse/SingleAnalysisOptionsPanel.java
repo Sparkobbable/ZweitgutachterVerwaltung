@@ -1,4 +1,4 @@
-package view.panels.collaboration;
+package view.panels.analyse;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import view.widgets.ComboBoxPanel;
  * to choose the presentation and data
  */
 @SuppressWarnings("serial") // should not be serialized
-public class CollaborationOptionsPanel extends DefaultPanel {
+public class SingleAnalysisOptionsPanel extends DefaultPanel {
 
 	private Optional<Reviewer> optReviewer;
 	private Model model;
@@ -31,7 +31,7 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 	private AbstractViewPanel chooseData;
 	private AbstractViewPanel choosePresentation;
 
-	public CollaborationOptionsPanel(Model model) {
+	public SingleAnalysisOptionsPanel(Model model) {
 		super("");
 		this.model = model;
 
@@ -50,7 +50,7 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 
 		String[] options = { "Nur Erstgutachten", "Nur Zweitgutachten", "Erst- & Zweitgutachten" };
 		this.chooseData = new ComboBoxPanel("Ansicht", options, EventId.CHOOSE_REVIEW_FILTER);
-		String[] options2 = { "Tabelle", "Tortendiagramm" };
+		String[] options2 = { "Tabelle", "Tortendiagramm", "Säulendiagramm"};
 		this.choosePresentation = new ComboBoxPanel("Darstellung", options2,
 				EventId.CHOOSE_PRESENTATION);
 

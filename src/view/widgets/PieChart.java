@@ -1,6 +1,5 @@
 package view.widgets;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import java.util.Map.Entry;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.UnknownKeyException;
 import org.jfree.data.general.DefaultPieDataset;
 
 import controller.events.EventSource;
@@ -70,6 +68,17 @@ public class PieChart extends DefaultPanel {
 				}
 			}
 	}
+	
+	private void createSingleAnalyseDataset() {
+		this.dataset.clear();
+		Pair<Optional<Integer>, Optional<Integer>> reviews = this.model.getSingleReviews();
+		if(reviews.getLeft().isPresent()) {
+			this.dataset.setValue("Erstgutachten", reviews.getLeft().get());
+		}
+		if(reviews.getRight().isPresent()) {
+			this.dataset.setValue("Zweitgutachten", reviews.getRight().get());
+		}
+ 	}
 
 	private void createUIElements() {
 			this.chart = ChartFactory.createPieChart(this.title, this.dataset, true, true,
@@ -91,5 +100,6 @@ public class PieChart extends DefaultPanel {
 	private void initializePropertyChangeHandlers() {
 		this.onPropertyChange(Model.COLLABORATING_REVIEWERS, (evt) -> createCallaborationDataset());
 		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> createAnalyseDataset());
+		this.onPropertyChange(Model.SINGLE_REVIEWS, (evt) -> createSingleAnalyseDataset());
 	}
 }

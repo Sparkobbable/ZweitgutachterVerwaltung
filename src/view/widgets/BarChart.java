@@ -3,6 +3,7 @@ package view.widgets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Map.Entry;
 
@@ -41,7 +42,7 @@ public class BarChart extends DefaultPanel {
 		this.createUIElements();
 	}
 	
-	private void createDataset() {
+	private void createAnalysisDataset() {
 		this.dataset.clear();
 		Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> reviewers = this.model.getAnalyseReviewers();
 		
@@ -52,6 +53,21 @@ public class BarChart extends DefaultPanel {
 			if(reviewer.getValue().getRight().isPresent()) {
 				this.dataset.addValue(reviewer.getValue().getRight().get(), reviewer.getKey().getName(), "Zweitgutachten");
 			}
+		}
+	}
+	
+	private void createSingleAnalysisDataset() {
+		this.dataset.clear();
+		Pair<Optional<Integer>, Optional<Integer>> reviews = this.model.getSingleReviews();
+		try {
+			if(reviews.getLeft().isPresent()) {
+				this.dataset.addValue(reviews.getLeft().get(), this.model.getSelectedReviewer().orElseThrow().getName(),"Erstgutachten");
+			}
+			if(reviews.getRight().isPresent()) {
+				this.dataset.addValue(reviews.getRight().get(), this.model.getSelectedReviewer().orElseThrow().getName(), "ZWeitgutachten");
+			}
+		} catch(NoSuchElementException e) {
+			
 		}
 	}
 	
@@ -71,7 +87,8 @@ public class BarChart extends DefaultPanel {
 	}
 	
 	private void initializePropertyChangeHandlers() {
-		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> createDataset());
+		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> createAnalysisDataset());
+		this.onPropertyChange(Model.SINGLE_REVIEWS, (evt) -> createSingleAnalysisDataset());
 	}
 
 }

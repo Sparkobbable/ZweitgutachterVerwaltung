@@ -4,6 +4,7 @@ import controller.Controller;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.ComboBoxMode;
+import model.enums.EventId;
 import view.View;
 
 public class SingleAnalysisPieChartStateController extends AbstractSingleAnalysisStateController {
@@ -14,12 +15,9 @@ public class SingleAnalysisPieChartStateController extends AbstractSingleAnalysi
 	
 	@Override
 	protected void registerEvents() {
+		this.registerEvent(EventId.CHOOSE_PRESENTATION, 
+				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
+		this.registerEvent(EventId.CHOOSE_REVIEW_FILTER, 
+				(params) -> this.switchData((ComboBoxMode) params[0].get()));
 	}
-
-	@Override
-	protected void switchData(ComboBoxMode reviewerFilter) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

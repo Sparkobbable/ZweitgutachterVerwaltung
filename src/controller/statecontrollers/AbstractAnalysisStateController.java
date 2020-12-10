@@ -32,6 +32,7 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 
 	protected ComboBoxMode reviewerFilter;
 	protected ComboBoxMode currentDataStatus;
+	//TOTO are these redundant?
 	
 	public AbstractAnalysisStateController(ApplicationState applicationState,
 			View view, Controller controller, Model model) {

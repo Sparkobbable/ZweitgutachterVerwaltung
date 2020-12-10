@@ -17,8 +17,8 @@ public class SingleAnalysisReviewerTableModel extends AbstractDataTableModel<Rev
 		public static final Column<Reviewer, String> NAME = Column.of("Name", Reviewer::getName, String.class);
 
 		private static final List<Column<Reviewer, ?>> createColumns(Model model) {
-			return List.of(Column.of("Anzahl Erstgutachten", reviewer -> reviewer.getFirstReviewCount(), Integer.class),
-						   Column.of("Anzahl Zweitgutachter", reviewer -> reviewer.getApprovedSecondReviewCount(), Integer.class));
+			return List.of(Column.of("Anzahl Erstgutachten", reviewer -> model.getSingleReviews().getLeft().orElseGet(() -> 0), Integer.class),
+						   Column.of("Anzahl Zweitgutachter", reviewer -> model.getSingleReviews().getRight().orElseGet(() -> 0), Integer.class));
 		}
 		
 		public SingleAnalysisReviewerTableModel(List<Column<Reviewer, ?>> columns, List<Predicate<Reviewer>> filters, Model model) {

@@ -25,9 +25,9 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 
 	@Override
 	protected void registerEvents() {
-		this.registerEvent(EventId.CHOOSE_PRESENTATION_FOR_COLLABORATION,
+		this.registerEvent(EventId.CHOOSE_PRESENTATION,
 				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
-		this.registerEvent(EventId.CHOOSE_REVIEWER_FILTER, (params) -> switchData((ComboBoxMode) params[0].get()));
+		this.registerEvent(EventId.CHOOSE_REVIEW_FILTER, (params) -> switchData((ComboBoxMode) params[0].get()));
 	}
 
 	/**

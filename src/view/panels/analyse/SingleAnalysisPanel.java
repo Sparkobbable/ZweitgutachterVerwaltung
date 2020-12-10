@@ -69,7 +69,7 @@ public class SingleAnalysisPanel extends DefaultPanel {
 		this.table = new JTable(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
 		
-		this.options = new CollaborationOptionsPanel(this.model);
+		this.options = new SingleAnalysisOptionsPanel(this.model);
 		this.chart = new JPanel();		
 		this.chart.setLayout(cardLayout);
 	}
@@ -101,6 +101,7 @@ public class SingleAnalysisPanel extends DefaultPanel {
 			break;
 		case BARCHART:
 			this.cardLayout.show(chart, BARCHART);
+			break;
 		default:
 			throw new IllegalArgumentException("Invalid ViewState");
 		}
@@ -113,7 +114,7 @@ public class SingleAnalysisPanel extends DefaultPanel {
 	 * changed
 	 */
 	private void initializePropertyChangeHandlers() {
-		this.onPropertyChange(Model.SELECTED_REVIEWER, (evt) -> this.tableModel.updateData());
+		this.onPropertyChange(Model.SINGLE_REVIEWS, (evt) -> this.tableModel.updateData());
 	}
 }
 
