@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Map.Entry;
 
 import org.jfree.chart.ChartFactory;
@@ -54,26 +55,20 @@ public class PieChart extends DefaultPanel {
 	
 	private void createAnalyseDataset() {
 		this.dataset.clear();
-		Map<Reviewer, Pair<Integer, Integer>> reviewers = this.model.getAnalyseReviewers();
-		if(!reviewers.isEmpty()) {
-			Pair<Integer, Integer> value = reviewers.entrySet().stream().findFirst().get().getValue();
-			
-			if(value.getLeft() != 0) {
-				if(value.getRight() != 0) {
-					for(Entry<Reviewer, Pair<Integer, Integer>> entry : reviewers.entrySet()) {
-						int count = entry.getValue().getLeft() + entry.getValue().getRight();
-						this.dataset.setValue(entry.getKey().getName(), count);
+		Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> reviewers = this.model.getAnalyseReviewers();
+			for(Entry<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> reviewer : reviewers.entrySet()) {
+				if(reviewer.getValue().getLeft().isPresent()) {
+					if(reviewer.getValue().getRight().isPresent()) {
+						int count = reviewer.getValue().getRight().get() + reviewer.getValue().getLeft().get();
+						this.dataset.setValue(reviewer.getKey().getName(), count);
+					} else {
+						this.dataset.setValue(reviewer.getKey().getName(), reviewer.getValue().getLeft().get());
 					}
-				} else {
-					reviewers.entrySet().forEach(entry -> this.dataset.setValue(entry.getKey().getName(), entry.getValue().getLeft()));
+					
+				} else if(reviewer.getValue().getRight().isPresent()) {
+					this.dataset.setValue(reviewer.getKey().getName(), reviewer.getValue().getRight().get());
 				}
-			} else if(value.getRight() != 0) {
-				reviewers.entrySet().forEach(entry -> this.dataset.setValue(entry.getKey().getName(), entry.getValue().getRight()));
-			} else {
-				//TODO remove before production
-				throw new IllegalStateException("Hashmap of Analysis contains no values");
 			}
-		}
 	}
 
 	private void createUIElements() {

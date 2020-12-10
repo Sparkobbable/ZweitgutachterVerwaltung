@@ -34,7 +34,7 @@ public class Model implements ChangeableProperties {
 	private List<BachelorThesis> theses;
 	private List<Reviewer> reviewers;
 
-	private Map<Reviewer, Pair<Integer, Integer>> analyseReviewers;
+	private Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> analyseReviewers;
 	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -98,7 +98,7 @@ public class Model implements ChangeableProperties {
 	 * 
 	 * @return Map<Review, Pair<Integer, Integer>>
 	 */
-	public Map<Reviewer, Pair<Integer, Integer>> getAnalyseReviewers() {
+	public Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> getAnalyseReviewers() {
 		return this.analyseReviewers;
 	}
 
@@ -144,8 +144,8 @@ public class Model implements ChangeableProperties {
 	 * 
 	 * @param Map
 	 */
-	public void setAnalyseReviewers(Map<Reviewer, Pair<Integer, Integer>> list) {
-		Map<Reviewer, Pair<Integer, Integer>> old = this.analyseReviewers;
+	public void setAnalyseReviewers(Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> list) {
+		Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> old = this.analyseReviewers;
 		this.analyseReviewers = list;
 		this.propertyChangeSupport.firePropertyChange(ANALYSE_REVIEWERS, old, this.analyseReviewers);
 	}

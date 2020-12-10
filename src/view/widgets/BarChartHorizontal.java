@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -43,11 +44,15 @@ public class BarChartHorizontal extends DefaultPanel{
 	 
 	private void createDataset() {
 		this.dataset.clear();
-		Map<Reviewer, Pair<Integer, Integer>> reviewers = this.model.getAnalyseReviewers();
+		Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> reviewers = this.model.getAnalyseReviewers();
 		
-		for(Entry<Reviewer, Pair<Integer, Integer>> reviewer : reviewers.entrySet()) {
-			this.dataset.addValue(reviewer.getValue().getLeft(), reviewer.getKey().getName(), "Erstgutachten");
-			this.dataset.addValue(reviewer.getValue().getRight(), reviewer.getKey().getName(), "Zweitgutachten");
+		for(Entry<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> reviewer : reviewers.entrySet()) {
+			if(reviewer.getValue().getLeft().isPresent()) {
+				this.dataset.addValue(reviewer.getValue().getLeft().get(), reviewer.getKey().getName(), "Erstgutachten");
+			}
+			if(reviewer.getValue().getRight().isPresent()) {
+				this.dataset.addValue(reviewer.getValue().getRight().get(), reviewer.getKey().getName(), "Zweitgutachten");
+			}
 		}
 	}
 	
