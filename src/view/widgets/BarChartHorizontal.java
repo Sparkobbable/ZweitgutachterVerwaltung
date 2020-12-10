@@ -49,7 +49,7 @@ public class BarChartHorizontal extends DefaultPanel{
 	}
 	
 	private void createUIElements() {
-		this.chart =ChartFactory.createBarChart(this.title, "Gutachten", "Anzahl Gutachten", this.dataset, PlotOrientation.HORIZONTAL, true, true, false);
+		this.chart =ChartFactory.createStackedBarChart(this.title, "Gutachten", "Anzahl Gutachten", this.dataset, PlotOrientation.HORIZONTAL, true, true, false);
 		this.panel = new ChartPanel(chart);
 		this.panel.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.add(panel);
