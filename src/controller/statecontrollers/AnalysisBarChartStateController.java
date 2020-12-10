@@ -28,36 +28,4 @@ public class AnalysisBarChartStateController extends AbstractAnalysisStateContro
 		this.registerEvent(EventId.CHOOSE_REVIEW_FILTER, 
 				(params) -> this.switchData((ComboBoxMode) params[0].get()));	
 	}
-
-	/**
-	 * Switches between different data in percentage which
-	 * will get presented in the {@link PieChart}, {@link BarChart} or {@link ReviewerOverviewTableModel}.
-	 * 
-	 * @param reviewerFilter - selected dataMode from {@link ComboBoxPanel} in {@link AnalysisOptionsPanelOptionsPanel}
-	 */
-	@Override
-	protected void switchData(ComboBoxMode comboBoxMode) {
-		this.reviewerFilter = comboBoxMode;
-		if (this.model.getApplicationState() != this.state) {
-			System.out.println("skip");
-			return;
-		}
-		System.out.println("Data:" + comboBoxMode);
-		switch (comboBoxMode) {
-		case FIRSTREVIEWER:
-			this.currentDataStatus = ComboBoxMode.FIRSTREVIEWER;
-			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllFirstReviewers()));
-			break;
-		case SECONDREVIEWER:
-			this.currentDataStatus = ComboBoxMode.SECONDREVIEWER;
-			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllSecondReviewers()));
-			break;
-		case ALLREVIEWER:
-			this.currentDataStatus = ComboBoxMode.ALLREVIEWER;
-			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllReviewers()));
-			break;
-		default:
-			throw new IllegalArgumentException("Invalid DataMode from ComboBox");
-		}
-	}
 }

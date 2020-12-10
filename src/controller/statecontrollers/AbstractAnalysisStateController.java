@@ -19,7 +19,9 @@ import model.enums.ReviewStatus;
 import view.View;
 import view.panels.analyse.AnalysisPanel;
 import view.tableModels.AnalysisReviewerTableModel;
+import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.BarChart;
+import view.widgets.ComboBoxPanel;
 import view.widgets.PieChart;
 
 /**
@@ -76,7 +78,36 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		}
 	}
 	
-	protected abstract void switchData(ComboBoxMode reviewerFilter);
+	/**
+	 * Switches between different data in percentage which
+	 * will get presented in the {@link PieChart}, {@link BarChart} or {@link ReviewerOverviewTableModel}.
+	 * 
+	 * @param reviewerFilter - selected dataMode from {@link ComboBoxPanel} in {@link AnalysisOptionsPanelOptionsPanel}
+	 */
+	protected void switchData(ComboBoxMode reviewerFilter) {
+		this.reviewerFilter = reviewerFilter;
+		if (this.model.getApplicationState() != this.state) {
+			System.out.println("skip");
+			return;
+		}
+		System.out.println("Data:" + reviewerFilter);
+		switch (reviewerFilter) {
+		case FIRSTREVIEWER:
+			this.currentDataStatus = ComboBoxMode.FIRSTREVIEWER;
+			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllFirstReviewers()));
+			break;
+		case SECONDREVIEWER:
+			this.currentDataStatus = ComboBoxMode.SECONDREVIEWER;
+			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllSecondReviewers()));
+			break;
+		case ALLREVIEWER:
+			this.currentDataStatus = ComboBoxMode.ALLREVIEWER;
+			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllReviewers()));
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid DataMode from ComboBox");
+		}
+	}
 
 	protected ArrayList<Reviewer> getAllFirstReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
