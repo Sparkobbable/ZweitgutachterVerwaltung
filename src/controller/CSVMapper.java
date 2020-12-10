@@ -49,7 +49,6 @@ public class CSVMapper {
 //		String secondreviewer = csvRecord.get(5);
 //		String commant = csvRecord.get(6);
 
-		System.out.println(name + firstreviewer + secondreviewer);
 		if (name == null || name.isBlank()) {
 			return Pair.of(listreviewer, bachelorThesis);
 		}
@@ -106,18 +105,25 @@ public class CSVMapper {
 	}
 
 	private static void createObjekts(CSVPrinter csvPrinter, BachelorThesis bachelorThesis) {
+
+		String commant;
+		if (bachelorThesis.getComment() == null) {
+			commant = "";
+		} else {
+			commant = bachelorThesis.getComment();
+		}
 		String topic = bachelorThesis.getTopic();
-		String commant = bachelorThesis.getComment();
 		String name = bachelorThesis.getAuthor().getName();
 		String studyGroup = bachelorThesis.getAuthor().getStudyGroup();
 		String company = bachelorThesis.getAuthor().getCompany();
 		String firstreviewer = bachelorThesis.getFirstReview().getReviewer().getName();
-		String secondreviewer = bachelorThesis.getSecondReview().get().getReviewer().getName();
+		String secondreviewer = bachelorThesis.getSecondReview().map(review -> review.getReviewer().getName())
+				.orElse("");
 
 		try {
 			csvPrinter.printRecord(name, studyGroup, company, topic, firstreviewer, secondreviewer, commant);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}

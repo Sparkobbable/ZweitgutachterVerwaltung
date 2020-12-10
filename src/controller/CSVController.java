@@ -32,10 +32,9 @@ public class CSVController implements PersistenceHandler {
 		try {
 			writer = Files.newBufferedWriter(Paths.get(filename), Charset.forName("ISO-8859-1"));
 			csvPrinter = new CSVPrinter(writer,
-					CSVFormat.EXCEL.withHeader("Name, Vorname", "Studien-\\n\" + \n" + "				\"gruppe",
-							"Praxispartner", "Themenvorschlag Bachelor Thesis",
-							"Dozent\\n\" + \n" + "				\"1. Gutachten",
-							"Dozent\\n\" + \n" + "				\"2. Gutachten\"", "Bemerkung"));
+					CSVFormat.EXCEL.withHeader("Name, Vorname", "Studien-\n" + "gruppe", "Praxispartner",
+							"Themenvorschlag Bachelor Thesis", "Dozent\n" + "1. Gutachten", "Dozent\n" + "2. Gutachten",
+							"Bemerkung").withDelimiter(';'));
 
 			CSVMapper.maptoCSV(csvPrinter, bachelorTheses);
 			csvPrinter.flush();
