@@ -28,16 +28,16 @@ public class CSVMapper {
 		return Pair.of(listreviewer, bachelorThesis);
 	}
 
-	private static Pair<List<Reviewer>, List<BachelorThesis>> createObjekts(CSVRecord csvRecord, List bachelorThesis,
-			List listreviewer, List listauthor) {
+	private static Pair<List<Reviewer>, List<BachelorThesis>> createObjekts(CSVRecord csvRecord, List<BachelorThesis> bachelorThesis,
+			List<Reviewer> listreviewer, List<Author> listauthor) {
 		String name = csvRecord.get("Name, Vorname");
-		String studyGroup = csvRecord.get("Studien-\r\n" + 
+		String studyGroup = csvRecord.get("Studien-\n" + 
 				"gruppe");
 		String company = csvRecord.get("Praxispartner");
 		String topic = csvRecord.get("Themenvorschlag Bachelor Thesis");
-		String firstreviewer = csvRecord.get("Dozent\r\n" + 
+		String firstreviewer = csvRecord.get("Dozent\n" + 
 				"1. Gutachten");
-		String secondreviewer = csvRecord.get("Dozent\r\n" + 
+		String secondreviewer = csvRecord.get("Dozent\n" + 
 				"2. Gutachten");
 		String commant = csvRecord.get("Bemerkung");
 

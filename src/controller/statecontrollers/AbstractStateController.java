@@ -1,5 +1,7 @@
 package controller.statecontrollers;
 
+import javax.swing.JOptionPane;
+
 import controller.Controller;
 import controller.commands.base.Command;
 import controller.events.Action;
@@ -78,6 +80,18 @@ public abstract class AbstractStateController {
 	
 	protected void execute(Command command) {
 		this.controller.execute(command);
+	}
+	
+	protected void popupInfo(String message) {
+		this.view.alert(message, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	protected void popupError(String message) {
+		this.view.alert(message, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	protected void popupWarn(String message) {
+		this.view.alert(message, JOptionPane.WARNING_MESSAGE);
 	}
 	
 }

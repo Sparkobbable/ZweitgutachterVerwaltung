@@ -65,7 +65,15 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private void nameChanged(String newValue) {
-		if (!this.model.getSelectedReviewer().orElseThrow().getName().equals(newValue)) {
+		String name = this.model.getSelectedReviewer().orElseThrow().getName();
+		
+		if (name.isBlank()) {
+			this.popupInfo("Der Name des Gutachters darf nicht leer sein.");
+			this.model.getSelectedReviewer().orElseThrow().setName(name);
+			return;
+		}
+		
+		if (!name.equals(newValue)) {
 			this.execute(new ReviewerNameChangeCommand(this.model.getSelectedReviewer().orElseThrow(), newValue,
 					ApplicationState.REVIEWER_EDITOR));
 		}
@@ -76,7 +84,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 		
 		int supervised = this.model.getSelectedReviewer().orElseThrow().getAllSupervisedReviews().size();
 		if (supervised > maxSupervisedTheses) {
-			this.view.alert(String.format("%s sind %s Gutachten zugeordnet. Daher kann die Anzahl der maximal betreuten Bachelorarbeiten nicht unter %s liegen.", this.model.getSelectedReviewer().orElseThrow().getName(), supervised, supervised), JOptionPane.INFORMATION_MESSAGE);
+			this.popupInfo(String.format("%s sind %s Gutachten zugeordnet. Daher kann die Anzahl der maximal betreuten Bachelorarbeiten nicht unter %s liegen.", this.model.getSelectedReviewer().orElseThrow().getName(), supervised, supervised));
 			this.model.getSelectedReviewer().orElseThrow().setMaxSupervisedTheses(supervised);
 			return;
 		}
@@ -111,7 +119,7 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private void notifyFirstReview() {
-		this.view.alert("Ausgewählt ist ein Gutachten, welches als Erstgutachten betreut wird. Die gewählte Aktion kann darauf nicht angewendet werden.", JOptionPane.INFORMATION_MESSAGE);
+		this.popupInfo("Ausgewählt ist ein Gutachten, welches als Erstgutachten betreut wird. Die gewählte Aktion kann darauf nicht angewendet werden.");
 	}
 	
 	private void approve(SecondReview review) {
@@ -119,6 +127,10 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private void reserve(SecondReview review) {
+		if (ReviewStatus.APPROVED.equals(review.getStatus())) {
+			this.popupInfo("Das Gutachten wurde bereits bestätigt und kann nicht mehr reserviert werden.");
+			return;
+		}
 		this.execute(new ReviewTypeChangeCommand(review, ReviewStatus.RESERVED, ApplicationState.REVIEWER_EDITOR));
 	}
 
@@ -128,6 +140,10 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 	
 	private void reject(SecondReview review) {
+		if (ReviewStatus.APPROVED.equals(review.getStatus())) {
+			this.popupInfo("Das Gutachten wurde bereits bestätigt und kann nicht mehr abgelehnt werden.");
+			return;
+		}
 		this.execute(new RejectSecondReviewCommand(review, ApplicationState.REVIEWER_EDITOR));
 	}
 
