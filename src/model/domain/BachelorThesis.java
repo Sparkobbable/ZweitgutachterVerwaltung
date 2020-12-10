@@ -23,7 +23,7 @@ public class BachelorThesis implements ChangeableProperties {
 	private final String topic;
 	private final Author author;
 	private final FirstReview firstReview;
-	private final String commant;
+	private final String comment;
 	private Optional<SecondReview> secondReview;
 
 	/**
@@ -42,7 +42,7 @@ public class BachelorThesis implements ChangeableProperties {
 		this.firstReview = new FirstReview(firstReviewer, this);
 
 		firstReviewer.addFirstReviewerReview(this.firstReview);
-		this.commant = comment;
+		this.comment = comment;
 	}
 
 	public String getTopic() {
@@ -54,7 +54,7 @@ public class BachelorThesis implements ChangeableProperties {
 	}
 
 	public String getCommant() {
-		return commant;
+		return comment;
 	}
 
 	public FirstReview getFirstReview() {
@@ -93,10 +93,6 @@ public class BachelorThesis implements ChangeableProperties {
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(listener);
-	}
-
-	public String getComment() {
-		return comment;
 	}
 
 }
