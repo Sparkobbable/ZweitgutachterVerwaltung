@@ -2,7 +2,10 @@ package view;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -32,6 +35,20 @@ public class MainWindow extends JFrame {
 		this.mainContainer.setLayout(cardLayout);
 
 		this.setSize(ViewProperties.DEFAULT_WIDTH, ViewProperties.DEFAULT_HEIGHT);
+		this.setMinimumSize(new Dimension(ViewProperties.DEFAULT_WIDTH, ViewProperties.DEFAULT_HEIGHT));
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				Dimension dimension = MainWindow.this.getSize();
+				Dimension minDimension = MainWindow.this.getMinimumSize();
+				if(dimension.width<minDimension.width) {
+					dimension.width=minDimension.width;
+				}
+		        if(dimension.height<minDimension.height) {
+		        	dimension.height=minDimension.height;
+		        }
+		        MainWindow.this.setSize(dimension);
+			}
+		});
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("thesisSPACE");
 		this.setBackground(Color.PINK);
