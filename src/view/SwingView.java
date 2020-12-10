@@ -17,6 +17,7 @@ import view.panels.HomePanel;
 import view.panels.ImportfirstrewierPanel;
 import view.panels.StateChooserPanel;
 import view.panels.analyse.AnalysisPanel;
+import view.panels.analyse.SingleAnalysisPanel;
 import view.panels.collaboration.CollaborationPanel;
 import view.panels.editor.ReviewerEditorPanel;
 import view.panels.editor.ThesesAssignmentPanel;
@@ -74,6 +75,10 @@ public class SwingView implements View {
 		this.registerView(ApplicationState.ANALYSE_BARCHART, analysisPanel.atState(ViewState.BARCHART));
 		this.registerView(ApplicationState.ANALYSE_BARCHARTHORIZONTAL, analysisPanel.atState(ViewState.BARCHARTHORIZONTAL));
 
+		SingleAnalysisPanel singleAnalysisPanel = new SingleAnalysisPanel(model);
+		this.registerView(ApplicationState.SINGLE_ANALYSIS_TABLE, singleAnalysisPanel.atState(ViewState.TABLE));
+		this.registerView(ApplicationState.SINGLE_ANALYSIS_PIECHART, singleAnalysisPanel.atState(ViewState.PIECHART));
+		this.registerView(ApplicationState.SINGLE_ANALYSIS_BARCHART, singleAnalysisPanel.atState(ViewState.BARCHART));
 	}
 
 	/*

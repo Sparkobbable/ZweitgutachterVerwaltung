@@ -16,6 +16,9 @@ import controller.statecontrollers.HomeStateController;
 import controller.statecontrollers.ImportfirstreviewerStateController;
 import controller.statecontrollers.ReviewerEditorStateController;
 import controller.statecontrollers.ReviewerOverviewStateController;
+import controller.statecontrollers.SingleAnalysisBarChartStateController;
+import controller.statecontrollers.SingleAnalysisPieChartStateController;
+import controller.statecontrollers.SingleAnalysisTableStateController;
 import controller.statecontrollers.StateChooserStateController;
 import controller.statecontrollers.ThesesOverviewStateController;
 import controller.statecontrollers.ThesesAssignmentStateController;
@@ -62,6 +65,9 @@ public class Controller {
 		stateControllers.add(new AnalysisTableStateController(this.view, this, this.model));
 		stateControllers.add(new AnalysisPieChartStateController(this.view, this, this.model));
 		stateControllers.add(new AnalysisBarChartHorizontalStateController(this.view, this, this.model));
+		stateControllers.add(new SingleAnalysisTableStateController(this.view, this, this.model));
+		stateControllers.add(new SingleAnalysisPieChartStateController(this.view, this, this.model));
+		stateControllers.add(new SingleAnalysisBarChartStateController(this.view, this, this.model));
 	}
 
 	/**

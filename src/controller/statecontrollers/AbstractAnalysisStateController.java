@@ -18,6 +18,7 @@ import model.enums.EventId;
 import model.enums.ReviewStatus;
 import view.View;
 import view.panels.analyse.AnalysisPanel;
+import view.tableModels.AnalysisReviewerTableModel;
 import view.widgets.BarChart;
 import view.widgets.PieChart;
 
@@ -49,7 +50,7 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 	}
 	
 	/**
-	 * Switches between different graphics including {@link CollaborationTable}, 
+	 * Switches between different graphics including {@link AnalysisReviewerTableModel}, 
 	 * {@link PieChart} and {@link BarChart}within the {@link AnalysisPanel}.
 	 * 
 	 * @param params - Selected presentationMode from comboBox in

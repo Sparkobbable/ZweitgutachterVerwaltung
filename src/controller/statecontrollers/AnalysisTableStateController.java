@@ -1,7 +1,10 @@
 package controller.statecontrollers;
 
+import java.util.Optional;
+
 import controller.Controller;
 import model.Model;
+import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.ComboBoxMode;
 import model.enums.EventId;
@@ -27,6 +30,8 @@ public class AnalysisTableStateController extends AbstractAnalysisStateControlle
 				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
 		this.registerEvent(EventId.ANALYSIS_CHOOSE_DATA, 
 				(params) -> this.switchData((ComboBoxMode) params[0].get()));	
+		this.registerEvent(EventId.ANALYSIS_SELECT_REVIEWER, 
+				(params) -> this.showSingleAnalysis((Reviewer) params[0].get()));
 	}
 
 	/**
@@ -59,5 +64,14 @@ public class AnalysisTableStateController extends AbstractAnalysisStateControlle
 		default:
 			throw new IllegalArgumentException("Invalid DataMode from ComboBox");
 		}
+	}
+	
+	private void showSingleAnalysis(Reviewer reviewer) {
+		Optional<Reviewer> optSelectedReviewer = Optional.of(reviewer);
+		if(optSelectedReviewer.isEmpty()) {
+			return;
+		}
+		this.model.setSelectedReviewer(reviewer);
+		this.switchState(ApplicationState.SINGLE_ANALYSIS_TABLE);
 	}
 }

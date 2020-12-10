@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -57,6 +58,7 @@ public class BarChartHorizontal extends DefaultPanel{
 	}
 	
 	private void createUIElements() {
+		ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
 		this.chart =ChartFactory.createStackedBarChart(this.title, "Gutachten", "Anzahl Gutachten", this.dataset, PlotOrientation.HORIZONTAL, true, true, false);
 		this.panel = new ChartPanel(chart);
 		this.panel.setBackground(ViewProperties.BACKGROUND_COLOR);
