@@ -16,6 +16,8 @@ import view.panels.prototypes.DefaultPanel;
 
 public class BarChart extends DefaultPanel {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Model model;
 	private String title;
 	

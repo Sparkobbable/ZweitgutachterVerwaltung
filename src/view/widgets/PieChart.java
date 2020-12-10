@@ -53,13 +53,14 @@ public class PieChart extends DefaultPanel {
 	private void createAnalyseDataset() {
 		this.dataset.clear();
 		List<Reviewer> reviewers = this.model.getAnalyseReviewers();
+		
 		int reviewcount = 0;
 		for(Reviewer reviewer : reviewers) {
 			reviewcount += reviewer.getTotalReviewCount();
 		}
 		
 		for(Reviewer reviewer : reviewers) {
-			if(reviewer.getTotalReviewCount() > (reviewcount * 0.05)) {
+			if(reviewer.getTotalReviewCount() > (reviewcount * 0.02)) {
 				this.dataset.setValue(reviewer.getName(), reviewer.getTotalReviewCount());
 			} else {
 				try {

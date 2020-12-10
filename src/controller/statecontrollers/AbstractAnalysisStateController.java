@@ -6,9 +6,11 @@ import controller.Controller;
 import model.Model;
 import model.domain.Review;
 import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ComboBoxMode;
 import model.enums.EventId;
+import model.enums.ReviewStatus;
 import view.View;
 import view.panels.analyse.AnalysisPanel;
 import view.panels.collaboration.CollaborationTable;
@@ -69,9 +71,7 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		ArrayList<Reviewer> result = new ArrayList<>();
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
 			for(Review currentReview : currentReviewer.getFirstReviews()) {
-				if(!result.contains(currentReview.getReviewer())) {
-					result.add(currentReview.getReviewer());
-				}
+				result.add(currentReview.getReviewer());
 			}
 		}
 		return result;
@@ -80,12 +80,19 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 	protected ArrayList<Reviewer> getAllSecondReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
-			for(Review currentReview : currentReviewer.getUnrejectedSecondReviews()) {
-				if(!result.contains(currentReview.getReviewer())) {
+			for(SecondReview currentReview : currentReviewer.getUnrejectedSecondReviews()) {
+				if(currentReview.getStatus() == ReviewStatus.APPROVED) {
 					result.add(currentReview.getReviewer());
 				}
 			}
 		}
+		return result;
+	}
+	
+	protected ArrayList<Reviewer> getAllReviewers() {
+		ArrayList<Reviewer> result = new ArrayList<>();
+		result.addAll(this.getAllFirstReviewers());
+		result.addAll(this.getAllSecondReviewers());
 		return result;
 	}
 }

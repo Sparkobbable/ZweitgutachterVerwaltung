@@ -12,6 +12,7 @@ import java.util.Optional;
 import controller.propertychangelistener.ChangeableProperties;
 import model.domain.Author;
 import model.domain.BachelorThesis;
+import model.domain.Review;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
 
@@ -94,7 +95,7 @@ public class Model implements ChangeableProperties {
 	 * Return a list of all Reviewers for the current Analyse
 	 * including the amount of their reviews
 	 * 
-	 * @return List<Reviewer>
+	 * @return List<Review>
 	 */
 	public List<Reviewer> getAnalyseReviewers() {
 		return this.analyseReviewers;
