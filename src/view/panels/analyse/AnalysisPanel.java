@@ -18,6 +18,7 @@ import view.ViewProperties;
 import view.ViewState;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
+import view.tableModels.AnalysisReviewerTableModel;
 import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.BarChart;
 import view.widgets.PieChart;
@@ -39,7 +40,7 @@ public class AnalysisPanel extends DefaultPanel {
 	private AbstractViewPanel options;
 	private JPanel chart;
 	
-	private ReviewerOverviewTableModel tableModel;
+	private AnalysisReviewerTableModel tableModel;
 	private PieChart pieChart;
 	private Component barChart;
 	private JTable table;
@@ -58,15 +59,14 @@ public class AnalysisPanel extends DefaultPanel {
 		this.createUIElemenets();
 		this.addUIElements();
 		this.registerEventSources();
+		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
 	}
 	
 	private void createUIElemenets() {
 		this.pieChart = new PieChart("Gutachter Verteilung", this.model);
 		this.barChart = new BarChart("Gutachter Verteilung", this.model);
-		this.tableModel = new ReviewerOverviewTableModel(List.of(ReviewerOverviewTableModel.NAME, 
-				ReviewerOverviewTableModel.FIRSTREVIEW_COUNT, ReviewerOverviewTableModel.SECONDREVIEW_COUNT),
-				Collections.emptyList(), model);
+		this.tableModel = new AnalysisReviewerTableModel(this.model);
 		this.table = new JTable(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
 		this.table.setFillsViewportHeight(true);
@@ -110,6 +110,14 @@ public class AnalysisPanel extends DefaultPanel {
 			throw new IllegalArgumentException("Invalid ViewState");
 		}
 		initializeEventSource.trigger();
+	}
+	
+	/**
+	 * Defines the methods that should be called when an observed property is
+	 * changed
+	 */
+	private void initializePropertyChangeHandlers() {
+		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> this.repaint());
 	}
 
 }
