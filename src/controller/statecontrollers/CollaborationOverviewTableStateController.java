@@ -11,7 +11,6 @@ import model.enums.EventId;
 import model.enums.ComboBoxMode;
 import view.View;
 import view.panels.collaboration.CollaborationOptionsPanel;
-import view.panels.collaboration.CollaborationTable;
 import view.widgets.PieChart;
 
 /**

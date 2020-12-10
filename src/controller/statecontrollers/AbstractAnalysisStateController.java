@@ -18,7 +18,6 @@ import model.enums.EventId;
 import model.enums.ReviewStatus;
 import view.View;
 import view.panels.analyse.AnalysisPanel;
-import view.panels.collaboration.CollaborationTable;
 import view.widgets.BarChart;
 import view.widgets.PieChart;
 

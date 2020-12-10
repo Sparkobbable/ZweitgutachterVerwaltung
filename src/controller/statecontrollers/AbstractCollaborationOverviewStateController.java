@@ -12,7 +12,6 @@ import model.enums.ReviewType;
 import view.View;
 import view.panels.collaboration.CollaborationOptionsPanel;
 import view.panels.collaboration.CollaborationPanel;
-import view.panels.collaboration.CollaborationTable;
 import view.widgets.PieChart;
 
 /**
