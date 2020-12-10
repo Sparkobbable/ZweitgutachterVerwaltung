@@ -40,7 +40,7 @@ public class CSVController implements PersistenceHandler {
 		BufferedReader reader = null;
 		CSVParser csvParser = null;
 		try {
-			reader = Files.newBufferedReader(Paths.get(filename), Charset.forName("UTF-8"));
+			reader = Files.newBufferedReader(Paths.get(filename), Charset.forName("ISO-8859-1"));
 			String firstLine;
 			do {
 				reader.mark(2048);
