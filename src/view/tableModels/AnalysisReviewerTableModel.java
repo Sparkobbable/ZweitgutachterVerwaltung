@@ -14,23 +14,24 @@ public class AnalysisReviewerTableModel extends AbstractDataTableModel<Reviewer>
 		private Model model;
 
 		public static final Column<Reviewer, String> NAME = Column.of("Name", Reviewer::getName, String.class);
-		public static final Column<Reviewer, Integer> FIRSTREVIEW_COUNT = Column.of("Anzahl Erstgutachten",
-				Reviewer::getFirstReviewCount, Integer.class);
-		public static final Column<Reviewer, Integer> SECONDREVIEW_COUNT = Column.of("Anzahl Zweitgutachten",
-				Reviewer::getSecondReviewCount, Integer.class);
 
+		private static final List<Column<Reviewer, ?>> createColumns(Model model) {
+			return List.of(Column.of("Name", reviewer -> reviewer.getName(), String.class),
+						   Column.of("Anzahl Erstgutachten", reviewer -> model.getAnalyseReviewers().get(reviewer).getLeft().orElseGet(() -> 0), Integer.class),
+						   Column.of("Anzahl Zweitgutachter", reviewer -> model.getAnalyseReviewers().get(reviewer).getRight().orElseGet(() -> 0), Integer.class));
+		}
+		
 		public AnalysisReviewerTableModel(List<Column<Reviewer, ?>> columns, List<Predicate<Reviewer>> filters, Model model) {
 			super(columns, filters);
 			this.model = model;
 		}
 
 		public AnalysisReviewerTableModel(Model model) {
-			this(List.of(NAME, FIRSTREVIEW_COUNT, SECONDREVIEW_COUNT), Collections.emptyList(), model);
+			this(createColumns(model), Collections.emptyList(), model);
 		}
 
 		@Override
 		protected Collection<Reviewer> getUnfilteredData() {
-			return this.model.getReviewers();
+			return this.model.getAnalyseReviewers().keySet();
 		}
-
 }

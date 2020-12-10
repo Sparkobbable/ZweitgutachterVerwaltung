@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import controller.Controller;
 import model.Model;
@@ -113,20 +114,20 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		return result;
 	}
 	
-	protected Map<Reviewer, Pair<Integer, Integer>> getReviewCount(List<Reviewer> reviewers) {
-		HashMap<Reviewer, Pair<Integer, Integer>> result = new HashMap<>();
+	protected Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> getReviewCount(List<Reviewer> reviewers) {
+		HashMap<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> result = new HashMap<>();
 		switch(this.currentDataStatus) {
 		case FIRSTREVIEWER:
 			reviewers.forEach(reviewer -> result.put(reviewer, 
-					new Pair<Integer, Integer>(reviewer.getFirstReviewCount(), 0)));
+					(new Pair<Optional<Integer>, Optional<Integer>>(Optional.of(reviewer.getFirstReviewCount()), Optional.empty()))));
 			break;
 		case SECONDREVIEWER:
 			reviewers.forEach(reviewer -> result.put(reviewer, 
-					new Pair<Integer, Integer>(0, reviewer.getApprovedSecondReviewCount())));
+					new Pair<Optional<Integer>, Optional<Integer>>(Optional.empty(), Optional.of(reviewer.getApprovedSecondReviewCount()))));
 			break;
 		case ALLREVIEWER:
 			reviewers.forEach(reviewer -> result.put(reviewer, 
-					new Pair<Integer, Integer>(reviewer.getFirstReviewCount(), reviewer.getApprovedSecondReviewCount())));
+					new Pair<Optional<Integer>, Optional<Integer>>(Optional.of(reviewer.getFirstReviewCount()), Optional.of(reviewer.getApprovedSecondReviewCount()))));
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid DataMode for currentDataStatus");
