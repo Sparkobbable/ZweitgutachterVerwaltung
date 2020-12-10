@@ -125,7 +125,7 @@ public class AnalysisPanel extends DefaultPanel {
 	 * changed
 	 */
 	private void initializePropertyChangeHandlers() {
-		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> this.repaint());
+		this.onPropertyChange(Model.ANALYSE_REVIEWERS, (evt) -> this.tableModel.updateData());
 	}
 
 }
