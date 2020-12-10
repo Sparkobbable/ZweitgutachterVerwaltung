@@ -18,7 +18,6 @@ import model.enums.EventId;
 import model.enums.ReviewStatus;
 import view.View;
 import view.panels.analyse.AnalysisPanel;
-import view.panels.collaboration.CollaborationTable;
 import view.widgets.BarChart;
 import view.widgets.PieChart;
 
@@ -79,11 +78,9 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 
 	protected ArrayList<Reviewer> getAllFirstReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
-		System.out.println("Data: FirstReviewers");
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
 			for(Review currentReview : currentReviewer.getFirstReviews()) {
 				if(!result.contains(currentReviewer)) {
-					System.out.println(currentReviewer.getName());
 					result.add(currentReview.getReviewer());
 				}
 			}
@@ -92,13 +89,11 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 	}
 	
 	protected ArrayList<Reviewer> getAllSecondReviewers() {
-		ArrayList<Reviewer> result1 = new ArrayList<>();
-		System.out.println("Data: SecondReviewers");
+		ArrayList<Reviewer> result1 = new ArrayList<>();;
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
 			for(SecondReview currentReview : currentReviewer.getUnrejectedSecondReviews()) {
 				if(currentReview.getStatus() == ReviewStatus.APPROVED) {
 					if(!result1.contains(currentReviewer)) {
-						System.out.println(currentReviewer.getName());
 						result1.add(currentReview.getReviewer());
 					}
 				}

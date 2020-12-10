@@ -53,7 +53,7 @@ public class CSVController implements PersistenceHandler {
 			do {
 				reader.mark(2048);
 				firstLine = reader.readLine();
-				System.out.println(firstLine);
+				
 			} while (firstLine.matches("([;]|\\s)*"));
 
 			// go to the last marker before the correct line

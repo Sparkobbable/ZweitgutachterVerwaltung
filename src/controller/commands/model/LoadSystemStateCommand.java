@@ -32,7 +32,6 @@ public class LoadSystemStateCommand extends IrevertibleCommand {
 			this.model.addReviewers(load.getLeft());
 			this.model.addBachelorTheses(load.getRight());
 		}
-		System.out.println("Hallo");
 	}
 
 }
