@@ -124,6 +124,10 @@ public class Reviewer implements ChangeableProperties {
 		return this.secondReviews.size();
 	}
 	
+	public int getApprovedSecondReviewCount() {
+		return (int) this.secondReviews.stream().filter(SecondReview::isApproved).count();
+	}
+	
 	public int getReviewsWithselectedReviewerCount(Optional<Reviewer> optional) {
 		int count = 0;
 		if(optional.isPresent()) {

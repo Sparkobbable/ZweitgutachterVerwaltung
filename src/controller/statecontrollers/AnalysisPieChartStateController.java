@@ -45,13 +45,16 @@ public class AnalysisPieChartStateController extends AbstractAnalysisStateContro
 		System.out.println("Data:" + reviewerFilter);
 		switch (reviewerFilter) {
 		case FIRSTREVIEWER:
-			this.model.setAnalyseReviewers(this.getAllFirstReviewers());
+			this.currentDataStatus = ComboBoxMode.FIRSTREVIEWER;
+			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllFirstReviewers()));
 			break;
 		case SECONDREVIEWER:
-			this.model.setAnalyseReviewers(this.getAllSecondReviewers());
+			this.currentDataStatus = ComboBoxMode.SECONDREVIEWER;
+			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllSecondReviewers()));
 			break;
 		case ALLREVIEWER:
-			this.model.setAnalyseReviewers(this.model.getReviewers());
+			this.currentDataStatus = ComboBoxMode.ALLREVIEWER;
+			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllReviewers()));
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid DataMode from ComboBox");

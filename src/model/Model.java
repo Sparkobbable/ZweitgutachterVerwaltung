@@ -12,8 +12,9 @@ import java.util.Optional;
 import controller.propertychangelistener.ChangeableProperties;
 import model.domain.Author;
 import model.domain.BachelorThesis;
-import model.domain.Review;
+import model.domain.FirstReview;
 import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.ApplicationState;
 
 /**
@@ -33,7 +34,7 @@ public class Model implements ChangeableProperties {
 	private List<BachelorThesis> theses;
 	private List<Reviewer> reviewers;
 
-	private List<Reviewer> analyseReviewers;
+	private Map<Reviewer, Pair<Integer, Integer>> analyseReviewers;
 	private Map<Reviewer, Double> collaboratingReviewers;
 	private Optional<Reviewer> selectedReviewer;
 	private ApplicationState applicationState;
@@ -50,7 +51,7 @@ public class Model implements ChangeableProperties {
 	public Model() {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.selectedReviewer = Optional.empty();
-		this.analyseReviewers = new ArrayList<>();
+		this.analyseReviewers = new HashMap<>();
 		this.collaboratingReviewers = new HashMap<>();
 		this.theses = new ArrayList<>();
 		this.reviewers = new ArrayList<>();
@@ -92,12 +93,12 @@ public class Model implements ChangeableProperties {
 	}
 	
 	/**
-	 * Return a list of all Reviewers for the current Analyse
-	 * including the amount of their reviews
+	 * Return a map of all {@link Reviewer} for the current analyse
+	 * including the amount of their {@link FirstReview} and/ or {@link SecondReview}
 	 * 
-	 * @return List<Review>
+	 * @return Map<Review, Pair<Integer, Integer>>
 	 */
-	public List<Reviewer> getAnalyseReviewers() {
+	public Map<Reviewer, Pair<Integer, Integer>> getAnalyseReviewers() {
 		return this.analyseReviewers;
 	}
 
@@ -141,10 +142,10 @@ public class Model implements ChangeableProperties {
 	 * Set the analysis of Reviewers for the current Analyse and notify any
 	 * observers
 	 * 
-	 * @param list
+	 * @param Map
 	 */
-	public void setAnalyseReviewers(List<Reviewer> list) {
-		List<Reviewer> old = this.analyseReviewers;
+	public void setAnalyseReviewers(Map<Reviewer, Pair<Integer, Integer>> list) {
+		Map<Reviewer, Pair<Integer, Integer>> old = this.analyseReviewers;
 		this.analyseReviewers = list;
 		this.propertyChangeSupport.firePropertyChange(ANALYSE_REVIEWERS, old, this.analyseReviewers);
 	}

@@ -1,5 +1,6 @@
 package view.widgets;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import controller.events.EventSource;
 import model.Model;
+import model.Pair;
 import model.domain.Reviewer;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
@@ -52,23 +54,24 @@ public class PieChart extends DefaultPanel {
 	
 	private void createAnalyseDataset() {
 		this.dataset.clear();
-		List<Reviewer> reviewers = this.model.getAnalyseReviewers();
-		
-		int reviewcount = 0;
-		for(Reviewer reviewer : reviewers) {
-			reviewcount += reviewer.getTotalReviewCount();
-		}
-		
-		for(Reviewer reviewer : reviewers) {
-			if(reviewer.getTotalReviewCount() > (reviewcount * 0.02)) {
-				this.dataset.setValue(reviewer.getName(), reviewer.getTotalReviewCount());
-			} else {
-				try {
-					double count = (double) this.dataset.getValue("Sonstige");
-					this.dataset.setValue("Sonstige", count + reviewer.getTotalReviewCount());
-				} catch(UnknownKeyException e) {
-					this.dataset.setValue("Sonstige", reviewer.getTotalReviewCount());
+		Map<Reviewer, Pair<Integer, Integer>> reviewers = this.model.getAnalyseReviewers();
+		if(!reviewers.isEmpty()) {
+			Pair<Integer, Integer> value = reviewers.entrySet().stream().findFirst().get().getValue();
+			
+			if(value.getLeft() != 0) {
+				if(value.getRight() != 0) {
+					for(Entry<Reviewer, Pair<Integer, Integer>> entry : reviewers.entrySet()) {
+						int count = entry.getValue().getLeft() + entry.getValue().getRight();
+						this.dataset.setValue(entry.getKey().getName(), count);
+					}
+				} else {
+					reviewers.entrySet().forEach(entry -> this.dataset.setValue(entry.getKey().getName(), entry.getValue().getLeft()));
 				}
+			} else if(value.getRight() != 0) {
+				reviewers.entrySet().forEach(entry -> this.dataset.setValue(entry.getKey().getName(), entry.getValue().getRight()));
+			} else {
+				//TODO remove before production
+				throw new IllegalStateException("Hashmap of Analysis contains no values");
 			}
 		}
 	}

@@ -42,6 +42,14 @@ public class SecondReview extends Review {
 		return status;
 	}
 	
+	public boolean isApproved() {
+		if(status == ReviewStatus.APPROVED) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	@Override
 	public ReviewType getReviewType() {
 		return ReviewType.SECOND_REVIEW;

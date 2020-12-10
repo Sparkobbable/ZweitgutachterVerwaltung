@@ -1,9 +1,13 @@
 package controller.statecontrollers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import controller.Controller;
 import model.Model;
+import model.Pair;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
@@ -26,11 +30,13 @@ import view.widgets.PieChart;
 public abstract class AbstractAnalysisStateController extends AbstractStateController {
 
 	protected ComboBoxMode reviewerFilter;
+	protected ComboBoxMode currentDataStatus;
 	
 	public AbstractAnalysisStateController(ApplicationState applicationState,
 			View view, Controller controller, Model model) {
 		super(applicationState, view, controller, model);
 		this.reviewerFilter = ComboBoxMode.FIRSTREVIEWER;
+		this.currentDataStatus = ComboBoxMode.FIRSTREVIEWER;
 		this.registerEvent(EventId.INITIALIZE, (params) -> this.initialize());
 	}
 	
@@ -72,19 +78,11 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 
 	protected ArrayList<Reviewer> getAllFirstReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
+		System.out.println("Data: FirstReviewers");
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
 			for(Review currentReview : currentReviewer.getFirstReviews()) {
-				result.add(currentReview.getReviewer());
-			}
-		}
-		return result;
-	}
-	
-	protected ArrayList<Reviewer> getAllSecondReviewers() {
-		ArrayList<Reviewer> result = new ArrayList<>();
-		for(Reviewer currentReviewer : this.model.getReviewers()) {
-			for(SecondReview currentReview : currentReviewer.getUnrejectedSecondReviews()) {
-				if(currentReview.getStatus() == ReviewStatus.APPROVED) {
+				if(!result.contains(currentReviewer)) {
+					System.out.println(currentReviewer.getName());
 					result.add(currentReview.getReviewer());
 				}
 			}
@@ -92,10 +90,47 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		return result;
 	}
 	
+	protected ArrayList<Reviewer> getAllSecondReviewers() {
+		ArrayList<Reviewer> result1 = new ArrayList<>();
+		System.out.println("Data: SecondReviewers");
+		for(Reviewer currentReviewer : this.model.getReviewers()) {
+			for(SecondReview currentReview : currentReviewer.getUnrejectedSecondReviews()) {
+				if(currentReview.getStatus() == ReviewStatus.APPROVED) {
+					if(!result1.contains(currentReviewer)) {
+						System.out.println(currentReviewer.getName());
+						result1.add(currentReview.getReviewer());
+					}
+				}
+			}
+		}
+		return result1;
+	}
+	
 	protected ArrayList<Reviewer> getAllReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
 		result.addAll(this.getAllFirstReviewers());
 		result.addAll(this.getAllSecondReviewers());
+		return result;
+	}
+	
+	protected Map<Reviewer, Pair<Integer, Integer>> getReviewCount(List<Reviewer> reviewers) {
+		HashMap<Reviewer, Pair<Integer, Integer>> result = new HashMap<>();
+		switch(this.currentDataStatus) {
+		case FIRSTREVIEWER:
+			reviewers.forEach(reviewer -> result.put(reviewer, 
+					new Pair<Integer, Integer>(reviewer.getFirstReviewCount(), 0)));
+			break;
+		case SECONDREVIEWER:
+			reviewers.forEach(reviewer -> result.put(reviewer, 
+					new Pair<Integer, Integer>(0, reviewer.getApprovedSecondReviewCount())));
+			break;
+		case ALLREVIEWER:
+			reviewers.forEach(reviewer -> result.put(reviewer, 
+					new Pair<Integer, Integer>(reviewer.getFirstReviewCount(), reviewer.getApprovedSecondReviewCount())));
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid DataMode for currentDataStatus");
+		}
 		return result;
 	}
 }
