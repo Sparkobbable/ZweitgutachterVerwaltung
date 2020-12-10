@@ -53,7 +53,7 @@ public class BachelorThesis implements ChangeableProperties {
 		return author;
 	}
 
-	public String getCommant() {
+	public String getComment() {
 		return comment;
 	}
 

@@ -107,7 +107,7 @@ public class CSVMapper {
 
 	private static void createObjekts(CSVPrinter csvPrinter, BachelorThesis bachelorThesis) {
 		String topic = bachelorThesis.getTopic();
-		String commant = bachelorThesis.getCommant();
+		String commant = bachelorThesis.getComment();
 		String name = bachelorThesis.getAuthor().getName();
 		String studyGroup = bachelorThesis.getAuthor().getStudyGroup();
 		String company = bachelorThesis.getAuthor().getCompany();
