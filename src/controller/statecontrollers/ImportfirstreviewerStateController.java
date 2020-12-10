@@ -48,7 +48,6 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 	 */
 
 	private void loadReview() {
-		System.out.println("Tst2");
 		File file = new File(filepath);
 		if (file.exists()) {
 			PersistenceHandler persistence = new CSVController(filepath);
