@@ -10,8 +10,8 @@ import view.widgets.ComboBoxPanel;
 */
 public enum ComboBoxMode {
 	TABLE("Tabelle"), PIECHART("Tortendiagramm"), BARCHART("Säulendiagramm"),
-	BARCHARTHORIZONTAL("Balkendiagramm"), FIRSTREVIEWER("Nur Erstgutachter"),
-	SECONDREVIEWER("Nur Zweitgutachter"), ALLREVIEWER("Zweit- & Erstgutachter");
+	BARCHARTHORIZONTAL("Balkendiagramm"), FIRSTREVIEWER("Nur Erstgutachten"),
+	SECONDREVIEWER("Nur Zweitgutachten"), ALLREVIEWER("Erst- & Zweitgutachten");
 	
 	/**
 	 * String from the comboBox

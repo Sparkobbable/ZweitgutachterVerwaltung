@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
@@ -9,6 +10,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+
 import model.Pair;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
@@ -24,16 +27,22 @@ public class CSVController implements PersistenceHandler {
 	}
 
 	public void save(List<Reviewer> reviewers, List<BachelorThesis> bachelorTheses) {
-//		JsonWriter jsonWriter = null;
-//		try {
-//			jsonWriter = Json.createWriter(new FileWriter(filename));
-//			jsonWriter.writeObject(CSVMapper.mapToCSV(reviewers, bachelorTheses));
-//			if (jsonWriter != null) {
-//				jsonWriter.close();
-//			}
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
+		BufferedWriter writer = null;
+		CSVPrinter csvPrinter = null;
+		try {
+			writer = Files.newBufferedWriter(Paths.get(filename), Charset.forName("ISO-8859-1"));
+			csvPrinter = new CSVPrinter(writer,
+					CSVFormat.EXCEL.withHeader("Name, Vorname", "Studien-\\n\" + \n" + "				\"gruppe",
+							"Praxispartner", "Themenvorschlag Bachelor Thesis",
+							"Dozent\\n\" + \n" + "				\"1. Gutachten",
+							"Dozent\\n\" + \n" + "				\"2. Gutachten\"", "Bemerkung"));
+
+			CSVMapper.maptoCSV(csvPrinter, bachelorTheses);
+			csvPrinter.flush();
+			csvPrinter.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public Pair<List<Reviewer>, List<BachelorThesis>> load() {

@@ -2,6 +2,8 @@ package view.widgets;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -10,6 +12,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import controller.events.EventSource;
 import model.Model;
+import model.Pair;
 import model.domain.Reviewer;
 import view.ViewProperties;
 import view.panels.prototypes.DefaultPanel;
@@ -39,11 +42,11 @@ public class BarChart extends DefaultPanel {
 	
 	private void createDataset() {
 		this.dataset.clear();
-		List<Reviewer> reviewers = this.model.getAnalyseReviewers();
+		Map<Reviewer, Pair<Integer, Integer>> reviewers = this.model.getAnalyseReviewers();
 		
-		for(Reviewer reviewer : reviewers) {
-			this.dataset.addValue(reviewer.getFirstReviewCount(), "Erstgutachten", reviewer.getName());
-			this.dataset.addValue(reviewer.getSecondReviewCount(), "Zweitgutachten", reviewer.getName());
+		for(Entry<Reviewer, Pair<Integer, Integer>> reviewer : reviewers.entrySet()) {
+			this.dataset.addValue(reviewer.getValue().getLeft(), reviewer.getKey().getName(), "Erstgutachten");
+			this.dataset.addValue(reviewer.getValue().getRight(), reviewer.getKey().getName(), "Zweitgutachten");
 		}
 	}
 	

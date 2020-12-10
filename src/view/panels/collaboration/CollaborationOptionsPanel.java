@@ -48,7 +48,7 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 		this.reviewername = new JLabel("Ausgewählter Gutachter:");
 		this.nameField = new JTextField();
 
-		String[] options = { "Nur Erstgutachter", "Nur Zweitgutachter", "Zweit- & Erstgutachter" };
+		String[] options = { "Nur Erstgutachten", "Nur Zweitgutachten", "Erst- & Zweitgutachten" };
 		this.chooseData = new ComboBoxPanel("Ansicht", options, EventId.CHOOSE_REVIEWER_FILTER);
 		String[] options2 = { "Tabelle", "Tortendiagramm" };
 		this.choosePresentation = new ComboBoxPanel("Darstellung", options2,

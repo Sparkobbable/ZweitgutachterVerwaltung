@@ -30,7 +30,7 @@ public class AnalysisReviewerTableModel extends AbstractDataTableModel<Reviewer>
 
 		@Override
 		protected Collection<Reviewer> getUnfilteredData() {
-			return this.model.getAnalyseReviewers();
+			return this.model.getReviewers();
 		}
 
 }

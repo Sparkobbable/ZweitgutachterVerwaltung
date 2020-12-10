@@ -35,7 +35,7 @@ public class AnalysisOptionsPanel extends DefaultPanel {
 	}
 	
 	private void createUIElements() {
-		String[] options = { "Nur Erstgutachter", "Nur Zweitgutachter", "Zweit- & Erstgutachter" };
+		String[] options = { "Nur Erstgutachten", "Nur Zweitgutachten", "Erst- & Zweitgutachten" };
 		this.chooseData = new ComboBoxPanel("Ansicht", options, EventId.ANALYSIS_CHOOSE_DATA);	
 		String[] options2 = {"Tabelle", "Tortendiagramm", "Säulendiagramm", "Balkendiagramm"};
 		this.choosePresentation = new ComboBoxPanel("Darstellung", options2, EventId.ANALYSIS_CHOOSE_PRESENTATION);
