@@ -16,6 +16,7 @@ import view.ViewProperties;
 import view.ViewState;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
+import view.tableModels.CollaboratingReviewerTableModel;
 import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.PieChart;
 
@@ -36,7 +37,7 @@ public class CollaborationPanel extends DefaultPanel {
 	
 	private PieChart pieChart;
 	private JTable table;
-	private ReviewerOverviewTableModel tableModel;
+	private CollaboratingReviewerTableModel tableModel;
 	private JScrollPane tableScrollPane;
 	
 	private CustomEventSource initializeEventSource;
@@ -52,12 +53,13 @@ public class CollaborationPanel extends DefaultPanel {
 		this.createUIElements();
 		this.addUIElements();
 		this.registerEventSources();
+		this.initializePropertyChangeHandlers();
 		this.observe(this.model);
 	}
 
 	private void createUIElements() {
 		this.pieChart = new PieChart("Zusammenarbeit der Gutachter", this.model);
-		this.tableModel = new ReviewerOverviewTableModel(this.model);
+		this.tableModel = new CollaboratingReviewerTableModel(this.model);
 		this.table = new JTable(this.tableModel);
 		this.tableScrollPane = new JScrollPane(this.table);
 		
@@ -95,5 +97,13 @@ public class CollaborationPanel extends DefaultPanel {
 		}
 		
 		initializeEventSource.trigger();
+	}
+	
+	/**
+	 * Defines the methods that should be called when an observed property is
+	 * changed
+	 */
+	private void initializePropertyChangeHandlers() {
+		this.onPropertyChange(Model.COLLABORATING_REVIEWERS, (evt) -> this.tableModel.updateData());
 	}
 }

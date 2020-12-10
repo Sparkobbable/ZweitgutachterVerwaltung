@@ -1,6 +1,7 @@
 package view.tableModels;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -16,18 +17,25 @@ public class CollaboratingReviewerTableModel extends AbstractDataTableModel<Revi
 	private static final long serialVersionUID = 1L;
 
 	private Model model;
+
 	
-	private static final Column<Reviewer, String> NAME = Column.of("Name", Reviewer::getName, String.class);
-//	private final Column<Reviewer, Integer> COLLABORATION_COUNT = Column.of("Anzahl gemeinsamer Bachelorarbeiten",
-//			r -> r.getReviewsWithselectedReviewerCount(this.model.getSelectedReviewer()), Integer.class);
-	//TODO find a solution for the problem, that the column needs to be static, but can not access the model being static
-	public CollaboratingReviewerTableModel(List<Column<Reviewer, ?>> columns, List<Predicate<Reviewer>> filters) {
-		super(List.of(NAME), filters);
+	private static final List<Column<Reviewer, ?>> createColumns(Model model) {
+		return List.of(Column.of("Name", reviewer -> reviewer.getName(), String.class),
+				Column.of("Anzahl gemeinsamer Bachelorarbeiten", reviewer -> model.getCollaboratingReviewers().get(reviewer).intValue(), Integer.class));
+	}
+	
+	public CollaboratingReviewerTableModel(List<Column<Reviewer, ?>> columns, List<Predicate<Reviewer>> filters, Model model) {
+		super(columns, filters);
+		this.model = model;
+	}
+	
+	public CollaboratingReviewerTableModel(Model model) {
+		this(createColumns(model), Collections.emptyList(), model);
 	}
 
 	@Override
 	protected Collection<Reviewer> getUnfilteredData() {
-		return this.model.getReviewers();
+		return this.model.getCollaboratingReviewers().keySet();
 	}
 
 }
