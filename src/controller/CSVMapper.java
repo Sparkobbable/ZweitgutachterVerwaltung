@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import static util.UmlautFormatter.format;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -32,13 +33,13 @@ public class CSVMapper {
 
 	private static Pair<List<Reviewer>, List<BachelorThesis>> createObjekts(CSVRecord csvRecord,
 			List<BachelorThesis> bachelorThesis, List<Reviewer> listreviewer, List<Author> listauthor) {
-		String name = csvRecord.get("Name, Vorname");
-		String studyGroup = csvRecord.get("Studien-\n" + "gruppe");
-		String company = csvRecord.get("Praxispartner");
-		String topic = csvRecord.get("Themenvorschlag Bachelor Thesis");
-		String firstreviewer = csvRecord.get("Dozent\n" + "1. Gutachten");
-		String secondreviewer = csvRecord.get("Dozent\n" + "2. Gutachten");
-		String commant = csvRecord.get("Bemerkung");
+		String name = format(csvRecord.get("Name, Vorname"));
+		String studyGroup = format(csvRecord.get("Studien-\n" + "gruppe"));
+		String company = format(csvRecord.get("Praxispartner"));
+		String topic = format(csvRecord.get("Themenvorschlag Bachelor Thesis"));
+		String firstreviewer = format(csvRecord.get("Dozent\n" + "1. Gutachten"));
+		String secondreviewer = format(csvRecord.get("Dozent\n" + "2. Gutachten"));
+		String commant = format(csvRecord.get("Bemerkung"));
 
 // wenn die Header nicht so  wichtig sind und wir davon ausgehen, das die Datei im richtigen Format ist
 //		String name = csvRecord.get(0);
