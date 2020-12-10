@@ -18,10 +18,6 @@ public class ReviewerOverviewTableModel extends AbstractDataTableModel<Reviewer>
 			Reviewer::getTotalReviewCount, Integer.class);
 	public static final Column<Reviewer, Double[]> OCCUPATION = Column.of("Auslastung",
 			 r -> new Double[] { r.getFirstOccupation(), r.getSecOccupation(), r.getOccupation() }, Double[].class);
-	public static final Column<Reviewer, Integer> FIRSTREVIEW_COUNT = Column.of("Anzahl Erstgutachten",
-			Reviewer::getFirstReviewCount, Integer.class);
-	public static final Column<Reviewer, Integer> SECONDREVIEW_COUNT = Column.of("Anzahl Zweitgutachten",
-			Reviewer::getSecondReviewCount, Integer.class);
 
 	public ReviewerOverviewTableModel(List<Column<Reviewer, ?>> columns, List<Predicate<Reviewer>> filters, Model model) {
 		super(columns, filters);

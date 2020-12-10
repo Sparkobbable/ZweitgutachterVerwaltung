@@ -11,7 +11,7 @@ import view.panels.collaboration.CollaborationPanel;
 /**
  * TableModel for the {@link CollaborationPanel}}
  */
-public class CollaboratingReviewerTableModel extends AbstractDataTableModel<Reviewer>{
+public class CollaboratingReviewerTableModel extends AbstractDataTableModel<Reviewer> {
 
 	private static final long serialVersionUID = 1L;
 
