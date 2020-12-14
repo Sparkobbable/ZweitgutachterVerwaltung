@@ -99,6 +99,12 @@ public class ReviewerEditorPanel extends DefaultPanel {
 		this.emailLabel = new JLabel("Email: ");
 		this.commentLabel = new JLabel("Bemerkung: ");
 		this.supervisedLabel = new JLabel("Betreute Bachelorarbeiten: ");
+		
+		this.nameFieldLabel.setForeground(ViewProperties.FONT_COLOR);
+		this.maxSupervisedLabel.setForeground(ViewProperties.FONT_COLOR);
+		this.emailLabel.setForeground(ViewProperties.FONT_COLOR);
+		this.commentLabel.setForeground(ViewProperties.FONT_COLOR);
+		this.supervisedLabel.setForeground(ViewProperties.FONT_COLOR);
 
 		this.name.setInputVerifier(new NonEmptyStringInputVerifier());
 		this.maxSupervised.setInputVerifier(new IntegerInputVerifier());

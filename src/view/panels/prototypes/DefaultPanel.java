@@ -18,6 +18,7 @@ import controller.propertychangelistener.ChangeableProperties;
 import controller.propertychangelistener.PropertyChangeManager;
 import model.enums.EventId;
 import view.MainWindow;
+import view.ViewProperties;
 import view.widgets.ButtonFactory;
 
 /**
@@ -65,8 +66,10 @@ public abstract class DefaultPanel extends AbstractViewPanel {
 	 * @return Returns the Border with the title
 	 */
 	protected static TitledBorder titledBorder(String title) {
-		return BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title, TitledBorder.LEFT,
+		TitledBorder result = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title, TitledBorder.LEFT,
 				TitledBorder.TOP);
+		result.setTitleColor(ViewProperties.FONT_COLOR);
+		return result;
 	}
 
 	/**

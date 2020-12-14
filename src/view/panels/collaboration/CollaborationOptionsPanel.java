@@ -26,7 +26,7 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 	private Model model;
 
 	private JLabel reviewername;
-	private JTextField nameField;
+	private JLabel nameField;
 
 	private AbstractViewPanel chooseData;
 	private AbstractViewPanel choosePresentation;
@@ -46,7 +46,9 @@ public class CollaborationOptionsPanel extends DefaultPanel {
 
 	private void createUIElements() {
 		this.reviewername = new JLabel("Ausgewählter Gutachter:");
-		this.nameField = new JTextField();
+		this.reviewername.setForeground(ViewProperties.FONT_COLOR);
+		this.nameField = new JLabel();
+		this.nameField.setForeground(ViewProperties.FONT_COLOR);
 
 		String[] options = { "Nur Erstgutachten", "Nur Zweitgutachten", "Erst- & Zweitgutachten" };
 		this.chooseData = new ComboBoxPanel("Ansicht", options, EventId.CHOOSE_REVIEW_FILTER);

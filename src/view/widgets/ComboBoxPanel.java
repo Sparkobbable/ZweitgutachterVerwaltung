@@ -36,6 +36,7 @@ public class ComboBoxPanel extends DefaultPanel {
 	
 	private void createUIElements(String headline, String[] options) {
 		this.headline = new JLabel(headline);
+		this.headline.setForeground(ViewProperties.FONT_COLOR);
 		this.choosePresentationMode = new JComboBox<>(options);
 	}
 	

@@ -97,7 +97,7 @@ public class AnalysisPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(this.options, this.initializeEventSource, new TableClickEventSource(EventId.SELECT, table, 1, () -> getselectedReviewer()));
+		return List.of(this.options, this.initializeEventSource, new TableClickEventSource(EventId.SELECT, table, 2, () -> getselectedReviewer()));
 	}
 	
 	/**
