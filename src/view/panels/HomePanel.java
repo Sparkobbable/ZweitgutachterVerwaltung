@@ -41,7 +41,7 @@ public class HomePanel extends DefaultPanel {
 		this.headline = new JLabel(ImageLoader.getInstance().loadImageIcon("homescreen"));
 		this.showReviewers = this.buttonFactory.createSeamlessImageButton("gutachter");
 		this.showTheses = this.buttonFactory.createSeamlessImageButton("thesis");
-		this.importFirstReviewers = this.buttonFactory.createSeamlessImageButton("import");
+		this.importFirstReviewers = this.buttonFactory.createSeamlessImageButton("csv");
 		this.analyse = this.buttonFactory.createSeamlessImageButton("analyse");
 		this.choosejsonfilepath = this.buttonFactory.createSeamlessImageButton("systemstate");
 
