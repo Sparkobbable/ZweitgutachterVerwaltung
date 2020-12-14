@@ -12,9 +12,10 @@ import java.util.stream.Stream;
 
 import controller.propertychangelistener.ChangeableProperties;
 
+/**
+ * Reviewer for supervising {@link BachelorThesis}
+ */
 public class Reviewer implements ChangeableProperties {
-
-	private static final AtomicInteger INTERNAL_ID_GENERATOR = new AtomicInteger();
 
 	protected final PropertyChangeSupport propertyChangeSupport;
 
@@ -37,28 +38,17 @@ public class Reviewer implements ChangeableProperties {
 	private Double occupation;
 	private Double firstOccupation;
 	private Double secOccupation;
-	private int internalId;
 
 	private List<FirstReview> firstReviews;
 	private List<SecondReview> secondReviews;
 	private List<SecondReview> rejectedSecondReviews;
 
 	/**
-	 * Creates a Reviewer for BachelorThesis
-	 * 
-	 * @param internalId
-	 * 
-	 */
-	public Reviewer(String name, int maxSupervisedTheses, String email, String comment, int internalId) {
-		this(name, maxSupervisedTheses, email, comment);
-		this.internalId = internalId;
-	}
-
-	/**
-	 * Creates a Reviewer for BachelorThesis
-	 * 
-	 * @param internalId
-	 * 
+	 * Creates a Reviewer for supervising {@link BachelorThesis}
+	 * @param name					Name of the reviewer
+	 * @param maxSupervisedTheses	Maximum amount of reviewed {@link BachelorThesis}
+	 * @param email					Email of the reviewer
+	 * @param comment				Comment on the reviewer			
 	 */
 	public Reviewer(String name, int maxSupervisedTheses, String email, String comment) {
 		this(name, maxSupervisedTheses);
@@ -67,8 +57,9 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * Creates a Reviewer for BachelorThesis
-	 * 
+	 * Creates a Reviewer for supervising {@link BachelorThesis}
+	 * @param name					Name of the reviewer
+	 * @param maxSupervisedTheses	Maximum amount of reviewed {@link BachelorThesis}		
 	 */
 	public Reviewer(String name, int maxSupervisedTheses) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
@@ -77,8 +68,6 @@ public class Reviewer implements ChangeableProperties {
 		this.rejectedSecondReviews = new ArrayList<>();
 		this.name = name;
 		this.maxSupervisedTheses = maxSupervisedTheses;
-		this.internalId = INTERNAL_ID_GENERATOR.incrementAndGet();
-
 	}
 
 	public String getName() {
@@ -97,13 +86,17 @@ public class Reviewer implements ChangeableProperties {
 		return this.comment;
 	}
 
+	/**
+	 * Lists all supervised {@link Review}, containing both first and second reviews
+	 * @return {@link List} of all {@link Review}
+	 */
 	public List<Review> getAllSupervisedReviews() {
 		return Stream.concat(this.firstReviews.stream(), this.getUnrejectedSecondReviews().stream())
 				.collect(Collectors.toList());
 	}
 
 	/**
-	 * @return the total count of first reviews and second reviews that were not
+	 * @return The total count of {@link FirstReview} and {@link SecondReview} that were not
 	 *         rejected
 	 */
 	public int getTotalReviewCount() {
@@ -111,24 +104,32 @@ public class Reviewer implements ChangeableProperties {
 	}
 	
 	/**
-	 * @return the count of first reviews
+	 * @return The count of {@link FirstReview}
 	 */
 	public int getFirstReviewCount() {
 		return this.firstReviews.size();
 	}
 	
 	/**
-	 * @return the count of second reviews that were not rejected
+	 * @return The count of {@link SecondReview} that were not rejected
 	 */
 	public int getSecondReviewCount() {
 		return this.secondReviews.size();
 	}
 	
+	/**
+	 * @return The count of {@link SecondReview} that were approved
+	 */
 	public int getApprovedSecondReviewCount() {
 		return (int) this.secondReviews.stream().filter(SecondReview::isApproved).count();
 	}
 	
-	public int getReviewsWithselectedReviewerCount(Optional<Reviewer> optional) {
+	/**
+	 * Counts how many {@link Review} this reviewer has, where the reviewer is set to this reviewer
+	 * @param optional Reviewer to be checked
+	 * @return		   Count of {@link Review}
+	 */
+	public int getReviewsWithSelectedReviewerCount(Optional<Reviewer> optional) {
 		int count = 0;
 		if(optional.isPresent()) {
 			for(Review r : this.firstReviews) {
@@ -155,7 +156,7 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * @return all bachelor theses that are second-reviewed by this reviewer and not
+	 * @return All {@link BachelorThesis} that are second-reviewed by this reviewer and not
 	 *         rejected
 	 * @deprecated replaced by {@link #getUnrejectedSecondReviews()}
 	 */
@@ -164,7 +165,7 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * @return all bachelor theses that are second-reviewed by this reviewer. This
+	 * @return All {@link BachelorThesis} that are second-reviewed by this reviewer. This
 	 *         includes rejected reviews.
 	 */
 	public List<SecondReview> getAllSecondReviews() {
@@ -174,7 +175,7 @@ public class Reviewer implements ChangeableProperties {
 
 	/**
 	 * 
-	 * @return all bachelor theses that are first-reviewed by this reviewer
+	 * @return All {@link BachelorThesis} that are first-reviewed by this reviewer
 	 * 
 	 */
 	public List<FirstReview> getFirstReviews() {
@@ -207,12 +208,9 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * Add a FirstReview to this Reviewer.
+	 * Add a {@link FirstReview} to this Reviewer.
 	 * 
-	 * @see #addReview(Review, CascadeMode)
-	 * 
-	 * @param review
-	 * @param cascadeMode
+	 * @param review	The {@link FirstReview} to be added
 	 */
 	void addFirstReviewerReview(FirstReview review) {
 		ArrayList<Review> old = new ArrayList<>(this.firstReviews);
@@ -222,13 +220,9 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * Add a SecondReview to this Reviewer. If the given CascadeMode is set to
-	 * CASCADE, also adds the review to the BachelorThesis referenced within
-	 * theReview.
+	 * Add a {@link SecondReview} to this Reviewer.
 	 * 
-	 * @see #addReview(Review, CascadeMode)
-	 * 
-	 * @param review
+	 * @param review	The {@link SecondReview} to be added
 	 */
 	public void addSecondReview(SecondReview review) {
 		ArrayList<Review> old = new ArrayList<>(this.secondReviews);
@@ -238,10 +232,9 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
-	 * Add a SecondReview to this Reviewer.
+	 * Add a rejected {@link SecondReview} to this Reviewer.
 	 * 
-	 * @param review
-	 * @param cascadeMode
+	 * @param review	The rejected {@link SecondReview} to be added
 	 */
 	public void addRejectedSecondReview(SecondReview review) {
 		ArrayList<Review> old = new ArrayList<>(this.rejectedSecondReviews);
@@ -249,6 +242,10 @@ public class Reviewer implements ChangeableProperties {
 		this.propertyChangeSupport.firePropertyChange(REJECTED_SECOND_REVIEWS, old, this.rejectedSecondReviews);
 	}
 
+	/**
+	 * Removes the given review
+	 * @param review	{@link SecondReview} to be removed
+	 */
 	public void removeSecondReview(SecondReview review) {
 		ArrayList<SecondReview> old = new ArrayList<>(this.secondReviews);
 		this.secondReviews.remove(review);
@@ -256,6 +253,10 @@ public class Reviewer implements ChangeableProperties {
 		this.propertyChangeSupport.firePropertyChange(SECOND_REVIEWS, old, this.secondReviews);
 	}
 
+	/**
+	 * Removes the given rejected review
+	 * @param review	Rejected {@link SecondReview} to be removed
+	 */
 	public void removeRejectedSecondReview(SecondReview review) {
 		ArrayList<SecondReview> old = new ArrayList<>(this.rejectedSecondReviews);
 		this.rejectedSecondReviews.remove(review);
@@ -286,10 +287,10 @@ public class Reviewer implements ChangeableProperties {
 	}
 
 	/**
+	 * Checks whether this reviewer reviews the given {@link BachelorThesis}
 	 * 
-	 * @param thesis
-	 * @return True if and only if this Reviewer reviews the given thesis as first
-	 *         or second reviewer
+	 * @param thesis	The {@link BachelorThesis} to be checked
+	 * @return 			True if and only if this Reviewer reviews the given {@link BachelorThesis}
 	 */
 	public boolean reviewsThesis(BachelorThesis thesis) {
 		return this.getAllSupervisedReviews().stream().map(Review::getBachelorThesis).anyMatch(t -> t == thesis);
@@ -308,14 +309,16 @@ public class Reviewer implements ChangeableProperties {
 		return this.secOccupation;
 	}
 
-	public int getInternalId() {
-		return internalId;
-	}
-
 	public List<SecondReview> getRejectedSecondReviews() {
 		return Collections.unmodifiableList(this.rejectedSecondReviews);
 	}
 	
+	/**
+	 * Checks whether this reviewer is in the given {@link List} of reviewers
+	 * 
+	 * @param reviewerList	The {@link List} to search in
+	 * @return 				True if and only if this reviewer is in the given {@link List}
+	 */
 	public boolean isPresentInList(List<Reviewer> reviewerList) {
 		return reviewerList.stream().filter(reviewerInList -> reviewerInList.getName().equals(this.getName())).findAny().isPresent();
 	}

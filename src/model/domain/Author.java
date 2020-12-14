@@ -10,15 +10,16 @@ public class Author {
 	public static final String STUDY_GROUP = "studyGroup";
 	public static final String COMPANY = "company";
 
-	// data - Authors cannot be edited, yet
+	// data - Authors cannot be edited
 	private final String name;
 	private final String studyGroup;
 	private final String company;
 
 	/**
-	 * Creates an Author of a BachelorThesis
-	 * 
-	 * @param name Name of the Author
+	 * Creates an author of a {@link BachelorThesis}
+	 * @param name Name of the author
+	 * @param studyGroup The studygroup in which the author is learning
+	 * @param company The company the author is working for
 	 */
 	public Author(String name, String studyGroup, String company) {
 		this.name = name;

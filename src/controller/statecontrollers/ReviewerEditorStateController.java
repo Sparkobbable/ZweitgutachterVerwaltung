@@ -110,7 +110,6 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private void approveReviews(Collection<Review> collection) {
-
 		if (this.model.getSelectedReviewer().isEmpty()) {
 			throw new IllegalStateException("Selected reviewer must not be empty");
 		}
@@ -156,13 +155,6 @@ public class ReviewerEditorStateController extends AbstractStateController {
 	}
 
 	private boolean validate() {
-
 		return true;
-	}
-
-	public boolean validateFields() {
-		Reviewer selectedReviewer = this.model.getSelectedReviewer().orElseThrow();
-		return selectedReviewer.getName() != null && !selectedReviewer.getName().isBlank()
-				&& selectedReviewer.getMaxSupervisedThesis() >= 0;
 	}
 }

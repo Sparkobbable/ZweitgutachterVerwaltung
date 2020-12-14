@@ -1,5 +1,9 @@
 package controller.search;
 
+/**
+ *	Interface containing methods for general searching
+ * @param <E> The Class of the Object to be searched
+ */
 public interface SearchStrategy<E> {
 
 	public boolean match(E obj, String searchText);

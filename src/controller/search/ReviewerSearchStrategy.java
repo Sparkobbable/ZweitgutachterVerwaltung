@@ -1,7 +1,11 @@
 package controller.search;
 
+import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 
+/**
+ *	Supplies a searching strategy for searching in {@link Reviewer}
+ */
 public class ReviewerSearchStrategy implements SearchStrategy<Reviewer> {
 
 	@Override

@@ -3,6 +3,9 @@ package model.domain;
 import model.enums.ReviewStatus;
 import model.enums.ReviewType;
 
+/**
+ * Second {@link Review} of a {@link BachelorThesis}
+ */
 public class SecondReview extends Review {
 
 	public static final String STATUS = "reviewStatus";
@@ -10,10 +13,10 @@ public class SecondReview extends Review {
 	protected ReviewStatus status;
 	
 	/**
-	 * Creates a SecondReview for a BachelorThesis
+	 * Creates a SecondReview for a {@link BachelorThesis}
 	 * 
-	 * @param reviewer       The Reviewer reviewing the BachelorThesis
-	 * @param bachelorThesis The BachelorThesis to be reviewed
+	 * @param reviewer       The {@link Reviewer} reviewing the {@link BachelorThesis}
+	 * @param bachelorThesis The {@link BachelorThesis} to be reviewed
 	 * @param status		 Defines whether the reviewer accepted the second review
 	 */
 	public SecondReview(Reviewer reviewer, BachelorThesis bachelorThesis, ReviewStatus status) {
@@ -22,11 +25,11 @@ public class SecondReview extends Review {
 	}
 
 	/**
-	 * Creates a SecondReview for a BachelorThesis
+	 * Creates a SecondReview for a {@link BachelorThesis}
 	 * <p>
-	 * the value for {@link #status} is set to its default value APPROVED
-	 * @param reviewer
-	 * @param bachelorThesis
+	 * The value for {@link #status} is set to its default value {@link ReviewStatus#REQUESTED}
+	 * @param reviewer			The {@link Reviewer} reviewing the {@link BachelorThesis}
+	 * @param bachelorThesis	The {@link BachelorThesis} to be reviewed
 	 */
 	public SecondReview(Reviewer reviewer, BachelorThesis bachelorThesis) {
 		this(reviewer, bachelorThesis, ReviewStatus.REQUESTED);

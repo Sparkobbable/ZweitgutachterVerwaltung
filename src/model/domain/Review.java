@@ -6,6 +6,10 @@ import java.beans.PropertyChangeSupport;
 import controller.propertychangelistener.ChangeableProperties;
 import model.enums.ReviewType;
 
+/**
+ * Review of a {@link BachelorThesis}
+ * Use the specified classes {@link FirstReview} and {@link SecondReview} for creating reviews
+ */
 public abstract class Review implements ChangeableProperties {
 	protected final PropertyChangeSupport propertyChangeSupport;
 

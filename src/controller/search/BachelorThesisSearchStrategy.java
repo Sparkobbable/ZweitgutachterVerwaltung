@@ -2,6 +2,9 @@ package controller.search;
 
 import model.domain.BachelorThesis;
 
+/**
+ *	Supplies a searching strategy for searching in {@link BachelorThesis}
+ */
 public class BachelorThesisSearchStrategy implements SearchStrategy<BachelorThesis> {
 
 	@Override

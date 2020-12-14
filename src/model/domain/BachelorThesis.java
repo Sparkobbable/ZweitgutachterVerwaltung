@@ -8,7 +8,7 @@ import java.util.Optional;
 import controller.propertychangelistener.ChangeableProperties;
 
 /**
- * stores information about a BachelorThesis
+ * Stores information about a BachelorThesis
  * 
  */
 public class BachelorThesis implements ChangeableProperties {
@@ -30,10 +30,10 @@ public class BachelorThesis implements ChangeableProperties {
 	/**
 	 * Creates a BachelorThesis
 	 * 
-	 * @param topic        Topic of the BachelorThesis
-	 * @param author       Author of the BachelorThesis (Student)
-	 * @param firstReview  First Review made by a Reviewer
-	 * @param secondReview Second Review made by a Reviewer
+	 * @param topic        Topic of the bachelorthesis
+	 * @param author       {@link Author} of the BachelorThesis (Student)
+	 * @param firstReview  {@link FirstReview} made by a {@link Reviewer}
+	 * @param comment	   Comments on the bachelorthesis
 	 */
 	public BachelorThesis(String topic, Author author, Reviewer firstReviewer, String comment) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
@@ -74,11 +74,9 @@ public class BachelorThesis implements ChangeableProperties {
 	}
 
 	/**
-	 * Sets the secondReview. If the {@link CascadeMode} is set to CASCADE, the
-	 * thesis is added to the reviewer referenced in the given review. Notifies
-	 * observers.
+	 * Sets the secondReview. Notifies observers.
 	 * 
-	 * @param secondReview
+	 * @param secondReview The {@link SecondReview} for this bachelorthesis
 	 */
 	public void setSecondReview(SecondReview secondReview) {
 		Optional<SecondReview> old = this.secondReview;
@@ -96,6 +94,11 @@ public class BachelorThesis implements ChangeableProperties {
 		this.propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 	
+	/**
+	 * Checks whether this bachelorthesis is in a {@link List} of theses
+	 * @param thesesList The {@link List} to be searched
+	 * @return 			 True, if this bachelorthesis is in the given {@link List}
+	 */
 	public boolean isThesisInList(List<BachelorThesis> thesesList) {
 		return thesesList.stream().filter(thesisInList -> thesisInList.getTopic().equals(this.getTopic())).findAny().isPresent();
 	}
