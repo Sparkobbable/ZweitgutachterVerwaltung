@@ -7,6 +7,7 @@ import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -92,6 +93,10 @@ public class ReviewerOverviewStateController extends AbstractStateController {
 			this.execute(new BatchCommand(deleteCommands));
 		} catch (SupervisesThesisException e) {
 			this.popupError(String.format("%s betreut eine Bachelorarbeit als Erstgutachter und kann daher nicht gelöscht werden.", e.getReviewerName()));
+		} catch (NoSuchElementException e) {
+			this.popupError("Es wurde kein Gutachter ausgewählt!");
+		} catch (IllegalStateException e) {
+			this.popupError("Der Gutachter betreut eine Bachelorarbeit und kann daher nicht gelöscht werden.");
 		}
 		
 	}
