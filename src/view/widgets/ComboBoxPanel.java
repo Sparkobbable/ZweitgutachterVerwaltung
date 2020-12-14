@@ -35,7 +35,7 @@ public class ComboBoxPanel extends DefaultPanel {
 	}
 	
 	private void createUIElements(String headline, String[] options) {
-		this.headline = new JLabel("Darstellung");
+		this.headline = new JLabel(headline);
 		this.choosePresentationMode = new JComboBox<>(options);
 	}
 	
