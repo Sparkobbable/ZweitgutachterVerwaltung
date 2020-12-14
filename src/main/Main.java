@@ -18,7 +18,8 @@ import view.View;
 public class Main {
 
 	public static void main(String[] args) {
-		Model data = mockData();
+//		Model data = mockData();
+		Model data = new Model();
 		View view = new SwingView(data);
 		new Controller(data, view);
 		view.setVisible();

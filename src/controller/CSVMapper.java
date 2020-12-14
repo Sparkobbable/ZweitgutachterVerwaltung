@@ -65,6 +65,7 @@ public class CSVMapper {
 			Reviewer sereviewer = searchReviewer(secondreviewer, listreviewer);
 			SecondReview seReview = new SecondReview(sereviewer, bThesis);
 			bThesis.setSecondReview(seReview);
+			reviewer.addSecondReview(seReview);
 
 		}
 		return Pair.of(listreviewer, bachelorThesis);
