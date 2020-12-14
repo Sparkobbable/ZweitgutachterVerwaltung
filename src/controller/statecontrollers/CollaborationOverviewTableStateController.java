@@ -40,10 +40,8 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {
-			System.out.println("skip");
 			return;
 		}
-		System.out.println("Data:" + reviewerFilter);
 		switch (reviewerFilter) {
 		case FIRSTREVIEWER:
 			this.model.setCollaboratingReviewers(this.getReviewerCount(this.setCollaborationFirstReviewers()));
@@ -64,7 +62,6 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 
 		for (Reviewer currentReviewer : reviewers) {
 			if (!result.containsKey(currentReviewer)) {
-				System.out.println(this.countReviewerperArrayList(reviewers, currentReviewer));
 				result.put(currentReviewer, this.countReviewerperArrayList(reviewers, currentReviewer));
 			}
 		}

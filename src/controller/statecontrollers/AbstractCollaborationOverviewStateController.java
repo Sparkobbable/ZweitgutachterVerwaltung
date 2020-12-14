@@ -28,7 +28,7 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 			Controller controller, Model model) {
 		super(applicationState, view, controller, model);
 		this.registerEvent(EventId.INITIALIZE, (params) -> this.initialize());
-
+		this.reviewerFilter = ComboBoxMode.FIRSTREVIEWER;
 	}
 
 	/**
@@ -63,7 +63,6 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 				.ifPresent(reviewer -> reviewer.getAllSupervisedReviews().stream()
 						.filter(review -> review.getReviewType().equals(ReviewType.SECOND_REVIEW))
 						.forEach(review -> result.add(review.getBachelorThesis().getFirstReview().getReviewer())));
-		System.out.println("Reviewers:" + result.toString());
 		return result;
 	}
 
@@ -81,7 +80,6 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 						.filter(review -> review.getReviewType().equals(ReviewType.FIRST_REVIEW))
 						.forEach(review -> review.getBachelorThesis().getSecondReview()
 								.ifPresent(secondreview -> result.add(secondreview.getReviewer()))));
-		System.out.println("Reviewers:" + result.toString());
 		return result;
 	}
 
@@ -103,7 +101,6 @@ public abstract class AbstractCollaborationOverviewStateController extends Abstr
 						.filter(review -> review.getReviewType().equals(ReviewType.FIRST_REVIEW))
 						.forEach(review -> review.getBachelorThesis().getSecondReview()
 								.ifPresent(secondreview -> result.add(secondreview.getReviewer()))));
-		System.out.println("Reviewers:" + result.toString());
 		return result;
 	}
 

@@ -73,7 +73,6 @@ public class JSONController implements PersistenceHandler {
 			List<Reviewer> reviewers = JsonMapper.mapToReviewers(object.getJsonArray(JsonMapper.REVIEWERS));
 			List<BachelorThesis> bachelorTheses = JsonMapper
 					.mapToBachelorTheses(object.getJsonArray(JsonMapper.BACHELOR_THESES), reviewers);
-			System.out.println("Load-success");
 
 			return Pair.of(reviewers, bachelorTheses);
 		} catch (IOException e) {
