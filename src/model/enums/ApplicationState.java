@@ -22,12 +22,12 @@ public enum ApplicationState {
 				}
 			} 
 			if(this.equals(ANALYSE_BARCHART) || this.equals(ANALYSE_PIECHART) || this.equals(ANALYSE_TABLE) || this.equals(ANALYSE_BARCHARTHORIZONTAL)) {
-				if(state.equals(ANALYSE_BARCHART) || state.equals(ANALYSE_PIECHART) || state.equals(ANALYSE_TABLE) || this.equals(ANALYSE_BARCHARTHORIZONTAL)) {
+				if(state.equals(ANALYSE_BARCHART) || state.equals(ANALYSE_PIECHART) || state.equals(ANALYSE_TABLE) || state.equals(ANALYSE_BARCHARTHORIZONTAL)) {
 					return true;
 				}
 			}
 			if(this.equals(SINGLE_ANALYSIS_BARCHART) || this.equals(SINGLE_ANALYSIS_PIECHART) || this.equals(SINGLE_ANALYSIS_TABLE)) {
-				if(state.equals(SINGLE_ANALYSIS_BARCHART) || this.equals(SINGLE_ANALYSIS_PIECHART) || this.equals(SINGLE_ANALYSIS_TABLE)) {
+				if(state.equals(SINGLE_ANALYSIS_BARCHART) || state.equals(SINGLE_ANALYSIS_PIECHART) || state.equals(SINGLE_ANALYSIS_TABLE)) {
 					return true;
 				}
 			}
