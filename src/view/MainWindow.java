@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -46,7 +48,9 @@ public class MainWindow extends JFrame {
 		        if(dimension.height<minDimension.height) {
 		        	dimension.height=minDimension.height;
 		        }
-		        MainWindow.this.setSize(dimension);
+		        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
+				scheduler.schedule(() -> MainWindow.this.setSize(dimension), ViewProperties.RESIZING_TIMER, TimeUnit.MILLISECONDS);
+		        ;
 			}
 		});
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -16,5 +16,6 @@ public interface ViewProperties {
 	public static final int DEFAULT_HEIGHT = 950;
 	public static final int DEFAULT_WIDTH = 1200;
 	public static final long NOTIFICATION_TIMER = 4;
+	public static final long RESIZING_TIMER = 100;
 	
 }
