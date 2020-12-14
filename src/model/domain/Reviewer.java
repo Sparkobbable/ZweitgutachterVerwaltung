@@ -17,6 +17,8 @@ import controller.propertychangelistener.ChangeableProperties;
  */
 public class Reviewer implements ChangeableProperties {
 
+	private static final AtomicInteger INTERNAL_ID_GENERATOR = new AtomicInteger();
+	
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors
@@ -38,11 +40,25 @@ public class Reviewer implements ChangeableProperties {
 	private Double occupation;
 	private Double firstOccupation;
 	private Double secOccupation;
+	private int internalId;
 
 	private List<FirstReview> firstReviews;
 	private List<SecondReview> secondReviews;
 	private List<SecondReview> rejectedSecondReviews;
 
+	/**
+	 * Creates a Reviewer for supervising {@link BachelorThesis}
+	 * @param name					Name of the reviewer
+	 * @param maxSupervisedTheses	Maximum amount of reviewed {@link BachelorThesis}
+	 * @param email					Email of the reviewer
+	 * @param comment				Comment on the reviewer		
+	 * @param internalId			ID for internal purposes	
+	 */
+	public Reviewer(String name, int maxSupervisedTheses, String email, String comment, int internalId) {
+		this(name, maxSupervisedTheses, email, comment);
+		this.internalId = internalId;
+	}
+	
 	/**
 	 * Creates a Reviewer for supervising {@link BachelorThesis}
 	 * @param name					Name of the reviewer
@@ -307,6 +323,10 @@ public class Reviewer implements ChangeableProperties {
 
 	public Double getSecOccupation() {
 		return this.secOccupation;
+	}
+	
+	public int getInternalId() {
+		return internalId;
 	}
 
 	public List<SecondReview> getRejectedSecondReviews() {
