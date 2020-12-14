@@ -2,6 +2,7 @@ package controller.statecontrollers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 import controller.Controller;
 import model.Model;
@@ -28,6 +29,12 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 		this.registerEvent(EventId.CHOOSE_PRESENTATION,
 				(params) -> this.switchPresentation((ComboBoxMode) params[0].get()));
 		this.registerEvent(EventId.CHOOSE_REVIEW_FILTER, (params) -> switchData((ComboBoxMode) params[0].get()));
+		this.registerEvent(EventId.SELECT, (params) -> this.editReviewer((Reviewer) params[0].get()));
+	}
+
+	private void editReviewer(Reviewer reviewer) {
+		this.model.setSelectedReviewer(reviewer);
+		this.switchState(ApplicationState.REVIEWER_EDITOR);
 	}
 
 	/**

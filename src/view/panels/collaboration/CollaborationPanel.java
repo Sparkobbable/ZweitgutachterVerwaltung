@@ -3,6 +3,7 @@ package view.panels.collaboration;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,13 +12,14 @@ import javax.swing.JTable;
 import controller.events.CustomEventSource;
 import controller.events.EventSource;
 import model.Model;
+import model.domain.Reviewer;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.ViewState;
+import view.eventsources.TableClickEventSource;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.CollaboratingReviewerTableModel;
-import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.BarChart;
 import view.widgets.PieChart;
 
@@ -82,7 +84,7 @@ public class CollaborationPanel extends DefaultPanel {
 
 	@Override
 	protected List<EventSource> getEventSources() {
-		return List.of(this.options, this.initializeEventSource);
+		return List.of(this.options, this.initializeEventSource, new TableClickEventSource(EventId.SELECT, table, 2, () -> getselectedReviewer()));
 	}
 
 	/**
@@ -111,5 +113,9 @@ public class CollaborationPanel extends DefaultPanel {
 	 */
 	private void initializePropertyChangeHandlers() {
 		this.onPropertyChange(Model.COLLABORATING_REVIEWERS, (evt) -> this.tableModel.updateData());
+	}
+	
+	private Reviewer getselectedReviewer() {
+		return IntStream.of(this.table.getSelectedRow()).map(this.table::convertRowIndexToModel).mapToObj(this.tableModel::getByIndex).findAny().orElse(null);
 	}
 }

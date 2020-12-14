@@ -3,9 +3,7 @@ package view.panels.analyse;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.swing.JPanel;
@@ -23,7 +21,6 @@ import view.eventsources.TableClickEventSource;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AnalysisReviewerTableModel;
-import view.tableModels.ReviewerOverviewTableModel;
 import view.widgets.BarChart;
 import view.widgets.BarChartHorizontal;
 import view.widgets.PieChart;
