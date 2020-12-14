@@ -5,7 +5,6 @@ import java.awt.FlowLayout;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;

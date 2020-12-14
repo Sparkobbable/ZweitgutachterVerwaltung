@@ -10,7 +10,8 @@ import model.enums.ApplicationState;
 import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
-import view.panels.analyse.AnalysisPanel;
+import view.panels.analyse.AnalysisOptionsPanel;
+import view.panels.analyse.SingleAnalysisPanel;
 import view.widgets.BarChart;
 import view.widgets.PieChart;
 
