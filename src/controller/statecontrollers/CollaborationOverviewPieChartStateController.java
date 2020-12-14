@@ -43,10 +43,8 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {
-			System.out.println("skip");
 			return;
 		}
-		System.out.println("Data:" + reviewerFilter);
 		switch(reviewerFilter) {
 		case FIRSTREVIEWER:
 			this.model.setCollaboratingReviewers(this.getReviewerRatio(this.setCollaborationFirstReviewers()));
@@ -69,7 +67,6 @@ public class CollaborationOverviewPieChartStateController extends AbstractCollab
 		for(Reviewer currentReviewer : reviewers) {
 			if(!result.containsKey(currentReviewer)) {
 				double ratio = this.countReviewerperArrayList(reviewers, currentReviewer) / total;
-				System.out.println(ratio);
 				result.put(currentReviewer, ratio);
 			}
 		}

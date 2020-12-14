@@ -66,10 +66,8 @@ public abstract class AbstractSingleAnalysisStateController extends AbstractStat
 	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {
-			System.out.println("skip");
 			return;
 		}
-		System.out.println("Data:" + reviewerFilter);
 		switch (reviewerFilter) {
 		case FIRSTREVIEWER:
 			this.model.setSingleReviews(this.getReviewCount(this.model.getSelectedReviewer()));
@@ -101,11 +99,5 @@ public abstract class AbstractSingleAnalysisStateController extends AbstractStat
 		} else {
 			return new Pair<Optional<Integer>, Optional<Integer>>(Optional.empty(), Optional.empty());
 		}
-	}
-
-	@Override
-	protected void registerEvents() {
-		// TODO Auto-generated method stub
-		
 	}
 }

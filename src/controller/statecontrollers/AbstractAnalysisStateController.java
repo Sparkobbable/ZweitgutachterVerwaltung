@@ -33,14 +33,11 @@ import view.widgets.PieChart;
 public abstract class AbstractAnalysisStateController extends AbstractStateController {
 
 	protected ComboBoxMode reviewerFilter;
-	protected ComboBoxMode currentDataStatus;
-	//TOTO are these redundant?
 	
 	public AbstractAnalysisStateController(ApplicationState applicationState,
 			View view, Controller controller, Model model) {
 		super(applicationState, view, controller, model);
 		this.reviewerFilter = ComboBoxMode.FIRSTREVIEWER;
-		this.currentDataStatus = ComboBoxMode.FIRSTREVIEWER;
 		this.registerEvent(EventId.INITIALIZE, (params) -> this.initialize());
 	}
 	
@@ -89,18 +86,14 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		if (this.model.getApplicationState() != this.state) {
 			return;
 		}
-		System.out.println("Data:" + reviewerFilter);
 		switch (reviewerFilter) {
 		case FIRSTREVIEWER:
-			this.currentDataStatus = ComboBoxMode.FIRSTREVIEWER;
 			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllFirstReviewers()));
 			break;
 		case SECONDREVIEWER:
-			this.currentDataStatus = ComboBoxMode.SECONDREVIEWER;
 			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllSecondReviewers()));
 			break;
 		case ALLREVIEWER:
-			this.currentDataStatus = ComboBoxMode.ALLREVIEWER;
 			this.model.setAnalyseReviewers(this.getReviewCount(this.getAllReviewers()));
 			break;
 		default:
@@ -143,7 +136,7 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 	
 	protected Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> getReviewCount(List<Reviewer> reviewers) {
 		HashMap<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> result = new HashMap<>();
-		switch(this.currentDataStatus) {
+		switch(this.reviewerFilter) {
 		case FIRSTREVIEWER:
 			reviewers.forEach(reviewer -> result.put(reviewer, 
 					(new Pair<Optional<Integer>, Optional<Integer>>(Optional.of(reviewer.getFirstReviewCount()), Optional.empty()))));

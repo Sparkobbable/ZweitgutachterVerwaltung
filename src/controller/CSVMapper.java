@@ -22,7 +22,6 @@ public class CSVMapper {
 		List<BachelorThesis> bachelorThesis = new ArrayList<BachelorThesis>();
 		List<Reviewer> listreviewer = new ArrayList<Reviewer>();
 		List<Author> listauthor = new ArrayList<>();
-		csvParser.getHeaderNames().forEach(s -> System.out.println(s + "\n"));
 		for (CSVRecord csvRecord : csvParser) {
 
 			Pair<List<Reviewer>, List<BachelorThesis>> returnIn = createObjekts(csvRecord, bachelorThesis, listreviewer,

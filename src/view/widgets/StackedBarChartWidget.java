@@ -37,7 +37,6 @@ public class StackedBarChartWidget extends ChartPanel {
 	}
 
 	public void update(int firstReviwers, int secondReviewers, int maxReviewers) {
-		System.out.println("update");
 		this.stackedBarChart.setValue(firstReviwers * 100. / maxReviewers, secondReviewers * 100. / maxReviewers);
 		this.label.setText(String.format("%d / %d", firstReviwers + secondReviewers, maxReviewers));
 	}
