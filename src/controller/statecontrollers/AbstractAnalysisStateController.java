@@ -87,7 +87,6 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {
-			System.out.println("skip");
 			return;
 		}
 		System.out.println("Data:" + reviewerFilter);

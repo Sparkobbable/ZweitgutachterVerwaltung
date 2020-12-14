@@ -49,7 +49,6 @@ public class CommandInvoker {
 	public void undo() {
 		if (this.undoStack.peek().getApplicationState() != this.model.getApplicationState()) {
 			this.applicationStateController.switchState(this.undoStack.peek().getApplicationState());
-			return;
 		}
 		Command command = this.undoStack.pop();
 		Log.info(this, "Reverting command %s.", command);
@@ -61,7 +60,6 @@ public class CommandInvoker {
 	public void redo() {
 		if (this.redoStack.peek().getApplicationState() != model.getApplicationState()) {
 			applicationStateController.switchState(this.redoStack.peek().getApplicationState());
-			return;
 		}
 		Command command = this.redoStack.pop();
 		Log.info(this, "Re-executing command %s.", command);
