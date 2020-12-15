@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -154,11 +153,6 @@ public abstract class DefaultPanel extends AbstractViewPanel {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		this.propertyChangeManager.propertyChange(evt);
-	}
-
-	protected void onPropertyChange(Supplier<Object> source, String propertyName,
-			Consumer<PropertyChangeEvent> delegation) {
-		this.propertyChangeManager.onPropertyChange(source, propertyName, delegation);
 	}
 
 	protected void onPropertyChange(String propertyName, Consumer<PropertyChangeEvent> delegation) {

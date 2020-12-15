@@ -132,7 +132,6 @@ public class Reviewer implements ChangeableProperties {
 	/**
 	 * 
 	 * @return The count of {@link SecondReview} that were approved 
-	 * @deprecated replaced by {@link #getReviewCountForStatus(ReviewStatus...)}
 	 */
 	public int getApprovedSecondReviewCount() {
 		return this.getReviewCountForStatus(ReviewStatus.APPROVED);
