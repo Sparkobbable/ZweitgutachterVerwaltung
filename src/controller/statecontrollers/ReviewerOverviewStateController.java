@@ -1,8 +1,8 @@
 package controller.statecontrollers;
 
+import static model.enums.EventId.CREATE;
 import static model.enums.EventId.DELETE;
 import static model.enums.EventId.EDIT;
-import static model.enums.EventId.CREATE;
 import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.ArrayList;
@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import javax.swing.JOptionPane;
 
 import controller.Controller;
 import controller.commands.base.BatchCommand;

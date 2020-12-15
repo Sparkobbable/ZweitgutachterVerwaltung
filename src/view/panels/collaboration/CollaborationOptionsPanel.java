@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import controller.events.EventSource;
 import model.Model;

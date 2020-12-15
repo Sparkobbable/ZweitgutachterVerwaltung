@@ -2,17 +2,14 @@ package controller.statecontrollers;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import javax.swing.JOptionPane;
 
 import controller.CSVController;
 import controller.Controller;
-import controller.JSONController;
 import controller.commands.model.LoadSystemStateCommand;
 import model.Model;
-import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.enums.EventId;
 import model.persistence.PersistenceHandler;

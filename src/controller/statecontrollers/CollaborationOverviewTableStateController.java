@@ -2,14 +2,13 @@ package controller.statecontrollers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
 import controller.Controller;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
-import model.enums.EventId;
 import model.enums.ComboBoxMode;
+import model.enums.EventId;
 import view.View;
 import view.panels.collaboration.CollaborationOptionsPanel;
 import view.widgets.PieChart;

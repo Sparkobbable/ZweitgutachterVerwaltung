@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -26,7 +25,6 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.ViewProperties;
-import view.eventsources.ButtonEventSource;
 import view.eventsources.TableClickEventSource;
 import view.panels.prototypes.DefaultPanel;
 import view.tableModels.Column;
