@@ -1,19 +1,24 @@
 package view.panels.overview;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 
 import controller.events.EventSource;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.EventId;
+import model.enums.ReviewStatus;
 import view.eventsources.ButtonEventSource;
-import view.widgets.StackedBarChartWidget;
 import view.panels.prototypes.AbstractActionPanel;
+import view.widgets.StackedBarChartWidget;
 
 public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesis> {
 
@@ -22,6 +27,7 @@ public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesi
 	private JComboBox<Reviewer> reviewers;
 	private JButton select;
 	private StackedBarChartWidget stackedBarChartWidget;
+	private JLabel acceptedReviewsLabel;
 
 	private Model model;
 
@@ -43,15 +49,40 @@ public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesi
 		this.observe(model.getReviewers());
 		this.onPropertyChange(Model.REVIEWERS,
 				(evt) -> updateReviewers((List<Reviewer>) evt.getOldValue(), (List<Reviewer>) evt.getNewValue()));
+
+		this.onPropertyChange(Reviewer.MAX_SUPERVISED_THESES, evt -> updateReviewerPreview());
+		this.onPropertyChange(Reviewer.SECOND_REVIEWS,
+				(evt) -> updateSecondReviews((List<SecondReview>) evt.getOldValue(),
+						(List<SecondReview>) evt.getNewValue()));
+		this.onPropertyChange(Reviewer.MAX_SUPERVISED_THESES, (evt) -> updateReviewerPreview());
+		this.onPropertyChange(SecondReview.STATUS, (evt) -> updateReviewerPreview());
+
 		this.reviewers.addActionListener(e -> updateReviewerPreview());
-		this.select.addActionListener(e -> updateReviewerPreview());
+		this.updateReviewerPreview();
 	}
 
-	protected void updateReviewerPreview() {
+	private void updateSecondReviews(List<SecondReview> oldValue, List<SecondReview> newValue) {
+		this.stopObserving(oldValue);
+		this.observe(newValue);
+		this.updateReviewerPreview();
+	}
+
+	private void updateReviewerPreview() {
 		Reviewer reviewer = (Reviewer) this.reviewers.getSelectedItem();
 		if (reviewer == null) {
+			this.acceptedReviewsLabel.setVisible(false);
+			this.stackedBarChartWidget.setVisible(false);
 			return;
 		}
+
+		this.acceptedReviewsLabel.setText(String.format("Akzeptierte Gutachten: %d / %d; angefragt: %d",
+				reviewer.getReviewCountForStatus(ReviewStatus.APPROVED) + reviewer.getFirstReviewCount(),
+				reviewer.getMaxSupervisedThesis(),
+				reviewer.getReviewCountForStatus(ReviewStatus.REQUESTED, ReviewStatus.RESERVED)));
+
+		this.acceptedReviewsLabel.setVisible(true);
+		this.stackedBarChartWidget.setVisible(true);
+
 		this.stackedBarChartWidget.update(reviewer.getFirstReviews().size(),
 				reviewer.getUnrejectedSecondReviews().size(), reviewer.getMaxSupervisedThesis());
 	}
@@ -59,30 +90,34 @@ public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesi
 	private void updateReviewers(List<Reviewer> oldValue, List<Reviewer> newValue) {
 		this.stopObserving(oldValue);
 		this.reviewers.removeAllItems();
-		this.addFilteredReviewers(newValue);
-		this.observe(newValue);
+		newValue.stream().forEach(this.reviewers::addItem);
+		this.updateSecondReviews(
+				oldValue.stream().flatMap(r -> r.getUnrejectedSecondReviews().stream()).collect(Collectors.toList()),
+				newValue.stream().flatMap(r -> r.getUnrejectedSecondReviews().stream()).collect(Collectors.toList()));
+		newValue.stream().flatMap(r -> r.getUnrejectedSecondReviews().stream()).forEach(this::observe);
 		this.repaint();
-	}
+		this.observe(newValue);
 
-	protected void addFilteredReviewers(List<Reviewer> newValue) {
-		newValue.stream().filter(r -> r.getTotalReviewCount() < r.getMaxSupervisedThesis())
-				.forEach(this.reviewers::addItem);
 	}
 
 	private void createUIElements() {
 		this.select = this.buttonFactory.createButton("Als Zweitgutachter hinzufügen");
 		this.stackedBarChartWidget = StackedBarChartWidget.getInstance();
+		this.acceptedReviewsLabel = new JLabel();
+		this.acceptedReviewsLabel.setForeground(Color.WHITE);
 
 		this.reviewers = new JComboBox<>();
 		this.reviewers.addActionListener(e -> this.updateReviewerPreview());
 
-		this.addFilteredReviewers(this.model.getReviewers());
+		this.model.getReviewers().stream().forEach(this.reviewers::addItem);
+
 	}
 
 	private void addUIElements() {
 		this.add(reviewers);
-		this.add(stackedBarChartWidget);
 		this.add(select);
+		this.add(stackedBarChartWidget);
+		this.add(acceptedReviewsLabel);
 	}
 
 	@Override
