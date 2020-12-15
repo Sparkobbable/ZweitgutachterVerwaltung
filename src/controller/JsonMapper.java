@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.json.Json;
@@ -123,9 +124,9 @@ public class JsonMapper {
 
 	private static JsonObject mapToReviewerJson(Reviewer r) {
 		JsonObjectBuilder reviewerbuilder = Json.createObjectBuilder();
-		reviewerbuilder.add(Reviewer.NAME, r.getName());
-		reviewerbuilder.add(Reviewer.EMAIL, r.getEmail());
-		reviewerbuilder.add(Reviewer.COMMENT, r.getComment());
+		reviewerbuilder.add(Reviewer.NAME, Optional.ofNullable(r.getName()).orElse(""));
+		reviewerbuilder.add(Reviewer.EMAIL, Optional.ofNullable(r.getEmail()).orElse(""));
+		reviewerbuilder.add(Reviewer.COMMENT, Optional.ofNullable(r.getComment()).orElse(""));
 		reviewerbuilder.add(Reviewer.MAX_SUPERVISED_THESES, r.getMaxSupervisedThesis());
 		reviewerbuilder.add(Reviewer.INTERNAL_ID, r.getInternalId());
 

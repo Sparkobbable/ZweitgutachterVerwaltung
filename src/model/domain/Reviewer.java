@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,6 +19,7 @@ import model.enums.ReviewStatus;
  */
 public class Reviewer implements ChangeableProperties {
 
+	private static final AtomicInteger INTERNAL_ID_GENERATOR = new AtomicInteger();
 	protected final PropertyChangeSupport propertyChangeSupport;
 
 	// Descriptors
@@ -57,6 +59,7 @@ public class Reviewer implements ChangeableProperties {
 	public Reviewer(String name, int maxSupervisedTheses, String email, String comment, int internalId) {
 		this(name, maxSupervisedTheses, email, comment);
 		this.internalId = internalId;
+		INTERNAL_ID_GENERATOR.decrementAndGet();
 	}
 
 	/**
@@ -86,6 +89,7 @@ public class Reviewer implements ChangeableProperties {
 		this.rejectedSecondReviews = new ArrayList<>();
 		this.name = name;
 		this.maxSupervisedTheses = maxSupervisedTheses;
+		this.internalId = INTERNAL_ID_GENERATOR.incrementAndGet();
 	}
 
 	public String getName() {
