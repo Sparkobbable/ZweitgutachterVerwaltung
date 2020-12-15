@@ -23,15 +23,13 @@ public class CSVMapper {
 		List<Reviewer> listreviewer = new ArrayList<Reviewer>();
 		List<Author> listauthor = new ArrayList<>();
 		for (CSVRecord csvRecord : csvParser) {
-
-			Pair<List<Reviewer>, List<BachelorThesis>> returnIn = createObjekts(csvRecord, bachelorThesis, listreviewer,
-					listauthor);
+			appendObjectsFromRecord(csvRecord, bachelorThesis, listreviewer, listauthor);
 		}
 		return Pair.of(listreviewer, bachelorThesis);
 	}
 
-	private static Pair<List<Reviewer>, List<BachelorThesis>> createObjekts(CSVRecord csvRecord,
-			List<BachelorThesis> bachelorThesis, List<Reviewer> listreviewer, List<Author> listauthor) {
+	private static void appendObjectsFromRecord(CSVRecord csvRecord, List<BachelorThesis> bachelorThesis,
+			List<Reviewer> listreviewer, List<Author> listauthor) {
 		String name = format(csvRecord.get("Name, Vorname"));
 		String studyGroup = format(csvRecord.get("Studien-\n" + "gruppe"));
 		String company = format(csvRecord.get("Praxispartner"));
@@ -50,7 +48,7 @@ public class CSVMapper {
 //		String commant = csvRecord.get(6);
 
 		if (name == null || name.isBlank()) {
-			return Pair.of(listreviewer, bachelorThesis);
+			return;
 		}
 		Reviewer reviewer = searchReviewer(firstreviewer, listreviewer);
 
@@ -67,7 +65,6 @@ public class CSVMapper {
 			sereviewer.addSecondReview(seReview);
 
 		}
-		return Pair.of(listreviewer, bachelorThesis);
 
 	}
 

@@ -85,7 +85,7 @@ public class Model implements ChangeableProperties {
 	public Optional<Reviewer> getSelectedReviewer() {
 		return this.selectedReviewer;
 	}
-	
+
 	/**
 	 * @return The reviewcount for the selectedReviewer
 	 */
@@ -101,10 +101,10 @@ public class Model implements ChangeableProperties {
 	public Map<Reviewer, Double> getCollaboratingReviewers() {
 		return this.collaboratingReviewers;
 	}
-	
+
 	/**
-	 * Return a map of all {@link Reviewer} for the current analyse
-	 * including the amount of their {@link FirstReview} and/ or {@link SecondReview}
+	 * Return a map of all {@link Reviewer} for the current analyse including the
+	 * amount of their {@link FirstReview} and/ or {@link SecondReview}
 	 * 
 	 * @return Map<Review, Pair<Integer, Integer>>
 	 */
@@ -147,7 +147,7 @@ public class Model implements ChangeableProperties {
 		this.selectedReviewer = Optional.ofNullable(selectedReviewer);
 		this.propertyChangeSupport.firePropertyChange(SELECTED_REVIEWER, old, this.selectedReviewer);
 	}
-	
+
 	/**
 	 * Set the single Reviews for the selected Reviewer.
 	 * 
@@ -158,7 +158,7 @@ public class Model implements ChangeableProperties {
 		this.singleReviews = reviews;
 		this.propertyChangeSupport.firePropertyChange(SINGLE_REVIEWS, old, this.singleReviews);
 	}
-	
+
 	/**
 	 * Set the analysis of Reviewers for the current Analyse and notify any
 	 * observers
@@ -276,7 +276,9 @@ public class Model implements ChangeableProperties {
 		return this.reviewers.get(this.reviewers.size() - 1);
 	}
 
-	public void overrideReviewers(List<Reviewer> reviewers) { //TODO is it just a setter for reviewers?
+	public void overrideReviewers(List<Reviewer> reviewers) { // TODO is it just a setter for reviewers? ja aber ich
+																// fands wichtig zu betonen, dass die hier überschrieben
+																// werden - todo kann imo entfernt werden
 		List<Reviewer> old = new ArrayList<>(this.reviewers);
 		this.reviewers.clear();
 		this.reviewers.addAll(reviewers);
@@ -287,7 +289,7 @@ public class Model implements ChangeableProperties {
 		List<BachelorThesis> old = new ArrayList<>(this.theses);
 		this.theses.clear();
 		this.theses.addAll(bachelorTheses);
-		this.propertyChangeSupport.firePropertyChange(THESES, old, this.theses);		
+		this.propertyChangeSupport.firePropertyChange(THESES, old, this.theses);
 	}
 
 	public void addReviewers(List<Reviewer> reviewers) {
