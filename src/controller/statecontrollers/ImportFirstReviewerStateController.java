@@ -15,18 +15,22 @@ import model.enums.EventId;
 import model.persistence.PersistenceHandler;
 import view.View;
 
-//TODO @leoniemersmann javadoc
-public class ImportfirstreviewerStateController extends AbstractStateController {
+/**
+ * Handles the Application when in ApplicationState
+ * {@link ApplicationState#FIRSTREVIEWER_IMPORT}
+ */
+public class ImportFirstReviewerStateController extends AbstractStateController {
 
+	private static final String FILE_SUFFIX = ".csv";
 	private String filepath;
 
-	public ImportfirstreviewerStateController(View view, Controller controller, Model model) {
+	public ImportFirstReviewerStateController(View view, Controller controller, Model model) {
 		super(ApplicationState.FIRSTREVIEWER_IMPORT, view, controller, model);
 
 		GregorianCalendar now = new GregorianCalendar();
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + df.format(now.getTime())
-				+ ".csv";
+				+ FILE_SUFFIX;
 
 	}
 
@@ -40,7 +44,8 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 	/**
 	 * This Method handles the Event {@link EventId#LOAD_JSON} starting a
 	 * JFileChooser and giving the chosen path to the {@link PersistenceHandler}
-	 * @param override 
+	 * 
+	 * @param override
 	 * 
 	 * @param params
 	 */
@@ -85,17 +90,11 @@ public class ImportfirstreviewerStateController extends AbstractStateController 
 	}
 
 	private void setFilePath(String filepath) {
-		if (filepath.substring(filepath.length() - 5, filepath.length()).equals(".csv")) {
+		if (filepath.endsWith(FILE_SUFFIX)) {
 			this.filepath = filepath;
-			this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 		} else {
-			if (filepath.contains(".")) {
-				this.filepath = filepath.substring(0, filepath.indexOf(".")) + ".csv";
-				this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
-			} else {
-				this.filepath = filepath + ".csv";
-				this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
-			}
+			this.filepath = filepath + FILE_SUFFIX;
 		}
+		this.popupInfo("Der Dateipfad wurde erfolgreich geändert");
 	}
 }

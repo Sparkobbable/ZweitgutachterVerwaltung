@@ -12,13 +12,13 @@ import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.DefaultPanel;
 
 @SuppressWarnings("serial") // should not be serialized
-public class ImportfirstrewierButtonPanel extends DefaultPanel {
+public class ImportFirstRewierButtonPanel extends DefaultPanel {
 
 	private JButton loadImport;
 	private JButton saveCSV;
 	private JCheckBox overrideData;
 
-	public ImportfirstrewierButtonPanel() {
+	public ImportFirstRewierButtonPanel() {
 		super("");
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 
