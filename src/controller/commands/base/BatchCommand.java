@@ -15,6 +15,7 @@ public class BatchCommand extends DefaultCommand {
 	private final List<Command> commands;
 	private final boolean revertible;
 
+	
 	public BatchCommand(List<Command> commands) {
 		super(commands.stream().findAny().orElseThrow().getApplicationState());
 		if (commands.stream().anyMatch(c -> c.getApplicationState() != this.getApplicationState())) {
