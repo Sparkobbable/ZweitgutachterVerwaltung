@@ -13,6 +13,9 @@ public class ImageLoader {
 
 	private static ImageLoader instance;
 
+	/**
+	 * @return Serving a singletion of this class to prevent loss of performance
+	 */
 	public static ImageLoader getInstance() {
 		if (instance == null) {
 			instance = new ImageLoader();
@@ -20,6 +23,11 @@ public class ImageLoader {
 		return instance;
 	}
 
+	/**
+	 * Loads an image from the given image name
+	 * @param name	Name of the image to be loaded
+	 * @return		The {@link ImageIcon} presenting the loaded image
+	 */
 	public ImageIcon loadImageIcon(String name) {
 		return new ImageIcon(this.getClass().getResource(IMAGE_FOLDER + this.enforceSuffix(name, DEFAULT_SUFFIX)));
 	}

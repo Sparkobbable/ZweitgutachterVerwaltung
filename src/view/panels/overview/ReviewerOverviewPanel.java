@@ -16,17 +16,26 @@ import model.Model;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.TableClickEventSource;
+import view.panels.editor.ReviewerEditorPanel;
+import view.panels.editor.ThesesAssignmentPanel;
+import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.DividedProgressRenderer;
 import view.tableModels.OccupationComparator;
 import view.tableModels.ReviewerOverviewTableModel;
 
+/**
+ * {@link OverviewPanel} that is responsible for displaying an overview of a list of {@link Reviewer}.
+ * <p>
+ * It is responsible for searching reviewers as well as linking to the
+ * {@link ReviewerEditorPanel}
+ */
 public class ReviewerOverviewPanel extends OverviewPanel<Reviewer> {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Creates a view containing a table presenting the reviewers and buttons for
+	 * Creates a view containing a table presenting the list of {@link Reviewer} and buttons for
 	 * interacting with the data
 	 * 
 	 * @param model Needs the model as the data access

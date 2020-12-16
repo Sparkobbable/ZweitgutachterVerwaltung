@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javax.swing.table.TableModel;
+
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Review;
@@ -11,6 +13,10 @@ import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ReviewStatus;
 
+/**
+ * This {@link AbstractDataTableModel} contains the {@link Column}s {@link #AUTHOR_NAME}, {@link #AUTHOR_STUDY_GROUP}, {@link #TOPIC}, {@link #COMMENT}, 
+ * {@link #FIRST_REVIEWER}, {@link #SECOND_REVIEWER} and {@link #SECOND_REVIEWER_STATUS}
+ */
 public class ThesesOverviewTableModel extends AbstractDataTableModel<BachelorThesis> {
 
 	public static final Column<BachelorThesis, String> AUTHOR_NAME = Column.of("Autor (Name)",
@@ -32,6 +38,12 @@ public class ThesesOverviewTableModel extends AbstractDataTableModel<BachelorThe
 
 	private Model model;
 
+	/**
+	 * Creates a new {@link TableModel} for presenting a list of {@link BachelorThesis}
+	 * @param columns			The {@link Column}s to be presented
+	 * @param filters			The filters to be applied to the list
+	 * @param model				The {@link Model} for accessing the data
+	 */
 	public ThesesOverviewTableModel(List<Column<BachelorThesis, ?>> columns, List<Predicate<BachelorThesis>> filters,
 			Model model) {
 		super(columns, filters);

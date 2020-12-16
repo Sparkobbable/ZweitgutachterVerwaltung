@@ -7,12 +7,17 @@ import java.util.function.Supplier;
 import javax.swing.JButton;
 
 import controller.events.EventSource;
+import controller.events.SingleEventSource;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.AbstractActionPanel;
+import view.panels.prototypes.DefaultPanel;
 
+/**
+ * {@link AbstractActionPanel} that is responsible for supplying actions in the {@link ThesesAssignmentPanel}.
+ */
 public class ThesesAssignmentActionPanel extends AbstractActionPanel<BachelorThesis> {
 
 	private static final long serialVersionUID = 1L;
@@ -21,6 +26,10 @@ public class ThesesAssignmentActionPanel extends AbstractActionPanel<BachelorThe
 	private JButton addThesis;
 	private JButton showCollaboration;
 	
+	/**
+	 * Initializes this {@link AbstractActionPanel} with the given elements {@link Supplier}
+	 * @param selectedElementsSupplier	{@link Supplier} of the given elements which are added to the {@link SingleEventSource}
+	 */
 	ThesesAssignmentActionPanel(Supplier<List<BachelorThesis>> selectedElementsSupplier) {
 		super(selectedElementsSupplier);
 		this.createUIElements();

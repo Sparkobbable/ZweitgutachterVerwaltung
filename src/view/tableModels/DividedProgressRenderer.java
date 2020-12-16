@@ -13,12 +13,15 @@ import org.jfree.chart.ChartPanel;
 
 import view.widgets.StackedBarChart;
 
+/**
+ * Serves a {@link TableCellRenderer} which presents cell data as a horizontal {@link StackedBarChart}
+ */
 public class DividedProgressRenderer implements TableCellRenderer {
 	
 	private StackedBarChart stackedChart;
 	
 	/**
-	 * Creates a Cell-Renderer which displays a horizontal stacked bar chart
+	 * Creates a new renderer
 	 */
 	public DividedProgressRenderer() {
 		this.stackedChart = StackedBarChart.createStackedBarChart("Erstgutachten", "Zweitgutachten");

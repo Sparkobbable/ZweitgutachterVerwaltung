@@ -3,6 +3,11 @@ package view.tableModels;
 import java.util.Comparator;
 import java.util.Objects;
 
+/**
+ * Compares two {@link Double} in their values.
+ * <p>
+ * The {@link Comparator} also features the possibility of one or two of the values being null.
+ */
 public class OccupationComparator implements Comparator<Double[]> {
 
 	@Override

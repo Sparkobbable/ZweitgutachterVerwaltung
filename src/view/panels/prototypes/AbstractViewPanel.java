@@ -39,8 +39,8 @@ public abstract class AbstractViewPanel extends JPanel implements EventSource, P
 	 * 
 	 * @param message     Message shown in the pop-up
 	 * @param messageType Must be part of the {@link JOptionPane} values
-	 * @return Chosen option or an open confirmation if the messageType is not
-	 *         QUESTION_MESSAGE
+	 * @return 			  Chosen option or an open confirmation if the messageType is not
+	 *         			  QUESTION_MESSAGE
 	 */
 	public abstract int alert(String message, int messageType);
 
