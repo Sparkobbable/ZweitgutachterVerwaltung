@@ -17,7 +17,18 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 
+/**
+ * Maps CSV imputs to domain model objects.
+ *
+ */
 public class CSVMapper {
+
+	/**
+	 * Map the data of the csv file to the model
+	 * 
+	 * @param csvParser map the csv file to Strings
+	 * @return a Pair with lists of reviewers and bachelortheses
+	 */
 	public static Pair<List<Reviewer>, List<BachelorThesis>> maptoModel(CSVParser csvParser) {
 		List<BachelorThesis> bachelorThesis = new ArrayList<BachelorThesis>();
 		List<Reviewer> listreviewer = new ArrayList<Reviewer>();
@@ -84,6 +95,13 @@ public class CSVMapper {
 		return reviewer;
 	}
 
+	/**
+	 * gets all bachelorTheses from the model and map these and other attributes to
+	 * a csv file
+	 * 
+	 * @param csvPrinter     writes to csv file
+	 * @param bachelorTheses list of all bachlorthesis from the model
+	 */
 	public static void maptoCSV(CSVPrinter csvPrinter, List<BachelorThesis> bachelorTheses) {
 
 		for (BachelorThesis bachelorThesis : bachelorTheses) {
