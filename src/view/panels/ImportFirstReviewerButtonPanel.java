@@ -11,14 +11,18 @@ import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.DefaultPanel;
 
+/**
+ * Inner Panel inside a {@link ImportFirstReviewerPanel} responsible for the
+ * displayed buttons
+ */
 @SuppressWarnings("serial") // should not be serialized
-public class ImportFirstRewierButtonPanel extends DefaultPanel {
+public class ImportFirstReviewerButtonPanel extends DefaultPanel {
 
 	private JButton loadImport;
 	private JButton saveCSV;
 	private JCheckBox overrideData;
 
-	public ImportFirstRewierButtonPanel() {
+	public ImportFirstReviewerButtonPanel() {
 		super("");
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 
@@ -40,7 +44,7 @@ public class ImportFirstRewierButtonPanel extends DefaultPanel {
 		this.add(saveCSV);
 
 	}
-	
+
 	private boolean isOverrideChecked() {
 		return this.overrideData.isSelected();
 	}

@@ -13,15 +13,19 @@ import view.eventsources.ChooserEventSource;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 
-
+/**
+ * 
+ *Panel responsible for saving and loading a csv file.
+ *
+ */
 @SuppressWarnings("serial") // should not be serialized
-public class ImportFirstRewierPanel extends DefaultPanel {
+public class ImportFirstReviewerPanel extends DefaultPanel {
 
 	private JFileChooser chooseImport;
 	private AbstractViewPanel buttons;
 
 
-	public ImportFirstRewierPanel() {
+	public ImportFirstReviewerPanel() {
 		super("FirstReviewer Import");
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new GridLayout(2, 2));
@@ -33,7 +37,7 @@ public class ImportFirstRewierPanel extends DefaultPanel {
 	
 	private void createUIElements() {
 		this.chooseImport = new JFileChooser();
-		this.buttons = new ImportFirstRewierButtonPanel();
+		this.buttons = new ImportFirstReviewerButtonPanel();
 		
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Datei", "csv");
 		chooseImport.setFileFilter(filter);

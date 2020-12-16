@@ -14,7 +14,7 @@ import model.enums.ApplicationState;
 import model.enums.EventId;
 import util.Log;
 import view.panels.HomePanel;
-import view.panels.ImportFirstRewierPanel;
+import view.panels.ImportFirstReviewerPanel;
 import view.panels.StateChooserPanel;
 import view.panels.analyse.AnalysisPanel;
 import view.panels.analyse.SingleAnalysisPanel;
@@ -61,7 +61,7 @@ public class SwingView implements View {
 		this.registerView(ApplicationState.REVIEWER_OVERVIEW, new ReviewerOverviewPanel(model));
 		this.registerView(ApplicationState.THESES_OVERVIEW, new ThesesOverviewPanel(model));
 		this.registerView(ApplicationState.REVIEWER_EDITOR, new ReviewerEditorPanel(model));
-		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportFirstRewierPanel());
+		this.registerView(ApplicationState.FIRSTREVIEWER_IMPORT, new ImportFirstReviewerPanel());
 		this.registerView(ApplicationState.THESIS_ASSIGNMENT, new ThesesAssignmentPanel(model));
 		this.registerView(ApplicationState.STATE_CHOOSER, new StateChooserPanel());
 
