@@ -32,7 +32,7 @@ public class ImportFirstReviewerStateController extends AbstractStateController 
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss");
 		LocalDateTime now = LocalDateTime.now();
-		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + dtf.format(now)
+		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\CSV-Datei_" + dtf.format(now)
 				+ FILE_SUFFIX;
 
 	}
