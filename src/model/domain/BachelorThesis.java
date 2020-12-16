@@ -5,7 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Optional;
 
-import model.propertychangelistener.ChangeableProperties;
+import model.ChangeableProperties;
 
 /**
  * Stores information about a BachelorThesis
