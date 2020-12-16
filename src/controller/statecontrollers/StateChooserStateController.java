@@ -7,11 +7,11 @@ import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 
 import controller.Controller;
-import controller.JSONController;
 import controller.commands.model.LoadSystemStateCommand;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import model.persistence.JSONHandler;
 import model.persistence.PersistenceHandler;
 import view.View;
 
@@ -47,7 +47,7 @@ public class StateChooserStateController extends AbstractStateController {
 	private void loadState() {
 		File file = new File(filepath);
 		if (file.exists()) {
-			PersistenceHandler persistence = new JSONController(filepath);
+			PersistenceHandler persistence = new JSONHandler(filepath);
 			try {
 				this.execute(new LoadSystemStateCommand(persistence, this.model, true));
 				this.popupInfo("Der Systemstatus wurde erfolgreich geladen");
@@ -79,7 +79,7 @@ public class StateChooserStateController extends AbstractStateController {
 				return;
 			}
 		}
-		PersistenceHandler persistence = new JSONController(filepath);
+		PersistenceHandler persistence = new JSONHandler(filepath);
 		persistence.save(this.model.getReviewers(), this.model.getTheses());
 		this.popupInfo("Der Systemzustand wurde erfolgreich gespeichert.");
 	}

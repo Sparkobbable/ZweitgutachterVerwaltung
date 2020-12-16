@@ -1,4 +1,4 @@
-package controller;
+package model.persistence;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,17 +12,17 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 
+import controller.CSVMapper;
 import model.Pair;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
-import model.persistence.PersistenceHandler;
 
 //TODO javadoc
-public class CSVController implements PersistenceHandler {
+public class CSVHandler implements PersistenceHandler {
 
 	private String filename;
 
-	public CSVController(String filename) {
+	public CSVHandler(String filename) {
 		this.filename = filename;
 	}
 

@@ -21,10 +21,10 @@ import model.enums.ReviewStatus;
  * Maps JsonObjects to domain model objects.
  *
  */
-public class JsonMapper {
+public class JSONMapper {
 
-	static final String REVIEWERS = "reviewers";
-	static final String BACHELOR_THESES = "bachelorTheses";
+	public static final String REVIEWERS = "reviewers";
+	public static final String BACHELOR_THESES = "bachelorTheses";
 
 	private static final String FIRST_REVIEWER = "firstReviewer";
 	private static final String SECOND_REVIEWER = "secondReviewer";
@@ -56,7 +56,7 @@ public class JsonMapper {
 	}
 
 	public static List<Reviewer> mapToReviewers(JsonArray reviewers) {
-		return reviewers.stream().map(JsonMapper::mapToReviewer).collect(Collectors.toList());
+		return reviewers.stream().map(JSONMapper::mapToReviewer).collect(Collectors.toList());
 	}
 
 	private static BachelorThesis mapToBachelorThesis(JsonObject jThesis, List<Reviewer> reviewers) {
@@ -89,7 +89,7 @@ public class JsonMapper {
 	}
 
 	private static JsonArray mapToBachelorThesesJson(List<BachelorThesis> bachelorTheses) {
-		List<JsonObject> jThesis = bachelorTheses.stream().map(JsonMapper::mapToBachelorThesisJson)
+		List<JsonObject> jThesis = bachelorTheses.stream().map(JSONMapper::mapToBachelorThesisJson)
 				.collect(Collectors.toList());
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		jThesis.forEach(arrayBuilder::add);
@@ -117,7 +117,7 @@ public class JsonMapper {
 	}
 
 	private static JsonArray mapToReviewersJson(List<Reviewer> reviewers) {
-		List<JsonObject> jReviewer = reviewers.stream().map(JsonMapper::mapToReviewerJson).collect(Collectors.toList());
+		List<JsonObject> jReviewer = reviewers.stream().map(JSONMapper::mapToReviewerJson).collect(Collectors.toList());
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
 		jReviewer.forEach(arrayBuilder::add);

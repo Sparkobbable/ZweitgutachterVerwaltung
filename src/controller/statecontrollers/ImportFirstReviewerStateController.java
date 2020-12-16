@@ -6,12 +6,12 @@ import java.util.GregorianCalendar;
 
 import javax.swing.JOptionPane;
 
-import controller.CSVController;
 import controller.Controller;
 import controller.commands.model.LoadSystemStateCommand;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
+import model.persistence.CSVHandler;
 import model.persistence.PersistenceHandler;
 import view.View;
 
@@ -53,7 +53,7 @@ public class ImportFirstReviewerStateController extends AbstractStateController 
 	private void loadReview(boolean override) {
 		File file = new File(filepath);
 		if (file.exists()) {
-			PersistenceHandler persistence = new CSVController(filepath);
+			PersistenceHandler persistence = new CSVHandler(filepath);
 			try {
 				this.execute(new LoadSystemStateCommand(persistence, this.model, override));
 				if (override) {
@@ -84,7 +84,7 @@ public class ImportFirstReviewerStateController extends AbstractStateController 
 				return;
 			}
 		}
-		PersistenceHandler persistence = new CSVController(filepath);
+		PersistenceHandler persistence = new CSVHandler(filepath);
 		persistence.save(this.model.getReviewers(), this.model.getTheses());
 		this.popupInfo("Die Datei wurde erfolgreich gespeichert.");
 	}

@@ -1,4 +1,4 @@
-package controller;
+package model.persistence;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -12,10 +12,10 @@ import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 import javax.json.JsonWriter;
 
+import controller.JSONMapper;
 import model.Pair;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
-import model.persistence.PersistenceHandler;
 
 /**
  * {@link PersistenceHandler} that handles JSON persistance.
@@ -24,7 +24,7 @@ import model.persistence.PersistenceHandler;
  * JSON files.
  *
  */
-public class JSONController implements PersistenceHandler {
+public class JSONHandler implements PersistenceHandler {
 
 	private String filename;
 
@@ -33,7 +33,7 @@ public class JSONController implements PersistenceHandler {
 	 * 
 	 * @param filename Name including path and format of the Json file.
 	 */
-	public JSONController(String filename) {
+	public JSONHandler(String filename) {
 		this.filename = filename;
 	}
 
@@ -47,7 +47,7 @@ public class JSONController implements PersistenceHandler {
 		JsonWriter jsonWriter = null;
 		try {
 			jsonWriter = Json.createWriter(new FileWriter(filename));
-			jsonWriter.writeObject(JsonMapper.mapToJson(reviewers, bachelorTheses));
+			jsonWriter.writeObject(JSONMapper.mapToJson(reviewers, bachelorTheses));
 			if (jsonWriter != null) {
 				jsonWriter.close();
 			}
@@ -70,9 +70,9 @@ public class JSONController implements PersistenceHandler {
 				throw new RuntimeException("Ungültiges Json-Format");
 			}
 			JsonObject object = (JsonObject) value;
-			List<Reviewer> reviewers = JsonMapper.mapToReviewers(object.getJsonArray(JsonMapper.REVIEWERS));
-			List<BachelorThesis> bachelorTheses = JsonMapper
-					.mapToBachelorTheses(object.getJsonArray(JsonMapper.BACHELOR_THESES), reviewers);
+			List<Reviewer> reviewers = JSONMapper.mapToReviewers(object.getJsonArray(JSONMapper.REVIEWERS));
+			List<BachelorThesis> bachelorTheses = JSONMapper
+					.mapToBachelorTheses(object.getJsonArray(JSONMapper.BACHELOR_THESES), reviewers);
 
 			return Pair.of(reviewers, bachelorTheses);
 		} catch (IOException e) {
