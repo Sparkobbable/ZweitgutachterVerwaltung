@@ -38,15 +38,6 @@ public class CSVMapper {
 		String secondreviewer = format(csvRecord.get("Dozent\n" + "2. Gutachten"));
 		String commant = format(csvRecord.get("Bemerkung"));
 
-// wenn die Header nicht so  wichtig sind und wir davon ausgehen, das die Datei im richtigen Format ist
-//		String name = csvRecord.get(0);
-//		String studyGroup = csvRecord.get(1);
-//		String company = csvRecord.get(2);
-//		String topic = csvRecord.get(3);
-//		String firstreviewer = csvRecord.get(4);
-//		String secondreviewer = csvRecord.get(5);
-//		String commant = csvRecord.get(6);
-
 		if (name == null || name.isBlank()) {
 			return;
 		}
