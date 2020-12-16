@@ -20,7 +20,6 @@ import controller.commands.reviewer.ReviewerMaxSupervisedThesesChangeCommand;
 import controller.commands.reviewer.ReviewerNameChangeCommand;
 import model.Model;
 import model.domain.Review;
-import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;

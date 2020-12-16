@@ -6,9 +6,6 @@ import model.enums.ApplicationState;
 import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
-import view.tableModels.ReviewerOverviewTableModel;
-import view.widgets.ComboBoxPanel;
-import view.widgets.PieChart;
 
 public class AnalysisBarChartHorizontalStateController extends AbstractAnalysisStateController {
 

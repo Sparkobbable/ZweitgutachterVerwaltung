@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.json.Json;
@@ -28,6 +29,7 @@ public class JsonMapper {
 	private static final String FIRST_REVIEWER = "firstReviewer";
 	private static final String SECOND_REVIEWER = "secondReviewer";
 	private static final String SECOND_REVIEW_STATUS = "secondReviewStatus";
+	private static final String EMPTY_STRING = "";
 
 	/**
 	 * Create all objects from the JsonArray in the model.
@@ -60,8 +62,8 @@ public class JsonMapper {
 	private static BachelorThesis mapToBachelorThesis(JsonObject jThesis, List<Reviewer> reviewers) {
 		Author author = mapToAuthor(jThesis.getJsonObject(BachelorThesis.AUTHOR));
 		Reviewer firstReviewer = findReviewerById(jThesis.getInt(FIRST_REVIEWER), reviewers);
-		BachelorThesis bachelorThesis = new BachelorThesis(jThesis.getString(BachelorThesis.TOPIC), author,
-				firstReviewer, "");
+		BachelorThesis bachelorThesis = new BachelorThesis(nullableString(jThesis, BachelorThesis.TOPIC), author,
+				firstReviewer, nullableString(jThesis, BachelorThesis.COMMENT));
 
 		if (jThesis.containsKey(SECOND_REVIEWER)) {
 			Reviewer secondReviewer = findReviewerById(jThesis.getInt(SECOND_REVIEWER), reviewers);
@@ -74,13 +76,14 @@ public class JsonMapper {
 	}
 
 	private static Author mapToAuthor(JsonObject jAuthor) {
-		return new Author(jAuthor.getString(Author.NAME), jAuthor.getString(Author.STUDY_GROUP), "");
+		return new Author(nullableString(jAuthor, Author.NAME), nullableString(jAuthor, Author.STUDY_GROUP),
+				nullableString(jAuthor, Author.COMPANY));
 	}
 
 	private static Reviewer mapToReviewer(JsonValue jsonValue) {
 		JsonObject jReviewer = jsonValue.asJsonObject();
 		return new Reviewer(jReviewer.getString(Reviewer.NAME), jReviewer.getInt(Reviewer.MAX_SUPERVISED_THESES),
-				jReviewer.getString(Reviewer.EMAIL), jReviewer.getString(Reviewer.COMMENT),
+				nullableString(jReviewer, Reviewer.EMAIL), nullableString(jReviewer, Reviewer.COMMENT),
 				jReviewer.getInt(Reviewer.INTERNAL_ID));
 
 	}
@@ -102,14 +105,14 @@ public class JsonMapper {
 		thesis.getSecondReview()
 				.ifPresent(review -> thesisBuilder.add(SECOND_REVIEWER, review.getReviewer().getInternalId()));
 		thesis.getSecondReview()
-				.ifPresent(review -> thesisBuilder.add(SECOND_REVIEW_STATUS, review.getStatus().toString()));
+				.ifPresent(review -> thesisBuilder.add(SECOND_REVIEW_STATUS, nonNull(review.getStatus().name())));
 		return thesisBuilder.build();
 	}
 
 	private static JsonObjectBuilder mapToAuthorJson(BachelorThesis thesis) {
 		JsonObjectBuilder authorBuilder = Json.createObjectBuilder();
-		authorBuilder.add(Author.NAME, thesis.getAuthor().getName());
-		authorBuilder.add(Author.STUDY_GROUP, thesis.getAuthor().getStudyGroup());
+		authorBuilder.add(Author.NAME, nonNull(thesis.getAuthor().getName()));
+		authorBuilder.add(Author.STUDY_GROUP, nonNull(thesis.getAuthor().getStudyGroup()));
 		return authorBuilder;
 	}
 
@@ -123,13 +126,25 @@ public class JsonMapper {
 
 	private static JsonObject mapToReviewerJson(Reviewer r) {
 		JsonObjectBuilder reviewerbuilder = Json.createObjectBuilder();
-		reviewerbuilder.add(Reviewer.NAME, r.getName());
-		reviewerbuilder.add(Reviewer.EMAIL, r.getEmail());
-		reviewerbuilder.add(Reviewer.COMMENT, r.getComment());
+		reviewerbuilder.add(Reviewer.NAME, nonNull(r.getName()));
+		reviewerbuilder.add(Reviewer.EMAIL, nonNull(r.getEmail()));
+		reviewerbuilder.add(Reviewer.COMMENT, nonNull(r.getComment()));
 		reviewerbuilder.add(Reviewer.MAX_SUPERVISED_THESES, r.getMaxSupervisedThesis());
 		reviewerbuilder.add(Reviewer.INTERNAL_ID, r.getInternalId());
 
 		return reviewerbuilder.build();
+	}
+
+	private static String nonNull(String s) {
+		return Optional.ofNullable(s).orElse(EMPTY_STRING);
+	}
+
+	private static String nullableString(JsonObject jReviewer, String key) {
+		if (jReviewer.containsKey(key)) {
+			return jReviewer.getString(key);
+		} else {
+			return EMPTY_STRING;
+		}
 	}
 
 	private static Reviewer findReviewerById(int internalId, List<Reviewer> reviewers) {

@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import controller.events.EventSource;
 import model.domain.Reviewer;
 import model.enums.EventId;
-import view.ViewProperties;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.AbstractActionPanel;
 

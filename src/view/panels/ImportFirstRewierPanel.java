@@ -1,6 +1,5 @@
 package view.panels;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -16,13 +15,13 @@ import view.panels.prototypes.DefaultPanel;
 
 
 @SuppressWarnings("serial") // should not be serialized
-public class ImportfirstrewierPanel extends DefaultPanel {
+public class ImportFirstRewierPanel extends DefaultPanel {
 
 	private JFileChooser chooseImport;
 	private AbstractViewPanel buttons;
 
 
-	public ImportfirstrewierPanel() {
+	public ImportFirstRewierPanel() {
 		super("FirstReviewer Import");
 		this.setBackground(ViewProperties.BACKGROUND_COLOR);
 		this.setLayout(new GridLayout(2, 2));
@@ -34,7 +33,7 @@ public class ImportfirstrewierPanel extends DefaultPanel {
 	
 	private void createUIElements() {
 		this.chooseImport = new JFileChooser();
-		this.buttons = new ImportfirstrewierButtonPanel();
+		this.buttons = new ImportFirstRewierButtonPanel();
 		
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Datei", "csv");
 		chooseImport.setFileFilter(filter);

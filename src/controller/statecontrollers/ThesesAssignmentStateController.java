@@ -5,8 +5,6 @@ import static model.enums.EventId.SHOW_COLLABORATION;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import controller.Controller;
 import controller.commands.reviewer.AddBachelorThesisCommand;
 import model.Model;

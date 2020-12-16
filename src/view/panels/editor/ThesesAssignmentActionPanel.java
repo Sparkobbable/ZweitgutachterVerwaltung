@@ -1,7 +1,6 @@
 package view.panels.editor;
 
 import java.awt.Component;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 

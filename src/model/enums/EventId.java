@@ -12,9 +12,6 @@ public enum EventId {
 	CHOOSE_REVIEW_FILTER, CHOOSE_PRESENTATION, APPROVE_SEC_REVIEW, UNDO, REDO, SELECT,
 	INITIALIZE, NAME_CHANGED, EMAIL_CHANGED, MAX_SUPERVISED_THESES_CHANGED, COMMENT_CHANGED, NAVIGATE, RESERVE_SEC_REVIEW;
 
-	// TODO Refactor names, like "NEW" could be used for a button anywhere in the
-	// application
-	// TODO we should rather make them less telling, so that an EventId only makes sense when combined with an ApplicationState
 	
 	
 }

@@ -1,6 +1,5 @@
 package controller.search;
 
-import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 
 /**

@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import controller.events.EventSource;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.ViewProperties;
+import view.panels.collaboration.CollaborationPanel;
 import view.panels.prototypes.AbstractViewPanel;
 import view.panels.prototypes.DefaultPanel;
 import view.widgets.ComboBoxPanel;

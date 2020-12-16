@@ -27,7 +27,7 @@ public class StackedBarChartWidget extends ChartPanel {
 		super(stackedBarChart.getChart());
 		this.stackedBarChart = stackedBarChart;
 		this.setLayout(new BorderLayout());
-		this.label = new JLabel("hmmm...");
+		this.label = new JLabel();
 		this.add(this.label, BorderLayout.LINE_END);
 		this.stackedBarChart.setValue(50, 5);
 		this.setDomainZoomable(false);
@@ -41,10 +41,4 @@ public class StackedBarChartWidget extends ChartPanel {
 		this.label.setText(String.format("%d / %d", firstReviwers + secondReviewers, maxReviewers));
 	}
 
-//	this.stackedChart.setValue(((Integer[]) value)[0], ((Integer[]) value)[1]);
-//    ChartPanel chartPanel = new ChartPanel(this.stackedChart.getChart());
-//    chartPanel.setLayout(new BorderLayout());
-//    chartPanel.add(new JLabel(((Integer[]) value)[2] + "%"), BorderLayout.EAST);
-//    chartPanel.setBackground(Color.WHITE);
-//	return chartPanel;
 }

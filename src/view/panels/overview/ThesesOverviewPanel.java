@@ -71,6 +71,9 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 	}
 
 	private Optional<?> getNavigationTarget() {
+		if (this.table.getSelectedColumn() == -1 || this.table.getSelectedRow() == -1) {
+			return Optional.empty();
+		}
 		int selectedColumn = this.table.convertColumnIndexToModel(this.table.getSelectedColumn());
 		int selectedRow = this.table.convertRowIndexToModel(this.table.getSelectedRow());
 		return this.tableModel.getReferencedAt(selectedRow, selectedColumn);
