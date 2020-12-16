@@ -1,5 +1,6 @@
 package controller.commands.model;
 
+import controller.commands.base.Command;
 import controller.commands.base.RevertibleCommand;
 import model.Model;
 import model.domain.Review;
@@ -7,6 +8,10 @@ import model.domain.Reviewer;
 import model.enums.ApplicationState;
 import model.exceptions.SupervisesThesisException;
 
+/**
+ * {@link Command} that deletes a (second) {@link Reviewer}
+ * 
+ */
 public class DeleteReviewerCommand extends RevertibleCommand {
 
 	private final Reviewer reviewer;
@@ -21,7 +26,8 @@ public class DeleteReviewerCommand extends RevertibleCommand {
 	@Override
 	public void execute() {
 		if (!this.reviewer.getFirstReviews().isEmpty()) {
-			throw new SupervisesThesisException("Cannot delete reviewers that supervise a BachelorThesis as FirstReviewer", this.reviewer);
+			throw new SupervisesThesisException(
+					"Cannot delete reviewers that supervise a BachelorThesis as FirstReviewer", this.reviewer);
 		}
 
 		this.reviewer.getUnrejectedSecondReviews().stream().map(Review::getBachelorThesis)

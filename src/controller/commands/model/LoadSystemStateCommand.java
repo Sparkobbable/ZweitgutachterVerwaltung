@@ -2,6 +2,7 @@ package controller.commands.model;
 
 import java.util.List;
 
+import controller.commands.base.Command;
 import controller.commands.base.IrevertibleCommand;
 import model.Model;
 import model.Pair;
@@ -9,6 +10,10 @@ import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 import model.persistence.PersistenceHandler;
 
+/**
+ * {@link Command} that load a SystemyState
+ * 
+ */
 public class LoadSystemStateCommand extends IrevertibleCommand {
 
 	private final PersistenceHandler persistenceHandler;

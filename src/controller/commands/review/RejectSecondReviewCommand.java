@@ -1,5 +1,6 @@
 package controller.commands.review;
 
+import controller.commands.base.Command;
 import controller.commands.base.RevertibleCommand;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
@@ -7,6 +8,10 @@ import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;
 
+/**
+ * {@link Command} that reject a (second) {@link Reviewer} 
+ * 
+ */
 public class RejectSecondReviewCommand extends RevertibleCommand {
 
 	private final SecondReview review;

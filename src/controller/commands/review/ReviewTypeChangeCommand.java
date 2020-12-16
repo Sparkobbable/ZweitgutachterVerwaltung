@@ -1,10 +1,16 @@
 package controller.commands.review;
 
+import controller.commands.base.Command;
 import controller.commands.base.RevertibleCommand;
+import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
 import model.enums.ReviewStatus;
 
+/**
+ * {@link Command} that change the typ of a (second) {@link Reviewer}
+ * 
+ */
 public class ReviewTypeChangeCommand extends RevertibleCommand {
 
 	private SecondReview review;

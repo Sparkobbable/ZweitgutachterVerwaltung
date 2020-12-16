@@ -1,10 +1,15 @@
 package controller.commands.model;
 
+import controller.commands.base.Command;
 import controller.commands.base.RevertibleCommand;
 import model.Model;
 import model.domain.Reviewer;
 import model.enums.ApplicationState;
 
+/**
+ * {@link Command} that creates a (second) {@link Reviewer} 
+ * 
+ */
 public class CreateReviewerCommand extends RevertibleCommand{
 
 	private static final String DEFAULT_NAME = "Nachname, Vorname";
