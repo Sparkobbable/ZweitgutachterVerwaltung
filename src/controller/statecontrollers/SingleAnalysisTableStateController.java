@@ -8,6 +8,10 @@ import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
 
+/**
+ * Handles the Application when in ApplicationState
+ * {@link ApplicationState#SINGLE_ANALYSIS_TABLE}
+ */
 public class SingleAnalysisTableStateController extends AbstractSingleAnalysisStateController {
 
 

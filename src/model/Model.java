@@ -96,7 +96,7 @@ public class Model implements ChangeableProperties {
 	/**
 	 * Return a list of all collaborating Reviewers for the selected Reviewer
 	 * 
-	 * @return List<Reviewer>
+	 * @return Map<Reviewer, Double>
 	 */
 	public Map<Reviewer, Double> getCollaboratingReviewers() {
 		return this.collaboratingReviewers;
@@ -106,7 +106,7 @@ public class Model implements ChangeableProperties {
 	 * Return a map of all {@link Reviewer} for the current analyse including the
 	 * amount of their {@link FirstReview} and/ or {@link SecondReview}
 	 * 
-	 * @return Map<Review, Pair<Integer, Integer>>
+	 * @return Map<Review, Pair<Optional<Integer>, <Optional<Integer>>>
 	 */
 	public Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> getAnalyseReviewers() {
 		return this.analyseReviewers;

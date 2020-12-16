@@ -9,6 +9,7 @@ import java.util.Optional;
 import controller.Controller;
 import model.Model;
 import model.Pair;
+import model.domain.FirstReview;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
@@ -41,10 +42,6 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		this.registerEvent(EventId.INITIALIZE, (params) -> this.initialize());
 	}
 	
-	/**
-	 * Initializes the data set for the selected Reviewer. Gets invoked when the
-	 * panel gets opened.
-	 */
 	private void initialize() {
 		this.switchData(this.reviewerFilter);
 	}
@@ -101,6 +98,11 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		}
 	}
 
+	/**
+	 * Get all Reviewer, which supervise at least one {@link FirstReview}
+	 * 
+	 * @return ArrayList<Reviewer>
+	 */
 	protected ArrayList<Reviewer> getAllFirstReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
@@ -113,6 +115,11 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		return result;
 	}
 	
+	/**
+	 * Get all Reviewer, which supervise at least one {@link SecondReview}
+	 * 
+	 * @return ArrayList<Reviewer>
+	 */
 	protected ArrayList<Reviewer> getAllSecondReviewers() {
 		ArrayList<Reviewer> result1 = new ArrayList<>();;
 		for(Reviewer currentReviewer : this.model.getReviewers()) {
@@ -127,6 +134,11 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		return result1;
 	}
 	
+	/**
+	 * Get all Reviewer, which supervise at least one {@link Review}
+	 * 
+	 * @return ArrayList<Reviewer>
+	 */
 	protected ArrayList<Reviewer> getAllReviewers() {
 		ArrayList<Reviewer> result = new ArrayList<>();
 		result.addAll(this.getAllFirstReviewers());
@@ -134,6 +146,13 @@ public abstract class AbstractAnalysisStateController extends AbstractStateContr
 		return result;
 	}
 	
+	/**
+	 * Count the amount of supervised {@link FirstReview} & {@link SecondReview} and create the 
+	 * corresponding data structure
+	 * 
+	 * @param List<Reviewer reviewers
+	 * @return Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> ReviewCount
+	 */
 	protected Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> getReviewCount(List<Reviewer> reviewers) {
 		HashMap<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> result = new HashMap<>();
 		switch(this.reviewerFilter) {

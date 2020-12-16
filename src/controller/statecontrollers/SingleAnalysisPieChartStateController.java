@@ -7,6 +7,10 @@ import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
 
+/**
+ * Handles the Application when in ApplicationState
+ * {@link ApplicationState#SINGLE_ANALYSIS_PIECHART}
+ */
 public class SingleAnalysisPieChartStateController extends AbstractSingleAnalysisStateController {
 
 	public SingleAnalysisPieChartStateController(View view, Controller controller, Model model) {

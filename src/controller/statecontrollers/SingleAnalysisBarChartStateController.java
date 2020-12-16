@@ -7,6 +7,10 @@ import model.enums.ComboBoxMode;
 import model.enums.EventId;
 import view.View;
 
+/**
+ * Handles the Application when in ApplicationState
+ * {@link ApplicationState#SINGLE_ANALYSIS_BARCHART}
+ */
 public class SingleAnalysisBarChartStateController extends AbstractSingleAnalysisStateController {
 
 	public SingleAnalysisBarChartStateController(View view, Controller controller, Model model) {
