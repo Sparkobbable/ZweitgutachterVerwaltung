@@ -17,15 +17,31 @@ import model.Pair;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
 
-//TODO javadoc
+/**
+ * {@link PersistenceHandler} that handles CSV persistance.
+ * <p>
+ * Can be used to save and load data according to the specifications of the given sample in or from
+ * CSV files.
+ */
 public class CSVHandler implements PersistenceHandler {
 
 	private String filename;
 
+	/**
+	 * Creates a CSVContoller for the file with the given name.
+	 * 
+	 * @param filename Name including path and format of the Json file.
+	 */
 	public CSVHandler(String filename) {
 		this.filename = filename;
 	}
 
+	/**
+	 * Saves all attributs form the Model which are given in the sample from the model in a CSV file
+	 * 
+	 * 
+	 * @param list ArrayList of current reviewers and bachelorThesises in the system.
+	 */
 	public void save(List<Reviewer> reviewers, List<BachelorThesis> bachelorTheses) {
 		BufferedWriter writer = null;
 		CSVPrinter csvPrinter = null;
@@ -44,6 +60,12 @@ public class CSVHandler implements PersistenceHandler {
 		}
 	}
 
+	/**
+	 * Load all attributs form the Model which are given in the sample from the model in a CSV file
+	 * 
+	 * 
+	 *  @throws Exception when the loaded CSV file is not in the correct format
+	 */
 	public Pair<List<Reviewer>, List<BachelorThesis>> load() {
 		BufferedReader reader = null;
 		CSVParser csvParser = null;

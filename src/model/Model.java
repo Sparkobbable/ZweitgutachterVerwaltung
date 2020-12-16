@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import controller.propertychangelistener.ChangeableProperties;
 import model.domain.Author;
 import model.domain.BachelorThesis;
 import model.domain.FirstReview;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
+import model.propertychangelistener.ChangeableProperties;
 
 /**
  * Data store for all reviewers

@@ -3,8 +3,8 @@ package model.domain;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import controller.propertychangelistener.ChangeableProperties;
 import model.enums.ReviewType;
+import model.propertychangelistener.ChangeableProperties;
 
 /**
  * Review of a {@link BachelorThesis}
