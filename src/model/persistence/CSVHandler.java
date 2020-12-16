@@ -20,7 +20,7 @@ import model.domain.Reviewer;
 /**
  * {@link PersistenceHandler} that handles CSV persistance.
  * <p>
- * Can be used to save and load data according to the specifications of the given sample in or from
+ * Can be used to save and load data in or from
  * CSV files.
  */
 public class CSVHandler implements PersistenceHandler {
@@ -30,14 +30,14 @@ public class CSVHandler implements PersistenceHandler {
 	/**
 	 * Creates a CSVContoller for the file with the given name.
 	 * 
-	 * @param filename Name including path and format of the Json file.
+	 * @param filename Name including path and format of the CSV file.
 	 */
 	public CSVHandler(String filename) {
 		this.filename = filename;
 	}
 
 	/**
-	 * Saves all attributs form the Model which are given in the sample from the model in a CSV file
+	 * Saves attributs from the model  in a CSV file
 	 * 
 	 * 
 	 * @param list ArrayList of current reviewers and bachelorThesises in the system.
@@ -61,7 +61,7 @@ public class CSVHandler implements PersistenceHandler {
 	}
 
 	/**
-	 * Load all attributs form the Model which are given in the sample from the model in a CSV file
+	 * Load  attributs from the model in a CSV file
 	 * 
 	 * 
 	 *  @throws Exception when the loaded CSV file is not in the correct format

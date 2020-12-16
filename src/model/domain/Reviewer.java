@@ -11,8 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import model.propertychangelistener.ChangeableProperties;
-
+import model.ChangeableProperties;
 import model.enums.ReviewStatus;
 
 

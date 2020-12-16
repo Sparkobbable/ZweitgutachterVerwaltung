@@ -8,10 +8,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.events.Action;
 import controller.events.CompositeEventSource;
+import controller.propertychangelistener.PropertyChangeManager;
 import model.Model;
 import model.enums.ApplicationState;
 import model.enums.EventId;
-import model.propertychangelistener.PropertyChangeManager;
 import util.Log;
 import view.panels.HomePanel;
 import view.panels.ImportFirstRewierPanel;

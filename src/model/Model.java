@@ -15,7 +15,6 @@ import model.domain.FirstReview;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
 import model.enums.ApplicationState;
-import model.propertychangelistener.ChangeableProperties;
 
 /**
  * Data store for all reviewers
