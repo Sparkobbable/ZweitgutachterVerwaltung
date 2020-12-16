@@ -5,7 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Optional;
 
-import controller.propertychangelistener.ChangeableProperties;
+import model.propertychangelistener.ChangeableProperties;
 
 /**
  * Stores information about a BachelorThesis

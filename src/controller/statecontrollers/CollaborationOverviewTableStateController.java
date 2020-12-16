@@ -44,6 +44,7 @@ public class CollaborationOverviewTableStateController extends AbstractCollabora
 	 * @param reviewerFilter - selected dataMode from comboBox in
 	 *                       {@link CollaborationOptionsPanel}
 	 */
+	@Override
 	protected void switchData(ComboBoxMode reviewerFilter) {
 		this.reviewerFilter = reviewerFilter;
 		if (this.model.getApplicationState() != this.state) {
