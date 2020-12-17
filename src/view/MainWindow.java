@@ -53,7 +53,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setTitle("thesisSPACE");
+		this.setTitle("thesisSpace");
 		this.setBackground(Color.PINK);
 		// center
 		this.setLocationRelativeTo(null);
@@ -86,7 +86,7 @@ public class MainWindow extends JFrame {
 	/**
 	 * Registers a view that can be shown later. The first view that is registered
 	 * will be the home screen shown on startup, unless
-	 * {@link #switchToView(String)} is called beforehand.
+	 * {@link #switchToView(Integer)} is called beforehand.
 	 * 
 	 * @param view View to be registered.
 	 */

@@ -30,10 +30,10 @@ public class BachelorThesis implements ChangeableProperties {
 	/**
 	 * Creates a BachelorThesis
 	 * 
-	 * @param topic        Topic of the bachelorthesis
-	 * @param author       {@link Author} of the BachelorThesis (Student)
-	 * @param firstReview  {@link FirstReview} made by a {@link Reviewer}
-	 * @param comment	   Comments on the bachelorthesis
+	 * @param topic        	Topic of the bachelorthesis
+	 * @param author       	{@link Author} of the BachelorThesis (Student)
+	 * @param firstReviewer {@link Reviewer} which reviews this bachelorthesis
+	 * @param comment	   	Comments on the bachelorthesis
 	 */
 	public BachelorThesis(String topic, Author author, Reviewer firstReviewer, String comment) {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);

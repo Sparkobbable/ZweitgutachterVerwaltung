@@ -27,7 +27,6 @@ public abstract class AbstractViewPanel extends JPanel implements EventSource, P
 	/**
 	 * Creates a new Abstract View
 	 * 
-	 * @param title Title of this view that will be shown on the UI
 	 */
 	public AbstractViewPanel() {
 		this.viewId = VIEW_ID_GENERATOR.incrementAndGet();
