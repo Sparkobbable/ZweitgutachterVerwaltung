@@ -103,7 +103,7 @@ public class Model implements ChangeableProperties {
 	/**
 	 * Return a map of all collaborating {@link Reviewer} for the selected Reviewer
 	 * 
-	 * @return Map<Reviewer, Double>	Collaborating {@link Reviewer} and its size
+	 * @return Map<Reviewer,Double> Collaborating {@link Reviewer} and its size
 	 */
 	public Map<Reviewer, Double> getCollaboratingReviewers() {
 		return this.collaboratingReviewers;
@@ -113,7 +113,7 @@ public class Model implements ChangeableProperties {
 	 * Return a map of all {@link Reviewer} for the current analyse including the
 	 * amount of their {@link FirstReview} and/ or {@link SecondReview}
 	 * 
-	 * @return Map<Review, Pair<Optional<Integer>, <Optional<Integer>>>
+	 * @return analyseReviewers<Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>>
 	 */
 	public Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> getAnalyseReviewers() {
 		return this.analyseReviewers;
@@ -136,7 +136,7 @@ public class Model implements ChangeableProperties {
 	/**
 	 * Set the ApplicationState and notify any observers
 	 * 
-	 * @param applicationState
+	 * @param applicationState<ApplicationState>
 	 */
 	public void setApplicationState(ApplicationState applicationState) {
 		ApplicationState old = this.applicationState;
@@ -147,7 +147,7 @@ public class Model implements ChangeableProperties {
 	/**
 	 * Set the selected Reviewer and notify any observers
 	 * 
-	 * @param selectedReviewer
+	 * @param selectedReviewer<Reviewer>
 	 */
 	public void setSelectedReviewer(Reviewer selectedReviewer) {
 		Optional<Reviewer> old = this.selectedReviewer;
@@ -158,7 +158,7 @@ public class Model implements ChangeableProperties {
 	/**
 	 * Set the single Reviews for the selected Reviewer.
 	 * 
-	 * @param selectedReviewer <Pair<Optional<Integer>, Optional<Integer>>
+	 * @param selectedReviewer<Pair<Optional<Integer>, Optional<Integer>>
 	 */
 	public void setSingleReviews(Pair<Optional<Integer>, Optional<Integer>> reviews) {
 		Pair<Optional<Integer>, Optional<Integer>> old = this.singleReviews;
@@ -170,7 +170,7 @@ public class Model implements ChangeableProperties {
 	 * Set the analysis of Reviewers for the current Analyse and notify any
 	 * observers
 	 * 
-	 * @param Map
+	 * @param Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>>
 	 */
 	public void setAnalyseReviewers(Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> list) {
 		Map<Reviewer, Pair<Optional<Integer>, Optional<Integer>>> old = this.analyseReviewers;
@@ -182,7 +182,7 @@ public class Model implements ChangeableProperties {
 	 * Set the collaborating Reviewers for the selected Reviewer and notify any
 	 * observers
 	 * 
-	 * @param list
+	 * @param list<HashMap<Reviewer, Double>
 	 */
 	public void setCollaboratingReviewers(HashMap<Reviewer, Double> list) {
 		Map<Reviewer, Double> old = this.collaboratingReviewers;

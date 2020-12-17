@@ -6,11 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-import javax.swing.JTable;
-
 import controller.events.EventSource;
 import view.ViewProperties;
-import view.widgets.SearchField;
 
 /**
  * Abstract {@link DefaultPanel} serving actions for another {@link DefaultPanel} of the given type <T>. 

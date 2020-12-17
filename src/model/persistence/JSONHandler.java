@@ -39,9 +39,10 @@ public class JSONHandler implements PersistenceHandler {
 
 	/**
 	 * Saves all reviewers including every other Object from the current model in a
-	 * Json file.
+	 * JSON file.
 	 * 
-	 * @param list ArrayList of current reviewers in the system.
+	 * @param reviewers<List<Reviewer>> ArrayList of current {@link Reviewer} in the system
+	 * @param bachelorThesis<List<BachelorThesis>> ArrayList of current {@link BachelorThesis} in the system
 	 */
 	public void save(List<Reviewer> reviewers, List<BachelorThesis> bachelorTheses) {
 		JsonWriter jsonWriter = null;
@@ -59,6 +60,7 @@ public class JSONHandler implements PersistenceHandler {
 	/**
 	 * Loads all reviewers including every other Object from the Json file.
 	 * 
+	 * @return data<Pair<List<Reviewer>, List<BachelorThesis>>
 	 * @throws Exception when the loaded Json file is not in the correct format
 	 */
 	public Pair<List<Reviewer>, List<BachelorThesis>> load() {

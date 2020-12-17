@@ -9,7 +9,6 @@ import controller.events.EventSource;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
-import view.panels.editor.ThesesAssignmentPanel;
 import view.panels.prototypes.AbstractActionPanel;
 
 /**

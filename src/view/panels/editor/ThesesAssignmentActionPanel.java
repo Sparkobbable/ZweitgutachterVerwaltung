@@ -13,7 +13,6 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.AbstractActionPanel;
-import view.panels.prototypes.DefaultPanel;
 
 /**
  * {@link AbstractActionPanel} that is responsible for supplying actions in the {@link ThesesAssignmentPanel}.
