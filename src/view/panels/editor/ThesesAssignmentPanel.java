@@ -23,6 +23,7 @@ import controller.search.BachelorThesisSearchStrategy;
 import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.TableClickEventSource;
@@ -32,11 +33,11 @@ import view.tableModels.ThesesOverviewTableModel;
 import view.widgets.SearchField;
 
 /**
- * Panel responsible for assigning a thesis to the selectedReviwer
+ * {@link DefaultPanel} responsible for assigning a {@link BachelorThesis} to the {@link #selectedReviewer} as a {@link SecondReview}
  * <p>
- * It is required that a reviewer is currently selected when opening this panel.
- * This panel's content updates automatically when the selected reviewer or any
- * of its theses changes.
+ * It is required that a {@link Reviewer} is currently selected when opening this panel.
+ * This panel's content updates automatically when the {@link #selectedReviewer} or any
+ * of its {@link BachelorThesis} changes.
  *
  */
 @SuppressWarnings("serial") // should not be serialized
@@ -61,10 +62,10 @@ public class ThesesAssignmentPanel extends DefaultPanel {
 	private SearchField<BachelorThesis> searchField;
 
 	/**
-	 * Creates a view containing a table presenting the bachelorThesis without a
-	 * second review and other data of the thesis
+	 * Creates a view containing a table presenting the {@link BachelorThesis} without a
+	 * {@link SecondReview} and other data of the {@link BachelorThesis}
 	 * 
-	 * @param model The presented Model, needs for data access
+	 * @param model The presented Model, needed for data access
 	 */
 	public ThesesAssignmentPanel(Model model) {
 		super("Bachelorthesis-Editor");

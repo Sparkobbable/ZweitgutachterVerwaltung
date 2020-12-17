@@ -18,13 +18,21 @@ import controller.search.BachelorThesisSearchStrategy;
 import controller.search.SearchStrategy;
 import model.Model;
 import model.domain.BachelorThesis;
+import model.domain.Reviewer;
+import model.domain.SecondReview;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.TableClickEventSource;
+import view.panels.editor.ReviewerEditorPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.Column;
 import view.tableModels.ThesesOverviewTableModel;
 
+/**
+ * {@link OverviewPanel} that is responsible for displaying an overview of a list of {@link BachelorThesis}.
+ * <p>
+ * It is responsible for searching bachelortheses as well as adding {@link BachelorThesis} as a {@link SecondReview} to a {@link Reviewer}
+ */
 public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 
 	private static final List<Column<BachelorThesis, ?>> THESES_TABLE_COLUMNS = List.of(AUTHOR_NAME, AUTHOR_STUDY_GROUP,
@@ -32,10 +40,10 @@ public class ThesesOverviewPanel extends OverviewPanel<BachelorThesis> {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Creates a view containing a table presenting the bachelorThesis without a
-	 * second review and other data of the thesis
+	 * Creates a view containing a table presenting the {@link BachelorThesis} without a
+	 * {@link SecondReview} and other data of the {@link BachelorThesis}
 	 * 
-	 * @param model The model that shall be visualized
+	 * @param model The {@link Model} that shall be visualized
 	 */
 	@SuppressWarnings("unchecked")
 	public ThesesOverviewPanel(Model model) {

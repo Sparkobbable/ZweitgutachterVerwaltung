@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 
 import controller.events.EventSource;
 import model.Model;
+import model.domain.BachelorThesis;
 import model.domain.Review;
 import model.domain.Reviewer;
 import model.domain.SecondReview;
@@ -34,11 +35,10 @@ import view.panels.prototypes.DefaultPanel;
 import view.tableModels.SupervisedThesesTableModel;
 
 /**
- * Panel that is responsible for displaying a detailed view of a Reviewer.
+ * {@link DefaultPanel} that is responsible for displaying a detailed view of a {@link Reviewer}.
  * <p>
  * It is responsible for editing reviewers as well as linking to the
  * {@link ThesesAssignmentPanel}
- *
  */
 @SuppressWarnings("serial") // should not be serialized
 public class ReviewerEditorPanel extends DefaultPanel {
@@ -64,11 +64,10 @@ public class ReviewerEditorPanel extends DefaultPanel {
 	private JButton reserveSecReview;
 
 	/**
-	 * Creates a view containing a table presenting the reviewer's supervised
-	 * bachelorThesis and other data of the reviewer
+	 * Creates a {@link DefaultPanel} containing a table presenting the {@link Reviewer}'s supervised
+	 * {@link BachelorThesis} and other data of the {@link Reviewer}
 	 * 
-	 * @param viewId Unique viewId from {@link ViewId}
-	 * @param model  Needs the model as data access
+	 * @param model  Needs the {@link Model} as data access
 	 */
 	public ReviewerEditorPanel(Model model) {
 		super("Dozenteneditor");

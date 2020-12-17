@@ -20,6 +20,9 @@ import view.eventsources.ButtonEventSource;
 import view.panels.prototypes.AbstractActionPanel;
 import view.widgets.StackedBarChartWidget;
 
+/**
+ * {@link AbstractActionPanel} that is responsible for supplying actions in the {@link ThesesOverviewPanel}.
+ */
 public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesis> {
 
 	private static final long serialVersionUID = 1L;
@@ -32,10 +35,10 @@ public class ThesesOverviewActionPanel extends AbstractActionPanel<BachelorThesi
 	private Model model;
 
 	/**
-	 * Provides a section with several buttons for interaction with the table.
+	 * Provides a section with several {@link JButton} for interaction with the table.
 	 * 
-	 * @param selectedElementsSupplier supplies the currently selected
-	 *                                 {@link BachelorThesis}s
+	 * @param selectedElementsSupplier supplies the currently selected (list of) 
+	 *                                 {@link BachelorThesis}
 	 */
 	@SuppressWarnings("unchecked")
 	public ThesesOverviewActionPanel(Model model, Supplier<List<BachelorThesis>> selectedElementsSupplier) {

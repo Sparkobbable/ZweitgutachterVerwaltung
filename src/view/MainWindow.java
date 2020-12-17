@@ -50,7 +50,6 @@ public class MainWindow extends JFrame {
 		        }
 		        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
 				scheduler.schedule(() -> MainWindow.this.setSize(dimension), ViewProperties.RESIZING_TIMER, TimeUnit.MILLISECONDS);
-		        ;
 			}
 		});
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

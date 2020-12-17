@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import controller.search.SearchStrategy;
 
 /**
- * Panel that displays a search field and that should be checked when displaying
+ * Panel that displays a searchfield and that should be checked when displaying
  * searchable data.
  * 
  * @param <T> Class of Elements that can be searched
@@ -49,6 +49,11 @@ public class SearchField<T> extends JPanel {
 		this.addUiElements();
 	}
 
+	/**
+	 * Sets the needed handler to the {@link #searchButton}
+	 * @param actionListener	{@link ActionListener} to be added to the button
+	 * @param propertyListener	{@link PropertyChangeListener} for whatever reason
+	 */
 	public void setSearchHandler(ActionListener actionListener, PropertyChangeListener propertyListener) {
 		this.searchButton.addActionListener(actionListener);
 	}
@@ -58,6 +63,12 @@ public class SearchField<T> extends JPanel {
 		this.add(searchButton);
 	}
 
+	/**
+	 * Searches for matches of the text entered in the {@link #searchText} in the parameter of type <T>
+	 * <p> Needs implementation of a {@link SearchStrategy} for specified type <T>
+	 * @param obj	Object of type <T> to be searched
+	 * @return		{@link <code>true</code>} if and only if the entered text in {@link #searchText} matches with any part of the object
+	 */
 	public boolean matchesSearch(T obj) {
 		return searchStrategy.match(obj, searchText.getText());
 	}

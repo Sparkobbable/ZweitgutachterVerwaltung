@@ -2,6 +2,8 @@ package controller.statecontrollers;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
 
 import javax.swing.JOptionPane;
@@ -25,9 +27,9 @@ public class StateChooserStateController extends AbstractStateController {
 
 	public StateChooserStateController(View view, Controller controller, Model model) {
 		super(ApplicationState.STATE_CHOOSER, view, controller, model);
-		GregorianCalendar now = new GregorianCalendar();
-		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + df.format(now.getTime())
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss");
+		LocalDateTime now = LocalDateTime.now();
+		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + dtf.format(now)
 				+ ".json";
 	}
 

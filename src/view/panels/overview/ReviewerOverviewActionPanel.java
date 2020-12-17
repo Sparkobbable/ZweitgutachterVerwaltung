@@ -9,8 +9,12 @@ import controller.events.EventSource;
 import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.ButtonEventSource;
+import view.panels.editor.ThesesAssignmentPanel;
 import view.panels.prototypes.AbstractActionPanel;
 
+/**
+ * {@link AbstractActionPanel} that is responsible for supplying actions in the {@link ReviewerOverviewPanel}.
+ */
 public class ReviewerOverviewActionPanel extends AbstractActionPanel<Reviewer> {
 
 	private static final long serialVersionUID = 1L;
@@ -19,10 +23,11 @@ public class ReviewerOverviewActionPanel extends AbstractActionPanel<Reviewer> {
 	private JButton delete;
 	private JButton newReviewer;
 	private JButton showCollaboration;
+	
 	/**
-	 * Provides a section with several buttons for interaction with the table.
+	 * Provides a section with several {@link JButton}s for interaction with the table.
 	 * 
-	 * @param selectedElementsSupplier supplies the currently selected Reviewers
+	 * @param selectedElementsSupplier Supplies the currently selected Reviewers
 	 */
 	public ReviewerOverviewActionPanel(Supplier<List<Reviewer>> selectedElementsSupplier) {
 		super(selectedElementsSupplier);

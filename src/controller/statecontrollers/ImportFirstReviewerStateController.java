@@ -2,6 +2,8 @@ package controller.statecontrollers;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
 
 import javax.swing.JOptionPane;
@@ -27,9 +29,10 @@ public class ImportFirstReviewerStateController extends AbstractStateController 
 	public ImportFirstReviewerStateController(View view, Controller controller, Model model) {
 		super(ApplicationState.FIRSTREVIEWER_IMPORT, view, controller, model);
 
-		GregorianCalendar now = new GregorianCalendar();
-		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\systemstate_" + df.format(now.getTime())
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss");
+		LocalDateTime now = LocalDateTime.now();
+		this.filepath = "C:\\Users\\" + System.getenv("USERNAME") + "\\Desktop\\CSV-Datei_" + dtf.format(now)
 				+ FILE_SUFFIX;
 
 	}

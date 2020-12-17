@@ -11,7 +11,7 @@ import model.domain.Reviewer;
 import model.persistence.PersistenceHandler;
 
 /**
- * {@link Command} that load a SystemyState
+ * {@link Command} that loads a SystemState
  * 
  */
 public class LoadSystemStateCommand extends IrevertibleCommand {

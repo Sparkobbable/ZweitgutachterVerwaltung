@@ -15,14 +15,14 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DatasetUtils;
 
-//TODO @jakobwilmesmeier javadoc
+/**
+ * Implements a {@link JFreeChart} as an UI-Element containing a divided graph presenting two double values in one row, also known as stacked bar chart
+ */
 public class StackedBarChart {
 
 	private DefaultCategoryDataset dataSet;
 	private double[][] data;
 	private JFreeChart chart;
-
-//	private final ChartPanel chartPanel = new ChartPanel(chart);
 
 	private StackedBarChart(DefaultCategoryDataset dataSet, double[][] data, JFreeChart chart, String firstBar,
 			String secBar) {
@@ -34,9 +34,11 @@ public class StackedBarChart {
 	/**
 	 * Initializes a stacked bar chart with the given categories
 	 * 
-	 * @param firstBar Category of the first bar chart
-	 * @param secBar   Category of the second bar chart
-	 * @return The stacked bar chart without data
+	 * <p> For presenting data, the values still need to be added using {@link #setValue(double, double)}
+	 * 
+	 * @param firstBar 	Category of the first bar
+	 * @param secBar   	Category of the second bar
+	 * @return 			The {@link StackedBarChart} chart without any data
 	 */
 	public static StackedBarChart createStackedBarChart(String firstBar, String secBar) {
 		double[][] data = new double[][] { { 0.0 }, { 0.0 } };
@@ -53,9 +55,9 @@ public class StackedBarChart {
 	}
 
 	/**
-	 * Sets the data for a initialized stacked bar chart (Only 0 - 100)
-	 * @param firstBar	Value of the first bar chart
-	 * @param secBar	Value of the second bar chart
+	 * Sets the data for an initialized {@link StackedBarChart} (Only values between 0 - 100 are permitted)
+	 * @param firstBar	Value of the first bar
+	 * @param secBar	Value of the second bar
 	 */
 	public void setValue(double firstBar, double secBar) {
 		
@@ -101,11 +103,17 @@ public class StackedBarChart {
 	}
 }
 
-//TODO @jakobwilmesmeier javadoc
+/**
+ * Generates a {@link CategoryToolTipGenerator} for the {@link StackedBarChart}
+ */
 class ToolTipGenerator implements CategoryToolTipGenerator {
 
 	private String toolTip;
 
+	/**
+	 * Creates a new ToolTip containing the specified text
+	 * @param toolTip	Text of the tooltip to be displayed
+	 */
 	ToolTipGenerator(String toolTip) {
 		this.toolTip = toolTip;
 	}
