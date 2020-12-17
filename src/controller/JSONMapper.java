@@ -32,9 +32,10 @@ public class JSONMapper {
 	private static final String EMPTY_STRING = "";
 
 	/**
-	 * Create all objects from the JsonArray in the model.
+	 * Create all objects from the JsonArray in the model
 	 * 
-	 * @param value - Jsonvalue from the Json file
+	 * @param reviewers<JsonArray> list of all {@link Reviewer}
+	 * @param bachelorTheses<JsonArray> list of all {@link BachelorThesis}
 	 */
 	public void createObjectsFromJson(JsonArray reviewers, JsonArray bachelorTheses) {
 		List<Reviewer> mapToReviewers = mapToReviewers(reviewers);

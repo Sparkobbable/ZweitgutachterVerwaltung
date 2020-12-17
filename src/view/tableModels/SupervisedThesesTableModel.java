@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 
 import javax.swing.table.TableModel;
 
-import model.Model;
 import model.domain.BachelorThesis;
 import model.domain.Review;
 import model.domain.Reviewer;

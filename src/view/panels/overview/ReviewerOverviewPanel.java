@@ -17,8 +17,6 @@ import model.domain.Reviewer;
 import model.enums.EventId;
 import view.eventsources.TableClickEventSource;
 import view.panels.editor.ReviewerEditorPanel;
-import view.panels.editor.ThesesAssignmentPanel;
-import view.panels.prototypes.DefaultPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.DividedProgressRenderer;
 import view.tableModels.OccupationComparator;

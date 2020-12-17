@@ -23,7 +23,6 @@ import model.domain.SecondReview;
 import model.enums.EventId;
 import view.ViewProperties;
 import view.eventsources.TableClickEventSource;
-import view.panels.editor.ReviewerEditorPanel;
 import view.tableModels.AbstractDataTableModel;
 import view.tableModels.Column;
 import view.tableModels.ThesesOverviewTableModel;
