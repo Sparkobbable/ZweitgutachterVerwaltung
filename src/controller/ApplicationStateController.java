@@ -28,6 +28,7 @@ public class ApplicationStateController {
 		this.model = model;
 		this.visitedStates = new Stack<>();
 
+		this.view.addEventHandler(EventId.HOME, (params) -> switchState(ApplicationState.HOME));
 		this.view.addEventHandler(EventId.BACK, (params) -> switchToLastVisitedState());
 
 	}
@@ -62,13 +63,15 @@ public class ApplicationStateController {
 	private ApplicationState getLastVisitedState() {
 		if (this.visitedStates.empty()) {
 			return ApplicationState.HOME;
+		}
+		// remove this applicationState from the stack
+		this.visitedStates.pop();
+		
+		// return to the last visited applicationState or HOME, if there is none
+		if (this.visitedStates.empty()) {
+			return ApplicationState.HOME;
 		} else {
-			this.visitedStates.pop().toString();
-			if (this.visitedStates.empty()) {
-				return ApplicationState.HOME;
-			} else {
-				return this.visitedStates.peek();
-			}
+			return this.visitedStates.peek();
 		}
 	}
 }

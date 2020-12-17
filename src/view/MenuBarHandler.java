@@ -25,6 +25,7 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 
 	private CompositeEventSource eventSourceHandler;
 	private ButtonFactory buttonFactory;
+	private JButton home;
 	private JButton back;
 	private JButton undo;
 	private JButton redo;
@@ -33,6 +34,7 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	public MenuBarHandler() {
 		this.eventSourceHandler = new CompositeEventSource();
 		this.buttonFactory = ButtonFactory.getInstance();
+		this.home = this.buttonFactory.createMenuButton("Home");
 		this.back = this.buttonFactory.createMenuButton("Zurück");
 		this.undo = this.buttonFactory.createMenuButton("Rückgängig");
 		this.redo = this.buttonFactory.createMenuButton("Wiederherstellen");
@@ -45,6 +47,7 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 		JPanel rightLayout = new JPanel();
 		rightLayout.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
+		leftLayout.add(home);
 		leftLayout.add(back);
 		leftLayout.add(undo);
 		leftLayout.add(redo);
@@ -67,6 +70,7 @@ public class MenuBarHandler extends JMenuBar implements EventSource {
 	}
 
 	protected void registerEventSources() {
+		this.eventSourceHandler.register(new ButtonEventSource(EventId.HOME, home));
 		this.eventSourceHandler.register(new ButtonEventSource(EventId.BACK, back));
 		this.eventSourceHandler.register(new ButtonEventSource(EventId.UNDO, undo));
 		this.eventSourceHandler.register(new ButtonEventSource(EventId.REDO, redo));
