@@ -20,8 +20,7 @@ import model.domain.Reviewer;
 /**
  * {@link PersistenceHandler} that handles CSV persistance.
  * <p>
- * Can be used to save and load data in or from
- * CSV files.
+ * Can be used to save and load data in or from CSV files.
  */
 public class CSVHandler implements PersistenceHandler {
 
@@ -37,10 +36,13 @@ public class CSVHandler implements PersistenceHandler {
 	}
 
 	/**
-	 * Saves attributs from the model  in a CSV file
+	 * Saves attributes from the model in a CSV file
 	 * 
 	 * 
-	 * @param list ArrayList of current reviewers and bachelorThesises in the system.
+	 * @param reviewers      ArrayList of current reviewers and bachelorThesises to
+	 *                       be saved.
+	 * @param bachelorTheses ArrayList of current bachelorTheses and
+	 *                       bachelorThesises to be saved.
 	 */
 	public void save(List<Reviewer> reviewers, List<BachelorThesis> bachelorTheses) {
 		BufferedWriter writer = null;
@@ -61,10 +63,10 @@ public class CSVHandler implements PersistenceHandler {
 	}
 
 	/**
-	 * Load  attributs from the model in a CSV file
+	 * Load attributs from the model in a CSV file
 	 * 
 	 * 
-	 *  @throws Exception when the loaded CSV file is not in the correct format
+	 * @throws Exception when the loaded CSV file is not in the correct format
 	 */
 	public Pair<List<Reviewer>, List<BachelorThesis>> load() {
 		BufferedReader reader = null;
@@ -75,7 +77,7 @@ public class CSVHandler implements PersistenceHandler {
 			do {
 				reader.mark(2048);
 				firstLine = reader.readLine();
-				
+
 			} while (firstLine.matches("([;]|\\s)*"));
 
 			// go to the last marker before the correct line

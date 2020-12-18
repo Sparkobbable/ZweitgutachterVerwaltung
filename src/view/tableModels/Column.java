@@ -2,6 +2,12 @@ package view.tableModels;
 
 import java.util.function.Function;
 
+/**
+ * Column in a table
+ *
+ * @param <T> Type of the element represented in a row
+ * @param <E> Type of the Objects in this row
+ */
 public class Column<T, E> {
 	private final String title;
 	private final Function<T, E> valueFunction;
