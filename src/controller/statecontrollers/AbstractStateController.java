@@ -29,9 +29,10 @@ public abstract class AbstractStateController {
 	 * Creates a StateController for the given states and registers actions for each
 	 * Event that can be omitted in this ApplicationState
 	 * 
-	 * @param states
+	 * @param state
 	 * @param view
 	 * @param controller
+	 * @param model
 	 */
 	public AbstractStateController(ApplicationState state, View view,
 			Controller controller, Model model) {
